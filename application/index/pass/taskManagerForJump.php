@@ -25,9 +25,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!--    bootstrap dataTables extensions-->
     <link rel="stylesheet" href="../plugins/bootstrap-table-develop/src/extensions/page-jumpto/bootstrap-table-jumpto.css">
     <!--    toastr-->
-    <link href="../plugins/CodeSeven-toastr/build/toastr.min.css" rel="stylesheet" />
+<!--    <link href="../plugins/CodeSeven-toastr/build/toastr.min.css" rel="stylesheet" />-->
     <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="../plugins/iCheck/all.css">
+<!--    <link rel="stylesheet" href="../plugins/iCheck/all.css">-->
     <!-- Select2 -->
     <link rel="stylesheet" href="../bower_components/select2/dist/css/select2.min.css">
     <!--    bootstrapValidator-->
@@ -313,8 +313,6 @@ desired effect
 
 <!-- REQUIRED JS SCRIPTS -->
 
-<!-- jQuery 3 -->
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!--PACE-->
@@ -326,9 +324,9 @@ desired effect
 <link rel="stylesheet" href="../plugins/bootstrap-table-develop/src/extensions/page-jumpto/bootstrap-table-jumpto.css">
 <script src="../plugins/bootstrap-table-develop/src/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
 <!--    toastr-->
-<script src="../plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+<!--<script src="../plugins/CodeSeven-toastr/build/toastr.min.js"></script>-->
 <!-- iCheck 1.0.1 -->
-<script src="../plugins/iCheck/icheck.min.js"></script>
+<!--<script src="../plugins/iCheck/icheck.min.js"></script>-->
 <!-- bootbox4.4 -->
 <script src="../plugins/bootbox4.4/bootbox.min.js"></script>
 <!-- Select2 -->
