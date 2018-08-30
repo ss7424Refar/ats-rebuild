@@ -15,3 +15,6 @@ Route::rule('new/:id','index/TaskInfo/Task');
 
 //getTaskInfo
 Route::rule('getTaskInfo','index/TaskInfo/getTaskInfo');
+
+
+//Route::rule('DynamicTaskDemo','index/Index/DynamicTaskDemo');

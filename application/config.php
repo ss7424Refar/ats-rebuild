@@ -31,7 +31,7 @@ return [
     // 默认输出类型
     'default_return_type'    => 'html',
     // 默认AJAX 数据返回格式,可选json xml ...
-    'default_ajax_return'    => 'json',
+    'default_ajax_return'    => '',
     // 默认JSONP格式返回的处理方法
     'default_jsonp_handler'  => 'jsonpReturn',
     // 默认JSONP处理方法
@@ -139,7 +139,11 @@ return [
     ],
 
     // 视图输出字符串内容替换
-    'view_replace_str'       => [],
+    'view_replace_str'       => [
+        '__PUBLIC_CSS__'=>'/ats_kimi/public/static/css', //public
+        '__PUBLIC_JS__'=>'/ats_kimi/public/static/js', //public
+
+    ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
     'dispatch_error_tmpl'    => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
