@@ -45,6 +45,7 @@ class TaskInfo
         echo '</pre>';
     }
 
+    // update
     public function addTaskInfo(){
         $atsInfo = new AtsTesttaskInfo();
 
