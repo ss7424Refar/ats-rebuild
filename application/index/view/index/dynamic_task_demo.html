@@ -112,9 +112,11 @@ desired effect
                                     <select class="form-control select2" style="width: 100%;" name="selection">
                                         <option>JumpStart</option>
                                         <option>C-Test</option>
+                                        <option>Image Recovery</option>
                                     </select>
 
                                 </div>
+                                <input type="text" id="forCollapse" hidden>
                                 <div class="col-md-5">
                                     <button type="button" class="btn btn-success" id="addTaskDemo"> Add Task </button>
                                 </div>
@@ -128,7 +130,7 @@ desired effect
               <div class="box-header with-border">
                   <h3 class="box-title">Add</h3>
               </div>
-              <form action="#" method="post" id="toolForm">
+              <form  id="toolForm">
                   <div class="box-body" id="box_body"></div>
                   <div class="box-footer">
                       <button type="submit" class="btn btn-primary pull-right" id="sub">Submit</button>
@@ -169,13 +171,16 @@ desired effect
 
         $('#addTaskDemo').click(function () {
             var selection = $('select[name="selection"]').select2('data')[0].text;
+            var collapseId = Number($('#forCollapse').text());
+            console.log(collapseId);
             console.log(selection);
 
             $.ajax({
                 type : "post",
                 url: "{:url('AddTool/createHtmlElement')}",
                 data: {
-                    selection : selection
+                    selection : selection,
+                    collapseId : collapseId
                 },
                 success : function (result) {
                     if ('none' === $('#content').css('display')){
@@ -187,9 +192,18 @@ desired effect
                 error : function(xhr,status,error){
 
 
+                },
+                complete: function () {
+                    $('#forCollapse').text(collapseId + 1);
                 }
             });
         });
+
+        $('#sub').click(function () {
+            console.log($('#toolForm').serialize());
+
+        });
+
     });
 </script>
 
