@@ -11,6 +11,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Session;
 use think\Request;
+use app\index\model\AtsTaskPanel;
 
 class Index extends Controller
 {
@@ -34,8 +35,11 @@ class Index extends Controller
 
 
     public function test(){
-        return url('index/AddTool/createHtmlElement');
+//        return url('index/AddTool/createHtmlElement');
 
+        $atsTaskPanel = new AtsTaskPanel();
+
+        $res = $atsTaskPanel->where('tool_name', 'JumpStart')->select();
     }
 
     /*
