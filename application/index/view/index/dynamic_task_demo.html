@@ -117,6 +117,7 @@ desired effect
 
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
+                                <input type="text" id="knowTool" hidden>
                                 <div class="col-md-5">
                                     <button type="button" class="btn btn-success" id="addTaskDemo"> Add Task </button>
                                 </div>
@@ -133,7 +134,7 @@ desired effect
               <form  id="toolForm">
                   <div class="box-body" id="box_body"></div>
                   <div class="box-footer">
-                      <button type="submit" class="btn btn-primary pull-right" id="sub">Submit</button>
+                      <button type="button" class="btn btn-primary pull-right" id="sub">Submit</button>
                   </div>
               </form>
           </div>
@@ -172,8 +173,10 @@ desired effect
         $('#addTaskDemo').click(function () {
             var selection = $('select[name="selection"]').select2('data')[0].text;
             var collapseId = Number($('#forCollapse').text());
+            var knowTool = $('#knowTool').text();
             console.log(collapseId);
             console.log(selection);
+
 
             $.ajax({
                 type : "post",
@@ -195,12 +198,33 @@ desired effect
                 },
                 complete: function () {
                     $('#forCollapse').text(collapseId + 1);
+                    $('#knowTool').text(knowTool + selection + ',');
                 }
             });
         });
 
         $('#sub').click(function () {
             console.log($('#toolForm').serialize());
+
+            $.ajax({
+                type : "post",
+                url: "{:url('AddTool/insertTool')}",
+                data: {
+                    formData : $('#toolForm').serialize(),
+                    steps : Number($('#forCollapse').text()),
+                    knowTool : $('#knowTool').text()
+                },
+                success : function (result) {
+                    console.log(result);
+                    return;
+
+                },
+                error : function(xhr,status,error){
+
+                    alert(1);
+                }
+
+            })
 
         });
 
