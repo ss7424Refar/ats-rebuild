@@ -60,7 +60,7 @@ desired effect
 |---------------------------------------------------------|
 -->
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-collapse sidebar-mini">
 <div class="wrapper">
     <!-- Main Header -->
     <?php include 'header.php';?>
@@ -73,32 +73,16 @@ desired effect
 
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">MAIN NAVIGATION</li>
-                <li class="treeview" >
-                    <a href="#"><i class="fa fa-wrench"></i> <span>Auto Tool</span>
-                        <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                        </span>
+                <li>
+                    <a href="addTaskJumpStart.php">
+                        <i class="fa fa-plus"></i> <span><i class="fa fa-circle-o  text-blue" style="margin-right: 5px"></i>&nbsp;Add Task</span>
                     </a>
-                    <ul class="treeview-menu">
-                        <li><a href="addTaskJumpStart.php"><i class="fa fa-circle-o text-yellow"></i> Jump Start</a></li>
-<!--                        <li><a href="addTaskTreboot.php"><i class="fa fa-circle-o text-aqua"></i> Treboot</a></li>-->
-                    </ul>
                 </li>
-                <li class="header">INFO</li>
-                <li class="treeview" >
-                    <a href="#"><i class="fa fa-link"></i> <span>Task Manager</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="taskManagerForJump.php"><i class="fa fa-circle-o text-red"></i> Jump Start</a></li>
-                    </ul>
+                <li>
+                    <a href="taskManagerForJump.php"><i class="fa fa-edit"></i> <span><i class="fa fa-circle-o  text-red" style="margin-right: 5px"></i>&nbsp;Task Manager</span> </a>
                 </li>
-                <li class="header">CHECK OUT</li>
-                <li class="active">
-                    <a href="portCheck.php"><i class="fa fa-link"></i> <span>Port Status</span></a>
+                <li  class="active">
+                    <a href="portCheck.php"><i class="fa fa-link"></i> <span><i class="fa fa-circle-o text-yellow" style="margin-right: 5px"></i>&nbsp;Port Status</span> </a>
                 </li>
 
             </ul>
@@ -114,11 +98,11 @@ desired effect
                 Port Status
                 <small>For Check</small>
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="atsIndex.php"><i class="fa fa-dashboard"></i> Home</a></li>
+<!--            <ol class="breadcrumb">-->
+<!--                <li><a href="atsIndex.php"><i class="fa fa-dashboard"></i> Home</a></li>-->
 <!--                <li>Auto Tool</li>-->
-                <li class="active">Port Status</li>
-            </ol>
+<!--                <li class="active">Port Status</li>-->
+<!--            </ol>-->
         </section>
 
         <!-- Main content -->
@@ -130,7 +114,7 @@ desired effect
                             <div class="alert bg-teal color-palette alert-dismissible">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 <!--                                <h4> Alert!</h4>-->
-                                <i><i class="icon fa fa-linux fa-1x" style="color: black"></i> You are checking Port Status. The Using Shelf as bellows</i>
+                                <i><i class="icon fa fa-linux fa-1x" style="color: black"></i> You are checking Port Status. <i style="font-size: 12px;color: yellow">The Using Shelf as below</i>
                             </div>
                         </div>
                         <div class="box-body">
@@ -154,9 +138,9 @@ desired effect
                                             </tr>
                                         </thead>
                                         <tbody id="content">
-                                            <tr><td colspan="12">
+                                            <tr><td colspan="5">
                                                 <span class="text-warning">
-                                                    <i><i class="fa fa-spinner fa-pulse" style="color: #0A8CC6"></i> No data detect, Please wait 10s ...</i>
+                                                    <i><i class="fa fa-spinner fa-pulse" style="color: #0A8CC6"></i> Test data detecting, Please wait 5s ...</i>
                                                 </span>
                                                 </td></tr>
                                         </tbody>
@@ -216,7 +200,7 @@ desired effect
         {
 
             // 打开一个 web socket
-            // var ws = new WebSocket("ws://192.168.0.100:8080/");
+            // var ws = new WebSocket("ws://192.168.0.108:8084/");
             var ws = new WebSocket("ws://172.30.52.43:8084/");
 
             ws.onopen = function()
@@ -239,8 +223,9 @@ desired effect
                     // table
                     console.log(response.result);
                     var tableData = response.result;
+
                     $('#content').empty();
-                    if (null != tableData){
+                    if (0 != tableData.length){
                         for (var i = 0; i < tableData.length; i++) {
                             $('#content').append('<tr></tr>');
                             // $('#content tr:last').append('<td>' + tableData[i].id + '</td>');
@@ -248,8 +233,12 @@ desired effect
                             $('#content tr:last').append('<td>' + tableData[i].machineId + '</td>');
                             $('#content tr:last').append('<td>' + tableData[i].LANIP + '</td>');
                             $('#content tr:last').append('<td>' + tableData[i].ShelfId_SwitchId + '</td>');
-                            $('#content tr:last').append('<td>busying</td>');
+                            $('#content tr:last').append('<td>inUse</td>');
                         }
+                    }
+                    else {
+                        $('#content').append('<tr></tr>');
+                        $('#content tr:last').append('<td colspan="5"><span><i style="color: green"> The Shelf is not inUse... </i></span></td>');
                     }
 
                 }
