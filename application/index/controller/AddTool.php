@@ -8,6 +8,8 @@
 
 namespace app\index\controller;
 
+use app\index\model\AtsTaskToolSteps;
+use app\index\model\AtsTool;
 use think\Controller;
 use ext\CreateHtmlElement;
 use app\index\model\AtsTaskPanel;
@@ -87,6 +89,7 @@ class AddTool extends Controller
         $formDataArray = explode('&', $formData);
 
         $atsTaskPanel = new AtsTaskPanel();
+        $atsTool = new AtsTool();
 
         $shift = 0; // 位移
 
@@ -98,12 +101,22 @@ class AddTool extends Controller
 
                 $temp = explode('=', $formDataArray[$j]);
 
-                $tmp[$temp[0]] = $temp[1];
+                if(false !==strstr($temp[0], '_') ){
+                    $temp[0] = explode('_', $temp[0])[0];
+                }
 
+                $tmp[$temp[0]] = $temp[1];
             }
 
             $shift = count($template);
             // insert $tmp
+            // ats_task_panel表需要重命名成ats_tool_element task_id, tool_id, status, steps, element_json
+
+            //插入数据到tool_steps表中
+//            $atsTool->where('tool_name')
+
+            $toolSteps = new AtsTaskToolSteps();
+
 
 
         }

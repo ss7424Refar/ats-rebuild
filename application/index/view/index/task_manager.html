@@ -7,47 +7,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="../resource/img/3.ico"/>
+    <link rel="shortcut icon" href="__PUBLIC_IMG__/3.ico"/>
     <title>Automation Test System | Starter</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/fontawesome-all.css">-->
     <!-- Ionicons -->
-    <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
     <!-- Select2 -->
-    <link rel="stylesheet" href="../bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
     <!--PACE-->
-    <link rel="stylesheet" href="../plugins/pace/pace.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/pace/pace.css">
     <!--    bootstrap dataTables-->
-    <link rel="stylesheet" type="text/css" href="../plugins/bootstrap-table-develop/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_CSS__/bootstrap-table-develop/bootstrap-table.min.css">
     <!--    bootstrap dataTables extensions-->
-    <link rel="stylesheet" href="../plugins/bootstrap-table-develop/src/extensions/page-jumpto/bootstrap-table-jumpto.css">
-    <!--    toastr-->
-    <link href="../plugins/CodeSeven-toastr/build/toastr.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.css">
+
     <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="../plugins/iCheck/all.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/iCheck/all.css">
     <!-- Select2 -->
-    <link rel="stylesheet" href="../bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
     <!--    bootstrapValidator-->
-    <link href="../plugins/bootstrapvalidator/dist/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link href="__PUBLIC_CSS__/bootstrapValidator/bootstrapValidator.min.css" rel="stylesheet">
     <!-- Theme style -->
-    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/AdminLTE/AdminLTE.min.css">
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect. -->
-    <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/skins/skin-purple.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="../dist/js/html5shiv.min.js"></script>
-    <script src="../dist/js/respond.min.js"></script>
+    <script src="__PUBLIC_CSS__/html5shiv.min.js"></script>
+    <script src="__PUBLIC_CSS__/respond.min.js"></script>
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet" href="../dist/css/googleFont.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/googleFont.css">
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -70,36 +70,11 @@ desired effect
 |---------------------------------------------------------|
 -->
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
-<body class="hold-transition skin-blue sidebar-collapse sidebar-mini">
+<body class="hold-transition skin-purple sidebar-collapse sidebar-mini">
 <div class="wrapper">
-    <!-- Main Header -->
-    <?php include 'header.php';?>
-
+    {include file="common/header" /}
     <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-
-            <!-- Sidebar Menu -->
-            <ul class="sidebar-menu" data-widget="tree">
-                <li>
-                    <a href="addTaskJumpStart.php">
-                        <i class="fa fa-plus"></i> <span><i class="fa fa-circle-o  text-blue" style="margin-right: 5px"></i>&nbsp;Add Task</span>
-                    </a>
-                </li>
-                <li  class="active">
-                    <a href="taskManagerForJump.php"><i class="fa fa-edit"></i> <span><i class="fa fa-circle-o  text-red" style="margin-right: 5px"></i>&nbsp;Task Manager</span> </a>
-                </li>
-                <li>
-                    <a href="portCheck.php"><i class="fa fa-link"></i> <span><i class="fa fa-circle-o text-yellow" style="margin-right: 5px"></i>&nbsp;Port Status</span> </a>
-                </li>
-
-            </ul>
-            <!-- /.sidebar-menu -->
-        </section>
-        <!-- /.sidebar -->
-    </aside>
+    {include file="common/sidebar" /}
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -109,11 +84,11 @@ desired effect
                 Task Manager
                 <small>For Auto Tool</small>
             </h1>
-<!--            <ol class="breadcrumb">-->
-<!--                <li><a href="atsIndex.php"><i class="fa fa-dashboard"></i> Home</a></li>-->
-<!--                <li>Task Manager</li>-->
-<!--                <li class="active">Jump Start</li>-->
-<!--            </ol>-->
+            <!--            <ol class="breadcrumb">-->
+            <!--                <li><a href="atsIndex.php"><i class="fa fa-dashboard"></i> Home</a></li>-->
+            <!--                <li>Task Manager</li>-->
+            <!--                <li class="active">Jump Start</li>-->
+            <!--            </ol>-->
         </section>
 
         <!-- Main content -->
@@ -121,25 +96,19 @@ desired effect
             <div class="row">
                 <div class="col-md-12">
                     <div class="box">
-<!--                        <div class="box-header  with-border" style="padding-top: 20px">-->
-<!--                            <div class="callout callout-info">-->
-<!--                                <strong><i class="fa fa-hand-o-right fa-fw"></i>&nbsp;Info: </strong><i>&nbsp;You can double click table row to see detail info.</i>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                        <!-- /.box-header -->
                         <div class="box-body">
                             <div id="toolbar" class="btn-toolbar" role="toolbar">
                                 <div class="btn-group" role="group" >
-<!--                                    <button type="button" class="btn btn-primary btn-sm" id="task"><i class="fa fa-tasks"></i>&nbsp;Task</button>-->
+                                    <!--                                    <button type="button" class="btn btn-primary btn-sm" id="task"><i class="fa fa-tasks"></i>&nbsp;Task</button>-->
                                     <button type="button" class="btn btn-primary btn-sm" id="task"><i class="glyphicon glyphicon-th-list"></i>&nbsp;Task</button>
                                 </div>
 
                                 <div class="btn-group" role="group" style="display: none">
-<!--                                    <button type="button" class="btn btn-success btn-sm" id="addTask" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus fa-fw"></i>&nbsp;Add</button>-->
+                                    <button type="button" class="btn btn-success btn-sm" id="addTask" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus fa-fw"></i>&nbsp;Add</button>
                                     <button type="button" class="btn btn-warning btn-sm" id="assignTask"><i class="fa fa-wrench fa-fw"></i>&nbsp;Assign</button>
-<!--                                    <button type="button" class="btn btn-info btn-sm" id="editTask" data-toggle="modal"><i class="fa fa-edit fa-fw"></i>&nbsp;Edit</button>-->
+                                    <!--                                    <button type="button" class="btn btn-info btn-sm" id="editTask" data-toggle="modal"><i class="fa fa-edit fa-fw"></i>&nbsp;Edit</button>-->
                                     <button type="button" class="btn btn-danger btn-sm" id="deleteTask"><i class="fa fa-close  fa-fw"></i>&nbsp;Delete</button>
-<!--                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-copy fa-fw"></i>&nbsp;Copy</button>-->
+                                    <!--                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-copy fa-fw"></i>&nbsp;Copy</button>-->
                                 </div>
                                 <!--                <button class="btn btn-warning pull-right btn-sm" href="#"><i class="fa fa-sync fa-spin fa-fw" aria-hidden="true"></i></button>-->
                             </div>
@@ -148,85 +117,82 @@ desired effect
                     </div>
                 </div>
             </div>
-            <!-- Edit 模态框（Modal） -->
-            <div class="modal fade" id="editModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+            <!-- ADD 模态框（Modal） -->
+            <div class="modal fade" id="addModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Edit Test Task</h4>
+                            <h4 class="modal-title" >Add Task</h4>
                         </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal " id="editForm">
-                                <input type="text" hidden="hidden">
+                        <form class="form-horizontal form-group-sm" id="addTaskForm" method="post">
+                            <div class="modal-body">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Test Machine</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Test Image</label>
-                                    <div class="col-sm-7">
-                                        <select class="form-control" name="testImage">
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="testMachine">
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="TestDMIReset" class="col-sm-3 control-label">TestDMIReset</label>
-                                    <div class="col-sm-7">
-                                        <div class="btn btn-default btn-sm">getDefaultDMI</div>
-                                        <input type="text" hidden="hidden">
+                                <div style="display:none;" data-topic="inputDmiInfo">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Product Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="addProduct" >
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label  class="col-sm-3 control-label">Product Name</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="editProduct">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Serial Number</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="addSN" >
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Serial Number</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="editSN">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Part Number</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="addPN" >
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Part Number</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="editPN">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">OEM String</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="addOem" >
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">OEM String</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="editOem">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">SystemConfig</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="addSystem" >
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">SystemConfig</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="editSystem">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">BIOS/EC</label>
+                                        <div class="col-sm-3">
+                                            <p class="form-control-static"></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">LANIP</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" disabled>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">LANIP</label>
+                                        <div class="col-sm-3">
+                                            <p class="form-control-static"></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">ShelfID_SwitchID</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" disabled>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">ShelfID_SwitchID</label>
+                                        <div class="col-sm-3">
+                                            <p class="form-control-static"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
-                                </div>
-                            </form>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                <!--<button type="reset" class="btn btn-primary btn-sm">reset</button>-->
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                        </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
             </div>
@@ -314,42 +280,36 @@ desired effect
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <?php include 'footer.php'; ?>
+    {include file="common/footer" /}
 
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
 
-<!-- jQuery 3 -->
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="__PUBLIC_JS__/bootstrap/bootstrap.min.js"></script>
 <!--PACE-->
-<script src="../plugins/pace/pace.js"></script>
+<script src="__PUBLIC_JS__/pace/pace.js"></script>
 <!--    bootstrap dataTables-->
-<script type="text/javascript" src="../plugins/bootstrap-table-develop/dist/bootstrap-table.min.js"></script>
-<script type="text/javascript" src="../plugins/bootstrap-table-develop/dist/locale/bootstrap-table-en-US.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/locale/bootstrap-table-en-US.min.js"></script>
 <!--    bootstrap dataTables extensions-->
-<link rel="stylesheet" href="../plugins/bootstrap-table-develop/src/extensions/page-jumpto/bootstrap-table-jumpto.css">
-<script src="../plugins/bootstrap-table-develop/src/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
-<!--    toastr-->
-<script src="../plugins/CodeSeven-toastr/build/toastr.min.js"></script>
+<script src="__PUBLIC_JS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
+
 <!-- iCheck 1.0.1 -->
-<script src="../plugins/iCheck/icheck.min.js"></script>
+<script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!-- bootbox4.4 -->
-<script src="../plugins/bootbox4.4/bootbox.min.js"></script>
+<script src="__PUBLIC_JS__/bootbox4.4/bootbox.min.js"></script>
 <!-- Select2 -->
-<script src="../bower_components/select2/dist/select2.min.js"></script>
+<script src="__PUBLIC_JS__/select2/select2.min.js"></script>
 <!--    bootstrapValidator-->
-<script src="../plugins/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+<script src="__PUBLIC_JS__/bootstrapvalidator/bootstrapValidator.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../dist/js/adminlte.min.js"></script>
+<script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
 
 <script>
     $(function () {
-        // toastr
-        toastrInit();
 
         //Task
         taskButton();
@@ -361,7 +321,7 @@ desired effect
         // select2
         select2Init();
 
-         // assign
+        // assign
         assignButtonInit();
 
         // delete
@@ -373,20 +333,6 @@ desired effect
         editFormInit();
 
     });
-
-    function  toastrInit() {
-
-        // toastr
-        toastr.options.positionClass = 'toast-top-center';
-        toastr.options.closeButton = true;
-        // css
-        // toastr.options.positionClass = 'toast-center-center';
-
-        toastr.options.timeOut = 2000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 2000; // How long the toast will display after a user hovers over it
-
-        // toastr.options.progressBar = true;
-    };
 
     function taskButton(){
         var buttonGroup=$('.btn-group:eq(1)');
@@ -416,8 +362,8 @@ desired effect
             striped: true,                      //是否显示行间隔色
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,                   //是否显示分页（*）
-            // sortable: true,                     //是否启用排序
-            // sortOrder: "asc",                   //排序方式
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
             queryParamsType : "",                   //默认是limit，则para为params.limit, params.offset
             queryParams: queryPs,
             clickToSelect: false,               //点击行即可选中单选/复选框
@@ -573,10 +519,10 @@ desired effect
     };
 
     function  select2Init() {
-        $("select[name='testImage']").select2({
+        $("select[name='testMachine']").select2({
                 width: "100%",
                 ajax: {
-                    url: "../functions/atsController.php?do=getImageName4Select2",
+                    url: url('index/AddTool/getTestImage'),
                     dataType: 'json',
                     delay: 250,
                     data: function (params) {
@@ -962,12 +908,3 @@ desired effect
 
 </body>
 </html>
-
-
-<?php
-/**
- * Created by PhpStorm.
- * User: refar
- * Date: 18-7-26
- * Time: 上午10:51
- */

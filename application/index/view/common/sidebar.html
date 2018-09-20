@@ -1,0 +1,30 @@
+<aside class="main-sidebar">
+
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+        <!-- Sidebar Menu -->
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="active">
+                <a href="#"><i class="fa fa-edit"></i> <span><i class="fa fa-circle-o  text-red" style="margin-right: 5px"></i>&nbsp;Task Manager</span> </a>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-link"></i> <span><i class="fa fa-circle-o text-yellow" style="margin-right: 5px"></i>&nbsp;Port Status</span> </a>
+            </li>
+        </ul>
+        <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+</aside>
+
+<script>
+    $(function () {
+       $('.sidebar-menu li').click(function () {
+           $('.sidebar-menu li').each(function () {
+               $(this).removeClass('active');
+           });
+            $(this).addClass('active');
+       });
+    });
+
+</script>

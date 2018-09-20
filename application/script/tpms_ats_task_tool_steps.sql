@@ -16,35 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `ats_task_panel`
+-- Table structure for table `ats_task_tool_steps`
 --
 
-DROP TABLE IF EXISTS `ats_task_panel`;
+DROP TABLE IF EXISTS `ats_task_tool_steps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ats_task_panel` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tool_name` varchar(30) DEFAULT NULL,
-  `panel_class` varchar(45) DEFAULT NULL,
-  `html_type` varchar(10) DEFAULT NULL,
-  `html_class` varchar(100) DEFAULT NULL,
-  `html_name` varchar(20) DEFAULT NULL,
-  `html_url` varchar(100) DEFAULT NULL,
-  `html_value` varchar(250) DEFAULT NULL COMMENT '	',
-  `html_size` int(4) DEFAULT NULL,
-  `html_default` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE `ats_task_tool_steps` (
+  `task_id` bigint(10) NOT NULL,
+  `tool_id` int(3) DEFAULT NULL COMMENT '	',
+  `status` int(1) DEFAULT NULL,
+  `element_json` json DEFAULT NULL,
+  `result` varchar(8) DEFAULT NULL,
+  `result_path` varchar(40) DEFAULT NULL,
+  `tool_start_time` datetime DEFAULT NULL,
+  `tool_end_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`task_id`),
+  KEY `tool_id_idx` (`tool_id`),
+  CONSTRAINT `fk_task_id` FOREIGN KEY (`task_id`) REFERENCES `ats_task_basic` (`task_id`),
+  CONSTRAINT `fk_tool_id` FOREIGN KEY (`tool_id`) REFERENCES `ats_tool` (`tool_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ats_task_panel`
+-- Dumping data for table `ats_task_tool_steps`
 --
 
-LOCK TABLES `ats_task_panel` WRITE;
-/*!40000 ALTER TABLE `ats_task_panel` DISABLE KEYS */;
-INSERT INTO `ats_task_panel` VALUES (1,'JumpStart','btn btn-info btn-block','select2','form-control select2','TestImage','AddTool/getTestImage','',100,NULL),(2,'JumpStart','btn btn-info btn-block','select','form-control select2','Execute Job','','Fast Startup,Standby,Microsoft Edge_Fast Startup_BatteryLife_Fast Startup,Standby,Microsoft Edge,BatteryLife,DataGrab',NULL,NULL),(3,'JumpStart','btn btn-info btn-block','radio','iradio_square-blue','OS Activation',NULL,'YES_NO',NULL,'YES');
-/*!40000 ALTER TABLE `ats_task_panel` ENABLE KEYS */;
+LOCK TABLES `ats_task_tool_steps` WRITE;
+/*!40000 ALTER TABLE `ats_task_tool_steps` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ats_task_tool_steps` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-31 17:40:37
+-- Dump completed on 2018-09-20 16:18:06

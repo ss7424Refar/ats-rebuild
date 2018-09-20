@@ -11,45 +11,38 @@ namespace app\index\controller;
 use think\Controller;
 use think\Session;
 use think\Request;
-use app\index\model\AtsTaskPanel;
 
+/*
+ * 控制页面跳转
+ */
 class Index extends Controller
 {
-    public function hello(){
-        $this->checkSession();
 
+    public function _initialize()
+    {
+        parent::_initialize();
+        $this->checkSession();
     }
 
-    public function DynamicTaskDemo(){
 
+    public function TaskManager(){
         return $this->fetch();
 
     }
-    /*
-     * HTTP_REFERER
-     */
-//    public function test(){
-//        $info = Request::instance()->server('HTTP_REFERER');
-//        var_dump($info);
-//    }
+    public function DynamicTaskDemo(){
 
+        return $this->fetch('common/404');
 
-    public function test(){
-//        return url('index/AddTool/createHtmlElement');
-
-        $atsTaskPanel = new AtsTaskPanel();
-
-        $res = $atsTaskPanel->where('tool_name', 'JumpStart')->select();
     }
 
     /*
      * check session
      */
     protected function checkSession(){
-        if (!Session::has('transToAts')){
-            $this->success('哈哈哈！', 'Index/DynamicTaskDemo');
-
-        }
+//        if (!Session::has('transToAts') || null == Request::instance()->server('HTTP_REFERER')){
+//            $this->error('Login Time Out', 'http://172.30.52.43/tpms/index.php');
+//
+//        }
 
     }
 
