@@ -168,20 +168,20 @@ desired effect
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">BIOS/EC</label>
-                                        <div class="col-sm-3">
-                                            <p class="form-control-static"></p>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">LANIP</label>
-                                        <div class="col-sm-3">
-                                            <p class="form-control-static"></p>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">ShelfID_SwitchID</label>
-                                        <div class="col-sm-3">
-                                            <p class="form-control-static"></p>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -311,6 +311,9 @@ desired effect
 <script>
     $(function () {
 
+        testMachine = $("select[name='testMachine']");
+        inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
+
         //Task
         taskButton();
 
@@ -321,16 +324,13 @@ desired effect
         // select2
         select2Init();
 
+        addFormValidatorInit();
+
         // assign
         assignButtonInit();
 
         // delete
         deleteTaskButtonInit();
-
-        //edit
-        editButtonInit();
-
-        editFormInit();
 
     });
 
@@ -519,10 +519,11 @@ desired effect
     };
 
     function  select2Init() {
-        $("select[name='testMachine']").select2({
+
+        testMachine.select2({
                 width: "100%",
                 ajax: {
-                    url: url('index/AddTool/getTestImage'),
+                    url: "{:url('TaskManager/readMachineInfo')}",
                     dataType: 'json',
                     delay: 250,
                     data: function (params) {
@@ -541,6 +542,43 @@ desired effect
                 allowClear: true
             }
         );
+
+        testMachine.on("select2:select",function(e){
+
+            $('#addTaskForm').data('bootstrapValidator').destroy();
+            addFormValidatorInit();
+
+            console.log(testMachine.val());
+            var testMachineVal = testMachine.val();
+            var machineId = testMachine.select2('data')[0].text;
+            if (null != machineId) {
+                machineId = machineId.replace(testMachineVal, '');
+                machineId = machineId.substring(1, machineId.length - 1);
+            }
+            console.log(machineId);
+
+            $.ajax({
+                type: 'get',
+                url: "{:url('TaskManager/readTestPCDetail')}",
+                data: {machineId: machineId},
+                dataType: 'json',
+                success: function(result){
+                    inputDmiInfo.css('display', 'block');
+                    inputDmiInfo.find('input, p').each(function (i) {
+                        $(this).val(result[i]);
+                    });
+
+                },
+                error: function () {
+                    toastr.error("Machine Info Read Failed");
+                }
+            });
+        });
+        testMachine.on("change", function (e) {
+            inputDmiInfo.css('display', 'none').find('input').val('');
+            $('#addTaskForm').data('bootstrapValidator').destroy();
+            addFormValidatorInit();
+        });
     }
 
     function assignButtonInit(){
@@ -602,82 +640,6 @@ desired effect
         });
     }
 
-    function editButtonInit() {
-        $('#editTask').click(function () {
-            var ckArr = $('#taskTable').bootstrapTable('getSelections');
-            // console.log(ckArr[0].TaskID);
-            if(ckArr.length == 0){
-                toastr.info("Please select at least one checkbox");
-                return false;
-            }
-            if(ckArr.length > 1){
-                toastr.info("Please only check one checkbox");
-                return false;
-            }else{
-                // checkPending
-                $.ajax({
-                    type: "get",
-                    url: "../functions/atsController.php?do=checkAtsInfoByMultiTaskId",
-                    data: {multiTask: ckArr},
-                    dataType: 'json',
-                    success: function (result) {
-                        console.log(result.NoTaskIdFlag);
-                        console.log(result.NotPendingFlag);
-
-                        if (result.NoTaskIdFlag) {
-                            toastr.info("TaskID = " + result.saveNoTaskId + " didn't found! Please Refresh Table!");
-                            return false;
-                        }
-                        if (result.NotPendingFlag) {
-                            toastr.info("TaskID = " + result.saveNotPending + " not pending! cannnot edit");
-                            return false;
-                        }
-
-                        $('#editForm').data('bootstrapValidator').destroy();
-                        editFormInit();
-
-                        // show updateData
-                        $.ajax({
-                            type: "get",
-                            url: "../functions/atsController.php?do=getAtsInfoByTaskId&" + "taskID=" + ckArr[0].TaskID,
-                            dataType: "json",
-                            success: function (result) {
-                                console.log(result.flag);
-                                if(result.flag){
-                                    $("#editForm").find('input:eq(0)').val(result.row['TaskID']);
-                                    $("#editForm").find('input:eq(1)').val(result.row['TestMachine']);
-                                    $("#editForm").find('input:eq(3)').val(result.row['DMI_ProductName']);
-                                    $("#editForm").find('input:eq(4)').val(result.row['DMI_SerialNumber']);
-                                    $("#editForm").find('input:eq(5)').val(result.row['DMI_PartNumber']);
-                                    $("#editForm").find('input:eq(6)').val(result.row['DMI_OEMString']);
-                                    $("#editForm").find('input:eq(7)').val(result.row['DMI_SystemConfig']);
-                                    $("#editForm").find('input:eq(8)').val(result.row['LANIP']);
-                                    $("#editForm").find('input:eq(9)').val(result.row['ShelfID'] + '_' + result.row['SwitchId']);
-
-                                    var option = new Option(result.row['TestImage'], result.row['TaskID'], true, true);
-                                    $("select[name='testImage']").append(option).trigger('change');
-
-                                    $('#editModal').modal("show")
-
-                                }
-                                else{
-                                    toastr.info("TaskID = " + taskId + " didn't found! Please Refresh Table!");
-                                }
-                            },
-                            error:function (xhr,status,error) {
-                                toastr.error(xhr.status + " " + xhr.statusText + "Get Update Data Failed");
-                            }
-                        });
-                    },
-                    error: function (xhr,status,error) {
-                        toastr.error(xhr.status + " " + xhr.statusText+ "CheckPending Data Failed");
-                    }
-                });
-
-            }
-        });
-
-    }
 
     function deleteTaskButtonInit() {
         $('#deleteTask').click(function () {
@@ -751,8 +713,8 @@ desired effect
         });
     };
 
-    function editFormInit() {
-        $('#editForm').bootstrapValidator({
+    function addFormValidatorInit(){
+        $('#addTaskForm').bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -760,15 +722,15 @@ desired effect
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                testImage: {
-                    message: 'the testImage is not valid',
+                testMachine: {
+                    message: 'the testMachine is not valid',
                     validators: {
                         notEmpty: {
-                            message: 'The testImage is required and can\'t be empty'
+                            message: 'The testMachine is required and can\'t be empty'
                         }
                     }
                 },
-                editProduct: {
+                addProduct: {
                     message: 'the Product Name is not valid',
                     validators: {
                         notEmpty: {
@@ -778,10 +740,15 @@ desired effect
                             min: 5,
                             max: 30,
                             message: 'The product name must be more than 5 and less than 20 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
+                            message: 'The product name can only consist of special character like ~!@#$%^&*-/, , number, en.'
                         }
+
                     }
                 },
-                editSN: {
+                addSN: {
                     message: 'the sn is not valid',
                     validators: {
                         notEmpty: {
@@ -793,13 +760,13 @@ desired effect
                             message: 'The sn must be more than 5 and less than 20 characters long'
                         },
                         regexp: {
-                            regexp: /^[a-zA-Z0-9_~!@#$%^&*-/,]+$/,
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
                             message: 'The sn can only consist of special character like ~!@#$%^&*-/, , number, en.'
                         }
 
                     }
                 },
-                editPN: {
+                addPN: {
                     message: 'the pn is not valid',
                     validators: {
                         notEmpty: {
@@ -811,13 +778,13 @@ desired effect
                             message: 'The pn must be more than 5 and less than 20 characters long'
                         },
                         regexp: {
-                            regexp: /^[a-zA-Z0-9_~!@#$%^&*-/,]+$/,
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
                             message: 'The pn can only consist of special character like ~!@#$%^&*-/, , number, en.'
                         }
 
                     }
                 },
-                editOem: {
+                addOem: {
                     // enabled: false,
                     message: 'the oem is not valid',
                     validators: {
@@ -831,13 +798,13 @@ desired effect
                         },
                         regexp: {
                             // regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
-                            regexp: /^[a-zA-Z0-9_~!@#$%^&*-/,]+$/,
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
                             message: 'The oem can only consist of special character like ~!@#$%^&*-/, , number, en.'
                         }
 
                     }
                 },
-                editSystem: {
+                addSystem: {
                     // enabled: false,
                     message: 'the sytsem config is not valid',
                     validators: {
@@ -851,7 +818,7 @@ desired effect
                         },
                         regexp: {
                             // regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
-                            regexp: /^[a-zA-Z0-9_~!@#$%^&*-/,]+$/,
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
                             message: 'The sytsem config can only consist of special character like ~!@#$%^&*-/, , number, en.'
                         }
 
@@ -867,43 +834,68 @@ desired effect
             var $form = $(e.target);
 
             // Get the BootstrapValidator instance
-            // var bv = $form.data('bootstrapValidator');
+            var bv = $form.data('bootstrapValidator');
 
+            var addMachine = testMachine.select2('data')[0].text;
+            var exJob, rb;
+            if ("JumpStart" === $("input[name='item']:checked").val()){
+                exJob = excecute.select2('data')[0].text;
+                rb = $("input[name='rb']:checked").val();
+            } else {
+                exJob = '';
+                rb = '';
+            }
+
+            var addImage = testImage.select2('data')[0].text;
+            console.log(addImage + ',' + addMachine);
+            var testMachineVal = testMachine.val();
+            var machineId = addMachine;
+            if (null != machineId) {
+                machineId = machineId.replace(testMachineVal, '');
+                machineId = machineId.substring(1, machineId.length - 1);
+            }
+
+            // Use Ajax to submit form data
             $.ajax({
-                type: "get",
-                url: "../functions/atsController.php?do=updateTaskById",
+                type : "get",
+                url: "../functions/atsController.php?do=addTask",
                 data: {
-                    editId: $("input[hidden=hidden]:eq(0)").val(),
-                    editImage: $("select[name='testImage']").select2('data')[0].text,
-                    customer: $("input[hidden=hidden]:eq(1)").val(),
-                    editProduct: $('#editForm').find('input:eq(3)').val(),
-                    editSN: $('#editForm').find('input:eq(4)').val(),
-                    editPN: $('#editForm').find('input:eq(5)').val(),
-                    editOem:$('#editForm').find('input:eq(6)').val(),
-                    editSystem: $('#editForm').find('input:eq(7)').val(),
+                    testMachine: addMachine,
+                    machineId: machineId,
+                    testItem: $("input[name='item']:checked").val(),
+                    exJob: exJob,
+                    rb: rb,
+                    testImage: addImage,
+                    osA: $("input[name='osA']:checked").val(),
+                    addProduct: inputDmiInfo.find('input:eq(0)').val(),
+                    addSN: inputDmiInfo.find('input:eq(1)').val(),
+                    addPN: inputDmiInfo.find('input:eq(2)').val(),
+                    addOem: inputDmiInfo.find('input:eq(3)').val(),
+                    addSystem: inputDmiInfo.find('input:eq(4)').val(),
+                    bios: inputDmiInfo.find('p:eq(0)').text(),
+                    lanIp: inputDmiInfo.find('p:eq(1)').text(),
+                    shelf: inputDmiInfo.find('p:eq(2)').text()
                 },
-                dataType: 'json',
-                success: function (result) {
-                    if (result >= 0 ){
-                        toastr.success("success update");
+                success : function (result) {
+                    console.log(result);
+                    if (result == "success") {
+                        toastr.success('add success!');
+
                     } else {
-                        toastr.error("update fail --> " + result2);
+                        toastr.error('add fail! try again ');
                     }
                 },
-                error: function () {
-                    toastr.error("fail updated");
+                error : function(xhr,status,error){
+                    toastr.error(xhr.status + ' add fail! ');
                 },
-                complete: function () {
-                    $('#editModal').modal('hide');
-                    $('#taskTable').bootstrapTable('selectPage', 1);
+                complete : function () {
+                    setTimeout("window.location.href=\"taskManagerForJump.php\";",3000);
+
                 }
-
             });
-
-
         });
-    }
 
+    };
 </script>
 
 </body>
