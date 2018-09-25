@@ -128,7 +128,7 @@ class AddTool extends Controller
      * select2 plugins
      */
     public function getTestImage(){
-        $query = $this->request->param('q');;
+        $query = $this->request->param('q');
         $handler = opendir(ATS_IMAGES_PATH);
 
         $i = 1;

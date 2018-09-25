@@ -31,3 +31,11 @@ define('RADIO_LABEL', ' style="margin-right: 19px"');
  */
 
 define('ATS_IMAGES_PATH', '/home/refar');
+define('ATS_FILE_suffix', '.csv');
+define('ATS_PREPARE_PATH', '/home/refar/Phpproject/ats_sizu/resource/prepare/');
+define('ATS_PREPARE_FILE', 'TestPC');
+define('ATS_TMP_TASKS_PATH', '/home/refar/Phpproject/ATS/ats/resource/tmp/');
+define('ATS_FILE_UNDERLINE', '_');
+define('ATS_TMP_TASKS_HEADER', 'Task'. ATS_FILE_UNDERLINE);
+define('ATS_TASKS_PATH', '/mnt/atsShare/Tasks/');
+define('ATS_FINISH_PATH', '/home/refar/Phpproject/ats_sizu/resource/finish/');
