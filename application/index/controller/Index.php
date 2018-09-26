@@ -8,21 +8,11 @@
 
 namespace app\index\controller;
 
-use think\Controller;
-use think\Session;
-use think\Request;
-
 /*
  * 控制页面跳转
  */
-class Index extends Controller
+class Index extends Common
 {
-
-    public function _initialize()
-    {
-        parent::_initialize();
-        $this->checkSession();
-    }
 
 
     public function TaskManager(){
@@ -35,16 +25,7 @@ class Index extends Controller
 
     }
 
-    /*
-     * check session
-     */
-    protected function checkSession(){
-//        if (!Session::has('transToAts') || null == Request::instance()->server('HTTP_REFERER')){
-//            $this->error('Login Time Out', 'http://172.30.52.43/tpms/index.php');
-//
-//        }
 
-    }
 
 
 }

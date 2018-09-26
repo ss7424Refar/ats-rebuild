@@ -13,8 +13,5 @@ use think\Route;
 // 注册路由到index模块的News控制器的read操作
 Route::rule('new/:id','index/TaskInfo/Task');
 
-//getTaskInfo
-Route::rule('getTaskInfo','index/TaskInfo/getTaskInfo');
-
-
-//Route::rule('DynamicTaskDemo','index/Index/DynamicTaskDemo');
+// TaskManager 侧边栏链接
+Route::rule('TaskManager','index/Index/TaskManager');

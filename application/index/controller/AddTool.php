@@ -10,11 +10,10 @@ namespace app\index\controller;
 
 use app\index\model\AtsTaskToolSteps;
 use app\index\model\AtsTool;
-use think\Controller;
 use ext\CreateHtmlElement;
 use app\index\model\AtsTaskPanel;
 
-class AddTool extends Controller
+class AddTool extends Common
 {
     /*
      * create html
