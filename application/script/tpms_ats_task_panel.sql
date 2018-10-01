@@ -22,7 +22,7 @@
 DROP TABLE IF EXISTS `ats_task_panel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ats_task_panel` (
+CREATE TABLE `ats_tool_element` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tool_name` varchar(30) DEFAULT NULL,
   `panel_class` varchar(45) DEFAULT NULL,

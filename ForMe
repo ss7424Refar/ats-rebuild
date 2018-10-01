@@ -41,3 +41,6 @@ require './thinkphp/start.php';
             console.log(obj);
            // console.log($('form').serialize());
         });
+
+## save mode mysql
+  SET SQL_SAFE_UPDATES=0;

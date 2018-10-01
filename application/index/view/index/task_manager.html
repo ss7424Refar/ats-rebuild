@@ -126,7 +126,7 @@ desired effect
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Test Machine</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" name="testMachine">
+                                        <select class="form-control" name="machine_name">
                                         </select>
                                     </div>
                                 </div>
@@ -134,49 +134,49 @@ desired effect
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Product Name</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="addProduct" >
+                                            <input type="text" class="form-control" name="dmi_product_name" >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Serial Number</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="addSN" >
+                                            <input type="text" class="form-control" name="dmi_serial_number" >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Part Number</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="addPN" >
+                                            <input type="text" class="form-control" name="dmi_part_number" >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">OEM String</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="addOem" >
+                                            <input type="text" class="form-control" name="dmi_oem_string" >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">SystemConfig</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="addSystem" >
+                                            <input type="text" class="form-control" name="dmi_system_config">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">BIOS/EC</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" disabled>
+                                            <input type="text" class="form-control" name="bios_ec" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">LANIP</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" disabled>
+                                            <input type="text" class="form-control" name="lan_ip" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">ShelfID_SwitchID</label>
+                                        <label class="col-sm-3 control-label">ShelfID/SwitchID</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" disabled>
+                                            <input type="text" class="form-control" name="shelf_switch" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -299,15 +299,22 @@ desired effect
 <script>
     $(function () {
 
-        testMachine = $("select[name='testMachine']");
+        testMachine = $("select[name='machine_name']");
         inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
 
         //Task
         taskButton();
 
-
         // table
         tableInit(queryParams);
+
+        //Tool Tips 为未来元素
+        $('#taskTable').on("mouseenter", "[data-toggle='tooltip']", function(){
+            $(this).tooltip('show');
+        }).on("mouseleave", "[data-toggle='tooltip']", function(){
+            $(this).tooltip('hide');
+        });
+        // $("[data-toggle='tooltip']").tooltip();
 
         // select2
         select2Init();
@@ -341,8 +348,8 @@ desired effect
 
     function tableInit(queryPs){
         $('#taskTable').bootstrapTable({
-            url: '../functions/atsTaskInfoPageInit.php',         //请求后台的URL（*）
-            method: 'get',                      //请求方式（*）
+            url: "{:url('TaskManager/taskPagination')}",    //请求后台的URL（*）
+            method: 'post',                      //请求方式（*）
             classes: 'table table-responsive table-hover table-no-bordered', // table 样式
             iconSize: 'sm',
             buttonsClass: 'warning',
@@ -372,28 +379,22 @@ desired effect
             columns: [{
                 checkbox: true
             }, {
-                field: 'TaskID',
+                field: 'task_id',
                 title: 'TaskID',
                 formatter:function(value, row, index){
                     return 'ATS_' + value;
                 }
             }, {
-                field: 'TestMachine',
+                field: 'machine_name',
                 title: 'Test Machine',
                 formatter:function(value, row, index){
                     return value;
                 }
             }, {
-                field: 'TestImage',
-                title: 'Test Image'
-            }, {
-                field: 'MachineID',
+                field: 'machine_id',
                 title: 'MachineID'
             }, {
-                field: 'TestItem',
-                title: 'Assigned Task'
-            }, {
-                field: 'TaskStatus',
+                field: 'status',
                 title: 'Task Status',
                 formatter:function(value, row, index){
                     if (0==value){
@@ -412,13 +413,27 @@ desired effect
                     return "N/A";
                 }
             }, {
-                field: 'TestStartTime',
-                title: 'StartDate',
+                field: 'task_start_time',
+                title: 'Start Time',
             }, {
-                field: 'TestEndTime',
-                title: 'FinishDate'
-            }, {
-                field: 'TestResult',
+                field: 'task_end_time',
+                title: 'Finish Time'
+            },
+                {
+                field: 'process',
+                title: 'Process',
+                formatter: function (value, row, index) {
+
+                    if (0 == value) {
+                        return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: 2%">0%</div>';
+                    } else {
+                        return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: ' + value + '%">' + value + '%</div>';
+                    }
+
+                }
+            },
+                {
+                field: 'result',
                 title: 'Test Result',
                 formatter: function(value, row, index){
                     var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
@@ -430,18 +445,29 @@ desired effect
                     return "N/A";
                 }
             }, {
-                field: 'Tester',
+                field: 'tester',
                 title: 'Tester'
-            }
+            }, {
+                field: 'tool',
+                title: 'Tool',
+                formatter: function (value, row, index) {
+                    var result="";
+                    result += "<a class='btn btn-xs bg-aqua'  data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
+                    result += "<a class='btn btn-xs bg-green'  data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
+                    result += "<a class='btn btn-xs bg-red'  data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+
+                    return result;
+                }
+                }
             ],
             rowStyle: function(row, index){
-                if("Fail"==row.TestResult){
+                if("Fail"==row.result){
                     return {classes: 'danger'};
-                }else if("Pass"==row.TestResult){
+                }else if("Pass"==row.result){
                     return {classes: 'success'};
-                }else if(0==row.TaskStatus){
+                }else if(0==row.status){
                     return {classes: 'info'};
-                }else if(1==row.TaskStatus){
+                }else if(1==row.status){
                     return {classes: 'warning'};
                 }
                 return {classes: 'active'};
@@ -462,7 +488,7 @@ desired effect
             var taskId=$element.TaskID;
             console.log(taskId);
             $.ajax({
-                type: "get",
+                type: "post",
                 url: "../functions/atsController.php?do=getAtsInfoByTaskId&" + "taskID=" + taskId,
                 dataType: "json",
                 success: function (result) {
@@ -552,7 +578,7 @@ desired effect
                 dataType: 'json',
                 success: function(result){
                     inputDmiInfo.css('display', 'block');
-                    inputDmiInfo.find('input, p').each(function (i) {
+                    inputDmiInfo.find('input').each(function (i) {
                         $(this).val(result[i]);
                     });
 
@@ -653,7 +679,7 @@ desired effect
                     callback: function (result) {
                         if(result){
                             $.ajax({
-                                type: "get",
+                                type: "post",
                                 url: "../functions/atsController.php?do=checkAtsInfoByMultiTaskId",
                                 data: {multiTask: ckArr},
                                 dataType: 'json',
@@ -710,7 +736,7 @@ desired effect
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {
-                testMachine: {
+                machine_name: {
                     message: 'the testMachine is not valid',
                     validators: {
                         notEmpty: {
@@ -718,7 +744,7 @@ desired effect
                         }
                     }
                 },
-                addProduct: {
+                dmi_product_name: {
                     message: 'the Product Name is not valid',
                     validators: {
                         notEmpty: {
@@ -736,7 +762,7 @@ desired effect
 
                     }
                 },
-                addSN: {
+                dmi_serial_number: {
                     message: 'the sn is not valid',
                     validators: {
                         notEmpty: {
@@ -754,7 +780,7 @@ desired effect
 
                     }
                 },
-                addPN: {
+                dmi_part_number: {
                     message: 'the pn is not valid',
                     validators: {
                         notEmpty: {
@@ -763,7 +789,7 @@ desired effect
                         stringLength: {
                             min: 5,
                             max: 30,
-                            message: 'The pn must be more than 5 and less than 20 characters long'
+                            message: 'The pn must be more than 5 and less than 30 characters long'
                         },
                         regexp: {
                             regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
@@ -772,7 +798,7 @@ desired effect
 
                     }
                 },
-                addOem: {
+                dmi_oem_string: {
                     // enabled: false,
                     message: 'the oem is not valid',
                     validators: {
@@ -792,7 +818,7 @@ desired effect
 
                     }
                 },
-                addSystem: {
+                dmi_system_config: {
                     // enabled: false,
                     message: 'the sytsem config is not valid',
                     validators: {
@@ -802,7 +828,7 @@ desired effect
                         stringLength: {
                             min: 1,
                             max: 20,
-                            message: 'The sytsem config must be more than 5 and less than 100 characters long'
+                            message: 'The sytsem config must be more than 1 and less than 20 characters long'
                         },
                         regexp: {
                             // regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
@@ -824,60 +850,36 @@ desired effect
             // Get the BootstrapValidator instance
             var bv = $form.data('bootstrapValidator');
 
-            var addMachine = testMachine.select2('data')[0].text;
-            var exJob, rb;
-            if ("JumpStart" === $("input[name='item']:checked").val()){
-                exJob = excecute.select2('data')[0].text;
-                rb = $("input[name='rb']:checked").val();
-            } else {
-                exJob = '';
-                rb = '';
-            }
-
-            var addImage = testImage.select2('data')[0].text;
-            console.log(addImage + ',' + addMachine);
+            var machineId = testMachine.select2('data')[0].text;
+            console.log(machineId);
             var testMachineVal = testMachine.val();
-            var machineId = addMachine;
+            console.log(testMachineVal);
             if (null != machineId) {
                 machineId = machineId.replace(testMachineVal, '');
                 machineId = machineId.substring(1, machineId.length - 1);
             }
 
+            var formSerialize = $form.serialize() + '&machine_id=' + machineId;
+
             // Use Ajax to submit form data
             $.ajax({
-                type : "get",
-                url: "../functions/atsController.php?do=addTask",
+                type : "post",
+                url: "{:url('TaskManager/addTask')}",
                 data: {
-                    testMachine: addMachine,
-                    machineId: machineId,
-                    testItem: $("input[name='item']:checked").val(),
-                    exJob: exJob,
-                    rb: rb,
-                    testImage: addImage,
-                    osA: $("input[name='osA']:checked").val(),
-                    addProduct: inputDmiInfo.find('input:eq(0)').val(),
-                    addSN: inputDmiInfo.find('input:eq(1)').val(),
-                    addPN: inputDmiInfo.find('input:eq(2)').val(),
-                    addOem: inputDmiInfo.find('input:eq(3)').val(),
-                    addSystem: inputDmiInfo.find('input:eq(4)').val(),
-                    bios: inputDmiInfo.find('p:eq(0)').text(),
-                    lanIp: inputDmiInfo.find('p:eq(1)').text(),
-                    shelf: inputDmiInfo.find('p:eq(2)').text()
+                    formSerialize
                 },
                 success : function (result) {
                     console.log(result);
                     if (result == "success") {
                         toastr.success('add success!');
 
-                    } else {
-                        toastr.error('add fail! try again ');
                     }
                 },
                 error : function(xhr,status,error){
-                    toastr.error(xhr.status + ' add fail! ');
+                    toastr.error('add fail! try again ');
                 },
                 complete : function () {
-                    setTimeout("window.location.href=\"taskManagerForJump.php\";",3000);
+                    // setTimeout("window.location.href=\"TaskManager\"",3000);
 
                 }
             });
