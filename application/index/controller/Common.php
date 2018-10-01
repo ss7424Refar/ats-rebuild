@@ -15,6 +15,8 @@ use think\Db;
 class Common extends Controller{
     // 是否为manager以上的权限
     public $hasRight = false;
+    //登录用户
+    public $loginUser = '';
 
     public function _initialize(){
         parent::_initialize();
@@ -27,6 +29,7 @@ class Common extends Controller{
      */
     protected function checkSession(){
         Session::set('transToAts','admin');
+        $this->loginUser = Session::get('transToAts');
 //        if (!Session::has('transToAts') || null == Request::instance()->server('HTTP_REFERER')){
 //            $this->error('Login Time Out', 'http://172.30.52.43/tpms/index.php');
 //
@@ -41,8 +44,8 @@ class Common extends Controller{
 
         $result = Db::table('users')
             ->alias('t1')
-            ->join('roles t2','t1.role_id = t2.id')
             ->where('t1.login', $user)
+            ->join('roles t2','t1.role_id = t2.id')
             ->field('t1.login, t1.email, t2.description ')
             ->select();
 

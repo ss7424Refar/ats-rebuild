@@ -31,7 +31,7 @@ CREATE TABLE `ats_task_tool_steps` (
   `result_path` varchar(40) DEFAULT NULL,
   `tool_start_time` datetime DEFAULT NULL,
   `tool_end_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`task_id`),
+--   PRIMARY KEY (`task_id`),
   KEY `tool_id_idx` (`tool_id`),
   CONSTRAINT `fk_task_id` FOREIGN KEY (`task_id`) REFERENCES `ats_task_basic` (`task_id`),
   CONSTRAINT `fk_tool_id` FOREIGN KEY (`tool_id`) REFERENCES `ats_tool` (`tool_id`)

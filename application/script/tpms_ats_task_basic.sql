@@ -37,6 +37,7 @@ CREATE TABLE `ats_task_basic` (
   `bios_ec` varchar(20) DEFAULT NULL,
   `result` varchar(8) DEFAULT NULL,
   `status` int(1) DEFAULT NULL,
+  `process` int(3) DEFAULT 0,
   `task_start_time` datetime DEFAULT NULL,
   `task_end_time` datetime DEFAULT NULL,
   `tester` varchar(15) DEFAULT NULL,

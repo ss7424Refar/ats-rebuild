@@ -9,7 +9,20 @@
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-use think\Session;
 
 // 应用公共文件
 
+/* 转换类似name1=value1&name2=value2的字符串为数组
+ *
+ */
+
+function stringSerializeToArray($str){
+    $tmpArray = explode('&', $str);
+
+    $serializeArray = array();
+    for($i = 0; $i < count($tmpArray); $i++){
+        $tmp = explode('=', $tmpArray[$i]);
+        $serializeArray[$tmp[0]] = urldecode($tmp[1]);
+    }
+    return $serializeArray;
+}
