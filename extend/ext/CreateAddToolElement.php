@@ -8,7 +8,7 @@
 
 namespace ext;
 
-class CreateHtmlElement
+class CreateAddToolElement
 {
 
     public static function panelInit($toolName, $panelClass, $collapseId){
@@ -34,16 +34,17 @@ class CreateHtmlElement
 
         return $panel;
     }
-    public static function select2Init($arr){
+    public static function select2Init($arr, $collapseId){
         $select2Html = "";
-        $url2 = url('index/AddTool/getTestImage');
+        $url2 = url("{$arr['html_url']}");
+        $name = $arr['html_name'] . '_' .  $collapseId;
         $select2Html = '            <label class="'. LABEL_CSS.'">'. $arr['html_name'] .'</label>'.
                        '           <div class="' . TOOL_DIV_SIZE. '">'.
-                       '                <select class="form-control select2"  name="'. $arr['html_name'] .'"></select>'.
+                       '                <select class="form-control select2"  name="'. $name .'"></select>'.
                        '            </div>'.
                        '<script>'.
                        '$(function(){'.
-                       '	$(\'select[name="'. $arr['html_name'] .'"]\').select2({'.
+                       '	$(\'select[name="'. $name.'"]\').select2({'.
                        ' 	    width: "100%",'.
                        '	    ajax: {'.
                        '		url: "'. $url2 .'",'.
@@ -66,13 +67,29 @@ class CreateHtmlElement
                        '	});'.
                        '});'.
                        '</script>';
+
+        if ($arr['html_default']) {
+            $select2Html = $select2Html.
+                            '<script>'.
+                            '   $.ajax({'.
+                               '    type: \'post\','.
+                               '    url: "'. $url2 .'",'.
+                               '    dataType: \'json\','.
+                               '    success: function (data) {'.
+                               '    var option = new Option('. '\'' . $arr['html_default']. '\''  .', '. '\'' . $arr['html_default']. '\'' .', true, true);'.
+                               '    $(\'select[name="'. $name .'"]\').append(option);'.
+                               '    }'.
+                               '});'.
+
+                            '</script>';
+        }
             
         return $select2Html;
     }
 
-    public static function selectInit($arr){
+    public static function selectInit($arr, $collapseId){
         $selectHtml = "";
-
+        $name = $arr['html_name'] . '_' .  $collapseId;
         $optionHtml = "";
         if (null != $arr['html_value']) {
             $optionArr = explode('_', $arr['html_value']);
@@ -85,17 +102,15 @@ class CreateHtmlElement
 
         $selectHtml = '           <label class="'. LABEL_CSS.'">'. $arr['html_name'] .'</label>'.
                       '           <div class="' . TOOL_DIV_SIZE. '">'.
-                      '                <select class="form-control select"  name="'. $arr['html_name'] .'">'.
-                                $optionHtml.
+                      '                <select class="form-control select"  name="'. $name .'">'.
+                                            $optionHtml.
                       '                </select>'.
                       '            </div>'.
                       '            <script>'.
-                      '                         $(\'.select\').select2();'.
+                      '                 $(\'.select\').select2();'.
                       '            </script>';
 
         return $selectHtml;
-
-
     }
 
     public static function radioInit($arr, $collapseId){

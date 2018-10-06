@@ -14,5 +14,6 @@ class AtsTaskToolSteps extends Model
 {
     protected $pk = 'task_id';
 
-
+    // 设置json类型字段
+    protected $json = ['element_json'];
 }

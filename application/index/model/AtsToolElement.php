@@ -10,9 +10,8 @@ namespace app\index\model;
 
 use think\Model;
 
-class AtsTaskPanel extends Model
+class AtsToolElement extends Model
 {
-    protected $pk = 'id';
-
+    protected $pk = 'element_id';
 
 }

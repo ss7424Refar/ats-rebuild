@@ -8,16 +8,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="__PUBLIC_IMG__/3.ico"/>
-  <title>Automation Test System | Starter</title>
+  <title>Automation Test System | Add Tool</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
+    <!-- BS Select -->
+    <!--<link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-select/css/bootstrap-select.min.css">-->
     <!--PACE-->
   <link rel="stylesheet" href="__PUBLIC_CSS__/pace/pace.css">
     <!-- iCheck for checkboxes and radio inputs -->
@@ -70,9 +72,6 @@ desired effect
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
       <section class="content">
-          <div class="callout callout-info">
-              <h4>Hello!</h4> you can add task
-          </div>
           <div class="row">
               <div class="col-xs-12">
                   <div class="box box-default">
@@ -82,17 +81,12 @@ desired effect
                       <div class="box-body">
                             <div class="row">
                                 <div class="col-md-7">
-                                    <select class="form-control select2" style="width: 100%;" name="selection">
-                                        <option>JumpStart</option>
-                                        <option>C-Test</option>
-                                        <option>Image Recovery</option>
-                                    </select>
-
+                                    <select class="form-control select2" style="width: 100%;" name="selection"></select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
                                 <input type="text" id="knowTool" hidden>
                                 <div class="col-md-5">
-                                    <button type="button" class="btn btn-success" id="addTaskDemo"> Add Task </button>
+                                    <button type="button" class="btn btn-success" id="addTool"> Add Tool </button>
                                 </div>
                             </div>
 
@@ -100,6 +94,8 @@ desired effect
                   </div>
               </div>
           </div>
+          <!--<select class="selectpicker" data-live-search="true" data-size="5"></select>-->
+
           <div class="box box-default panel-group" id="content" style="display: none">
               <div class="box-header with-border">
                   <h3 class="box-title">Add</h3>
@@ -129,6 +125,8 @@ desired effect
 <script src="__PUBLIC_JS__/pace/pace.js"></script>
 <!-- Select2 -->
 <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
+<!-- BS Select2 -->
+<!--<script src="__PUBLIC_JS__/bootstrap-select/js/bootstrap-select.min.js"></script>-->
 <!-- iCheck 1.0.1 -->
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!-- AdminLTE App -->
@@ -136,25 +134,73 @@ desired effect
 
 <script>
     $(function () {
-        $('.select2').select2();
 
-        $('input[name=osA],input[name=osA1]').iCheck({
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%'
+        // $('.selectpicker').selectpicker();
+
+        // selection for toolName
+        $('.select2').select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('AddTool/getToolName')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term // search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: false
+                },
+                placeholder: 'Please Select',
+                allowClear: true
+            }
+
+        );
+        // init select2 data
+        $.ajax({
+            type: 'post',
+            url: "{:url('AddTool/getToolName', 'type=init')}",
+            dataType: 'json',
+            success: function (data) {
+                var option = new Option(data[0].text, data[0].id, true, true);
+                $('select[name="selection"]').append(option);
+            }
         });
 
-        $('#addTaskDemo').click(function () {
-            var selection = $('select[name="selection"]').select2('data')[0].text;
-            var collapseId = Number($('#forCollapse').text());
-            var knowTool = $('#knowTool').text();
-            console.log(collapseId);
-            console.log(selection);
+        $('#content').on('click', '.delete', function () {
+            $(this).parent().parent().parent().remove();
+            var buttonCount = $('.delete').length;
+            if (0 == buttonCount) {
+                $('#content').css('display', 'none');
+            }
 
+        });
+
+
+        $('#addTool').click(function () {
+            var selection, toolId;
+            try {
+                selection= $('select[name="selection"]').select2('data')[0].text;
+                toolId = $('select[name="selection"]').select2('data')[0].id;
+            } catch (e) {
+                if (undefined == selection || null == selection) {
+                    toastr.error(" Please Select Tool");
+                    return false;
+                }
+            }
+
+            var collapseId = Number($('#forCollapse').text()); // 初始值为0
 
             $.ajax({
                 type : "post",
-                url: "{:url('AddTool/createHtmlElement')}",
+                url: "{:url('AddTool/createAddToolElement')}",
                 data: {
+                    toolId : toolId,
                     selection : selection,
                     collapseId : collapseId
                 },
@@ -165,42 +211,60 @@ desired effect
 
                     $('#box_body').append('<div>' + result +'</div>');
                 },
-                error : function(xhr,status,error){
-
-
+                error : function(){
+                    toastr.error("Add Fail, Try Again");
                 },
                 complete: function () {
                     $('#forCollapse').text(collapseId + 1);
-                    $('#knowTool').text(knowTool + selection + ',');
                 }
             });
         });
 
         $('#sub').click(function () {
+            validateFormData();
+            
             console.log($('#toolForm').serialize());
-
             $.ajax({
                 type : "post",
                 url: "{:url('AddTool/insertTool')}",
                 data: {
                     formData : $('#toolForm').serialize(),
-                    steps : Number($('#forCollapse').text()),
-                    knowTool : $('#knowTool').text()
+                    knowTool : getToolString()
                 },
                 success : function (result) {
                     console.log(result);
                     return;
 
                 },
-                error : function(xhr,status,error){
-
-                    alert(1);
+                error : function(){
+                    toastr.error("Submit Fail, Try Again");
                 }
 
             })
 
         });
 
+        function validateFormData() {
+            // select option required
+            $('#content').find('select').each(function (i) {
+                if (null == $(this).val() || undefined == $(this).val()){
+                    var target = $(this).attr('name').split('_')[0];
+                    toastr.error(target + " Can't Be Empty");
+                    return false;
+                }
+
+            });
+
+        }
+        // 获得工具string
+        function getToolString() {
+            var str = "";
+            $('#content').find('button[data-toggle="collapse"]').each(function (i) {
+
+                str = str + $(this).children().html() + ",";
+            })
+            return str.substring(0, str.length - 1);
+        }
     });
 </script>
 
