@@ -10,51 +10,48 @@ namespace app\index\controller;
 
 use app\index\model\AtsTaskToolSteps;
 use app\index\model\AtsTool;
-use ext\CreateHtmlElement;
-use app\index\model\AtsTaskPanel;
+use ext\CreateAddToolElement;
+use app\index\model\AtsToolElement;
 
 class AddTool extends Common
 {
     /*
      * create html
      */
-    public function createHtmlElement(){
+    public function createAddToolElement(){
 
         $selection = $this->request->param('selection');// 需要继承控制器
+        $toolId = $this->request->param('toolId');
         $collapseId = $this->request->param('collapseId');
 
-        $atsTaskPanel = new AtsTaskPanel();
+        $atsToolPanel = new AtsToolElement();
 
-        $res = $atsTaskPanel->where('tool_name', $selection)->order('id')->select();
-        $resLength = count($res);
-
-        $threshold = 0; // 阀值
+        $panel = $atsToolPanel->where('tool_id', $toolId)->order('tool_id')->select();
+        $resLength = count($panel);
 
         $htmlCreated = "";
         // create panelHead (single data)
-        $panel = $atsTaskPanel->where('tool_name', $selection)->find();
-        $htmlCreated = $htmlCreated. CreateHtmlElement::panelInit($panel['tool_name'], $panel['panel_class'], $collapseId);
+        $htmlCreated = $htmlCreated. CreateAddToolElement::panelInit($selection, $panel[0]['panel_class'], $collapseId);
 
         $trLength = $resLength % MAX_LINE_LENGTH == 0 ? ($resLength / MAX_LINE_LENGTH) : intval($resLength / MAX_LINE_LENGTH) + 1;
 
         $count = 0;
         for ($i = 0; $i < $trLength; $i++){
             $htmlCreated = $htmlCreated. ' <div class="form-group">';
-            $tmpArr = array_slice($res, $i*MAX_LINE_LENGTH, MAX_LINE_LENGTH);
-//            var_dump(count($tmpArr));
+            $tmpArr = array_slice($panel, $i*MAX_LINE_LENGTH, MAX_LINE_LENGTH);
             for($j = 0; $j < count($tmpArr); $j++){
 
                 // get Type
                 if(SELECT2 == $tmpArr[$j]['html_type']){
-                    $htmlCreated = $htmlCreated . CreateHtmlElement::select2Init($tmpArr[$j]);
+                    $htmlCreated = $htmlCreated . CreateAddToolElement::select2Init($tmpArr[$j], $collapseId);
                     $count++;
                 }
                 else if(SELECT == $tmpArr[$j]['html_type']){
-                    $htmlCreated = $htmlCreated . CreateHtmlElement::selectInit($tmpArr[$j]);
+                    $htmlCreated = $htmlCreated . CreateAddToolElement::selectInit($tmpArr[$j], $collapseId);
                     $count++;
                 }
                 else if(RADIO == $tmpArr[$j]['html_type']){
-                    $htmlCreated = $htmlCreated . CreateHtmlElement::radioInit($tmpArr[$j], $collapseId);
+                    $htmlCreated = $htmlCreated . CreateAddToolElement::radioInit($tmpArr[$j], $collapseId);
                     $count++;
                 }
                 if (MAX_LINE_LENGTH == $count){
@@ -67,59 +64,69 @@ class AddTool extends Common
         }
 
         // panel footer
-        $htmlCreated = CreateHtmlElement::panelFooter($htmlCreated);
+        $htmlCreated = CreateAddToolElement::panelFooter($htmlCreated);
         return $htmlCreated;
 
     }
     /*
-     * get Data from From
+     * get Data from Form
      * insert to DB
      */
     public function insertTool(){
-        $steps = $this->request->param('steps');
         $formData = $this->request->param('formData');
         $knowTool = $this->request->param('knowTool');
 
-        // change to '%20' to ' ', change to '%2C' to ','
-        $formData = str_replace('%2C', ',', str_replace('%20', ' ', $formData));
-        $knowTool = substr($knowTool, 0, strlen($knowTool) -1);
-
-        $toolArray = explode(',' , $knowTool);
+        $toolNameArray = explode(',', $knowTool);
         $formDataArray = explode('&', $formData);
+        // 统计工具个数
+        $steps = count($toolNameArray);
 
-        $atsTaskPanel = new AtsTaskPanel();
+        $atsToolPanel = new AtsToolElement();
         $atsTool = new AtsTool();
 
-        $shift = 0; // 位移
-
-        for($i=0; $i<$steps; $i++){
-
-            $template = $atsTaskPanel->where('tool_name', $toolArray[$i])->order('id')->select();
-            $tmp = array();
-            for($j=$shift; $j<($shift + count($template)); $j++){
-
-                $temp = explode('=', $formDataArray[$j]);
-
-                if(false !==strstr($temp[0], '_') ){
-                    $temp[0] = explode('_', $temp[0])[0];
+        // 获取tool_id
+        $toolDbResult = $atsTool->select();
+        $toolId = array();
+        for ($i = 0; $i < $steps; $i++){
+            for ($j = 0; $j < count($toolDbResult); $j++){
+                if ($toolDbResult[$j]['tool_name'] == $toolNameArray[$i]) {
+                    $toolId[] = $toolDbResult[$j]['tool_id'];
                 }
-
-                $tmp[$temp[0]] = $temp[1];
             }
 
-            $shift = count($template);
-            // insert $tmp
-            // ats_task_panel表需要重命名成ats_tool_element task_id, tool_id, status, steps, element_json
+        }
+        // 获得$elementJson
+        $elementJson = array();
+        for($i = 0; $i < $steps; $i++){
 
-            //插入数据到tool_steps表中
-//            $atsTool->where('tool_name')
+            $template = $atsToolPanel->where('tool_id', $toolId[$i])->order('tool_id')->select();
 
-            $toolSteps = new AtsTaskToolSteps();
+            for ($j = 0; $j < count($template); $j++) {
+                $tmp = explode('=', $formDataArray[$j]);
+                $temp['element_id'] = $template[$j]['element_id'];
+                $temp['name'] = urldecode($tmp[0]);
+                $temp['value'] = urldecode($tmp[1]);
+                array_push($elementJson, $temp);
 
+            }
+            $formDataArray = array_slice($formDataArray, count($template));
 
+            $element_json = json_encode($elementJson);
+            // insert ats_task_tool_steps
+            $time = ($i == 0) ? date("Y-m-d H:i:s") : null;
+
+            AtsTaskToolSteps::create([
+                'task_id'  =>  '8',
+                'tool_name' =>  $toolNameArray[$i],
+                'status' => '0',
+                'steps' => $i,
+                'element_json' => $element_json,
+                'tool_start_time' => $time
+            ]);
+
+            $elementJson = array(); // 重新定义数组
 
         }
-
 
     }
 
@@ -153,7 +160,35 @@ class AddTool extends Common
         return json_encode($jsonResult);
 
     }
+    /*
+     * get ToolName for select2
+     */
+    public function getToolName(){
 
+        $type = $this->request->param('type');
+        $query = $this->request->param('q');
+        $jsonResult = array();
+        $atsTool = new AtsTool();
+
+        if ('init' == $type){
+            $result = $atsTool->limit(1)->select()->toArray();
+        } else {
+            if (empty(trim($query))){
+                $result = $atsTool->select();
+            } else {
+                $result = $atsTool->where('tool_name', 'like', '%$query%')->select();
+            }
+
+        }
+
+        for($i = 0; $i < count($result); $i++){
+            $jsonResult[$i]['id'] = $result[$i]['tool_id'];
+            $jsonResult[$i]['text'] = $result[$i]['tool_name'];
+        }
+
+        return json_encode($jsonResult);
+
+    }
     public function test(){
 
         $book = array('a'=>'xiyouji','b'=>'sanguo','c'=>'shuihu','d'=>'hongloumeng');

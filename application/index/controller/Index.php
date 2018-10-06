@@ -19,13 +19,11 @@ class Index extends Common
         return $this->fetch();
 
     }
-    public function DynamicTaskDemo(){
+    public function ToolAdd($id){
+        $taskId = $this->request->param('selection');
 
-        return $this->fetch('common/404');
+        return $this->fetch();
 
     }
-
-
-
 
 }

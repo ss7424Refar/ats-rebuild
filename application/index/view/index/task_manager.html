@@ -452,7 +452,7 @@ desired effect
                 title: 'Tool',
                 formatter: function (value, row, index) {
                     var result="";
-                    result += "<a class='btn btn-xs bg-aqua'  data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
+                    result += "<a class='btn btn-xs bg-aqua' href='ToolAdd/ "+ row['task_id'] +"' " + " data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
                     result += "<a class='btn btn-xs bg-green'  data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
                     result += "<a class='btn btn-xs bg-red'  data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
 
@@ -532,7 +532,7 @@ desired effect
         return temp;//传递参数（*
     };
 
-    function  select2Init() {
+    function select2Init() {
 
         testMachine.select2({
                 width: "100%",
