@@ -75,6 +75,7 @@ class AddTool extends Common
     public function insertTool(){
         $formData = $this->request->param('formData');
         $knowTool = $this->request->param('knowTool');
+        $taskId = $this->request->param('taskId');
 
         $toolNameArray = explode(',', $knowTool);
         $formDataArray = explode('&', $formData);
@@ -103,9 +104,9 @@ class AddTool extends Common
 
             for ($j = 0; $j < count($template); $j++) {
                 $tmp = explode('=', $formDataArray[$j]);
-                $temp['element_id'] = $template[$j]['element_id'];
                 $temp['name'] = urldecode($tmp[0]);
                 $temp['value'] = urldecode($tmp[1]);
+                $temp['element_id'] = $template[$j]['element_id'];
                 array_push($elementJson, $temp);
 
             }
@@ -113,21 +114,22 @@ class AddTool extends Common
 
             $element_json = json_encode($elementJson);
             // insert ats_task_tool_steps
-            $time = ($i == 0) ? date("Y-m-d H:i:s") : null;
+            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null;
 
             AtsTaskToolSteps::create([
-                'task_id'  =>  '8',
+                'task_id'  =>  $taskId,
                 'tool_name' =>  $toolNameArray[$i],
-                'status' => '0',
+                'status' => '0',  // pending
                 'steps' => $i,
                 'element_json' => $element_json,
-                'tool_start_time' => $time
+                'tool_start_time' => $startTime
             ]);
 
             $elementJson = array(); // 重新定义数组
 
         }
 
+        return "done";
     }
 
     /*
@@ -191,7 +193,7 @@ class AddTool extends Common
     }
     public function test(){
 
-        $book = array('a'=>'xiyouji','b'=>'sanguo','c'=>'shuihu','d'=>'hongloumeng');
+        $book = array('value'=>'xiyouji','name'=>'sanguo','element_id'=>'shuihu','d'=>'hongloumeng');
         echo json_encode($book);
     }
 }

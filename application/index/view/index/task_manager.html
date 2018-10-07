@@ -191,7 +191,7 @@ desired effect
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
             <!--        detail info-->
-            <div class="modal fade" id="detailInfo"  role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+            <div class="modal fade" id="detailInfo"  role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -199,70 +199,71 @@ desired effect
                             <h4 class="modal-title">Detail Info</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="row">
-                                <div class="nav-tabs-custom">
-                                    <ul class="nav nav-tabs">
-                                        <li class="active"><a href="#tab_1" data-toggle="tab">Tab 1</a></li>
-                                        <li><a href="#tab_2" data-toggle="tab">Tab 2</a></li>
-                                        <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
-                                        <li class="dropdown">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                Dropdown <span class="caret"></span>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                                                <li role="presentation" class="divider"></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
-                                    </ul>
-                                    <div class="tab-content">
-                                        <div class="tab-pane active" id="tab_1">
-                                            <b>How to use:</b>
-
-                                            <p>Exactly like the original bootstrap tabs except you should use
-                                                the custom wrapper <code>.nav-tabs-custom</code> to achieve this style.</p>
-                                            A wonderful serenity has taken possession of my entire soul,
-                                            like these sweet mornings of spring which I enjoy with my whole heart.
-                                            I am alone, and feel the charm of existence in this spot,
-                                            which was created for the bliss of souls like mine. I am so happy,
-                                            my dear friend, so absorbed in the exquisite sense of mere tranquil existence,
-                                            that I neglect my talents. I should be incapable of drawing a single stroke
-                                            at the present moment; and yet I feel that I never was a greater artist than now.
-                                        </div>
-                                        <!-- /.tab-pane -->
-                                        <div class="tab-pane" id="tab_2">
-                                            The European languages are members of the same family. Their separate existence is a myth.
-                                            For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
-                                            in their grammar, their pronunciation and their most common words. Everyone realizes why a
-                                            new common language would be desirable: one could refuse to pay expensive translators. To
-                                            achieve this, it would be necessary to have uniform grammar, pronunciation and more common
-                                            words. If several languages coalesce, the grammar of the resulting language is more simple
-                                            and regular than that of the individual languages.
-                                        </div>
-                                        <!-- /.tab-pane -->
-                                        <div class="tab-pane" id="tab_3">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                            when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                            It has survived not only five centuries, but also the leap into electronic typesetting,
-                                            remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-                                            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                                            like Aldus PageMaker including versions of Lorem Ipsum.
-                                        </div>
-                                        <!-- /.tab-pane -->
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_1" data-toggle="tab">Machine Info</a></li>
+                                    <li><a href="#tab_2" data-toggle="tab">Tool Steps</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <form class="form-horizontal ">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Task ID</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Product Name</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Serial Number</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Part Number</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">OEM String</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">System Config</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">BIOS/EC</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <!-- /.tab-content -->
-                                </div>
-                            </div>
+                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="tab_2">
 
+                                    </div>
+                                </div>
+                                <!-- /.tab-content -->
+                            </div>
+                            <button type="button" class="btn btn-default col-md-offset-10" data-dismiss="modal">close</button>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-                        </div>
+
+                        <!--<div class="modal-footer">-->
+
+                        <!--</div>-->
                     </div>
                 </div>
             </div>
@@ -297,6 +298,7 @@ desired effect
 <script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
 
 <script>
+
     $(function () {
 
         testMachine = $("select[name='machine_name']");
@@ -314,7 +316,6 @@ desired effect
         }).on("mouseleave", "[data-toggle='tooltip']", function(){
             $(this).tooltip('hide');
         });
-        // $("[data-toggle='tooltip']").tooltip();
 
         // select2
         select2Init();
@@ -328,7 +329,39 @@ desired effect
         deleteTaskButtonInit();
 
     });
-
+    // 验证工具的操作
+    function checkTool(taskId, toolOp) {
+        $.ajax({
+            type : "post",
+            url: "{:url('TaskManager/checkTool')}",
+            data: {
+                taskId: taskId
+            },
+            success : function (result) {
+                if (result > 0) {
+                    if ('add' == toolOp) {
+                        toastr.info('You Have Already Added Tool');
+                        return false;
+                    } else if ('edit' == toolOp){
+                        alert('11');
+                    } else if ('delete' == toolOp){
+                        alert('22');
+                    }
+                } else {
+                    if ('add' == toolOp) {
+                        window.location.href='{:url("ToolAdd")}?taskId='+ taskId ;
+                    } else {
+                        toastr.info('You Are Not Add Tool, Please Add Tool First');
+                        return false;
+                    }
+                }
+            },
+            error : function(){
+                toastr.error('CheckTool Fail');
+                return false;
+            }
+        });
+    }
     function taskButton(){
         var buttonGroup=$('.btn-group:eq(1)');
         var time=null;
@@ -336,10 +369,7 @@ desired effect
         $('.btn-group:eq(0), .btn-group:eq(1)').mouseenter(function () {
             clearTimeout(time);
             buttonGroup.css('display', 'block');
-        });
-
-        // Task
-        $('.btn-group:eq(0), .btn-group:eq(1)').mouseleave(function () {
+        }).mouseleave(function () {
             time=setTimeout(function(){
                 buttonGroup.css('display', 'none');
             },300);
@@ -451,10 +481,11 @@ desired effect
                 field: 'tool',
                 title: 'Tool',
                 formatter: function (value, row, index) {
+                    var id = row['task_id'];
                     var result="";
-                    result += "<a class='btn btn-xs bg-aqua' href='ToolAdd/ "+ row['task_id'] +"' " + " data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
-                    result += "<a class='btn btn-xs bg-green'  data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
-                    result += "<a class='btn btn-xs bg-red'  data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+                    result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
+                    result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
+                    result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
 
                     return result;
                 }
@@ -484,45 +515,74 @@ desired effect
                 return '<i class="text-danger">No matching records found</i>';
             }
         }).on('dbl-click-row.bs.table', function(row, $element, field){
-            console.log($element);
-            var taskId=$element.TaskID;
-            console.log(taskId);
-            $.ajax({
-                type: "post",
-                url: "../functions/atsController.php?do=getAtsInfoByTaskId&" + "taskID=" + taskId,
-                dataType: "json",
-                success: function (result) {
-                    console.log(result.flag);
-                    if(result.flag){
-                        $("#dmiInfo").find('p:eq(0)').html(result.row['TaskID']);
-                        $("#dmiInfo").find('p:eq(1)').html(result.row['DMI_ProductName']);
-                        $("#dmiInfo").find('p:eq(2)').html(result.row['DMI_SerialNumber']);
-                        $("#dmiInfo").find('p:eq(3)').html(result.row['DMI_PartNumber']);
-                        $("#dmiInfo").find('p:eq(4)').html(result.row['DMI_OEMString']);
-                        $("#dmiInfo").find('p:eq(5)').html(result.row['DMI_SystemConfig']);
-                        $("#dmiInfo").find('p:eq(6)').html(result.row['BIOS_EC']);
-                        if (result.row['ExecuteJob']){
-                            $("#dmiInfo").find('p:eq(7)').html(result.row['ExecuteJob']);
-                            $("#dmiInfo").find('p:eq(8)').html(result.row['run_baseline']);
-                        } else {
-                            $("#dmiInfo").find('p:eq(7)').html('N/A');
-                            $("#dmiInfo").find('p:eq(8)').html('N/A');
-                        }
 
-                        $("#dmiInfo").find('p:eq(9)').html(result.row['OSActivation']);
-                        $("#dmiInfo").modal("toggle");
-                    }
-                    else{
-                        toastr.info("TaskID = " + taskId + " didn't found! Please Refresh Table!");
-                    }
-                },
-                error:function (xhr,status,error) {
-                    toastr.error(xhr.status + " " + xhr.statusText);
-                }
+            console.log($element);
+            var taskId=$element.task_id;
+
+            //init modal tab
+            $('.nav-tabs li').each(function () {
+                $(this).removeClass('active');
             });
+            $("a[href='#tab_1']").parent().addClass('active');
+            $("div[id*='#tab_']").each(function () {
+                $(this).removeClass('active');
+            });
+            $('#tab_1').addClass('active');
+            // get info
+            if (checkTaskIdExist(taskId)){
+                $.ajax({
+                    type: "post",
+                    url: "{:url('TaskManager/getTaskInfoById')}",
+                    data: {taskId: taskId},
+                    dataType: "json",
+                    success: function (result) {
+                        if(result){
+                            var i = 0;
+                            for(var key in result[0]){
+                                $("#tab_1").find('p:eq(' + i + ')').html(result[0][key]);
+                                i++;
+                            }
+                            $("#detailInfo").modal("toggle");
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Get Info Fail");
+                        return false;
+                    }
+
+                })
+            }
+
         });
 
     };
+
+    // check taskId
+    function checkTaskIdExist(taskId) {
+        var rt;
+        $.ajax({
+            type: "post",
+            url: "{:url('TaskManager/checkTaskIdExist')}",
+            async: false,   //关键是“async: false”，如果不加，result会是未定义
+            data: {taskId: taskId},
+            success: function (result) {
+                if (1 == result) {
+                    rt = true;
+                } else {
+                    rt = false;
+                };
+            },
+            error:function () {
+                toastr.error("Check TaskId Fail");
+                return false;
+            }
+
+        });
+
+        return rt;
+
+    }
+
 
     function queryParams(params) {
         var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
@@ -879,7 +939,7 @@ desired effect
                     toastr.error('add fail! try again ');
                 },
                 complete : function () {
-                    // setTimeout("window.location.href=\"TaskManager\"",3000);
+                    setTimeout("window.location.href=\"TaskManager\"",1500);
 
                 }
             });

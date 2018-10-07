@@ -85,6 +85,8 @@ desired effect
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
                                 <input type="text" id="knowTool" hidden>
+                                <!--从taskManager页面传递过来的taskId-->
+                                <input type="text" id="taskId" hidden value="{$taskId}">
                                 <div class="col-md-5">
                                     <button type="button" class="btn btn-success" id="addTool"> Add Tool </button>
                                 </div>
@@ -219,7 +221,7 @@ desired effect
                 }
             });
         });
-
+        // submit
         $('#sub').click(function () {
             validateFormData();
             
@@ -228,12 +230,15 @@ desired effect
                 type : "post",
                 url: "{:url('AddTool/insertTool')}",
                 data: {
+                    taskId: $('#taskId').val(),
                     formData : $('#toolForm').serialize(),
                     knowTool : getToolString()
                 },
                 success : function (result) {
-                    console.log(result);
-                    return;
+                    if ("done" == result) {
+                        toastr.success("Add Tool Steps Success");
+                        setTimeout("window.location.href=\"TaskManager\";",1500);
+                    }
 
                 },
                 error : function(){

@@ -86,10 +86,10 @@ class TaskManager extends Common{
 
         $jsonResult = array();
         if ($this->hasRight){
-            $result = Db::table('ats_task_basic')->limit($offset,$pageSize)->select();
+            $result = Db::table('ats_task_basic')->order('task_id desc')->limit($offset,$pageSize)->select();
             $total = Db::table('ats_task_basic')->count();
         } else {
-            $result = Db::table('ats_task_basic')->where('tester', $this->loginUser)->limit($offset,$pageSize)->select();
+            $result = Db::table('ats_task_basic')->where('tester', $this->loginUser)->order('task_id desc')->limit($offset,$pageSize)->select();
             $total = Db::table('ats_task_basic')->where('tester', $this->loginUser)->count();
         }
 
@@ -104,12 +104,38 @@ class TaskManager extends Common{
      */
     public function addTask(){
         $form = stringSerializeToArray($this->request->param('formSerialize'));
-//        $form['tester'] = $this->loginUser;
         $atsTaskBasic = new AtsTaskBasic();
 
         $atsTaskBasic->data($form);
         $atsTaskBasic->save();
 
+        return "success";
+    }
+
+
+    /*
+     * check the task should which op tool
+     */
+    public function checkTool(){
+        $taskId = $this->request->param('taskId');
+        $total = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->count();
+
+        return $total;
+    }
+    /*
+     * check checkTaskIdExist
+     */
+    public function checkTaskIdExist(){
+        $taskId = $this->request->param('taskId');
+        $total = Db::table('ats_task_basic')->where('task_id', $taskId)->count();
+
+        return ($total > 0) ? 1 : 2;
+    }
+
+    public function getTaskInfoById(){
+        $taskId = $this->request->param('taskId');
+        $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec')->select();
+        return json_encode($result);
     }
 
 }
