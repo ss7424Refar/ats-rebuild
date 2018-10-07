@@ -192,7 +192,7 @@ desired effect
                 </div><!-- /.modal -->
             <!--        detail info-->
             <div class="modal fade" id="detailInfo"  role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog" style="width:800px">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -253,7 +253,7 @@ desired effect
                                     </div>
                                     <!-- /.tab-pane -->
                                     <div class="tab-pane" id="tab_2">
-
+                                        <table id="stepsTable" class="" data-show-jumpto="true"></table>
                                     </div>
                                 </div>
                                 <!-- /.tab-content -->
@@ -321,6 +321,122 @@ desired effect
         select2Init();
 
         addFormValidatorInit();
+
+        // 当点击steps tab的时候
+        $('a[href="#tab_2"]').click(function () {
+            var taskId = $("#tab_1").find('p:eq(0)').html()
+            $('#stepsTable').bootstrapTable({
+                url: "{:url('TaskManager/stepsPagination')}",    //请求后台的URL（*）
+                method: 'post',                      //请求方式（*）
+                classes: 'table table-hover', // table 样式
+                iconSize: 'sm',
+                buttonsClass: 'success',
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                queryParamsType : "",                   //默认是limit，则para为params.limit, params.offset
+                queryParams: function (params) {
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        pageSize : params.pageSize,
+                        pageNumber : params.pageNumber
+                    };
+                    return temp;//传递参数（*
+                },
+                clickToSelect: false,               //点击行即可选中单选/复选框
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+                search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端
+                strictSearch: true,
+                showColumns: false,                  //是否显示所有的列
+                showRefresh: false,                  //是否显示刷新按钮
+                uniqueId: "task_id",                     //每一行的唯一标识，一般为主键列
+                showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    field: 'steps',
+                    title: 'Steps',
+                    formatter:function(value, row, index){
+                        return 'Step_' + value;
+                    }
+                }, {
+                    field: 'tool_name',
+                    title: 'Tool Name'
+                },
+                    {
+                    field: 'status',
+                    title: 'Status',
+                    formatter:function(value, row, index){
+                        if (0==value){
+                            return "pending";
+                        }else if (1==value){
+                            return "ongoing";
+                        }else if (2==value){
+                            return "finished";
+                        }else if (3==value){
+                            return "Cancelled";
+                        }else if (4==value){
+                            return "Abnormal End";
+                        }else if (5==value){
+                            return "expired";
+                        }
+                        return "N/A";
+                    }
+                }, {
+                        field: 'result',
+                        title: 'Result',
+                },
+                {
+                    field: 'tool_start_time',
+                    title: 'Start Time',
+                }, {
+                    field: 'tool_end_time',
+                    title: 'Finish Time'
+                },
+                    {
+                        field: 'result',
+                        title: 'Test Result',
+                        formatter: function(value, row, index){
+                            var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
+                            if("Fail"==value){
+                                return '<a href='+ path +'><i class="fa fa-times fa-fw"></i>&nbsp;' + value + '</a>';
+                            } else if("Pass"==value){
+                                return '<a href='+ path +'><i class="fa fa-check fa-fw"></i>&nbsp;' + value + '</a>';
+                            }
+                            return "N/A";
+                        }
+                    },
+                ],
+                rowStyle: function(row, index){
+                    if("Fail"==row.result){
+                        return {classes: 'danger'};
+                    }else if("Pass"==row.result){
+                        return {classes: 'success'};
+                    }else if(0==row.status){
+                        return {classes: 'info'};
+                    }else if(1==row.status){
+                        return {classes: 'warning'};
+                    }
+                    return {classes: 'active'};
+                },
+
+                formatLoadingMessage: function () {
+                    return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+                },
+
+                onLoadError: function () {
+                    toastr.error("Table LoadError!");
+                },
+                formatNoMatches: function () {  //没有匹配的结果
+                    return '<i class="text-danger">No matching records found</i>';
+                }
+            })
+
+        });
 
         // assign
         assignButtonInit();
@@ -402,7 +518,7 @@ desired effect
             showRefresh: true,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
             // height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-            uniqueId: "TaskID",                     //每一行的唯一标识，一般为主键列
+            uniqueId: "task_id",                     //每一行的唯一标识，一般为主键列
             showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                   //是否显示父子表
@@ -528,6 +644,8 @@ desired effect
                 $(this).removeClass('active');
             });
             $('#tab_1').addClass('active');
+
+            $('#tab_2').html('<table id="stepsTable" class="" data-show-jumpto="true"></table>');
             // get info
             if (checkTaskIdExist(taskId)){
                 $.ajax({
@@ -550,7 +668,8 @@ desired effect
                         return false;
                     }
 
-                })
+                });
+
             }
 
         });
