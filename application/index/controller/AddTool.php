@@ -54,6 +54,10 @@ class AddTool extends Common
                     $htmlCreated = $htmlCreated . CreateAddToolElement::radioInit($tmpArr[$j], $collapseId);
                     $count++;
                 }
+                else if(CHECKBOX == $tmpArr[$j]['html_type']){
+                    $htmlCreated = $htmlCreated . CreateAddToolElement::checkboxInit($tmpArr[$j], $collapseId);
+                    $count++;
+                }
                 if (MAX_LINE_LENGTH == $count){
                     $count = 0;
                     break;
@@ -79,6 +83,34 @@ class AddTool extends Common
 
         $toolNameArray = explode(',', $knowTool);
         $formDataArray = explode('&', $formData);
+
+        // extract formData
+        $formDataArray2 = array();
+        for ($i = 0; $i < count($formDataArray); $i++){
+            if (null == $formDataArray2) {
+                $formDataArray2[0] = $formDataArray[0];
+            }
+            $count = count($formDataArray2);
+            $isEqual = false; // $formDataArray2中的key是否与$formDataArray中的key相等
+            for ($j = 0; $j < $count; $j++) {
+                $key1 = explode('=', $formDataArray[$i]);
+                $key2 = explode('=', $formDataArray2[$j]);
+
+                if ($key1[0] == $key2[0]) {
+                    if (0 != $i) {
+                        $formDataArray2[$j] =  $formDataArray2[$j] . ',' .$key1[1];
+                    }
+                    $isEqual = true;
+                    break;
+                } else {
+                    $isEqual = false;
+                }
+            }
+            if (!$isEqual) {
+                $formDataArray2[] = $formDataArray[$i];
+            }
+        }
+
         // 统计工具个数
         $steps = count($toolNameArray);
 
@@ -103,18 +135,18 @@ class AddTool extends Common
             $template = $atsToolPanel->where('tool_id', $toolId[$i])->order('tool_id')->select();
 
             for ($j = 0; $j < count($template); $j++) {
-                $tmp = explode('=', $formDataArray[$j]);
+                $tmp = explode('=', $formDataArray2[$j]);
                 $temp['name'] = urldecode($tmp[0]);
                 $temp['value'] = urldecode($tmp[1]);
                 $temp['element_id'] = $template[$j]['element_id'];
                 array_push($elementJson, $temp);
 
             }
-            $formDataArray = array_slice($formDataArray, count($template));
+            $formDataArray2 = array_slice($formDataArray2, count($template));
 
             $element_json = json_encode($elementJson);
             // insert ats_task_tool_steps
-            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null;
+            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null; // 需要接口更新其他步骤的开始时间
 
             AtsTaskToolSteps::create([
                 'task_id'  =>  $taskId,
