@@ -23,7 +23,9 @@ define('MAX_LINE_LENGTH', 2);
 define('LABEL_CSS', 'col-sm-1 control-label');
 define('TOOL_DIV_SIZE', 'col-sm-4');
 define('RADIO_DIV', ' style="padding-top: 7px;padding-left: 14px"');
+define('CHECKBOX_DIV', ' style="padding-top: 7px;padding-left: 14px"');
 define('RADIO_LABEL', ' style="margin-right: 19px"');
+define('CHECKBOX_LABEL', ' style="margin-right: 19px"');
 
 
 /*

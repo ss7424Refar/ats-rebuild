@@ -152,4 +152,42 @@ class CreateAddToolElement
 
     }
 
+    public static function checkboxInit($arr, $collapseId){
+        $checkboxHtml = "";
+        $optionHtml = "";
+        $clas = $arr['html_class'];
+        if (null != $arr['html_value']) {
+            $optionArr = explode('_', $arr['html_value']);
+            for ($i = 0; $i < count($optionArr); $i++){
+                if (stristr($arr['html_default'] , $optionArr[$i]) !== false) {
+                    $optionHtml = $optionHtml .
+                        '<label '.CHECKBOX_LABEL . '>'.
+                        '       <input type="checkbox" name="'. $arr['html_name'] . '_' . $collapseId .'" class="minimal_check" value="'. $optionArr[$i] .'" checked/> '. $optionArr[$i].
+                        '</label>';
+                } else {
+                    $optionHtml = $optionHtml .
+                        '<label '.CHECKBOX_LABEL . '>'.
+                        '       <input type="checkbox" name="'. $arr['html_name'] . '_' . $collapseId .'" class="minimal_check" value="'. $optionArr[$i] .'"/> '. $optionArr[$i].
+                        '</label>';
+
+                }
+
+
+            }
+
+        }
+
+        $checkboxHtml = '            <label class="col-sm-1 control-label">'. $arr['html_name']  .'</label>'.
+            '            <div class="col-sm-4" '. CHECKBOX_DIV .'>'.
+            $optionHtml.
+            '            </div>'.
+            '<script>'.
+            '$(\'input[type="checkbox"].minimal_check\').iCheck({'.
+            'checkboxClass: ' . "'$clas'".
+            '});'.
+            '</script>';
+
+        return $checkboxHtml;
+    }
+
 }
