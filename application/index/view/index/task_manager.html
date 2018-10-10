@@ -459,7 +459,7 @@ desired effect
                         toastr.info('You Have Already Added Tool');
                         return false;
                     } else if ('edit' == toolOp){
-                        alert('11');
+                        window.location.href='{:url("EditTool/setTool")}?taskId='+ taskId ;
                     } else if ('delete' == toolOp){
                         alert('22');
                     }
