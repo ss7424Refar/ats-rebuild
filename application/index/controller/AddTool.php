@@ -80,6 +80,7 @@ class AddTool extends Common
         $formData = $this->request->param('formData');
         $knowTool = $this->request->param('knowTool');
         $taskId = $this->request->param('taskId');
+        $index = $this->request->param('collapseId');
 
         $toolNameArray = explode(',', $knowTool);
         $formDataArray = explode('&', $formData);
@@ -151,6 +152,7 @@ class AddTool extends Common
             AtsTaskToolSteps::create([
                 'task_id'  =>  $taskId,
                 'tool_name' =>  $toolNameArray[$i],
+                'index' => $index,
                 'status' => '0',  // pending
                 'steps' => $i,
                 'element_json' => $element_json,

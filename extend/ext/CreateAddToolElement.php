@@ -87,6 +87,59 @@ class CreateAddToolElement
         return $select2Html;
     }
 
+    public static function setSelect2Init($arr, $collapseId){
+        $select2Html = "";
+        $url2 = url("{$arr['html_url']}");
+        $name = $arr['html_name'] . '_' .  $collapseId;
+        $select2Html = '            <label class="'. LABEL_CSS.'">'. $arr['html_name'] .'</label>'.
+            '           <div class="' . TOOL_DIV_SIZE. '">'.
+            '                <select class="form-control select2"  name="'. $name .'"></select>'.
+            '            </div>'.
+            '<script>'.
+            '$(function(){'.
+            '	$(\'select[name="'. $name.'"]\').select2({'.
+            ' 	    width: "100%",'.
+            '	    ajax: {'.
+            '		url: "'. $url2 .'",'.
+            '		dataType: \'json\','.
+            '		delay: 250,'.
+            '		data: function (params) {'.
+            '		    return {'.
+            '		        q: params.term'.
+            '		    };'.
+            '		},'.
+            '		processResults: function (data) {'.
+            '		    return {'.
+            '		        results: data'.
+            '		    };'.
+            '		},'.
+            '		cache: false'.
+            '	    },'.
+            '	    placeholder: \'Please Select\','.
+            '	    allowClear: true'.
+            '	});'.
+            '});'.
+            '</script>';
+
+        if ($arr['save_value']) {
+            $select2Html = $select2Html.
+                '<script>'.
+                '   $.ajax({'.
+                '    type: \'post\','.
+                '    url: "'. $url2 .'",'.
+                '    dataType: \'json\','.
+                '    success: function (data) {'.
+                '    var option = new Option('. '\'' . $arr['save_value']. '\''  .', '. '\'' . $arr['save_value']. '\'' .', true, true);'.
+                '    $(\'select[name="'. $name .'"]\').append(option);'.
+                '    }'.
+                '});'.
+
+                '</script>';
+        }
+
+        return $select2Html;
+    }
+
     public static function selectInit($arr, $collapseId){
         $selectHtml = "";
         $name = $arr['html_name'] . '_' .  $collapseId;
@@ -109,6 +162,36 @@ class CreateAddToolElement
                       '            <script>'.
                       '                 $(\'.select\').select2();'.
                       '            </script>';
+
+        return $selectHtml;
+    }
+
+    public static function setSelectInit($arr, $collapseId){
+        $selectHtml = "";
+        $name = $arr['html_name'] . '_' .  $collapseId;
+        $optionHtml = "";
+        if (null != $arr['html_value']) {
+            $optionArr = explode('_', $arr['html_value']);
+            $optionHtml = $optionHtml . '<option>'. $arr['save_value'] .'</option>';
+            for ($i = 0; $i < count($optionArr); $i++){
+                if ($arr['save_value'] == $optionArr[$i]) {
+                    continue;
+                }
+                $optionHtml = $optionHtml . '<option>'. $optionArr[$i] .'</option>';
+
+            }
+
+        }
+
+        $selectHtml = '           <label class="'. LABEL_CSS.'">'. $arr['html_name'] .'</label>'.
+            '           <div class="' . TOOL_DIV_SIZE. '">'.
+            '                <select class="form-control select"  name="'. $name .'">'.
+            $optionHtml.
+            '                </select>'.
+            '            </div>'.
+            '            <script>'.
+            '                 $(\'.select\').select2();'.
+            '            </script>';
 
         return $selectHtml;
     }
@@ -152,6 +235,45 @@ class CreateAddToolElement
 
     }
 
+    public static function setRadioInit($arr, $collapseId){
+        $radioHtml = "";
+        $optionHtml = "";
+        $clas = $arr['html_class'];
+        if (null != $arr['html_value']) {
+            $optionArr = explode('_', $arr['html_value']);
+            for ($i = 0; $i < count($optionArr); $i++){
+                if ($arr['save_value'] == $optionArr[$i]) {
+                    $optionHtml = $optionHtml .
+                        '<label '.RADIO_LABEL . '>'.
+                        '       <input type="radio" name="'. $arr['html_name'] . '_' . $collapseId .'" class="minimal" value="'. $optionArr[$i] .'" checked/> '. $optionArr[$i].
+                        '</label>';
+                } else {
+                    $optionHtml = $optionHtml .
+                        '<label '.RADIO_LABEL . '>'.
+                        '       <input type="radio" name="'. $arr['html_name'] . '_' . $collapseId .'" class="minimal" value="'. $optionArr[$i] .'"/> '. $optionArr[$i].
+                        '</label>';
+
+                }
+
+
+            }
+
+        }
+
+        $radioHtml = '            <label class="col-sm-1 control-label">'. $arr['html_name']  .'</label>'.
+            '            <div class="col-sm-4" '. RADIO_DIV .'>'.
+            $optionHtml.
+            '            </div>'.
+            '<script>'.
+            '$(\'input[type="radio"].minimal\').iCheck({'.
+            'radioClass: ' . "'$clas'".
+            '});'.
+            '</script>';
+
+        return $radioHtml;
+
+    }
+
     public static function checkboxInit($arr, $collapseId){
         $checkboxHtml = "";
         $optionHtml = "";
@@ -160,6 +282,44 @@ class CreateAddToolElement
             $optionArr = explode('_', $arr['html_value']);
             for ($i = 0; $i < count($optionArr); $i++){
                 if (stristr($arr['html_default'] , $optionArr[$i]) !== false) {
+                    $optionHtml = $optionHtml .
+                        '<label '.CHECKBOX_LABEL . '>'.
+                        '       <input type="checkbox" name="'. $arr['html_name'] . '_' . $collapseId .'" class="minimal_check" value="'. $optionArr[$i] .'" checked/> '. $optionArr[$i].
+                        '</label>';
+                } else {
+                    $optionHtml = $optionHtml .
+                        '<label '.CHECKBOX_LABEL . '>'.
+                        '       <input type="checkbox" name="'. $arr['html_name'] . '_' . $collapseId .'" class="minimal_check" value="'. $optionArr[$i] .'"/> '. $optionArr[$i].
+                        '</label>';
+
+                }
+
+
+            }
+
+        }
+
+        $checkboxHtml = '            <label class="col-sm-1 control-label">'. $arr['html_name']  .'</label>'.
+            '            <div class="col-sm-4" '. CHECKBOX_DIV .'>'.
+            $optionHtml.
+            '            </div>'.
+            '<script>'.
+            '$(\'input[type="checkbox"].minimal_check\').iCheck({'.
+            'checkboxClass: ' . "'$clas'".
+            '});'.
+            '</script>';
+
+        return $checkboxHtml;
+    }
+
+    public static function setCheckboxInit($arr, $collapseId){
+        $checkboxHtml = "";
+        $optionHtml = "";
+        $clas = $arr['html_class'];
+        if (null != $arr['html_value']) {
+            $optionArr = explode('_', $arr['html_value']);
+            for ($i = 0; $i < count($optionArr); $i++){
+                if (stristr($arr['save_value'] , $optionArr[$i]) !== false) {
                     $optionHtml = $optionHtml .
                         '<label '.CHECKBOX_LABEL . '>'.
                         '       <input type="checkbox" name="'. $arr['html_name'] . '_' . $collapseId .'" class="minimal_check" value="'. $optionArr[$i] .'" checked/> '. $optionArr[$i].

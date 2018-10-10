@@ -232,7 +232,8 @@ desired effect
                 data: {
                     taskId: $('#taskId').val(),
                     formData : $('#toolForm').serialize(),
-                    knowTool : getToolString()
+                    knowTool : getToolString(),
+                    collapseId : Number($('#forCollapse').text())
                 },
                 success : function (result) {
                     if ("done" == result) {
