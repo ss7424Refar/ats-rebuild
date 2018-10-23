@@ -81,7 +81,7 @@ desired effect
                       <div class="box-body">
                             <div class="row">
                                 <div class="col-md-7">
-                                    <select class="form-control select2" style="width: 100%;" name="selection"></select>
+                                    <select class="form-control" style="width: 100%;" name="selection"></select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
                                 <input type="text" id="knowTool" hidden>
@@ -140,7 +140,7 @@ desired effect
         // $('.selectpicker').selectpicker();
 
         // selection for toolName
-        $('.select2').select2({
+        $('select[name="selection"]').select2({
                 width: "100%",
                 ajax: {
                     url: "{:url('AddTool/getToolName')}",
@@ -175,7 +175,7 @@ desired effect
         });
 
         $('#content').on('click', '.delete', function () {
-            $(this).parent().parent().parent().remove();
+            $(this).parent().parent().parent().parent().remove();
             var buttonCount = $('.delete').length;
             if (0 == buttonCount) {
                 $('#content').css('display', 'none');
@@ -197,10 +197,10 @@ desired effect
             }
 
             var collapseId = Number($('#forCollapse').text()); // 初始值为0
-
             $.ajax({
                 type : "post",
-                url: "{:url('AddTool/createAddToolElement')}",
+                // url: "{:url('AddTool/createAddToolElement')}",
+                url: "{:url('ToolHandler/getTool')}",
                 data: {
                     toolId : toolId,
                     selection : selection,
@@ -210,8 +210,54 @@ desired effect
                     if ('none' === $('#content').css('display')){
                         $('#content').css('display', 'block');
                     }
-
                     $('#box_body').append('<div>' + result +'</div>');
+                    if ('JumpStart' === selection) {
+                        lastDiv = $('#box_body').children('div:last');
+                        // testImage
+                        lastDiv.find('select[name="TestImage"]').each(function () {
+                            var _this = $(this);
+                            _this.select2({
+                                width: "100%",
+                                ajax: {
+                                    url: "{:url('AddTool/getTestImage')}",
+                                    dataType: 'json',
+                                    delay: 250,
+                                    data: function (params) {
+                                        return {q: params.term};
+                                    },
+                                    processResults: function (data) {
+                                        return {results: data};
+                                    },
+                                    cache: false
+                                },
+                                placeholder: 'Please Select',
+                                allowClear: true
+                            });
+                            $.ajax({
+                                type: 'post',
+                                url: "{:url('AddTool/getTestImage')}",
+                                dataType: 'json',
+                                success: function (data) {
+                                    var option = new Option('Keep Current Image', 'Keep Current Image', true, true);
+                                    _this.append(option);
+                                }
+                            });
+
+                        });
+
+                        // Execute Job
+                        lastDiv.find('.select').each(function () {
+                            $(this).select2();
+                        });
+                        // OS Activation
+                        lastDiv.find('input[type="radio"].minimal').each(function () {
+                            $(this).iCheck(
+                                {radioClass: 'iradio_minimal-blue'}
+                            );
+                        });
+
+
+                    }
                 },
                 error : function(){
                     toastr.error("Add Fail, Try Again");
