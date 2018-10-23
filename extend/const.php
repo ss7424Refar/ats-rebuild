@@ -27,6 +27,11 @@ define('CHECKBOX_DIV', ' style="padding-top: 7px;padding-left: 14px"');
 define('RADIO_LABEL', ' style="margin-right: 19px"');
 define('CHECKBOX_LABEL', ' style="margin-right: 19px"');
 
+/*
+ * tool name
+ */
+
+define('JUMP_START', 'JumpStart');
 
 /*
  * ATS path

@@ -225,9 +225,5 @@ class AddTool extends Common
         return json_encode($jsonResult);
 
     }
-    public function test(){
 
-        $book = array('value'=>'xiyouji','name'=>'sanguo','element_id'=>'shuihu','d'=>'hongloumeng');
-        echo json_encode($book);
-    }
 }
