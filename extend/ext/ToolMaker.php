@@ -16,13 +16,13 @@ class ToolMaker {
                     '<div id="collapse_'. $index .'" class="panel-collapse collapse in">'.
                     '    <div class="panel-body form-horizontal">'.
                     '        <div class="form-group">'.
-                    '            <label class="col-sm-1 control-label">TestImage</label>'.
+                    '            <label class="col-sm-1 control-label">Test Image</label>'.
                     '            <div class="col-sm-4">'.
-                    '                <select class="form-control select2" name="TestImage" id="TestImage1"></select>'.
+                    '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'.
                     '            </div>'.
                     '            <label class="col-sm-1 control-label">Execute Job</label>'.
                     '            <div class="col-sm-4">'.
-                    '                <select class="form-control select" name="Execute Job">'.
+                    '                <select class="form-control select" name="ExecuteJob" id="ExecuteJob">'.
                     '                    <option>Fast Startup,Standby,Microsoft Edge</option>'.
                     '                    <option>Fast Startup</option>'.
                     '                    <option>BatteryLife</option>'.
@@ -48,6 +48,36 @@ class ToolMaker {
                     '</div>';
         return $template;
 
+    }
+
+    public static function getRecovery($index) {
+        $template = '';
+
+        $template = '<button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. RECOVERY .'</b></button>'.
+                    '<div id="collapse_'. $index .'" class="panel-collapse collapse in">'.
+                    '    <div class="panel-body form-horizontal">'.
+                    '        <div class="form-group">'.
+                    '            <label class="col-sm-1 control-label">Test Image</label>'.
+                    '            <div class="col-sm-4">'.
+                    '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'.
+                    '            </div>'.
+                    '            <label class="col-sm-1 control-label">OS Activation</label>'.
+                    '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'.
+                    '                <label style="margin-right: 19px">'.
+                    '                    <input type="radio" name="OS Activation_'. $index .'" class="minimal" value="YES"/> YES'.
+                    '                </label>'.
+                    '                <label style="margin-right: 19px">'.
+                    '                    <input type="radio" name="OS Activation_'. $index .'" class="minimal" value="NO" checked/> NO'.
+                    '                </label>'.
+                    '            </div>'.
+                    '        </div>'.
+                    '        <hr>'.
+                    '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"> Add</button></div>'.
+                    '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"> delete</button></div>'.
+                    '    </div>'.
+                    '</div>';
+
+        return $template;
     }
 
 }

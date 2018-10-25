@@ -22,6 +22,9 @@ class ToolHandler extends Common {
         if (JUMP_START == $selection) {
             return ToolMaker::getJumpStart($index);
 
+        } else if (RECOVERY == $selection) {
+            return ToolMaker::getRecovery($index) ;
+
         }
 
     }
