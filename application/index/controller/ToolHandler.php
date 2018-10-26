@@ -29,5 +29,22 @@ class ToolHandler extends Common {
 
     }
 
+    public function setTool(){
+        $taskId = $this->request->param('taskId');
+
+        $atsTaskToolSteps = new AtsTaskToolSteps();
+
+        $result = $atsTaskToolSteps->where('task_id', $taskId)->order('steps')->select();
+
+        $jsonResult = array();
+
+        for ($i = 0; $i < count($result); $i++) {
+            $jsonResult[] = json_decode($result[$i]['element_json']); // 不转换会有反斜杠生成.
+
+        }
+
+        return json_encode($jsonResult);
+
+    }
 
 }

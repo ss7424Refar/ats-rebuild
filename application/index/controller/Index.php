@@ -21,11 +21,7 @@ class Index extends Common
 
     }
     public function ToolAdd(){
-        // 防止浏览器恶意输入
-        if (null == Request::instance()->server('HTTP_REFERER')){
-            $this->error('please click link from taskManager', url('Index/TaskManager'));
-            return;
-        }
+        $this -> ReferenceCheck();
         $taskId = $this->request->param('taskId');
 
         // 模板变量赋值
@@ -35,4 +31,23 @@ class Index extends Common
 
     }
 
+    public function ToolEdit(){
+        $this -> ReferenceCheck();
+        $taskId = $this->request->param('taskId');
+
+        // 模板变量赋值
+        $this->assign('taskId',$taskId);
+
+        return $this->fetch();
+
+    }
+    /*
+     * 防止浏览器恶意输入
+     */
+    private function ReferenceCheck() {
+        if (null == Request::instance()->server('HTTP_REFERER')){
+            $this->error('please click link from taskManager', url('Index/TaskManager'));
+            return;
+        }
+    }
 }

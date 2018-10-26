@@ -72,97 +72,29 @@ class AddTool extends Common
         return $htmlCreated;
 
     }
+
     /*
      * get Data from Form
      * insert to DB
      */
-    public function insertTool(){
-        $formData = $this->request->param('formData');
-        $knowTool = $this->request->param('knowTool');
+    public function insertAddTool(){
         $taskId = $this->request->param('taskId');
-        $index = $this->request->param('collapseId');
-
-        $toolNameArray = explode(',', $knowTool);
-        $formDataArray = explode('&', $formData);
-
-        // extract formData
-        $formDataArray2 = array();
-        for ($i = 0; $i < count($formDataArray); $i++){
-            if (null == $formDataArray2) {
-                $formDataArray2[0] = $formDataArray[0];
-            }
-            $count = count($formDataArray2);
-            $isEqual = false; // $formDataArray2中的key是否与$formDataArray中的key相等
-            for ($j = 0; $j < $count; $j++) {
-                $key1 = explode('=', $formDataArray[$i]);
-                $key2 = explode('=', $formDataArray2[$j]);
-
-                if ($key1[0] == $key2[0]) {
-                    if (0 != $i) {
-                        $formDataArray2[$j] =  $formDataArray2[$j] . ',' .$key1[1];
-                    }
-                    $isEqual = true;
-                    break;
-                } else {
-                    $isEqual = false;
-                }
-            }
-            if (!$isEqual) {
-                $formDataArray2[] = $formDataArray[$i];
-            }
-        }
-
-        // 统计工具个数
-        $steps = count($toolNameArray);
-
-        $atsToolPanel = new AtsToolElement();
-        $atsTool = new AtsTool();
-
-        // 获取tool_id
-        $toolDbResult = $atsTool->select();
-        $toolId = array();
-        for ($i = 0; $i < $steps; $i++){
-            for ($j = 0; $j < count($toolDbResult); $j++){
-                if ($toolDbResult[$j]['tool_name'] == $toolNameArray[$i]) {
-                    $toolId[] = $toolDbResult[$j]['tool_id'];
-                }
-            }
-
-        }
-        // 获得$elementJson
-        $elementJson = array();
-        for($i = 0; $i < $steps; $i++){
-
-            $template = $atsToolPanel->where('tool_id', $toolId[$i])->order('tool_id')->select();
-
-            for ($j = 0; $j < count($template); $j++) {
-                $tmp = explode('=', $formDataArray2[$j]);
-                $temp['name'] = urldecode($tmp[0]);
-                $temp['value'] = urldecode($tmp[1]);
-                $temp['element_id'] = $template[$j]['element_id'];
-                array_push($elementJson, $temp);
-
-            }
-            $formDataArray2 = array_slice($formDataArray2, count($template));
-
-            $element_json = json_encode($elementJson);
+        $formObj = $this->request->param('formObj');
+        $formObj = json_decode($formObj); // object in array
+        for ($i = 0; $i < count($formObj); $i++) {
+            // 需要接口更新其他步骤的开始时间
+            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null;
             // insert ats_task_tool_steps
-            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null; // 需要接口更新其他步骤的开始时间
-
             AtsTaskToolSteps::create([
                 'task_id'  =>  $taskId,
-                'tool_name' =>  $toolNameArray[$i],
-                'index' => $index,
+                'tool_name' =>  $formObj[$i]->Tool_Type,
                 'status' => '0',  // pending
-                'steps' => $i,
-                'element_json' => $element_json,
+                'steps' => $i + 1,
+                'element_json' => json_encode($formObj[$i]), // trans to String
                 'tool_start_time' => $startTime
             ]);
 
-            $elementJson = array(); // 重新定义数组
-
         }
-
         return "done";
     }
 
