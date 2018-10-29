@@ -161,17 +161,7 @@ desired effect
                 allowClear: true
             }
 
-        );
-        // init select2 data
-        $.ajax({
-            type: 'post',
-            url: "{:url('AddTool/getToolName', 'type=init')}",
-            dataType: 'json',
-            success: function (data) {
-                var option = new Option(data[0].text, data[0].id, true, true);
-                $('select[name="selection"]').append(option);
-            }
-        });
+        ).html('<option value="' + 'JumpStart' + '">' + 'JumpStart' + '</option>').trigger("change");
 
         $('#content').on('click', '.delete', function () {
             $(this).parent().parent().parent().parent().remove();
@@ -193,14 +183,25 @@ desired effect
             },
             success : function (result) {
                 console.log(result);
-                result = JSON.parse(result);
-                $.each(result, function (i, item) {
-                    if ('JumpStart' === item.Tool_Type) {
-                        $('#toolForm').append(setJumpStart(i, item));
+                if (null !== result || undefined !== result) {
+                    $('#content').css('display', 'block');
+                    result = JSON.parse(result);
+                    $('#forCollapse').val(result.length + 1);
+                    $.each(result, function (i, item) {
+                        if ('JumpStart' === item.Tool_Type) {
+                            $('#box_body').append('<div>' + setJumpStart(i, item) + '</div>');
+                            lastDiv = $('#box_body').children('div:last');
+                            setJumpStartData(lastDiv, item);
+                        }
+                        if ('Recovery' === item.Tool_Type) {
+                            $('#box_body').append('<div>' + setRecovery(i, item) + '</div>');
+                            lastDiv = $('#box_body').children('div:last');
+                            setRecoveryData(lastDiv, item);
+                        }
 
-                    }
+                    })
 
-                })
+                }
 
             },
             error : function(){
@@ -210,8 +211,6 @@ desired effect
 
         })
 
-
-
         $('#addTool').click(function () {
             addToolByButton(1);
         });
@@ -220,203 +219,200 @@ desired effect
         // submit
         $('#sub').click(function () {
             validateFormData();
-
-            var obj = [];
-            $('#toolForm').find('button[data-toggle="collapse"]').each(function (i) {
-
-                _father = $(this).parent();
-                toolType = $(this).children('b').html();
-
-                _father.find("input[name^='OS Activation']:checked").each(function () {
-                    $(this)
-                })
-                if ('JumpStart' === toolType) {
-                    var item ={
-                        TooL_Type:toolType,
-                        Test_Image:_father.find("#TestImage").select2('data')[0].text,
-                        Execute_Job:_father.find("#ExecuteJob").select2('data')[0].text,
-                        OS_Activation:_father.find("input[name^='OS Activation']:checked").val() // OS Activation first
-                    }
-
-                    obj.push(item);
-                } else if ('Recovery' === toolType) {
-                    var item ={
-                        TooL_Type:toolType,
-                        Test_Image:_father.find("#TestImage").select2('data')[0].text,
-                        OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
-                    }
-                    obj.push(item);
-                }
-
-            });
-            console.log(JSON.stringify(obj));
-            $.ajax({
-                type : "post",
-                url: "{:url('AddTool/insertAddTool')}",
-                data: {
-                    taskId: $('#taskId').val(),
-                    formObj : JSON.stringify(obj)
-                },
-                success : function (result) {
-                    if ("done" == result) {
-                        toastr.success("Add Tool Steps Success");
-                        setTimeout("window.location.href=\"TaskManager\";",1500);
-                    }
-
-                },
-                error : function(){
-                    toastr.error("Submit Fail, Try Again");
-                }
-
-            })
+            updateJsonData(formToJson());
 
         });
 
-        function validateFormData() {
-            // select option required
-            $('#content').find('select').each(function (i) {
-                if (null == $(this).val() || undefined == $(this).val()){
-                    var target = $(this).attr('name');
-                    toastr.error(target + " Can't Be Empty");
-                    return false;
+
+    })
+
+    function formToJson() {
+        var obj = [];
+        $('#toolForm').find('button[data-toggle="collapse"]').each(function (i) {
+
+            _father = $(this).parent();
+            toolType = $(this).children('b').html();
+
+            _father.find("input[name^='OS Activation']:checked").each(function () {
+                $(this)
+            })
+            if ('JumpStart' === toolType) {
+                var item ={
+                    Tool_Type:toolType,
+                    Test_Image:_father.find("#TestImage").select2('data')[0].text,
+                    Execute_Job:_father.find("#ExecuteJob").select2('data')[0].text,
+                    OS_Activation:_father.find("input[name^='OS Activation']:checked").val() // OS Activation first
                 }
 
-            });
-
-        }
-
-        function addToolByButton(type, obj) {
-            var selection, toolId;
-            try {
-                selection= $('select[name="selection"]').select2('data')[0].text;
-                toolId = $('select[name="selection"]').select2('data')[0].id;
-            } catch (e) {
-                if (undefined == selection || null == selection) {
-                    toastr.error(" Please Select Tool");
-                    return false;
+                obj.push(item);
+            } else if ('Recovery' === toolType) {
+                var item ={
+                    Tool_Type:toolType,
+                    Test_Image:_father.find("#TestImage").select2('data')[0].text,
+                    OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
                 }
+                obj.push(item);
             }
 
-            var collapseId = Number($('#forCollapse').text()); // 初始值为0
-            $.ajax({
-                type : "post",
-                url: "{:url('ToolHandler/getTool')}",
-                data: {
-                    toolId : toolId,
-                    selection : selection,
-                    collapseId : collapseId
-                },
-                success : function (result) {
-                    if ('none' === $('#content').css('display')){
-                        $('#content').css('display', 'block');
-                    }
-                    if (1 === type) {
-                        $('#box_body').append('<div>' + result +'</div>');
-                        lastDiv = $('#box_body').children('div:last');
-                        addThenInit(selection, lastDiv);
-
-                    } else if (2 === type) {
-                        lastDiv = obj.parent().parent().parent().parent();
-                        lastDiv.after('<div>' + result +'</div>');
-                        addThenInit(selection, lastDiv.next());
-
-                    }
-                },
-                error : function(){
-                    toastr.error("Add Fail, Try Again");
-                },
-                complete: function () {
-                    $('#forCollapse').text(collapseId + 1);
+        });
+        return JSON.stringify(obj);
+    }
+    function updateJsonData(data) {
+        $.ajax({
+            type : "post",
+            url: "{:url('ToolHandler/updateToolSteps')}",
+            data: {
+                taskId: $('#taskId').val(),
+                formObj : data
+            },
+            success : function (result) {
+                if ("done" == result) {
+                    toastr.success("Update Tool Steps Success");
+                    setTimeout("window.location.href=\"TaskManager\";",1500);
                 }
-            });
-        }
 
-        function addThenInit(selection, obj) {
-            if ('JumpStart' === selection) {
-                // testImage
-                obj.find('select[name="TestImage"]').each(function () {
-                    var _this = $(this);
-                    _this.select2({
-                        width: "100%",
-                        ajax: {
-                            url: "{:url('AddTool/getTestImage')}",
-                            dataType: 'json',
-                            delay: 250,
-                            data: function (params) {
-                                return {q: params.term};
-                            },
-                            processResults: function (data) {
-                                return {results: data};
-                            },
-                            cache: false
-                        },
-                        placeholder: 'Please Select',
-                        allowClear: true
-                    });
-                    $.ajax({
-                        type: 'post',
+            },
+            error : function(){
+                toastr.error("Submit Fail, Try Again");
+            }
+
+        })
+
+    }
+
+    function validateFormData() {
+        // select option required
+        $('#content').find('select').each(function (i) {
+            if (null == $(this).val() || undefined == $(this).val()){
+                var target = $(this).attr('name');
+                toastr.error(target + " Can't Be Empty");
+                return false;
+            }
+
+        });
+
+    }
+
+    function addToolByButton(type, obj) {
+        var selection, toolId;
+        try {
+            selection= $('select[name="selection"]').select2('data')[0].text;
+            toolId = $('select[name="selection"]').select2('data')[0].id;
+        } catch (e) {
+            if (undefined == selection || null == selection) {
+                toastr.error(" Please Select Tool");
+                return false;
+            }
+        }
+        index = $('#forCollapse').val();
+        $.ajax({
+            type : "post",
+            url: "{:url('ToolHandler/getTool')}",
+            data: {
+                toolId : toolId,
+                selection : selection,
+                collapseId : index
+            },
+            success : function (result) {
+                if ('none' === $('#content').css('display')){
+                    $('#content').css('display', 'block');
+                }
+                if (1 === type) {
+                    $('#box_body').append('<div>' + result +'</div>');
+                    lastDiv = $('#box_body').children('div:last');
+                    addThenInit(selection, lastDiv);
+
+                } else if (2 === type) {
+                    lastDiv = obj.parent().parent().parent().parent();
+                    lastDiv.after('<div>' + result +'</div>');
+                    addThenInit(selection, lastDiv.next());
+
+                }
+            },
+            error : function(){
+                toastr.error("Add Fail, Try Again");
+            },
+            complete: function () {
+                $('#forCollapse').val(index + 1);
+            }
+        });
+    }
+
+    function addThenInit(selection, obj) {
+        if ('JumpStart' === selection) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "100%",
+                    ajax: {
                         url: "{:url('AddTool/getTestImage')}",
                         dataType: 'json',
-                        success: function (data) {
-                            var option = new Option('Keep Current Image', 'Keep Current Image', true, true);
-                            _this.append(option);
-                        }
-                    });
-
-                });
-
-                // Execute Job
-                obj.find('.select').each(function () {
-                    $(this).select2();
-                });
-                // OS Activation
-                obj.find('input[type="radio"].minimal').each(function () {
-                    $(this).iCheck(
-                        {radioClass: 'iradio_minimal-blue'}
-                    );
-                });
-
-
-            } else if ('Recovery' === selection) {
-                // testImage
-                obj.find('select[name="TestImage"]').each(function () {
-                    var _this = $(this);
-                    _this.select2({
-                        width: "100%",
-                        ajax: {
-                            url: "{:url('AddTool/getTestImage')}",
-                            dataType: 'json',
-                            delay: 250,
-                            data: function (params) {
-                                return {q: params.term};
-                            },
-                            processResults: function (data) {
-                                return {results: data};
-                            },
-                            cache: false
+                        delay: 250,
+                        data: function (params) {
+                            return {q: params.term};
                         },
-                        placeholder: 'Please Select',
-                        allowClear: true
-                    });
+                        processResults: function (data) {
+                            return {results: data};
+                        },
+                        cache: false
+                    },
+                    placeholder: 'Please Select',
+                    allowClear: true
+                }).html('<option value="' + 'Keep Current Image' + '">' + 'Keep Current Image' + '</option>').trigger("change");
 
+            });
+
+            // Execute Job
+            obj.find('.select').each(function () {
+                $(this).select2();
+            });
+            // OS Activation
+            obj.find('input[type="radio"].minimal').each(function () {
+                $(this).iCheck(
+                    {radioClass: 'iradio_minimal-blue'}
+                );
+            });
+
+
+        } else if ('Recovery' === selection) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "100%",
+                    ajax: {
+                        url: "{:url('AddTool/getTestImage')}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {q: params.term};
+                        },
+                        processResults: function (data) {
+                            return {results: data};
+                        },
+                        cache: false
+                    },
+                    placeholder: 'Please Select',
+                    allowClear: true
                 });
-                // OS Activation
-                obj.find('input[type="radio"].minimal').each(function () {
-                    $(this).iCheck(
-                        {radioClass: 'iradio_minimal-blue'}
-                    );
-                });
+
+            });
+            // OS Activation
+            obj.find('input[type="radio"].minimal').each(function () {
+                $(this).iCheck(
+                    {radioClass: 'iradio_minimal-blue'}
+                );
+            });
 
 
-            }
         }
-
-    });
+    }
 
     function setJumpStart(i, item) {
         $template = '';
 
-        $template = '<button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>JumpStart</b></button>' +
+        $template = '<button type="button" class="btn btn-info btn-sm btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>JumpStart</b></button>' +
                     '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
                     '    <div class="panel-body form-horizontal">'+
                     '        <div class="form-group">'+
@@ -438,7 +434,7 @@ desired effect
                     '            <label class="col-sm-1 control-label">OS Activation</label>'+
                     '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
                     '                <label style="margin-right: 19px">'+
-                    '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="YES" checked/> YES'+
+                    '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="YES"/> YES'+
                     '                </label>'+
                     '                <label style="margin-right: 19px">'+
                     '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="NO"/> NO'+
@@ -451,9 +447,114 @@ desired effect
                     '    </div>'+
                     '</div>';
         return $template;
+    }
 
+    function setJumpStartData(obj, item) {
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            _this.select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('AddTool/getTestImage')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {q: params.term};
+                    },
+                    processResults: function (data) {
+                        return {results: data};
+                    },
+                    cache: false
+                },
+                placeholder: 'Please Select',
+                allowClear: true
+            }).html('<option value="' + item.Test_Image + '">' + item.Test_Image + '</option>').trigger("change");
 
+        });
 
+        // Execute Job
+        obj.find('.select').each(function () {
+            $(this).select2().val(item.Execute_Job).trigger("change");;
+        });
+        // OS Activation
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            );
+
+            if (item.OS_Activation == $(this).val()) {
+                $(this).iCheck('check');
+            }
+        });
+
+    }
+
+    function setRecovery(i, item) {
+        $template = '';
+
+        $template = '<button type="button" class="btn btn-info btn-sm btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>JumpStart</b></button>' +
+            '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
+            '    <div class="panel-body form-horizontal">'+
+            '        <div class="form-group">'+
+            '            <label class="col-sm-1 control-label">Test Image</label>'+
+            '            <div class="col-sm-4">'+
+            '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'+
+            '            </div>'+
+            '            <label class="col-sm-1 control-label">OS Activation</label>'+
+            '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
+            '                <label style="margin-right: 19px">'+
+            '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="YES"/> YES'+
+            '                </label>'+
+            '                <label style="margin-right: 19px">'+
+            '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="NO"/> NO'+
+            '                </label>'+
+            '            </div>'+
+            '        </div>'+
+            '        <hr>'+
+            '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"> Add</button></div>'+
+            '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"> delete</button></div>'+
+            '    </div>'+
+            '</div>';
+
+        return $template;
+
+    }
+    
+    function  setRecoveryData(obj, item) {
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            _this.select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('AddTool/getTestImage')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {q: params.term};
+                    },
+                    processResults: function (data) {
+                        return {results: data};
+                    },
+                    cache: false
+                },
+                placeholder: 'Please Select',
+                allowClear: true
+            }).html('<option value="' + item.Test_Image + '">' + item.Test_Image + '</option>').trigger("change");
+
+        });
+
+        // OS Activation
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            );
+
+            if (item.OS_Activation == $(this).val()) {
+                $(this).iCheck('check');
+            }
+        });
     }
 </script>
 

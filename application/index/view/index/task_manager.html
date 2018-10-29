@@ -1,7 +1,36 @@
 <!DOCTYPE html>
 <!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
+                                         ,s555SB@@&
+                                      :9H####@@@@@Xi
+                                     1@@@@@@@@@@@@@@8
+                                   ,8@@@@@@@@@B@@@@@@8
+                                  :B@@@@X3hi8Bs;B@@@@@Ah,
+             ,8i                  r@@@B:     1S ,M@@@@@@#8;
+            1AB35.i:               X@@8 .   SGhr ,A@@@@@@@@S
+            1@h31MX8                18Hhh3i .i3r ,A@@@@@@@@@5
+            ;@&i,58r5                 rGSS:     :B@@@@@@@@@@A
+             1#i  . 9i                 hX.  .: .5@@@@@@@@@@@1
+              sG1,  ,G53s.              9#Xi;hS5 3B@@@@@@@B1
+               .h8h.,A@@@MXSs,           #@H1:    3ssSSX@1
+               s ,@@@@@@@@@@@@Xhi,       r#@@X1s9M8    .GA981
+               ,. rS8H#@@@@@@@@@@#HG51;.  .h31i;9@r    .8@@@@BS;i;
+                .19AXXXAB@@@@@@@@@@@@@@#MHXG893hrX#XGGXM@@@@@@@@@@MS
+                s@@MM@@@hsX#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&,
+              :GB@#3G@@Brs ,1GM@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@B,
+            .hM@@@#@@#MX 51  r;iSGAM@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@8
+          :3B@@@@@@@@@@@&9@h :Gs   .;sSXH@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@:
+      s&HA#@@@@@@@@@@@@@@M89A;.8S.       ,r3@@@@@@@@@@@@@@@@@@@@@@@@@@@r
+   ,13B@@@@@@@@@@@@@@@@@@@5 5B3 ;.         ;@@@@@@@@@@@@@@@@@@@@@@@@@@@i
+  5#@@#&@@@@@@@@@@@@@@@@@@9  .39:          ;@@@@@@@@@@@@@@@@@@@@@@@@@@@;
+  9@@@X:MM@@@@@@@@@@@@@@@#;    ;31.         H@@@@@@@@@@@@@@@@@@@@@@@@@@:
+   SH#@B9.rM@@@@@@@@@@@@@B       :.         3@@@@@@@@@@@@@@@@@@@@@@@@@@5
+     ,:.   9@@@@@@@@@@@#HB5                 .M@@@@@@@@@@@@@@@@@@@@@@@@@B
+           ,ssirhSM@&1;i19911i,.             s@@@@@@@@@@@@@@@@@@@@@@@@@@S
+              ,,,rHAri1h1rh&@#353Sh:          8@@@@@@@@@@@@@@@@@@@@@@@@@#:
+            .A3hH@#5S553&@@#h   i:i9S          #@@@@@@@@@@@@@@@@@@@@@@@@@A.
+
+
+    又看源码，看你妹妹呀！
 -->
 <html>
 <head>
@@ -445,39 +474,15 @@ desired effect
         deleteTaskButtonInit();
 
     });
-    // 验证工具的操作
+    // 决定工具的操作
     function checkTool(taskId, toolOp) {
-        $.ajax({
-            type : "post",
-            url: "{:url('TaskManager/checkTool')}",
-            data: {
-                taskId: taskId
-            },
-            success : function (result) {
-                if (result > 0) {
-                    if ('add' == toolOp) {
-                        toastr.info('You Have Already Added Tool');
-                        return false;
-                    } else if ('edit' == toolOp){
-                        // window.location.href='{:url("ToolHandler/setTool")}?taskId='+ taskId ;
-                        window.location.href='{:url("ToolEdit")}?taskId='+ taskId ;
-                    } else if ('delete' == toolOp){
-                        alert('22');
-                    }
-                } else {
-                    if ('add' == toolOp) {
-                        window.location.href='{:url("ToolAdd")}?taskId='+ taskId ;
-                    } else {
-                        toastr.info('You Are Not Add Tool, Please Add Tool First');
-                        return false;
-                    }
-                }
-            },
-            error : function(){
-                toastr.error('CheckTool Fail');
-                return false;
-            }
-        });
+        if ('add' === toolOp) {
+            window.location.href='{:url("ToolAdd")}?taskId='+ taskId ;
+        } else if ('edit' === toolOp){
+            window.location.href='{:url("ToolEdit")}?taskId='+ taskId ;
+        } else if ('delete' === toolOp){
+            alert('22');
+        }
     }
     function taskButton(){
         var buttonGroup=$('.btn-group:eq(1)');
@@ -599,10 +604,15 @@ desired effect
                 title: 'Tool',
                 formatter: function (value, row, index) {
                     var id = row['task_id'];
+                    var sid = row['sid'];
                     var result="";
-                    result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
-                    result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
-                    result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+
+                    if (null == sid) {
+                        result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
+                    } else {
+                        result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
+                        result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+                    }
 
                     return result;
                 }

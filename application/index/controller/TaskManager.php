@@ -86,10 +86,17 @@ class TaskManager extends Common{
 
         $jsonResult = array();
         if ($this->hasRight){
-            $result = Db::table('ats_task_basic')->order('task_id desc')->limit($offset,$pageSize)->select();
+
+            $subMainQuery = Db::table('ats_task_basic')->order('task_id desc')->limit($offset,$pageSize)->buildSql();
+            $subStepsQuery = Db::table('ats_task_tool_steps')->distinct(true)->field('task_id as sid')->buildSql();
+
+            $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid', 'LEFT')->order('task_id desc')->select();
             $total = Db::table('ats_task_basic')->count();
         } else {
-            $result = Db::table('ats_task_basic')->where('tester', $this->loginUser)->order('task_id desc')->limit($offset,$pageSize)->select();
+            $subMainQuery = Db::table('ats_task_basic')->where('tester', $this->loginUser)->order('task_id desc')->limit($offset,$pageSize)->buildSql();
+            $subStepsQuery = Db::table('ats_task_tool_steps')->distinct(true)->field('task_id as sid')->buildSql();
+
+            $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid', 'LEFT')->order('task_id desc')->select();
             $total = Db::table('ats_task_basic')->where('tester', $this->loginUser)->count();
         }
 
