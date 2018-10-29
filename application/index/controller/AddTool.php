@@ -15,63 +15,6 @@ use app\index\model\AtsToolElement;
 
 class AddTool extends Common
 {
-    /*
-     * create html
-     */
-    public function createAddToolElement(){
-
-        $selection = $this->request->param('selection');// 需要继承控制器
-        $toolId = $this->request->param('toolId');
-        $collapseId = $this->request->param('collapseId');
-
-        $atsToolPanel = new AtsToolElement();
-
-        $panel = $atsToolPanel->where('tool_id', $toolId)->order('tool_id')->select();
-        $resLength = count($panel);
-
-        $htmlCreated = "";
-        // create panelHead (single data)
-        $htmlCreated = $htmlCreated. CreateAddToolElement::panelInit($selection, $panel[0]['panel_class'], $collapseId);
-
-        $trLength = $resLength % MAX_LINE_LENGTH == 0 ? ($resLength / MAX_LINE_LENGTH) : intval($resLength / MAX_LINE_LENGTH) + 1;
-
-        $count = 0;
-        for ($i = 0; $i < $trLength; $i++){
-            $htmlCreated = $htmlCreated. ' <div class="form-group">';
-            $tmpArr = array_slice($panel, $i*MAX_LINE_LENGTH, MAX_LINE_LENGTH);
-            for($j = 0; $j < count($tmpArr); $j++){
-
-                // get Type
-                if(SELECT2 == $tmpArr[$j]['html_type']){
-                    $htmlCreated = $htmlCreated . CreateAddToolElement::select2Init($tmpArr[$j], $collapseId);
-                    $count++;
-                }
-                else if(SELECT == $tmpArr[$j]['html_type']){
-                    $htmlCreated = $htmlCreated . CreateAddToolElement::selectInit($tmpArr[$j], $collapseId);
-                    $count++;
-                }
-                else if(RADIO == $tmpArr[$j]['html_type']){
-                    $htmlCreated = $htmlCreated . CreateAddToolElement::radioInit($tmpArr[$j], $collapseId);
-                    $count++;
-                }
-                else if(CHECKBOX == $tmpArr[$j]['html_type']){
-                    $htmlCreated = $htmlCreated . CreateAddToolElement::checkboxInit($tmpArr[$j], $collapseId);
-                    $count++;
-                }
-                if (MAX_LINE_LENGTH == $count){
-                    $count = 0;
-                    break;
-                }
-            }
-
-            $htmlCreated = $htmlCreated. ' </div>';
-        }
-
-        // panel footer
-        $htmlCreated = CreateAddToolElement::panelFooter($htmlCreated);
-        return $htmlCreated;
-
-    }
 
     /*
      * get Data from Form

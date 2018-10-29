@@ -194,198 +194,211 @@ desired effect
         // submit
         $('#sub').click(function () {
             validateFormData();
+            addJsonData(formToJson());
 
-            var obj = [];
-            $('#toolForm').find('button[data-toggle="collapse"]').each(function (i) {
+        })
+        
+    })
+    function formToJson() {
+        var obj = [];
+        $('#toolForm').find('button[data-toggle="collapse"]').each(function (i) {
 
-                _father = $(this).parent();
-                toolType = $(this).children('b').html();
+            _father = $(this).parent();
+            toolType = $(this).children('b').html();
 
-                _father.find("input[name^='OS Activation']:checked").each(function () {
-                    $(this)
-                })
-                if ('JumpStart' === toolType) {
-                    var item ={
-                        Tool_Type:toolType,
-                        Test_Image:_father.find("#TestImage").select2('data')[0].text,
-                        Execute_Job:_father.find("#ExecuteJob").select2('data')[0].text,
-                        OS_Activation:_father.find("input[name^='OS Activation']:checked").val() // OS Activation first
-                    }
-
-                    obj.push(item);
-                } else if ('Recovery' === toolType) {
-                    var item ={
-                        Tool_Type:toolType,
-                        Test_Image:_father.find("#TestImage").select2('data')[0].text,
-                        OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
-                    }
-                    obj.push(item);
-                }
-
-            });
-            console.log(JSON.stringify(obj));
-            $.ajax({
-                type : "post",
-                url: "{:url('AddTool/insertAddTool')}",
-                data: {
-                    taskId: $('#taskId').val(),
-                    formObj : JSON.stringify(obj)
-                },
-                success : function (result) {
-                    if ("done" == result) {
-                        toastr.success("Add Tool Steps Success");
-                        setTimeout("window.location.href=\"TaskManager\";",1500);
-                    }
-
-                },
-                error : function(){
-                    toastr.error("Submit Fail, Try Again");
-                }
-
+            _father.find("input[name^='OS Activation']:checked").each(function () {
+                $(this)
             })
+            if ('JumpStart' === toolType) {
+                var item ={
+                    Tool_Type:toolType,
+                    Test_Image:_father.find("#TestImage").select2('data')[0].text,
+                    Execute_Job:_father.find("#ExecuteJob").select2('data')[0].text,
+                    OS_Activation:_father.find("input[name^='OS Activation']:checked").val() // OS Activation first
+                }
+
+                obj.push(item);
+            } else if ('Recovery' === toolType) {
+                var item ={
+                    Tool_Type:toolType,
+                    Test_Image:_father.find("#TestImage").select2('data')[0].text,
+                    OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
+                }
+                obj.push(item);
+            }
+
+        });
+        return JSON.stringify(obj);
+    }
+    function addJsonData(data) {
+        $.ajax({
+            type : "post",
+            url: "{:url('AddTool/insertAddTool')}",
+            data: {
+                taskId: $('#taskId').val(),
+                formObj : data
+            },
+            success : function (result) {
+                if ("done" == result) {
+                    toastr.success("Add Tool Steps Success");
+                    setTimeout("window.location.href=\"TaskManager\";",1500);
+                }
+
+            },
+            error : function(){
+                toastr.error("Submit Fail, Try Again");
+            }
+
+        })
+
+    }
+
+    function validateFormData() {
+        // select option required
+        $('#content').find('select').each(function (i) {
+            if (null == $(this).val() || undefined == $(this).val()){
+                var target = $(this).attr('name');
+                toastr.error(target + " Can't Be Empty");
+                return false;
+            }
 
         });
 
-        function validateFormData() {
-            // select option required
-            $('#content').find('select').each(function (i) {
-                if (null == $(this).val() || undefined == $(this).val()){
-                    var target = $(this).attr('name');
-                    toastr.error(target + " Can't Be Empty");
-                    return false;
-                }
+    }
 
-            });
-
-        }
-
-        function addToolByButton(type, obj) {
-            var selection, toolId;
-            try {
-                selection= $('select[name="selection"]').select2('data')[0].text;
-                toolId = $('select[name="selection"]').select2('data')[0].id;
-            } catch (e) {
-                if (undefined == selection || null == selection) {
-                    toastr.error(" Please Select Tool");
-                    return false;
-                }
+    function addToolByButton(type, obj) {
+        var selection, toolId;
+        try {
+            selection= $('select[name="selection"]').select2('data')[0].text;
+            toolId = $('select[name="selection"]').select2('data')[0].id;
+        } catch (e) {
+            if (undefined == selection || null == selection) {
+                toastr.error(" Please Select Tool");
+                return false;
             }
-
-            var collapseId = Number($('#forCollapse').text()); // 初始值为0
-            $.ajax({
-                type : "post",
-                url: "{:url('ToolHandler/getTool')}",
-                data: {
-                    toolId : toolId,
-                    selection : selection,
-                    collapseId : collapseId
-                },
-                success : function (result) {
-                    if ('none' === $('#content').css('display')){
-                        $('#content').css('display', 'block');
-                    }
-                    if (1 === type) {
-                        $('#box_body').append('<div>' + result +'</div>');
-                        lastDiv = $('#box_body').children('div:last');
-                        addThenInit(selection, lastDiv);
-
-                    } else if (2 === type) {
-                        lastDiv = obj.parent().parent().parent().parent();
-                        lastDiv.after('<div>' + result +'</div>');
-                        addThenInit(selection, lastDiv.next());
-
-                    }
-                },
-                error : function(){
-                    toastr.error("Add Fail, Try Again");
-                },
-                complete: function () {
-                    $('#forCollapse').text(collapseId + 1);
-                }
-            });
         }
 
-        function addThenInit(selection, obj) {
-            if ('JumpStart' === selection) {
-                // testImage
-                obj.find('select[name="TestImage"]').each(function () {
-                    var _this = $(this);
-                    _this.select2({
-                        width: "100%",
-                        ajax: {
-                            url: "{:url('AddTool/getTestImage')}",
-                            dataType: 'json',
-                            delay: 250,
-                            data: function (params) {
-                                return {q: params.term};
-                            },
-                            processResults: function (data) {
-                                return {results: data};
-                            },
-                            cache: false
-                        },
-                        placeholder: 'Please Select',
-                        allowClear: true
-                    });
-                    $.ajax({
-                        type: 'post',
+        var collapseId = Number($('#forCollapse').text()); // 初始值为0
+        $.ajax({
+            type : "post",
+            url: "{:url('ToolHandler/getTool')}",
+            data: {
+                toolId : toolId,
+                selection : selection,
+                collapseId : collapseId
+            },
+            success : function (result) {
+                if ('none' === $('#content').css('display')){
+                    $('#content').css('display', 'block');
+                }
+                if (1 === type) {
+                    $('#box_body').append('<div>' + result +'</div>');
+                    lastDiv = $('#box_body').children('div:last');
+                    addThenInit(selection, lastDiv);
+
+                } else if (2 === type) {
+                    lastDiv = obj.parent().parent().parent().parent();
+                    lastDiv.after('<div>' + result +'</div>');
+                    addThenInit(selection, lastDiv.next());
+
+                }
+            },
+            error : function(){
+                toastr.error("Add Fail, Try Again");
+            },
+            complete: function () {
+                $('#forCollapse').text(collapseId + 1);
+            }
+        });
+    }
+
+    function addThenInit(selection, obj) {
+        if ('JumpStart' === selection) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "100%",
+                    ajax: {
                         url: "{:url('AddTool/getTestImage')}",
                         dataType: 'json',
-                        success: function (data) {
-                            var option = new Option('Keep Current Image', 'Keep Current Image', true, true);
-                            _this.append(option);
-                        }
-                    });
-
-                });
-
-                // Execute Job
-                obj.find('.select').each(function () {
-                    $(this).select2();
-                });
-                // OS Activation
-                obj.find('input[type="radio"].minimal').each(function () {
-                    $(this).iCheck(
-                        {radioClass: 'iradio_minimal-blue'}
-                    );
-                });
-
-
-            } else if ('Recovery' === selection) {
-                // testImage
-                obj.find('select[name="TestImage"]').each(function () {
-                    var _this = $(this);
-                    _this.select2({
-                        width: "100%",
-                        ajax: {
-                            url: "{:url('AddTool/getTestImage')}",
-                            dataType: 'json',
-                            delay: 250,
-                            data: function (params) {
-                                return {q: params.term};
-                            },
-                            processResults: function (data) {
-                                return {results: data};
-                            },
-                            cache: false
+                        delay: 250,
+                        data: function (params) {
+                            return {q: params.term};
                         },
-                        placeholder: 'Please Select',
-                        allowClear: true
-                    });
+                        processResults: function (data) {
+                            return {results: data};
+                        },
+                        cache: false
+                    },
+                    placeholder: 'Please Select',
+                    allowClear: true
+                }).html('<option value="' + 'Keep Current Image' + '">' + 'Keep Current Image' + '</option>').trigger("change");
 
+            });
+
+            // Execute Job
+            obj.find('.select').each(function () {
+                $(this).select2();
+            });
+            // OS Activation
+            obj.find('input[type="radio"].minimal').each(function () {
+                $(this).iCheck(
+                    {radioClass: 'iradio_minimal-blue'}
+                );
+            });
+
+
+        } else if ('Recovery' === selection) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "100%",
+                    ajax: {
+                        url: "{:url('AddTool/getTestImage')}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {q: params.term};
+                        },
+                        processResults: function (data) {
+                            return {results: data};
+                        },
+                        cache: false
+                    },
+                    placeholder: 'Please Select',
+                    allowClear: true
                 });
-                // OS Activation
-                obj.find('input[type="radio"].minimal').each(function () {
-                    $(this).iCheck(
-                        {radioClass: 'iradio_minimal-blue'}
-                    );
+
+            });
+            // OS Activation
+            obj.find('input[type="radio"].minimal').each(function () {
+                $(this).iCheck(
+                    {radioClass: 'iradio_minimal-blue'}
+                );
+            });
+
+
+        } else if ('C-Test' === selection) {
+            // testImage
+            obj.find('.select').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "50%"
                 });
 
+            });
+            // OS Activation
+            obj.find('input[type="radio"].minimal').each(function () {
+                $(this).iCheck(
+                    {radioClass: 'iradio_minimal-blue'}
+                );
+            });
 
-            }
+
         }
-        
-    });
+    }
 </script>
 
 </body>

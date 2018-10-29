@@ -33,6 +33,7 @@ define('CHECKBOX_LABEL', ' style="margin-right: 19px"');
 
 define('JUMP_START', 'JumpStart');
 define('RECOVERY', 'Recovery');
+define('C_TEST', 'C-Test');
 
 /*
  * ATS path
