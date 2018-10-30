@@ -89,23 +89,34 @@ class ToolMaker {
             '        <div class="form-group">'.
             '            <label class="col-sm-1 control-label">End After</label>'.
             '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'.
-            '                <label style="margin-right: 19px"><input type="radio" name="End After_3" class="minimal" value="Count" checked/> Count</label>'.
-            '                <label style="margin-right: 19px"><input type="radio" name="End After_3" class="minimal" value="Terminus" /> Terminus</label>'.
-            '                <label style="margin-right: 19px"><input type="radio" name="End After_3" class="minimal" value="Interval" /> Interval</label>'.
+            '                <label style="margin-right: 19px"><input type="radio" name="End After_'. $index .'" class="minimal" value="Count" checked/> Count</label>'.
+            '                <label style="margin-right: 19px"><input type="radio" name="End After_'. $index .'" class="minimal" value="Terminus" /> Terminus</label>'.
+            '                <label style="margin-right: 19px"><input type="radio" name="End After_'. $index .'" class="minimal" value="Interval" /> Interval</label>'.
             '            </div>'.
             '            <label class="col-sm-1 control-label">End After Data</label>'.
             '            <div class="col-sm-4">'.
-            '                <div id="Count" style="display: none">'.
+            '                <div id="Count" style="display: block">'.
             '                    <input type="number" max="1000" min="1">'.
             '                </div>'.
             '                <div id="Terminus" style="display: none">'.
             '                    <select>'.
-            '                        <option>1</option>'.
+            '                        <option>星期一</option>'.
+            '                        <option>星期二</option>'.
+            '                        <option>星期三</option>'.
+            '                        <option>星期四</option>'.
+            '                        <option>星期五</option>'.
+            '                        <option>星期六</option>'.
+            '                        <option>星期天</option>'.
             '                    </select>'.
-            '                    <input type="number" max="1000" min="1">'.
+            '                    <div class="input-group date">'.
+            '                        <div class="input-group-addon">'.
+            '                            <i class="fa fa-calendar"></i>'.
+            '                        </div>'.
+            '                        <input type="text" class="form-control pull-right" id="datepicker">'.
+            '                    </div>'.
             '                </div>'.
-            '                <div id="Interval" style="display: block">'.
-            '                    <input type="number" min="0" style="margin: 5px"> Days '.
+            '                <div id="Interval" style="display: none">'.
+            '                    <input type="number" min="0" max="365" style="margin: 5px"> Days '.
             '                    <input type="number" max="24" min="0" style="margin: 5px"> Hours '.
             '                    <input type="number" max="60" min="0" style="margin: 5px"> Mins '.
             '                </div>'.
