@@ -19,7 +19,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Select2 -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
     <!-- bootstrap datepicker -->
-    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datepicker/bootstrap-datepicker3.standalone.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
     <!-- BS Select -->
     <!--<link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-select/css/bootstrap-select.min.css">-->
     <!--PACE-->
@@ -130,7 +130,8 @@ desired effect
 <!-- Select2 -->
 <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
 <!-- bootstrap datepicker -->
-<script src=".__PUBLIC_JS__/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script src="__PUBLIC_JS__/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+<script src="__PUBLIC_JS__/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
 <!-- BS Select2 -->
 <!--<script src="__PUBLIC_JS__/bootstrap-select/js/bootstrap-select.min.js"></script>-->
 <!-- iCheck 1.0.1 -->
@@ -202,7 +203,7 @@ desired effect
 
         })
         
-    })
+    });
 
     function formToJson() {
         var obj = [];
@@ -241,7 +242,7 @@ desired effect
                 formObj : data
             },
             success : function (result) {
-                if ("done" == result) {
+                if ("done" === result) {
                     toastr.success("Add Tool Steps Success");
                     setTimeout("window.location.href=\"TaskManager\";",1500);
                 }
@@ -392,11 +393,8 @@ desired effect
 
             });
             // datetime
-            obj.find('#datepicker').each(function () {
-                $(this).datepicker({
-                    autoclose: true
-                });
-            });
+            obj.find('.datepicker').datetimepicker({format: 'yyyy/mm/dd HH:mm', autoclose:true, showMeridian:true});
+
 
             // End After
             obj.find('input[type="radio"].minimal').each(function () {
