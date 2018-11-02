@@ -96,29 +96,71 @@ class ToolMaker {
             '            <label class="col-sm-1 control-label">End After Data</label>'.
             '            <div class="col-sm-4">'.
             '                <div id="Count" style="display: block">'.
-            '                    <input type="number" max="1000" min="1">'.
+            '                    <div class="input-group spinner col-sm-2" data-trigger="spinner">'.
+            '                        <input type="text" class="form-control text-center" value="1" data-max="1000" data-min="1" data-step="1" data-rule="quantity">'.
+            '                        <div class="input-group-addon">'.
+            '	                         <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '		                     <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                        </div>'.
+            '                    </div>'.
             '                </div>'.
             '                <div id="Terminus" style="display: none">'.
-            '                    <select>'.
-            '                        <option>星期一</option>'.
-            '                        <option>星期二</option>'.
-            '                        <option>星期三</option>'.
-            '                        <option>星期四</option>'.
-            '                        <option>星期五</option>'.
-            '                        <option>星期六</option>'.
-            '                        <option>星期天</option>'.
-            '                    </select>'.
-            '                    <div class="input-group date">'.
-            '                        <div class="input-group-addon">'.
-            '                            <i class="fa fa-calendar"></i>'.
+            '                    <div class="form-inline">'.
+            '                        <div class="input-group col-sm-3" style="margin-right: 5px;">'.
+            '                            <select>'.
+            '                                <option>Monday</option>'.
+            '                                <option>Tuesday</option>'.
+            '                                <option>Wednesday</option>'.
+            '                                <option>Thursday</option>'.
+            '                                <option>Friday</option>'.
+            '                                <option>Saturday</option>'.
+            '                                <option>Sunday</option>'.
+            '                            </select>'.
             '                        </div>'.
-            '                        <input type="text" class="form-control pull-right datepicker" id="">'.
+//            '                        <div class="input-group col-sm-1">'.
+//            '                            <span class="">Hours</span>'.
+//            '                        </div>'.
+            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 5px;">'.
+            '                            <input type="text" class="form-control text-center" data-rule="hour" title="Hour">'.
+            '                            <div class="input-group-addon">'.
+            '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                            </div>'.
+            '                        </div>'.
+            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 5px;">'.
+            '                            <input type="text" class="form-control text-center" data-rule="minute"  title="minute">'.
+            '                            <div class="input-group-addon">'.
+            '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                            </div>'.
+            '                        </div>'.
             '                    </div>'.
             '                </div>'.
             '                <div id="Interval" style="display: none">'.
-            '                    <input type="number" min="0" max="365" style="margin: 5px"> Days '.
-            '                    <input type="number" max="24" min="0" style="margin: 5px"> Hours '.
-            '                    <input type="number" max="60" min="0" style="margin: 5px"> Mins '.
+            '                    <div class="form-inline">'.
+            '                        <label class="input-group">asd</label>'.
+            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner">'.
+            '                            <input type="text" class="form-control text-center" value="1" data-rule="day" title="day">'.
+            '                            <div class="input-group-addon">'.
+            '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                            </div>'.
+            '                        </div> '.
+            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner">'.
+            '                            <input type="text" class="form-control text-center" value="1" data-rule="hour" title="Hour">'.
+            '                            <div class="input-group-addon">'.
+            '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                            </div>'.
+            '                        </div> '.
+            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner">'.
+            '                            <input type="text" class="form-control text-center" value="1" data-rule="minute" title="minute">'.
+            '                            <div class="input-group-addon">'.
+            '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                            </div>'.
+            '                        </div> '.
+            '                    </div>'.
             '                </div>'.
             '            </div>'.
             '        </div>'.

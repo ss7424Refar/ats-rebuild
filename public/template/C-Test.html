@@ -10,6 +10,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="../../public/static/css/jquery.spinner/bootstrap-spinner.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+    <script src="../../public/static/js/jquery.spinner/jquery.spinner.js"></script>
+
 </head>
 <body>
 <button type="button" class="btn btn-info btn-block" data-toggle="collapse" data-target="#collapse_3"><b>C-Test</b>
@@ -26,26 +35,57 @@
 
             <label class="col-sm-1 control-label">End After Data</label>
             <div class="col-sm-4">
-                <div id="Count" style="display: block">
-                    <input type="number" max="1000" min="1">
-                </div>
-                <div id="Terminus" style="display: none">
-                    <select>
-                        <option>1</option>
-                        <option>1</option>
-                        <option>1</option>
-                    </select>
-                    <div class="input-group date">
+                <div id="Count" style="display: none">
+                    <!--<input type="number" max="1000" min="1">-->
+                    <div class="input-group spinner" data-trigger="spinner">
+                        <input type="text" class="form-control text-center" value="1" data-rule="quantity">
                         <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
+                            <a href="javascript:;" class="spin-up" data-spin="up"><i class="fas fa-caret-up"></i></a>
+                            <a href="javascript:;" class="spin-down" data-spin="down"><i class="fas fa-caret-down"></i></a>
                         </div>
-                        <input type="text" class="form-control pull-right" id="datepicker">
+                    </div>
+                </div>
+                <div id="Terminus" style="display: block" class="form-group">
+                    <div class="form-inline">
+                        <div class="input-group">
+                            <select>
+                                <option>1</option>
+                                <option>1</option>
+                                <option>1</option>
+                            </select>
+                        </div>
+                        <div class="input-group col-sm-2">
+                            <!--<b>hhh</b>-->
+                            <span class="">asdasd</span>
+                        </div>
+                        <div class="input-group spinner col-sm-3" data-trigger="spinner">
+                            <input type="text" class="form-control text-center" value="1" data-rule="hour">
+                            <div class="input-group-addon">
+                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fas fa-caret-up"></i></a>
+                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fas fa-caret-down"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="input-group spinner col-sm-3" data-trigger="spinner">
+                            <input type="text" class="form-control text-center" value="1" data-rule="hour">
+                            <div class="input-group-addon">
+                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fas fa-caret-up"></i></a>
+                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fas fa-caret-down"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id="Interval" style="display: none">
-                    <input type="number" min="0"> Days
-                    <input type="number" max="24" min="0"> Hours
-                    <input type="number" max="60" min="0"> Mins
+                    <div class="form-inline">
+                        <div class="input-group spinner col-sm-3" data-trigger="spinner">
+                            <input type="text" class="form-control text-center" value="1" data-rule="hour">
+                            <div class="input-group-addon">
+                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fas fa-caret-up"></i></a>
+                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fas fa-caret-down"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

@@ -14,14 +14,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">-->
   <!-- Ionicons -->
   <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
     <!-- bootstrap datepicker -->
-    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <!--<link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">-->
     <!-- BS Select -->
     <!--<link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-select/css/bootstrap-select.min.css">-->
+    <!--jquery.spinner-->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/jquery.spinner/bootstrap-spinner.min.css">
     <!--PACE-->
   <link rel="stylesheet" href="__PUBLIC_CSS__/pace/pace.css">
     <!-- iCheck for checkboxes and radio inputs -->
@@ -130,10 +133,12 @@ desired effect
 <!-- Select2 -->
 <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
 <!-- bootstrap datepicker -->
-<script src="__PUBLIC_JS__/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
-<script src="__PUBLIC_JS__/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+<!--<script src="__PUBLIC_JS__/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>-->
+<!--<script src="__PUBLIC_JS__/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>-->
 <!-- BS Select2 -->
 <!--<script src="__PUBLIC_JS__/bootstrap-select/js/bootstrap-select.min.js"></script>-->
+<!--jquery.spinner-->
+<script src="__PUBLIC_JS__/jquery.spinner/jquery.spinner.min.js"></script>
 <!-- iCheck 1.0.1 -->
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!-- AdminLTE App -->
@@ -388,13 +393,12 @@ desired effect
             obj.find('select').each(function () {
                 var _this = $(this);
                 _this.select2({
-                    width: "20%"
+                    width: "100%"
                 });
 
             });
-            // datetime
-            obj.find('.datepicker').datetimepicker({format: 'yyyy/mm/dd HH:mm', autoclose:true, showMeridian:true});
-
+            // jquery spinner init
+            obj.find('[data-trigger="spinner"]').spinner();
 
             // End After
             obj.find('input[type="radio"].minimal').each(function () {
