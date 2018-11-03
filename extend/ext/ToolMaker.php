@@ -107,7 +107,7 @@ class ToolMaker {
             '                <div id="Terminus" style="display: none">'.
             '                    <div class="form-inline">'.
             '                        <div class="input-group col-sm-3" style="margin-right: 5px;">'.
-            '                            <select>'.
+            '                            <select id="week">'.
             '                                <option>Monday</option>'.
             '                                <option>Tuesday</option>'.
             '                                <option>Wednesday</option>'.
@@ -117,48 +117,45 @@ class ToolMaker {
             '                                <option>Sunday</option>'.
             '                            </select>'.
             '                        </div>'.
-//            '                        <div class="input-group col-sm-1">'.
-//            '                            <span class="">Hours</span>'.
-//            '                        </div>'.
-            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 5px;">'.
-            '                            <input type="text" class="form-control text-center" data-rule="hour" title="Hour">'.
-            '                            <div class="input-group-addon">'.
-            '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
-            '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
-            '                            </div>'.
-            '                        </div>'.
-            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 5px;">'.
-            '                            <input type="text" class="form-control text-center" data-rule="minute"  title="minute">'.
-            '                            <div class="input-group-addon">'.
-            '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
-            '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
-            '                            </div>'.
+            '                        <div class="input-group clockpicker" data-autoclose="true">'.
+            '                            <input type="text" class="form-control" >'.
+            '                            <span class="input-group-addon">'.
+            '                                <span class="glyphicon glyphicon-time"></span>'.
+            '                            </span>'.
             '                        </div>'.
             '                    </div>'.
             '                </div>'.
             '                <div id="Interval" style="display: none">'.
             '                    <div class="form-inline">'.
-            '                        <label class="input-group">asd</label>'.
-            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner">'.
+            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 10px">'.
             '                            <input type="text" class="form-control text-center" value="1" data-rule="day" title="day">'.
             '                            <div class="input-group-addon">'.
             '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
             '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
             '                            </div>'.
+            '                            <span class="input-group-addon bg-gray">'.
+            '                                <span>Day</span>'.
+            '                            </span>'.
             '                        </div> '.
-            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner">'.
+            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 10px">'.
             '                            <input type="text" class="form-control text-center" value="1" data-rule="hour" title="Hour">'.
             '                            <div class="input-group-addon">'.
             '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
             '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
             '                            </div>'.
+            '                            <span class="input-group-addon bg-gray">'.
+            '                                <span >Hour</span>'.
+            '                            </span>'.
             '                        </div> '.
-            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner">'.
-            '                            <input type="text" class="form-control text-center" value="1" data-rule="minute" title="minute">'.
+            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 10px">'.
+            '                            <input type="text" class="form-control text-center" value="1" data-rule="minute" title="Min">'.
             '                            <div class="input-group-addon">'.
             '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
             '                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
             '                            </div>'.
+            '                            <span class="input-group-addon bg-gray">'.
+            '                                <span>Min</span>'.
+            '                            </span>'.
             '                        </div> '.
             '                    </div>'.
             '                </div>'.

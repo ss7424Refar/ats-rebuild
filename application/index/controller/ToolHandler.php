@@ -8,14 +8,14 @@
 
 namespace app\index\controller;
 
+use app\index\model\AtsTaskBasic;
 use app\index\model\AtsTaskToolSteps;
-use app\index\model\AtsTool;
+
 use ext\ToolMaker;
 
 class ToolHandler extends Common {
     public function getTool(){
         $selection = $this->request->param('selection');// 需要继承控制器
-        $toolId = $this->request->param('toolId');
         $index = $this->request->param('collapseId');
 
 
@@ -73,6 +73,21 @@ class ToolHandler extends Common {
 
             }
             return "done";
+        }
+
+    }
+
+    public function deleteToolSteps(){
+        $taskId = $this->request->param('taskId');
+
+        $res = AtsTaskBasic::get(['task_id' => $taskId]);
+
+        if (0 == $res->getData('status') ){
+            // delete steps
+            AtsTaskToolSteps::destroy($taskId);
+            return 'done';
+        } else {
+            return 'fail';
         }
 
     }

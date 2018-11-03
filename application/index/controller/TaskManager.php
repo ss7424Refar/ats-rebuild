@@ -119,6 +119,26 @@ class TaskManager extends Common{
         return "success";
     }
 
+    /*
+    * page init for tool steps modal
+    */
+    public function stepsPagination(){
+        $pageSize = $this->request->param('pageSize');
+        $pageNo = $this->request->param('pageNumber');
+        $offset = ($pageNo-1)*$pageSize;
+
+        $taskId = $this->request->param('taskId');
+
+        $jsonResult = array();
+
+        $result = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->order('steps')->limit($offset,$pageSize)->select();
+        $total = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->count();
+
+        $jsonResult['total'] = $total;
+        $jsonResult['rows'] = $result;
+
+        return json_encode($jsonResult);
+    }
 
     /*
      * check the task should which op tool
@@ -128,15 +148,6 @@ class TaskManager extends Common{
         $total = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->count();
 
         return $total;
-    }
-    /*
-     * check checkTaskIdExist
-     */
-    public function checkTaskIdExist(){
-        $taskId = $this->request->param('taskId');
-        $total = Db::table('ats_task_basic')->where('task_id', $taskId)->count();
-
-        return ($total > 0) ? 1 : 2;
     }
 
     public function getTaskInfoById(){
