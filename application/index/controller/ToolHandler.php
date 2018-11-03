@@ -14,6 +14,37 @@ use app\index\model\AtsTaskToolSteps;
 use ext\ToolMaker;
 
 class ToolHandler extends Common {
+    /*
+     * select2 plugins
+     */
+    public function getTestImage(){
+        $query = $this->request->param('q');
+        $handler = opendir(ATS_IMAGES_PATH);
+
+        $i = 1;
+        $jsonResult = array();
+
+        while (($filename = readdir($handler)) !== false) {
+            //略过linux目录的名字为'.'和‘..'的文件
+            if ($filename != "." && $filename != "..") {
+                if (empty(trim($query))) {
+                    $tmpArray = array('id' => $filename, 'text' => $filename);
+                    $i = $i + 1;
+                    array_push($jsonResult, $tmpArray);
+                } else {
+                    if (stristr($filename, $query) !== false) {
+                        $tmpArray = array('id' => $filename, 'text' => $filename);
+                        $i = $i + 1;
+                        array_push($jsonResult, $tmpArray);
+                    }
+                }
+            }
+        }
+
+        return json_encode($jsonResult);
+
+    }
+
     public function getTool(){
         $selection = $this->request->param('selection');// 需要继承控制器
         $index = $this->request->param('collapseId');
@@ -48,6 +79,30 @@ class ToolHandler extends Common {
 
         return json_encode($jsonResult);
 
+    }
+    /*
+     * get Data from Form
+     * insert to DB
+     */
+    public function insertAddTool(){
+        $taskId = $this->request->param('taskId');
+        $formObj = $this->request->param('formObj');
+        $formObj = json_decode($formObj); // object in array
+        for ($i = 0; $i < count($formObj); $i++) {
+            // 需要接口更新其他步骤的开始时间
+            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null;
+            // insert ats_task_tool_steps
+            AtsTaskToolSteps::create([
+                'task_id'  =>  $taskId,
+                'tool_name' =>  $formObj[$i]->Tool_Type,
+                'status' => '0',  // pending
+                'steps' => $i + 1,
+                'element_json' => json_encode($formObj[$i]), // trans to String
+                'tool_start_time' => $startTime
+            ]);
+
+        }
+        return "done";
     }
 
     public function updateToolSteps(){

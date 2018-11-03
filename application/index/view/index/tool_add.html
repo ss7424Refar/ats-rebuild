@@ -146,6 +146,8 @@ desired effect
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!-- AdminLTE App -->
 <script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
+<!--selfJs-->
+<script src="__PUBLIC_JS__/assets/commonTool.js"></script>
 
 <script>
     $(function () {
@@ -203,69 +205,11 @@ desired effect
         
     });
 
-    function formToJson() {
-        var obj = [];
-        $('#toolForm').find('button[data-toggle="collapse"]').each(function (i) {
-
-            _father = $(this).parent();
-            toolType = $(this).children('b').html();
-
-            if ('JumpStart' === toolType) {
-                var item ={
-                    Tool_Type:toolType,
-                    Test_Image:_father.find("#TestImage").select2('val'),
-                    Execute_Job:_father.find("#ExecuteJob").select2('val'),
-                    OS_Activation:_father.find("input[name^='OS Activation']:checked").val() // OS Activation first
-                }
-
-                obj.push(item);
-            } else if ('Recovery' === toolType) {
-                var item ={
-                    Tool_Type:toolType,
-                    Test_Image:_father.find("#TestImage").select2('val'),
-                    OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
-                }
-                obj.push(item);
-            }else if ('C-Test' === toolType) {
-                checkedVal = _father.find("input[name^='End After']:checked").val();
-                if (null !== checkedVal || undefined !== checkedVal) {
-                    item = null;
-                    if ('Count' === checkedVal) {
-                        item ={
-                            Tool_Type:toolType,
-                            End_After:'Count',
-                            Count:_father.find('#Count').find('input').val()
-                        }
-
-                    } else if ('Terminus' === checkedVal) {
-                        item ={
-                            Tool_Type:toolType,
-                            End_After:'Terminus',
-                            Week:_father.find('#Terminus').find('#week').select2('val'),
-                            Time:_father.find('#Terminus').find('input').val(),
-                        }
-
-                    } else if ('Interval' === checkedVal) {
-                        item ={
-                            Tool_Type:toolType,
-                            End_After:'Interval',
-                            Day:_father.find('#Interval').find('input:eq(0)').val(),
-                            Hour:_father.find('#Interval').find('input:eq(1)').val(),
-                            Min:_father.find('#Interval').find('input:eq(2)').val(),
-                        }
-                    }
-                    obj.push(item);
-                }
-            }
-
-        });
-        return JSON.stringify(obj);
-    }
     function addJsonData(data) {
         console.log(data);
         $.ajax({
             type : "post",
-            url: "{:url('AddTool/insertAddTool')}",
+            url: "{:url('ToolHandler/insertAddTool')}",
             data: {
                 taskId: $('#taskId').val(),
                 formObj : data
@@ -281,22 +225,6 @@ desired effect
             }
 
         })
-
-    }
-
-    function validateFormData() {
-        // select option required
-        var isNG = false;
-        // select option required
-        $('#content').find('select').each(function (i) {
-            if (null == $(this).val() || undefined == $(this).val()){
-                var target = $(this).attr('name');
-                toastr.error(target + " Can't Be Empty");
-                isNG = true;
-            }
-
-        });
-        return isNG;
 
     }
 
@@ -344,7 +272,7 @@ desired effect
                 _this.select2({
                     width: "100%",
                     ajax: {
-                        url: "{:url('AddTool/getTestImage')}",
+                        url: "{:url('ToolHandler/getTestImage')}",
                         dataType: 'json',
                         delay: 250,
                         data: function (params) {
@@ -380,7 +308,7 @@ desired effect
                 _this.select2({
                     width: "100%",
                     ajax: {
-                        url: "{:url('AddTool/getTestImage')}",
+                        url: "{:url('ToolHandler/getTestImage')}",
                         dataType: 'json',
                         delay: 250,
                         data: function (params) {
