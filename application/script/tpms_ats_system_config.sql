@@ -16,27 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `ats_tool`
+-- Table structure for table `ats_system_config`
 --
 
-DROP TABLE IF EXISTS `ats_tool`;
+DROP TABLE IF EXISTS `ats_system_config`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ats_tool` (
-  `tool_id` int(3) NOT NULL AUTO_INCREMENT COMMENT '	',
-  `tool_name` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`tool_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE `ats_system_config` (
+  `name` varchar(30) NOT NULL,
+  `value` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ats_tool`
+-- Dumping data for table `ats_system_config`
 --
 
-LOCK TABLES `ats_tool` WRITE;
-/*!40000 ALTER TABLE `ats_tool` DISABLE KEYS */;
-INSERT INTO `ats_tool` VALUES (1,'JumpStart'),(2,'Recovery');
-/*!40000 ALTER TABLE `ats_tool` ENABLE KEYS */;
+LOCK TABLES `ats_system_config` WRITE;
+/*!40000 ALTER TABLE `ats_system_config` DISABLE KEYS */;
+INSERT INTO `ats_system_config` VALUES ('FinishTimeStamp','1531914856'),('PrepareTimeStamp','1536476647');
+/*!40000 ALTER TABLE `ats_system_config` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-07 19:56:22
+-- Dump completed on 2018-11-03 19:51:28
