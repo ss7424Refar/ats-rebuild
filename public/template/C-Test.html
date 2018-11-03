@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,9 +8,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link rel="stylesheet" href="../../public/static/css/jquery.spinner/bootstrap-spinner.css">
+    <link rel="stylesheet" href="../../public/static/css/clockpicker-gh-pages/bootstrap-clockpicker.min.css">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.js"></script>-->
+    <script src="../../public/static/js/jquery/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+
+    <script src="../../public/static/js/jquery.spinner/jquery.spinner.js"></script>
+    <script src="../../public/static/js/clockpicker-gh-pages/bootstrap-clockpicker.min.js"></script>
+
+
     <script src="../../public/static/js/jquery.spinner/jquery.spinner.js"></script>
 
 </head>
@@ -54,24 +55,11 @@
                                 <option>1</option>
                             </select>
                         </div>
-                        <div class="input-group col-sm-2">
-                            <!--<b>hhh</b>-->
-                            <span class="">asdasd</span>
-                        </div>
-                        <div class="input-group spinner col-sm-3" data-trigger="spinner">
-                            <input type="text" class="form-control text-center" value="1" data-rule="hour">
-                            <div class="input-group-addon">
-                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fas fa-caret-up"></i></a>
-                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fas fa-caret-down"></i></a>
-                            </div>
-                        </div>
-
-                        <div class="input-group spinner col-sm-3" data-trigger="spinner">
-                            <input type="text" class="form-control text-center" value="1" data-rule="hour">
-                            <div class="input-group-addon">
-                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fas fa-caret-up"></i></a>
-                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fas fa-caret-down"></i></a>
-                            </div>
+                        <div class="input-group clockpicker" data-autoclose="true">
+                            <input type="text" class="form-control" >
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -93,6 +81,13 @@
         <button type="button" class="btn btn-success delete"> delete</button>
     </div>
 </div>
+
+<script>
+    $('.clockpicker').clockpicker({
+        default:'now'
+    });
+
+</script>
 </body>
 </html>
 </body>

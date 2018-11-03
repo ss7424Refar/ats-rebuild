@@ -282,11 +282,12 @@ desired effect
                                     </div>
                                     <!-- /.tab-pane -->
                                     <div class="tab-pane" id="tab_2">
-                                        <table id="stepsTable" class="" data-show-jumpto="true"></table>
+                                        <!--<table id="stepsTable" class="" data-show-jumpto="true"></table>-->
                                     </div>
                                 </div>
                                 <!-- /.tab-content -->
                             </div>
+                            <div id="stepsDetail"></div>
                             <button type="button" class="btn btn-default col-md-offset-10" data-dismiss="modal">close</button>
                         </div>
 
@@ -325,9 +326,7 @@ desired effect
 <script src="__PUBLIC_JS__/bootstrapvalidator/bootstrapValidator.min.js"></script>
 <!-- AdminLTE App -->
 <script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
-
 <script>
-
     $(function () {
 
         testMachine = $("select[name='machine_name']");
@@ -352,10 +351,15 @@ desired effect
         addFormValidatorInit();
 
         // 当点击steps tab的时候
+        $('a[href="#tab_1"]').click(function () {
+            if ('block' == $('#stepsDetail').css('display')){
+                $('#stepsDetail').css('display', 'none');
+            }
+        });
         $('a[href="#tab_2"]').click(function () {
             var taskId = $("#tab_1").find('p:eq(0)').html()
             $('#stepsTable').bootstrapTable({
-                url: "{:url('TaskManager/stepsPagination')}",    //请求后台的URL（*）
+                url: "{:url('TaskManager/stepsPagination')}?taskId=" + taskId,    //请求后台的URL（*）
                 method: 'post',                      //请求方式（*）
                 classes: 'table table-hover', // table 样式
                 iconSize: 'sm',
@@ -389,55 +393,55 @@ desired effect
                 columns: [{
                     field: 'steps',
                     title: 'Steps',
-                    formatter:function(value, row, index){
-                        return 'Step_' + value;
-                    }
+                    align:'center'
                 }, {
                     field: 'tool_name',
                     title: 'Tool Name'
                 },
                     {
-                    field: 'status',
-                    title: 'Status',
-                    formatter:function(value, row, index){
-                        if (0==value){
-                            return "pending";
-                        }else if (1==value){
-                            return "ongoing";
-                        }else if (2==value){
-                            return "finished";
-                        }else if (3==value){
-                            return "Cancelled";
-                        }else if (4==value){
-                            return "Abnormal End";
-                        }else if (5==value){
-                            return "expired";
-                        }
-                        return "N/A";
-                    }
-                }, {
-                        field: 'result',
-                        title: 'Result',
-                },
-                {
-                    field: 'tool_start_time',
-                    title: 'Start Time',
-                }, {
-                    field: 'tool_end_time',
-                    title: 'Finish Time'
-                },
-                    {
-                        field: 'result',
-                        title: 'Test Result',
-                        formatter: function(value, row, index){
-                            var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
-                            if("Fail"==value){
-                                return '<a href='+ path +'><i class="fa fa-times fa-fw"></i>&nbsp;' + value + '</a>';
-                            } else if("Pass"==value){
-                                return '<a href='+ path +'><i class="fa fa-check fa-fw"></i>&nbsp;' + value + '</a>';
+                        field: 'status',
+                        title: 'Status',
+                        formatter:function(value, row, index){
+                            if (0==value){
+                                return "pending";
+                            }else if (1==value){
+                                return "ongoing";
+                            }else if (2==value){
+                                return "finished";
+                            }else if (3==value){
+                                return "Cancelled";
+                            }else if (4==value){
+                                return "Abnormal End";
+                            }else if (5==value){
+                                return "expired";
                             }
                             return "N/A";
                         }
+                    },
+                    {
+                        field: 'tool_start_time',
+                        title: 'Start Time',
+                    },
+                    {
+                        field: 'tool_end_time',
+                        title: 'Finish Time'
+                    },
+                    {
+                        field: 'result',
+                        title: 'Test Result',
+                    },
+                    {
+                        field: 'result_path',
+                        title: 'Result Path'
+                        // formatter: function(value, row, index){
+                        //     var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
+                        //     if("Fail"==value){
+                        //         return '<a href='+ path +'><i class="fa fa-times fa-fw"></i>&nbsp;' + value + '</a>';
+                        //     } else if("Pass"==value){
+                        //         return '<a href='+ path +'><i class="fa fa-check fa-fw"></i>&nbsp;' + value + '</a>';
+                        //     }
+                        //     return "N/A";
+                        // }
                     },
                 ],
                 rowStyle: function(row, index){
@@ -463,7 +467,37 @@ desired effect
                 formatNoMatches: function () {  //没有匹配的结果
                     return '<i class="text-danger">No matching records found</i>';
                 }
-            })
+            }).on('click-row.bs.table', function(row, $element, field){
+                $('#stepsDetail').addClass('well');
+
+                var item = JSON.parse($element['element_json']);
+
+                if (null !== item || undefined !== item) {
+                    var result = '';
+                    result += '<form class="form-horizontal ">';
+                    result += '<div class="form-group">';
+                    result += '    <label class="col-sm-3 control-label">Step</label>';
+                    result += '    <div class="col-sm-8">';
+                    result += '        <p class="form-control-static">' + $element['steps'] + '</p>';
+                    result += '    </div>';
+                    result += '</div>';
+                    for(var key in item){
+                        if ('Tool_Type' !== key) {
+                            result += '<div class="form-group">';
+                            result += '    <label class="col-sm-3 control-label">'+ key +'</label>';
+                            result += '    <div class="col-sm-8">';
+                            result += '        <p class="form-control-static">' + item[key] + '</p>';
+                            result += '    </div>';
+                            result += '</div>';
+                        }
+                    }
+                    result += '</form>';
+                    $('#stepsDetail').html(result);
+                    if ('none' === $('#stepsDetail').css('display')){
+                        $('#stepsDetail').css('display', 'block');
+                    }
+                }
+            });
 
         });
 
@@ -474,6 +508,7 @@ desired effect
         deleteTaskButtonInit();
 
     });
+
     // 决定工具的操作
     function checkTool(taskId, toolOp) {
         if ('add' === toolOp) {
@@ -481,7 +516,43 @@ desired effect
         } else if ('edit' === toolOp){
             window.location.href='{:url("ToolEdit")}?taskId='+ taskId ;
         } else if ('delete' === toolOp){
-            alert('22');
+
+            bootbox.confirm({
+                message: " Do You Want Delete Tool Steps?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('ToolHandler/deleteToolSteps')}",
+                            data: {taskId: taskId},
+                            success: function (result) {
+                                console.log(result);
+                                if ('fail' !== result) {
+                                    toastr.success("Delete Steps Success");
+                                    $('#taskTable').bootstrapTable('selectPage', 1);
+                                }
+                            },
+                            error: function () {
+                                toastr.error("Delete Steps Fail");
+                                return false;
+                            }
+
+                        });
+                    }
+
+                }
+            });
+
         }
     }
     function taskButton(){
@@ -501,6 +572,7 @@ desired effect
     function tableInit(queryPs){
         $('#taskTable').bootstrapTable({
             url: "{:url('TaskManager/taskPagination')}",    //请求后台的URL（*）
+            // url: "/ats_kimi/index/TaskManager/taskPagination",    //请求后台的URL（*）
             method: 'post',                      //请求方式（*）
             classes: 'table table-responsive table-hover table-no-bordered', // table 样式
             iconSize: 'sm',
@@ -572,50 +644,54 @@ desired effect
                 title: 'Finish Time'
             },
                 {
-                field: 'process',
-                title: 'Process',
-                formatter: function (value, row, index) {
+                    field: 'process',
+                    title: 'Process',
+                    formatter: function (value, row, index) {
 
-                    if (0 == value) {
-                        return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: 2%">0%</div>';
-                    } else {
-                        return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: ' + value + '%">' + value + '%</div>';
+                        if (0 == value) {
+                            return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: 2%">0%</div>';
+                        } else {
+                            return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: ' + value + '%">' + value + '%</div>';
+                        }
+
                     }
-
-                }
-            },
+                },
                 {
-                field: 'result',
-                title: 'Test Result',
-                formatter: function(value, row, index){
-                    var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
-                    if("Fail"==value){
-                        return '<a href='+ path +'><i class="fa fa-times fa-fw"></i>&nbsp;' + value + '</a>';
-                    } else if("Pass"==value){
-                        return '<a href='+ path +'><i class="fa fa-check fa-fw"></i>&nbsp;' + value + '</a>';
+                    field: 'result',
+                    title: 'Test Result',
+                    formatter: function(value, row, index){
+                        var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
+                        if("Fail"==value){
+                            return '<a href='+ path +'><i class="fa fa-times fa-fw"></i>&nbsp;' + value + '</a>';
+                        } else if("Pass"==value){
+                            return '<a href='+ path +'><i class="fa fa-check fa-fw"></i>&nbsp;' + value + '</a>';
+                        }
+                        return "N/A";
                     }
-                    return "N/A";
-                }
-            }, {
-                field: 'tester',
-                title: 'Tester'
-            }, {
-                field: 'tool',
-                title: 'Tool',
-                formatter: function (value, row, index) {
-                    var id = row['task_id'];
-                    var sid = row['sid'];
-                    var result="";
+                }, {
+                    field: 'tester',
+                    title: 'Tester'
+                }, {
+                    field: 'tool',
+                    title: 'Tool',
+                    formatter: function (value, row, index) {
+                        var id = row['task_id'];
+                        var sid = row['sid'];
+                        var result="";
 
-                    if (null == sid) {
-                        result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
-                    } else {
-                        result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
-                        result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+                        if (0 == row['status']) {
+                            if (null == sid) {
+                                result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
+                            } else {
+                                result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+                            }
+                        } else {
+                            result += "<a class='btn btn-xs bg-red' href='#' " + "data-toggle=\"tooltip\" data-placement=\"bottom\" title='ban' style='margin: 3px'><span class='glyphicon glyphicon-ban-circle'></span></a>";
+                        }
+
+                        return result;
                     }
-
-                    return result;
-                }
                 }
             ],
             rowStyle: function(row, index){
@@ -650,6 +726,11 @@ desired effect
             $('.nav-tabs li').each(function () {
                 $(this).removeClass('active');
             });
+            // delete steps detail
+            if ($('#stepsDetail').attr('class','well')) {
+                $('#stepsDetail').html('').removeClass('well');
+            }
+
             $("a[href='#tab_1']").parent().addClass('active');
             $("div[id*='#tab_']").each(function () {
                 $(this).removeClass('active');
@@ -658,61 +739,31 @@ desired effect
 
             $('#tab_2').html('<table id="stepsTable" class="" data-show-jumpto="true"></table>');
             // get info
-            if (checkTaskIdExist(taskId)){
-                $.ajax({
-                    type: "post",
-                    url: "{:url('TaskManager/getTaskInfoById')}",
-                    data: {taskId: taskId},
-                    dataType: "json",
-                    success: function (result) {
-                        if(result){
-                            var i = 0;
-                            for(var key in result[0]){
-                                $("#tab_1").find('p:eq(' + i + ')').html(result[0][key]);
-                                i++;
-                            }
-                            $("#detailInfo").modal("toggle");
+            $.ajax({
+                type: "post",
+                url: "{:url('TaskManager/getTaskInfoById')}",
+                data: {taskId: taskId},
+                dataType: "json",
+                success: function (result) {
+                    if(result){
+                        var i = 0;
+                        for(var key in result[0]){
+                            $("#tab_1").find('p:eq(' + i + ')').html(result[0][key]);
+                            i++;
                         }
-                    },
-                    error: function () {
-                        toastr.error("Get Info Fail");
-                        return false;
+                        $("#detailInfo").modal("toggle");
                     }
+                },
+                error: function () {
+                    toastr.error("Get Info Fail");
+                    return false;
+                }
 
-                });
-
-            }
+            });
 
         });
 
     };
-
-    // check taskId
-    function checkTaskIdExist(taskId) {
-        var rt;
-        $.ajax({
-            type: "post",
-            url: "{:url('TaskManager/checkTaskIdExist')}",
-            async: false,   //关键是“async: false”，如果不加，result会是未定义
-            data: {taskId: taskId},
-            success: function (result) {
-                if (1 == result) {
-                    rt = true;
-                } else {
-                    rt = false;
-                };
-            },
-            error:function () {
-                toastr.error("Check TaskId Fail");
-                return false;
-            }
-
-        });
-
-        return rt;
-
-    }
-
 
     function queryParams(params) {
         var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
@@ -1076,7 +1127,7 @@ desired effect
         });
 
     };
-</script>
 
+</script>
 </body>
 </html>
