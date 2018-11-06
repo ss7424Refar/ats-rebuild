@@ -127,7 +127,7 @@ class ToolMaker {
             '                </div>'.
             '                <div id="Interval" style="display: none">'.
             '                    <div class="form-inline">'.
-            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 10px">'.
+            '                        <div class="input-group spinner col-sm-3" data-trigger="spinner" style="margin-right: 10px">'.
             '                            <input type="text" class="form-control text-center" value="1" data-rule="day" title="day">'.
             '                            <div class="input-group-addon">'.
             '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
@@ -137,7 +137,7 @@ class ToolMaker {
             '                                <span>Day</span>'.
             '                            </span>'.
             '                        </div> '.
-            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 10px">'.
+            '                        <div class="input-group spinner col-sm-3" data-trigger="spinner" style="margin-right: 10px">'.
             '                            <input type="text" class="form-control text-center" value="1" data-rule="hour" title="Hour">'.
             '                            <div class="input-group-addon">'.
             '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
@@ -147,7 +147,7 @@ class ToolMaker {
             '                                <span >Hour</span>'.
             '                            </span>'.
             '                        </div> '.
-            '                        <div class="input-group spinner col-sm-2" data-trigger="spinner" style="margin-right: 10px">'.
+            '                        <div class="input-group spinner col-sm-3" data-trigger="spinner" style="margin-right: 10px">'.
             '                            <input type="text" class="form-control text-center" value="1" data-rule="minute" title="Min">'.
             '                            <div class="input-group-addon">'.
             '                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
