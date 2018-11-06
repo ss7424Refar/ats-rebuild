@@ -449,9 +449,11 @@ desired effect
                         return {classes: 'danger'};
                     }else if("Pass"==row.result){
                         return {classes: 'success'};
-                    }else if(0==row.status){
-                        return {classes: 'info'};
-                    }else if(1==row.status){
+                    }
+                    else if(0==row.status){
+                        return {classes: 'default'};
+                    }
+                    else if(1==row.status){
                         return {classes: 'warning'};
                     }
                     return {classes: 'active'};
@@ -700,7 +702,7 @@ desired effect
                 }else if("Pass"==row.result){
                     return {classes: 'success'};
                 }else if(0==row.status){
-                    return {classes: 'info'};
+                    return {classes: 'default'};
                 }else if(1==row.status){
                     return {classes: 'warning'};
                 }
