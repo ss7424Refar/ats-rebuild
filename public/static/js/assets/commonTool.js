@@ -76,7 +76,7 @@ function validateFormData() {
 function setJumpStart(i) {
     $template = '';
 
-    $template = '<button type="button" class="btn btn-info btn-sm btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>JumpStart</b></button>' +
+    $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>JumpStart</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
@@ -116,7 +116,7 @@ function setJumpStart(i) {
 function setRecovery(i) {
     $template = '';
 
-    $template = '<button type="button" class="btn btn-info btn-sm btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>Recovery</b></button>' +
+    $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>Recovery</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
@@ -147,7 +147,7 @@ function setRecovery(i) {
 function setCTest(i) {
     $template = '';
 
-    $template = '<button type="button" class="btn btn-info btn-sm btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>C-Test</b></button>' +
+    $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>C-Test</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+

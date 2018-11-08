@@ -12,7 +12,7 @@ class ToolMaker {
     public static function getJumpStart($index) {
         $template = '';
 
-        $template = '<button type="button" class="btn btn-info btn-sm btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. JUMP_START .'</b></button>'.
+        $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. JUMP_START .'</b></button>'.
                     '<div id="collapse_'. $index .'" class="panel-collapse collapse in">'.
                     '    <div class="panel-body form-horizontal">'.
                     '        <div class="form-group">'.
@@ -53,7 +53,7 @@ class ToolMaker {
     public static function getRecovery($index) {
         $template = '';
 
-        $template = '<button type="button" class="btn btn-info btn-sm btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. RECOVERY .'</b></button>'.
+        $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. RECOVERY .'</b></button>'.
                     '<div id="collapse_'. $index .'" class="panel-collapse collapse in">'.
                     '    <div class="panel-body form-horizontal">'.
                     '        <div class="form-group">'.
@@ -83,7 +83,7 @@ class ToolMaker {
     public static function getCTest($index){
         $template = '';
 
-        $template = '<button type="button" class="btn btn-info btn-sm btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. C_TEST .'</b></button>'.
+        $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. C_TEST .'</b></button>'.
             '<div id="collapse_'. $index .'" class="panel-collapse collapse in">'.
             '    <div class="panel-body form-horizontal">'.
             '        <div class="form-group">'.
