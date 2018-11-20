@@ -15,7 +15,10 @@ use think\Request;
  */
 class Index extends Common
 {
+    public function DashBoard(){
+        return $this->fetch();
 
+    }
     public function TaskManager(){
         return $this->fetch();
 
