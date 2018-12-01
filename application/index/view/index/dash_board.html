@@ -58,7 +58,7 @@
                     <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="fa fa-paper-plane"></i></span>
 
-                        <div class="info-box-content">
+                        <div class="info-box-content" id="pending">
                             <span class="info-box-text">Pending</span>
                             <span class="info-box-number">90<small>%</small></span>
                         </div>
@@ -71,7 +71,7 @@
                     <div class="info-box">
                         <span class="info-box-icon bg-blue"><i class="fa fa-cog"></i></span>
 
-                        <div class="info-box-content">
+                        <div class="info-box-content" id="ongoing">
                             <span class="info-box-text">Ongoing</span>
                             <span class="info-box-number">41,410</span>
                         </div>
@@ -87,7 +87,7 @@
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-green"><i class="fa fa-hourglass"></i></span>
-                        <div class="info-box-content">
+                        <div class="info-box-content" id="finished">
                             <span class="info-box-text">Finished</span>
                             <span class="info-box-number">760</span>
                         </div>
@@ -100,7 +100,7 @@
                     <div class="info-box">
                         <span class="info-box-icon bg-gray"><i class="fa fa-warning" style="color: white"></i></span>
 
-                        <div class="info-box-content">
+                        <div class="info-box-content" id="expired">
                             <span class="info-box-text">Expired</span>
                             <span class="info-box-number">2,000</span>
                         </div>
@@ -110,94 +110,6 @@
                 </div>
                 <!-- /.col -->
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <!-- interactive chart -->
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bar-chart-o"></i>
-
-                            <h3 class="box-title">Week Tool</h3>
-
-                            <div class="box-tools pull-right">
-                                <!--Real time-->
-                                <!--<div class="btn-group" id="realtime" data-toggle="btn-toggle">-->
-                                    <!--<button type="button" class="btn btn-default btn-xs active" data-toggle="on">On</button>-->
-                                    <!--<button type="button" class="btn btn-default btn-xs" data-toggle="off">Off</button>-->
-                                <!--</div>-->
-                                <!--<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>-->
-                                <!--</button>-->
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fa fa-wrench"></i></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Another action</a></li>
-                                        <li><a href="#">Something else here</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a></li>
-                                    </ul>
-                                </div>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div id="interactive" style="height: 230px;"></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="text-center">
-                                        <strong>Goal Completion</strong>
-                                    </p>
-
-                                    <div class="progress-group">
-                                        <span class="progress-text">JumpStart</span>
-                                        <span class="progress-number"><b>160</b>/200</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        <span class="progress-text">Recovery</span>
-                                        <span class="progress-number"><b>310</b>/400</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-red" style="width: 80%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        <span class="progress-text">C-Test</span>
-                                        <span class="progress-number"><b>480</b>/800</span>
-
-                                        <div class="progress sm">
-                                            <div class="progress-bar progress-bar-green" style="width: 80%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                    <!--<div class="progress-group">-->
-                                        <!--<span class="progress-text">Send Inquiries</span>-->
-                                        <!--<span class="progress-number"><b>250</b>/500</span>-->
-
-                                        <!--<div class="progress sm">-->
-                                            <!--<div class="progress-bar progress-bar-yellow" style="width: 80%"></div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!-- /.progress-group -->
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.box-body-->
-                    </div>
-                    <!-- /.box -->
-
-                </div>
-                <!-- /.col -->
-            </div>
-            <!-- /.row -->
 
             <div class="row">
                 <div class="col-md-6">
@@ -206,7 +118,62 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
 
-                            <h3 class="box-title">Line Chart</h3>
+                            <h3 class="box-title">测试机型的统计</h3>
+
+                            <div class="box-tools pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-calendar"></i></button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a id="machine_hour">Hour Unit</a></li>
+                                        <li><a href="#">Week Unit</a></li>
+                                        <li><a href="#">Day Unit</a></li>
+                                        <li><a href="#">Month Unit</a></li>
+                                        <li><a href="#">Year Unit</a></li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div id="machineChart" style="height: 300px;"></div>
+                        </div>
+                        <!-- /.box-body-->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bar-chart-o"></i>
+
+                            <h3 class="box-title">测试工具结果的统计</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div id="toolChart" style="height: 300px;width: 100%" ></div>
+                        </div>
+                        <!-- /.box-body-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Line chart -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bar-chart-o"></i>
+
+                            <h3 class="box-title">测试镜像的统计</h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -226,7 +193,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
 
-                            <h3 class="box-title">Full Width Area Chart</h3>
+                            <h3 class="box-title">每周pass,failed等结果的统计</h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -250,7 +217,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
 
-                            <h3 class="box-title">Bar Chart</h3>
+                            <h3 class="box-title">每周测试工具数量的统计</h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -270,7 +237,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
 
-                            <h3 class="box-title">Donut Chart</h3>
+                            <h3 class="box-title">测试人员添加task数量的统计</h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -306,45 +273,205 @@
 <script src="__PUBLIC_JS__/echarts/echarts.min.js"></script>
 <!-- 引入 vintage 主题 -->
 <script src="__PUBLIC_JS__/echarts/themes/macarons.js"></script>
-
 <!-- AdminLTE App -->
 <script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
-<!-- FLOT CHARTS -->
-<!--<script src="../../bower_components/Flot/jquery.flot.js"></script>-->
-<!--&lt;!&ndash; FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized &ndash;&gt;-->
-<!--<script src="../../bower_components/Flot/jquery.flot.resize.js"></script>-->
-<!--&lt;!&ndash; FLOT PIE PLUGIN - also used to draw donut charts &ndash;&gt;-->
-<!--<script src="../../bower_components/Flot/jquery.flot.pie.js"></script>-->
-<!--&lt;!&ndash; FLOT CATEGORIES PLUGIN - Used to draw bar charts &ndash;&gt;-->
-<!--<script src="../../bower_components/Flot/jquery.flot.categories.js"></script>-->
-<!-- Page script -->
 <script>
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('interactive'), 'macarons');
 
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            // text: 'ECharts 入门示例'
+    $(function () {
+        // tooltip init
+        // $("[data-toggle='tooltip']").tooltip();
+
+        // machine and result chart init
+        var machineChart = echarts.init(document.getElementById('machineChart'), 'macarons');
+        machineChart.showLoading();
+
+        $.ajax({
+            type : "post",
+            url: "{:url('DashBoard/machineChart')}",
+            data: {
+                timer: 'hour'
+            },
+            success : function (result) {
+                var item;
+                var series = [];
+                var xAxis = createTimerArray('hour');
+                console.log(xAxis);
+                // console.log(result.seriesData[1]);
+                if (null !== result && undefined !== result) {
+                    result = JSON.parse(result);
+                    item = result.seriesName;
+                    for (var i = 0; i < item.length; i++) {
+                        series.push({
+                            name:item[i],
+                            type:'line',
+                            data:result.seriesData[i],
+                            // 最大最小的名字
+                            markPoint : {
+                                data : [
+                                    {type : 'max', name: 'Max'},
+                                    {type : 'min', name: 'Min'}
+                                ]
+                            },
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        shadowColor : 'rgba(0,0,0,0.3)',
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 8,
+                                        shadowOffsetY: 8
+                                    }
+                                }
+                            },
+                            // 平均值
+                            markLine : {
+                                data : [
+                                    {type : 'average', name: 'Average'}
+                                ]
+                            }
+                        });
+
+                    }
+                    // console.log(series);
+                    machineChart.hideLoading();
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    machineChart.setOption({
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: item
+                        },
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: true},
+                                saveAsImage : {show: true}
+                            }
+                        },
+                        xAxis: {
+                            type : 'category',
+                            boundaryGap : false, //坐标轴两边不白策略
+                            data : xAxis
+                        },
+                        yAxis: {type : 'value'},
+                        series: series
+                    });
+
+                }
+
+            },
+            error : function(xhr,status,error){
+                toastr.error('add fail! try again ');
+            }
+
+        })
+
+
+    });
+
+    function createTimerArray(timers) {
+        timer = [];
+        if ('hour' == timers) {
+            for (var i = 0; i < 24; i++) {
+                timer[i] = i + ':00';
+            }
+
+        }
+
+        return timer;
+
+    }
+
+    var toolChart = echarts.init(document.getElementById('toolChart'));
+    option = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
         },
-        tooltip: {},
         legend: {
-            data:['销量']
+            data: ['pass', 'failed', 'ongoing','pending', 'expired']
         },
-        xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋"]
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
         },
-        yAxis: {},
-        series: [{
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10]
-        }]
+        xAxis:  {
+            type: 'value'
+        },
+        yAxis: {
+            type: 'category',
+            data: ['JumpStart','Recovery','C-Test']
+        },
+        series: [
+            {
+                name: 'pass',
+                type: 'bar',
+                stack: '总量', // 堆叠的效果
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [320, 302, 301]
+            },
+            {
+                name: 'failed',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [120, 132, 101]
+            },
+            {
+                name: 'ongoing',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [220, 182, 191]
+            },
+            {
+                name: 'pending',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [220, 182, 191]
+            },
+            {
+                name: 'expired',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [220, 182, 191]
+            }
+        ]
     };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-
+    toolChart.setOption(option);
 
     var lineChart = echarts.init(document.getElementById('line-chart'));
 
@@ -369,7 +496,6 @@
         xAxis : [
             {
                 type : 'category',
-
                 boundaryGap : false,
                 data : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
             }
@@ -389,6 +515,7 @@
                 type:'line',
                 color:['#000'],
                 data:[11, 11, 15, 13, 12, 13, 10],
+                //
                 markPoint : {
                     data : [
                         {type : 'max', name: 'Max'},
@@ -405,6 +532,7 @@
                         }
                     }
                 },
+                // 平均值
                 markLine : {
                     data : [
                         {type : 'average', name: 'Average'}
@@ -684,268 +812,13 @@
 
     setTimeout(function (){
         window.onresize = function () {
-            myChart.resize();
+            machineChart.resize();
             lineChart.resize();
             barChart.resize();
             areaChart.resize();
             donutChart.resize();
         }
     },200);
-
-
-
-
-    // $(function () {
-    //     /*
-    //      * Flot Interactive Chart
-    //      * -----------------------
-    //      */
-    //     // We use an inline data source in the example, usually data would
-    //     // be fetched from a server
-    //     var data = [], totalPoints = 100
-    //
-    //     function getRandomData() {
-    //
-    //         if (data.length > 0)
-    //             data = data.slice(1)
-    //
-    //         // Do a random walk
-    //         while (data.length < totalPoints) {
-    //
-    //             var prev = data.length > 0 ? data[data.length - 1] : 50,
-    //                 y    = prev + Math.random() * 10 - 5
-    //
-    //             if (y < 0) {
-    //                 y = 0
-    //             } else if (y > 100) {
-    //                 y = 100
-    //             }
-    //
-    //             data.push(y)
-    //         }
-    //
-    //         // Zip the generated y values with the x values
-    //         var res = []
-    //         for (var i = 0; i < data.length; ++i) {
-    //             res.push([i, data[i]])
-    //         }
-    //
-    //         return res
-    //     }
-    //
-    //     var interactive_plot = $.plot('#interactive', [getRandomData()], {
-    //         grid  : {
-    //             borderColor: '#f3f3f3',
-    //             borderWidth: 1,
-    //             tickColor  : '#f3f3f3'
-    //         },
-    //         series: {
-    //             shadowSize: 0, // Drawing is faster without shadows
-    //             color     : '#3c8dbc'
-    //         },
-    //         lines : {
-    //             fill : true, //Converts the line chart to area chart
-    //             color: '#3c8dbc'
-    //         },
-    //         yaxis : {
-    //             min : 0,
-    //             max : 100,
-    //             show: true
-    //         },
-    //         xaxis : {
-    //             show: true
-    //         }
-    //     })
-    //
-    //     var updateInterval = 500 //Fetch data ever x milliseconds
-    //     var realtime       = 'on' //If == to on then fetch data every x seconds. else stop fetching
-    //     function update() {
-    //
-    //         interactive_plot.setData([getRandomData()])
-    //
-    //         // Since the axes don't change, we don't need to call plot.setupGrid()
-    //         interactive_plot.draw()
-    //         if (realtime === 'on')
-    //             setTimeout(update, updateInterval)
-    //     }
-    //
-    //     //INITIALIZE REALTIME DATA FETCHING
-    //     if (realtime === 'on') {
-    //         update()
-    //     }
-    //     //REALTIME TOGGLE
-    //     $('#realtime .btn').click(function () {
-    //         if ($(this).data('toggle') === 'on') {
-    //             realtime = 'on'
-    //         }
-    //         else {
-    //             realtime = 'off'
-    //         }
-    //         update()
-    //     })
-    //     /*
-    //      * END INTERACTIVE CHART
-    //      */
-    //
-    //     /*
-    //      * LINE CHART
-    //      * ----------
-    //      */
-    //     //LINE randomly generated data
-    //
-    //     var sin = [], cos = []
-    //     for (var i = 0; i < 14; i += 0.5) {
-    //         sin.push([i, Math.sin(i)])
-    //         cos.push([i, Math.cos(i)])
-    //     }
-    //     var line_data1 = {
-    //         data : sin,
-    //         color: '#3c8dbc'
-    //     }
-    //     var line_data2 = {
-    //         data : cos,
-    //         color: '#00c0ef'
-    //     }
-    //     $.plot('#line-chart', [line_data1, line_data2], {
-    //         grid  : {
-    //             hoverable  : true,
-    //             borderColor: '#f3f3f3',
-    //             borderWidth: 1,
-    //             tickColor  : '#f3f3f3'
-    //         },
-    //         series: {
-    //             shadowSize: 0,
-    //             lines     : {
-    //                 show: true
-    //             },
-    //             points    : {
-    //                 show: true
-    //             }
-    //         },
-    //         lines : {
-    //             fill : false,
-    //             color: ['#3c8dbc', '#f56954']
-    //         },
-    //         yaxis : {
-    //             show: true
-    //         },
-    //         xaxis : {
-    //             show: true
-    //         }
-    //     })
-    //     //Initialize tooltip on hover
-    //     $('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
-    //         position: 'absolute',
-    //         display : 'none',
-    //         opacity : 0.8
-    //     }).appendTo('body')
-    //     $('#line-chart').bind('plothover', function (event, pos, item) {
-    //
-    //         if (item) {
-    //             var x = item.datapoint[0].toFixed(2),
-    //                 y = item.datapoint[1].toFixed(2)
-    //
-    //             $('#line-chart-tooltip').html(item.series.label + ' of ' + x + ' = ' + y)
-    //                 .css({ top: item.pageY + 5, left: item.pageX + 5 })
-    //                 .fadeIn(200)
-    //         } else {
-    //             $('#line-chart-tooltip').hide()
-    //         }
-    //
-    //     })
-    //     /* END LINE CHART */
-    //
-    //     /*
-    //      * FULL WIDTH STATIC AREA CHART
-    //      * -----------------
-    //      */
-    //     var areaData = [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6],
-    //         [8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9],
-    //         [15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]]
-    //     $.plot('#area-chart', [areaData], {
-    //         grid  : {
-    //             borderWidth: 0
-    //         },
-    //         series: {
-    //             shadowSize: 0, // Drawing is faster without shadows
-    //             color     : '#00c0ef'
-    //         },
-    //         lines : {
-    //             fill: true //Converts the line chart to area chart
-    //         },
-    //         yaxis : {
-    //             show: false
-    //         },
-    //         xaxis : {
-    //             show: false
-    //         }
-    //     })
-    //
-    //     /* END AREA CHART */
-    //
-    //     /*
-    //      * BAR CHART
-    //      * ---------
-    //      */
-    //
-    //     var bar_data = {
-    //         data : [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
-    //         color: '#3c8dbc'
-    //     }
-    //     $.plot('#bar-chart', [bar_data], {
-    //         grid  : {
-    //             borderWidth: 1,
-    //             borderColor: '#f3f3f3',
-    //             tickColor  : '#f3f3f3'
-    //         },
-    //         series: {
-    //             bars: {
-    //                 show    : true,
-    //                 barWidth: 0.5,
-    //                 align   : 'center'
-    //             }
-    //         },
-    //         xaxis : {
-    //             mode      : 'categories',
-    //             tickLength: 0
-    //         }
-    //     })
-    //     /* END BAR CHART */
-    //
-    //     /*
-    //      * DONUT CHART
-    //      * -----------
-    //      */
-    //
-    //     var donutData = [
-    //         { label: 'Series2', data: 30, color: '#3c8dbc' },
-    //         { label: 'Series3', data: 20, color: '#0073b7' },
-    //         { label: 'Series4', data: 50, color: '#00c0ef' }
-    //     ]
-    //     $.plot('#donut-chart', donutData, {
-    //         series: {
-    //             pie: {
-    //                 show       : true,
-    //                 radius     : 1,
-    //                 innerRadius: 0.5,
-    //                 label      : {
-    //                     show     : true,
-    //                     radius   : 2 / 3,
-    //                     formatter: labelFormatter,
-    //                     threshold: 0.1
-    //                 }
-    //
-    //             }
-    //         },
-    //         legend: {
-    //             show: false
-    //         }
-    //     })
-    //     /*
-    //      * END DONUT CHART
-    //      */
-    //
-    // })
 
 </script>
 </body>
