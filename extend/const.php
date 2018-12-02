@@ -34,7 +34,7 @@ define('ATS_FINISH_PATH', '/home/refar/Phpproject/ats_sizu/resource/finish/');
  */
 
 define('HOUR', 'hour');
-define('TODAY', 'today');
+define('DAY', 'day');
 define('WEEK', 'week');
 define('MONTH', 'month');
 define('YEAR', 'year');

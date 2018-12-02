@@ -112,7 +112,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <!-- Line chart -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
@@ -125,11 +125,11 @@
                                     <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
                                         <i class="fa fa-calendar"></i></button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a id="machine_hour">Hour Unit</a></li>
-                                        <li><a href="#">Week Unit</a></li>
-                                        <li><a href="#">Day Unit</a></li>
-                                        <li><a href="#">Month Unit</a></li>
-                                        <li><a href="#">Year Unit</a></li>
+                                        <li><a href="#" onclick="machineChartCreate('hour')">Hour Unit</a></li>
+                                        <li><a href="#" onclick="machineChartCreate('week')">Week Unit</a></li>
+                                        <li><a href="#" onclick="machineChartCreate('day')">Day Unit</a></li>
+                                        <li><a href="#" onclick="machineChartCreate('month')">Month Unit</a></li>
+                                        <li><a href="#" onclick="machineChartCreate('year')">Year Unit</a></li>
                                     </ul>
                                 </div>
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -138,14 +138,17 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <div id="machineChart" style="height: 300px;"></div>
+                            <div id="machineChart" style="height: 400px;"></div>
                         </div>
                         <!-- /.box-body-->
                     </div>
                     <!-- /.box -->
                 </div>
                 <!-- /.col -->
-                <div class="col-md-6">
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
@@ -165,7 +168,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-6">
                     <!-- Line chart -->
@@ -281,24 +283,49 @@
         // tooltip init
         // $("[data-toggle='tooltip']").tooltip();
 
+
+        machineChart = echarts.init(document.getElementById('machineChart'), 'macarons');
+
+        machineChartCreate('hour');
+
+        setTimeout(function (){
+            window.onresize = function () {
+                machineChart.resize();
+                lineChart.resize();
+                barChart.resize();
+                areaChart.resize();
+                donutChart.resize();
+            }
+        },200);
+    });
+
+    function machineChartCreate(timers) {
         // machine and result chart init
-        var machineChart = echarts.init(document.getElementById('machineChart'), 'macarons');
+
         machineChart.showLoading();
 
         $.ajax({
             type : "post",
             url: "{:url('DashBoard/machineChart')}",
             data: {
-                timer: 'hour'
+                timer: timers
             },
             success : function (result) {
                 var item;
                 var series = [];
-                var xAxis = createTimerArray('hour');
-                console.log(xAxis);
-                // console.log(result.seriesData[1]);
-                if (null !== result && undefined !== result) {
-                    result = JSON.parse(result);
+                var xAxis = [];
+
+                result = JSON.parse(result);
+
+                if ('year' == timers) {
+                    xAxis = result.xAxis;
+                    console.log(xAxis);
+                } else {
+                    xAxis = createTimerArray(timers);
+                }
+
+                console.log(result.seriesData);
+                if (null !== result && undefined !== result && 0 !== result.length) {
                     item = result.seriesName;
                     for (var i = 0; i < item.length; i++) {
                         series.push({
@@ -321,12 +348,6 @@
                                         shadowOffsetY: 8
                                     }
                                 }
-                            },
-                            // 平均值
-                            markLine : {
-                                data : [
-                                    {type : 'average', name: 'Average'}
-                                ]
                             }
                         });
 
@@ -340,7 +361,8 @@
                             trigger: 'axis'
                         },
                         legend: {
-                            data: item
+                            data: item,
+                            x:'left',
                         },
                         toolbox: {
                             show : true,
@@ -357,19 +379,21 @@
                         },
                         yAxis: {type : 'value'},
                         series: series
-                    });
+                    }, true);
 
+                } else {
+                    $('#machineChart').html('<div class="well text-blue" style="height: 100%"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart No Data Init</i></div>');
                 }
 
             },
             error : function(xhr,status,error){
-                toastr.error('add fail! try again ');
+                $('#machineChart').html('<div class="well text-blue" style="height: 100%"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart Init Failed</i></div>');
             }
 
-        })
+        });
 
 
-    });
+    }
 
     function createTimerArray(timers) {
         timer = [];
@@ -378,11 +402,30 @@
                 timer[i] = i + ':00';
             }
 
+        } else if ('week' == timers) {
+            timer = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        } else if ('day' == timers) {
+            var days = getDaysOfMonth();
+            for (var i = 0; i < days; i++) {
+                timer[i] = i + 1;
+            }
+
+        } else if ('month' == timers) {
+            timer = ['Jan','Feb','Mar','Apr','May','Jun','July','Aug','Sept','Oct','Nov','Dec']
+
         }
 
         return timer;
-
     }
+
+    function getDaysOfMonth() {
+        var now = new Date();
+        var year = now.getFullYear();       //年
+        var month = now.getMonth() + 1;     //月
+        var days = (new Date(year, month, 0)).getDate();
+        return days;
+    }
+
 
     var toolChart = echarts.init(document.getElementById('toolChart'));
     option = {
@@ -809,16 +852,6 @@
     }
 
     donutChart.setOption(option);
-
-    setTimeout(function (){
-        window.onresize = function () {
-            machineChart.resize();
-            lineChart.resize();
-            barChart.resize();
-            areaChart.resize();
-            donutChart.resize();
-        }
-    },200);
 
 </script>
 </body>
