@@ -37,3 +37,9 @@ echo '===';
 
 $cars=array("Volvo","BMW","Toyota");
 var_dump(json_encode($cars));
+
+echo '----';
+
+if (stristr('Altair TX CS1', 'Altair') !== false) {
+    echo  'Inhouse';
+}

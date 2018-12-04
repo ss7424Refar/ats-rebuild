@@ -17,15 +17,23 @@ class AtsTaskBasic extends Model
     //更新的时间戳字段
     protected $autoWriteTimestamp = 'datetime';
     // 定义时间戳字段名
-    protected $createTime = 'task_start_time';
+    protected $createTime = 'task_create_time';
     // 关闭自动写入update_time字段
     protected $updateTime = false;
     // 自动完成插入属性
-    protected $insert = ['status' => 0, 'tester'];
+    protected $insert = ['status' => 0, 'tester', 'category'];
     // 自动写入tester
     protected function setTesterAttr()
     {
         return Session::get('transToAts');
     }
-
+    // 判断category // 修改器方法的第二个参数会自动传入当前的所有数据数组。
+    protected function setCategoryAttr($value, $data)
+    {
+        // 判断是否带有Altair字符，如果有记录Inhouse字段便于统计
+        if (stristr($data['machine_name'], 'Altair') !== false) {
+            return 'Inhouse';
+        }
+        return 'Odm';
+    }
 }
