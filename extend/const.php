@@ -38,3 +38,13 @@ define('DAY', 'day');
 define('WEEK', 'week');
 define('MONTH', 'month');
 define('YEAR', 'year');
+
+/*
+ * 测试结果或者状态
+ */
+
+define('PASS', 'pass');
+define('FAIL', 'fail');
+define('ONGOING', 'ongoing');
+define('PENDING', 'pending');
+define('EXPIRED', 'expired');

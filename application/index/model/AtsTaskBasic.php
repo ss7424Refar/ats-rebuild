@@ -21,7 +21,7 @@ class AtsTaskBasic extends Model
     // 关闭自动写入update_time字段
     protected $updateTime = false;
     // 自动完成插入属性
-    protected $insert = ['status' => 0, 'tester', 'category'];
+    protected $insert = ['status' => PENDING, 'tester', 'category'];
     // 自动写入tester
     protected function setTesterAttr()
     {
@@ -32,8 +32,8 @@ class AtsTaskBasic extends Model
     {
         // 判断是否带有Altair字符，如果有记录Inhouse字段便于统计
         if (stristr($data['machine_name'], 'Altair') !== false) {
-            return 'Inhouse';
+            return 'In_House';
         }
-        return 'Odm';
+        return 'ODM';
     }
 }

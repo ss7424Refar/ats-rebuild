@@ -17,310 +17,146 @@ use ext\ChartUtil;
 
 class DashBoard extends Common
 {
-    // machine chart
+    /*
+     * machine chart
+     */
     public function machineChart()
     {
         $timer = $this->request->param('timer');
 
         $optionResult = array();
+        $resIn_house = array();
+        $resODM = array();
+        $xAxisArray = array(); // 年份用的横坐标
+
         if (HOUR == $timer) {
             //查询当天的数据并且以hour分组
-            $resInhouse = Db::query(' SELECT HOUR(task_create_time) as hour,count(*) as total, category' .
+            $resIn_house = Db::query(' SELECT HOUR(task_create_time) as hour,count(*) as total, category' .
                                 ' FROM ats_task_basic WHERE date(task_create_time) = curdate() and category = ?' .
-                                ' GROUP BY Hour,category ORDER BY category;', ['Inhouse']);
+                                ' GROUP BY hour,category ORDER BY hour;', ['In_House']);
 
             $resODM = Db::query(' SELECT HOUR(task_create_time) as hour,count(*) as total, category' .
                 ' FROM ats_task_basic WHERE date(task_create_time) = curdate() and category = ?' .
-                ' GROUP BY Hour,category ORDER BY category;', ['ODM']);
-
-            $inhouseSerial = ChartUtil::makeMachineOption($timer, $resInhouse);
-            $ODMSerial = ChartUtil::makeMachineOption($timer, $resODM);
-            if (null != $inhouseSerial) {
-                $optionResult['seriesData'][] = $inhouseSerial;
-                $optionResult['seriesName'][] = 'Inhouse';
-            }
-            if (null != $ODMSerial) {
-                $optionResult['seriesData'][] = $ODMSerial;
-                $optionResult['seriesName'][] = 'ODM';
-            }
+                ' GROUP BY hour, category ORDER BY hour;', ['ODM']);
 
         } elseif (WEEK == $timer) {
-            // 本周时间
-            $weekStart = date("Y-m-d H:i:s",mktime(0, 0 , 0,date("m"),date("d")-date("w")+1-7,date("Y")));
-            $weekEnd = date("Y-m-d H:i:s",mktime(23,59,59,date("m"),date("d")-date("w")+7-7,date("Y")));
+            //当前日期
+            $today = date("Y-m-d");
+            //$first =1 表示每周星期一为开始日期 0表示每周日为开始日期
+            $first=1;
+            //获取当前周的第几天 周日是 0 周一到周六是 1 - 6
+            $w=date('w',strtotime($today));
+            //获取本周开始日期，如果$w是0，则表示周日，减去 6 天
+            $weekStart=date('Y-m-d',strtotime("$today -".($w ? $w - $first : 6).' days'));
+            //本周结束日期
+            $weekEnd=date('Y-m-d',strtotime("$weekStart + 6 days"));
 
             //查询本周的数据并且以Week分组(0=星期一，1=星期二, ……6= 星期天)
-            $res = Db::query(' SELECT WEEKDAY(task_start_time) Week, count(*) as total, machine_id, machine_name ' .
-                                ' FROM ats_task_basic WHERE task_start_time BETWEEN ? AND ? ' .
-                                ' group by week, machine_id, machine_name order BY machine_id, machine_name ;', [$weekStart, $weekEnd]);
+            $resIn_house = Db::query(' SELECT WEEKDAY(task_create_time) week, count(*) as total, category ' .
+                                ' FROM ats_task_basic WHERE task_create_time BETWEEN ? AND ?  and category = ? ' .
+                                ' group by week, category ORDER BY week;', [$weekStart, $weekEnd, 'In_House']);
 
-            // machineId数组
-            $machineIdArray = array();
-            for ($i = 0; $i < count($res); $i++) {
-                //存入machineId
-                if (!in_array($res[$i]['machine_id'], $machineIdArray)) {
-                    $machineIdArray[] = $res[$i]['machine_id'];
-                }
-            }
-            // machineName数组
-            $machineNameArray = array();
-            for ($i = 0; $i < count($machineIdArray); $i++) {
-                for ($j = 0; $j < count($res); $j++) {
-                    if ($machineIdArray[$i] == $res[$j]['machine_id']) {
-                        if (!in_array($res[$j]['machine_name'], $machineNameArray)) {
-                            $machineNameArray[] = $res[$j]['machine_name'];
-                            break;
-                        }
+            $resODM = Db::query(' SELECT WEEKDAY(task_create_time) week, count(*) as total, category ' .
+                ' FROM ats_task_basic WHERE task_create_time BETWEEN ? AND ?  and category = ? ' .
+                ' group by week, category ORDER BY week;', [$weekStart, $weekEnd, 'ODM']);
 
-                    }
-
-                }
-            }
-
-            // 根据machineId填充一周星期，
-            for ($i = 0; $i < count($machineIdArray); $i++) {
-                // echarts series下的data数组
-                $weekArray = array();
-                for ($j = 0; $j < count($res); $j++) {
-                    if ($res[$j]['machine_id'] == $machineIdArray[$i]) {
-                        if (array_key_exists($res[$j]['Week'], $weekArray)) {
-                            $weekArray[$res[$j]['Week']] += $res[$j]['total'];
-                        } else {
-                            $weekArray[$res[$j]['Week']] = $res[$j]['total'];
-                        }
-                    }
-                }
-
-                if (null != $weekArray) {
-                    for ($k = 0; $k < 7; $k++) {
-                        // 键名如果不重复则添加0
-                        if (!array_key_exists($k, $weekArray)) {
-                            $weekArray[$k] = 0;
-                        }
-                    }
-
-                }
-                // 按照键名升序排序
-                ksort($weekArray);
-                // 放入二维数组中
-                $optionResult['seriesData'][$i] = $weekArray;
-
-
-            }
-
-            // echarts series下的Name数组
-            if (null != $machineNameArray) {
-                $optionResult['seriesName'] = $machineNameArray;
-            }
         } elseif (DAY == $timer) {
             // 本月按天数统计的数据
-            $res = Db::query(' SELECT DAYOFMONTH(task_start_time) Days, count(*) as total, machine_id, machine_name ' .
-                ' FROM ats_task_basic WHERE DATE_FORMAT(task_start_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) ' .
-                ' group by days, machine_id, machine_name order BY machine_id, machine_name;');
+            $resIn_house = Db::query(' SELECT DAYOFMONTH(task_create_time) day, count(*) as total, category ' .
+                ' FROM ats_task_basic WHERE category = ? AND DATE_FORMAT(task_create_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) ' .
+                ' group by day, category ORDER BY day;', ['In_House']);
 
-            //当月天数
-            $days = date("t");
-            // machineId数组
-            $machineIdArray = array();
-            for ($i = 0; $i < count($res); $i++) {
-                //存入machineId
-                if (!in_array($res[$i]['machine_id'], $machineIdArray)) {
-                    $machineIdArray[] = $res[$i]['machine_id'];
-                }
-            }
-            // machineName数组
-            $machineNameArray = array();
-            for ($i = 0; $i < count($machineIdArray); $i++) {
-                for ($j = 0; $j < count($res); $j++) {
-                    if ($machineIdArray[$i] == $res[$j]['machine_id']) {
-                        if (!in_array($res[$j]['machine_name'], $machineNameArray)) {
-                            $machineNameArray[] = $res[$j]['machine_name'];
-                            break;
-                        }
-
-                    }
-
-                }
-            }
-
-            // 根据machineId填充一个月的天数，
-            for ($i = 0; $i < count($machineIdArray); $i++) {
-                // echarts series下的data数组
-                $dayArray = array();
-                for ($j = 0; $j < count($res); $j++) {
-                    if ($res[$j]['machine_id'] == $machineIdArray[$i]) {
-                        if (array_key_exists($res[$j]['Days'], $dayArray)) {
-                            $dayArray[$res[$j]['Days']] += $res[$j]['total'];
-                        } else {
-                            $dayArray[$res[$j]['Days']] = $res[$j]['total'];
-                        }
-                    }
-                }
-
-                if (null != $dayArray) {
-                    for ($k = 1; $k <= $days; $k++) {
-                        // 键名如果不重复则添加0
-                        if (!array_key_exists($k, $dayArray)) {
-                            $dayArray[$k] = 0;
-                        }
-                    }
-
-                }
-                // 升序排序
-                ksort($dayArray);
-//                var_dump($dayArray);
-                // 放入二维数组中
-                $optionResult['seriesData'][$i] = array_values($dayArray);
-
-
-            }
-
-            // echarts series下的Name数组
-            if (null != $machineNameArray) {
-                $optionResult['seriesName'] = $machineNameArray;
-            }
+            $resODM = Db::query(' SELECT DAYOFMONTH(task_create_time) day, count(*) as total, category ' .
+                ' FROM ats_task_basic WHERE category = ? AND DATE_FORMAT(task_create_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) ' .
+                ' group by day, category ORDER BY day;', ['ODM']);
 
         } elseif (MONTH == $timer) {
-            // 本月按天数统计的数据
-            $res = Db::query(' select month(task_start_time) Month, count(*) as total, machine_id, machine_name  ' .
-                ' from `ats_task_basic` where YEAR(task_start_time)=YEAR(NOW())  ' .
-                ' GROUP BY Month, machine_id, machine_name ORDER BY machine_id, machine_name; ');
+            // 按月份统计的数据
+            $resIn_house = Db::query(' select month(task_create_time) month, count(*) as total, category ' .
+                ' from `ats_task_basic` WHERE category = ? AND YEAR(task_create_time)=YEAR(NOW())  ' .
+                ' group by month, category ORDER BY month;', ['In_House']);
 
-            $machineIdArray = array();
-            for ($i = 0; $i < count($res); $i++) {
-                //存入machineId
-                if (!in_array($res[$i]['machine_id'], $machineIdArray)) {
-                    $machineIdArray[] = $res[$i]['machine_id'];
-                }
-            }
-            // machineName数组
-            $machineNameArray = array();
-            for ($i = 0; $i < count($machineIdArray); $i++) {
-                for ($j = 0; $j < count($res); $j++) {
-                    if ($machineIdArray[$i] == $res[$j]['machine_id']) {
-                        if (!in_array($res[$j]['machine_name'], $machineNameArray)) {
-                            $machineNameArray[] = $res[$j]['machine_name'];
-                            break;
-                        }
+            $resODM = Db::query(' select month(task_create_time) month, count(*) as total, category ' .
+                ' from `ats_task_basic` WHERE category = ? AND YEAR(task_create_time)=YEAR(NOW())  ' .
+                ' group by month, category ORDER BY month;', ['ODM']);
 
-                    }
-
-                }
-            }
-
-            // 根据machineId填充一年的月数，
-            for ($i = 0; $i < count($machineIdArray); $i++) {
-                // echarts series下的data数组
-                $monthArray = array();
-                for ($j = 0; $j < count($res); $j++) {
-                    if ($res[$j]['machine_id'] == $machineIdArray[$i]) {
-                        if (array_key_exists($res[$j]['Month'], $monthArray)) {
-                            $monthArray[$res[$j]['Month']] += $res[$j]['total'];
-                        } else {
-                            $monthArray[$res[$j]['Month']] = $res[$j]['total'];
-                        }
-                    }
-                }
-
-                if (null != $monthArray) {
-                    for ($k = 1; $k <= 12; $k++) {
-                        // 键名如果不重复则添加0
-                        if (!array_key_exists($k, $monthArray)) {
-                            $monthArray[$k] = 0;
-                        }
-                    }
-
-                }
-                // 升序排序
-                ksort($monthArray);
-//                var_dump($dayArray);
-                // 放入二维数组中
-                $optionResult['seriesData'][$i] = array_values($monthArray);
-
-
-            }
-
-            // echarts series下的Name数组
-            if (null != $machineNameArray) {
-                $optionResult['seriesName'] = $machineNameArray;
-            }
         }elseif (YEAR == $timer) {
             // 按年统计的数据
-            $res = Db::query('select year(task_start_time) as Years, count(*) total, machine_id, machine_name ' .
-                ' from ats_task_basic group by Years, machine_id, machine_name ' .
-                ' ORDER BY machine_id, machine_name;');
+            $resIn_house = Db::query('select year(task_create_time) as year, count(*) as total, category ' .
+                ' from ats_task_basic WHERE category = ? ' .
+                ' group by year, category ORDER BY year;', ['In_House']);
 
-            $resY = Db::query('select min(year(task_start_time)) as minYear, max(year(task_start_time)) as maxYear'.
-                        ' from ats_task_basic order by task_start_time; ');
-            $minYear = $resY[0]['minYear'];
-            $maxYear = $resY[0]['maxYear'];
+            $resODM = Db::query('select year(task_create_time) as year, count(*) as total, category ' .
+                ' from ats_task_basic WHERE category = ? ' .
+                ' group by year, category ORDER BY year;', ['ODM']);
 
-            $xAxisArray = array();
+            $resYear = Db::query('select min(year(task_create_time)) as minYear, max(year(task_create_time)) as maxYear'.
+                        ' from ats_task_basic;');
+            $minYear = $resYear[0]['minYear'];
+            $maxYear = $resYear[0]['maxYear'];
+
             for ($i = 0; $i <= ($maxYear - $minYear + 1); $i++){
                 $xAxisArray[$i] = $minYear;
                 $minYear++;
             }
 
+            $inhouseSerial = ChartUtil::makeMachineOption($timer, $resIn_house, $minYear, $maxYear);
+            $ODMSerial = ChartUtil::makeMachineOption($timer, $resODM, $minYear, $maxYear);
+            $optionResult['xAxis'] = $xAxisArray;
+        }
 
-            $machineIdArray = array();
-            for ($i = 0; $i < count($res); $i++) {
-                //存入machineId
-                if (!in_array($res[$i]['machine_id'], $machineIdArray)) {
-                    $machineIdArray[] = $res[$i]['machine_id'];
-                }
-            }
-            // machineName数组
-            $machineNameArray = array();
-            for ($i = 0; $i < count($machineIdArray); $i++) {
-                for ($j = 0; $j < count($res); $j++) {
-                    if ($machineIdArray[$i] == $res[$j]['machine_id']) {
-                        if (!in_array($res[$j]['machine_name'], $machineNameArray)) {
-                            $machineNameArray[] = $res[$j]['machine_name'];
-                            break;
-                        }
+        if (YEAR != $timer) {
+            $inhouseSerial = ChartUtil::makeMachineOption($timer, $resIn_house);
+            $ODMSerial = ChartUtil::makeMachineOption($timer, $resODM);
+        }
 
-                    }
-
-                }
-            }
-
-            // 根据machineId填充，
-            for ($i = 0; $i < count($machineIdArray); $i++) {
-                // echarts series下的data数组
-                $yearArray = array();
-                for ($j = 0; $j < count($res); $j++) {
-                    if ($res[$j]['machine_id'] == $machineIdArray[$i]) {
-                        if (array_key_exists($res[$j]['Years'], $yearArray)) {
-                            $yearArray[$res[$j]['Years']] += $res[$j]['total'];
-                        } else {
-                            $yearArray[$res[$j]['Years']] = $res[$j]['total'];
-                        }
-                    }
-                }
-
-                if (null != $yearArray) {
-                    for ($k = $resY[0]['minYear']; $k <= $resY[0]['maxYear']; $k++) {
-                        // 键名如果不重复则添加0
-                        if (!array_key_exists($k, $yearArray)) {
-                            $yearArray[$k] = 0;
-                        }
-                    }
-
-                }
-                // 升序排序
-                ksort($yearArray);
-//                var_dump($dayArray);
-                // 放入二维数组中
-                $optionResult['seriesData'][$i] = array_values($yearArray);
-            }
-
-            // echarts series下的Name数组
-            if (null != $machineNameArray) {
-                $optionResult['seriesName'] = $machineNameArray;
-                $optionResult['xAxis'] = $xAxisArray;
-            }
+        if (null != $inhouseSerial) {
+            $optionResult['seriesData'][] = $inhouseSerial;
+            $optionResult['seriesName'][] = 'In_House';
+        }
+        if (null != $ODMSerial) {
+            $optionResult['seriesData'][] = $ODMSerial;
+            $optionResult['seriesName'][] = 'ODM';
         }
 
         return json_encode($optionResult);
+    }
+
+    /*
+     * resultChart
+     */
+    public function resultChart() {
+
+        $timer = $this->request->param('timer');
+
+        $statusArray = [PENDING, ONGOING, FAIL, PASS, EXPIRED];
+        $toolArray = [JUMP_START, RECOVERY, C_TEST];
+
+        $optionResult = array();
+
+        for ($i = 0; $i < count($statusArray); $i++) {
+            $serialArray = array();
+            $serialArray['status'] = $statusArray[$i];
+            if (DAY == $timer) {
+                for ($j = 0; $j < count($toolArray); $j++) {
+                    $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
+                        ' and date(tool_start_time) = curdate();', [$statusArray[$i], $toolArray[$j]]);
+
+                    $serialArray['toolData'][] = $res[0]['total'];
+                }
+
+            } elseif (WEEK == $timer) {
+
+            } elseif (MONTH == $timer) {
+
+            } elseif (YEAR == $timer) {
+
+            }
+
+            $optionResult[] = $serialArray;
+        }
+
+        return json_encode($optionResult);
+
     }
 }

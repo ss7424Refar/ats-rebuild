@@ -9,35 +9,39 @@
 namespace ext;
 
 class ChartUtil {
-    // 转换到小时for echart series's data
-    public static function transHourArray($arr) {
-        $hourArray = $arr;
-        if (null != $hourArray) {
-            for ($i = 0; $i < 24; $i++) {
-                if (null == $hourArray[$i]) {
-                    $hourArray[$i] = 0;
-                }
-            }
-
-        }
-        return $hourArray;
-    }
-
-    public static function makeMachineOption($timer, $data) {
+    /*
+     * 生成machine_chart option
+     * $args 为最大最小年份
+     */
+    public static function makeMachineOption($timer, $data, ...$args) {
         $start = 0; $end = 0;
         if (HOUR == $timer) {
             $start = 0;
             $end = 24;
+        } elseif (WEEK == $timer) {
+            $start = 0;
+            $end = 7;
+        } elseif (DAY == $timer) {
+            $start = 1;
+            $end = date("t");
+        } elseif (MONTH == $timer) {
+            $start = 1;
+            $end = 13;
+        } elseif (YEAR == $timer) {
+            $start = $args[0];
+            $end = $args[1] + 1;
         }
 
         $serialTimeData = array();
         for ($i = 0; $i < count($data); $i++) {
-            $key = $data[$i]['hour'];
-            if (array_key_exists($key, $serialTimeData)) {
-                $serialTimeData[$key] += $data[$i]['total'];
-            } else {
-                $serialTimeData[$key] = $data[$i]['total'];
-            }
+            $key = $data[$i][$timer];
+
+            $serialTimeData[$key] = $data[$i]['total'];
+//            if (array_key_exists($key, $serialTimeData)) {
+//                $serialTimeData[$key] += $data[$i]['total'];
+//            } else {
+//                $serialTimeData[$key] = $data[$i]['total'];
+//            }
         }
 
         // 填充时间，
@@ -49,7 +53,12 @@ class ChartUtil {
                 }
             }
             // 按照升序排序
-            ksort($serialTimeData);
+            if (0 == $start) {
+                ksort($serialTimeData);
+            } else {
+                sort($serialTimeData);
+            }
+
             return $serialTimeData;
         }
         return $serialTimeData;

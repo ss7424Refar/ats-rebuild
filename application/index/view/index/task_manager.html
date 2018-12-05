@@ -371,19 +371,19 @@ desired effect
                         field: 'status',
                         title: 'Status',
                         formatter:function(value, row, index){
-                            if (0==value){
-                                return "pending";
-                            }else if (1==value){
-                                return "ongoing";
-                            }else if (2==value){
-                                return "finished";
-                            }else if (3==value){
-                                return "Cancelled";
-                            }else if (4==value){
-                                return "Abnormal End";
-                            }else if (5==value){
-                                return "expired";
-                            }
+                            // if (0==value){
+                            //     return "pending";
+                            // }else if (1==value){
+                            //     return "ongoing";
+                            // }else if (2==value){
+                            //     return "finished";
+                            // }else if (3==value){
+                            //     return "Cancelled";
+                            // }else if (4==value){
+                            //     return "Abnormal End";
+                            // }else if (5==value){
+                            //     return "expired";
+                            // }
                             return "N/A";
                         }
                     },
@@ -592,18 +592,21 @@ desired effect
                 field: 'status',
                 title: 'Task Status',
                 formatter:function(value, row, index){
-                    if (0==value){
-                        return "pending";
-                    }else if (1==value){
-                        return "ongoing";
-                    }else if (2==value){
-                        return "finished";
-                    }else if (3==value){
-                        return "Cancelled";
-                    }else if (4==value){
-                        return "Abnormal End";
-                    }else if (5==value){
-                        return "expired";
+                    // if (0==value){
+                    //     return "pending";
+                    // }else if (1==value){
+                    //     return "ongoing";
+                    // }else if (2==value){
+                    //     return "finished";
+                    // }else if (3==value){
+                    //     return "Cancelled";
+                    // }else if (4==value){
+                    //     return "Abnormal End";
+                    // }else if (5==value){
+                    //     return "expired";
+                    // }
+                    if (null != value) {
+                        return value;
                     }
                     return "N/A";
                 }
@@ -619,8 +622,9 @@ desired effect
                     title: 'Process',
                     formatter: function (value, row, index) {
 
-                        if (0 == value) {
-                            return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: 2%">0%</div>';
+                        if (null == value) {
+                            // return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: 2%">0%</div>';
+                            return 'N/A';
                         } else {
                             return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: ' + value + '%">' + value + '%</div>';
                         }
@@ -650,7 +654,7 @@ desired effect
                         var sid = row['sid'];
                         var result="";
 
-                        if (0 == row['status']) {
+                        if ('pending' == row['status']) {
                             if (null == sid) {
                                 result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
                             } else {

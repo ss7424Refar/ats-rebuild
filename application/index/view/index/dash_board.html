@@ -112,7 +112,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <!-- Line chart -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <div id="machineChart" style="height: 400px;"></div>
+                            <div id="machineChart" style="height: 300px;"></div>
                         </div>
                         <!-- /.box-body-->
                     </div>
@@ -146,9 +146,7 @@
                 </div>
                 <!-- /.col -->
 
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
@@ -156,41 +154,31 @@
                             <h3 class="box-title">测试工具结果的统计</h3>
 
                             <div class="box-tools pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-calendar"></i></button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" onclick="resultChartCreate('day')">Day Unit</a></li>
+                                        <li><a href="#" onclick="resultChartCreate('week')">Week Unit</a></li>
+                                        <li><a href="#" onclick="resultChartCreate('month')">Month Unit</a></li>
+                                        <li><a href="#" onclick="resultChartCreate('year')">Year Unit</a></li>
+                                    </ul>
+                                </div>
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>
                                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                             </div>
                         </div>
                         <div class="box-body">
-                            <div id="toolChart" style="height: 300px;width: 100%" ></div>
+                            <div id="resultChart" style="height: 300px;width: 100%" ></div>
                         </div>
                         <!-- /.box-body-->
                     </div>
                 </div>
+
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <!-- Line chart -->
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bar-chart-o"></i>
-
-                            <h3 class="box-title">测试镜像的统计</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div id="line-chart" style="height: 300px;"></div>
-                        </div>
-                        <!-- /.box-body-->
-                    </div>
-                    <!-- /.box -->
-
-                    <!-- Area chart -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
@@ -206,35 +194,11 @@
                         <div class="box-body">
                             <div id="area-chart" style="height: 400px;width: 100%" ></div>
                         </div>
-                        <!-- /.box-body-->
                     </div>
-                    <!-- /.box -->
 
                 </div>
-                <!-- /.col -->
 
                 <div class="col-md-6">
-                    <!-- Bar chart -->
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bar-chart-o"></i>
-
-                            <h3 class="box-title">每周测试工具数量的统计</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div id="bar-chart" style="height: 300px;"></div>
-                        </div>
-                        <!-- /.box-body-->
-                    </div>
-                    <!-- /.box -->
-
-                    <!-- Donut chart -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
@@ -250,16 +214,10 @@
                         <div class="box-body">
                             <div id="donut-chart" style="height: 400px;"></div>
                         </div>
-                        <!-- /.box-body-->
                     </div>
-                    <!-- /.box -->
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
         </section>
-        <!-- /.content -->
-
     </div>
     <!-- /.content-wrapper -->
     {include file="common/footer" /}
@@ -284,15 +242,18 @@
         // $("[data-toggle='tooltip']").tooltip();
 
 
-        machineChart = echarts.init(document.getElementById('machineChart'), 'macarons');
+        machine_chart = echarts.init(document.getElementById('machineChart'), 'macarons');
+
+        result_chart = echarts.init(document.getElementById('resultChart'), 'macarons');
 
         machineChartCreate('hour');
+        resultChartCreate('day');
 
         setTimeout(function (){
             window.onresize = function () {
-                machineChart.resize();
-                lineChart.resize();
-                barChart.resize();
+                machine_chart.resize();
+                result_chart.resize();
+                // barChart.resize();
                 areaChart.resize();
                 donutChart.resize();
             }
@@ -301,8 +262,7 @@
 
     function machineChartCreate(timers) {
         // machine and result chart init
-
-        machineChart.showLoading();
+        machine_chart.showLoading();
 
         $.ajax({
             type : "post",
@@ -317,7 +277,7 @@
 
                 result = JSON.parse(result);
 
-                if ('year' == timers) {
+                if ('year' === timers) {
                     xAxis = result.xAxis;
                     console.log(xAxis);
                 } else {
@@ -330,7 +290,7 @@
                     for (var i = 0; i < item.length; i++) {
                         series.push({
                             name:item[i],
-                            type:'line',
+                            type:'bar',
                             data:result.seriesData[i],
                             // 最大最小的名字
                             markPoint : {
@@ -353,16 +313,17 @@
 
                     }
                     // console.log(series);
-                    machineChart.hideLoading();
+                    machine_chart.hideLoading();
 
                     // 使用刚指定的配置项和数据显示图表。
-                    machineChart.setOption({
+                    machine_chart.setOption({
                         tooltip : {
                             trigger: 'axis'
                         },
                         legend: {
                             data: item
                         },
+                        color: ["#55ce63", "#009efb"],
                         toolbox: {
                             show : true,
                             feature : {
@@ -373,7 +334,7 @@
                         },
                         xAxis: {
                             type : 'category',
-                            boundaryGap : false, //坐标轴两边不白策略
+                            boundaryGap : true, //坐标轴两边留白策略
                             data : xAxis
                         },
                         yAxis: {type : 'value'},
@@ -381,16 +342,81 @@
                     }, true);
 
                 } else {
-                    $('#machineChart').html('<div class="well text-blue" style="height: 100%"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart No Data Init</i></div>');
+                    // $('#machineChart').html('<div class="well text-blue" style="height: 100%"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart No Data Init</i></div>');
                 }
 
             },
             error : function(xhr,status,error){
-                $('#machineChart').html('<div class="well text-blue" style="height: 100%"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart Init Failed</i></div>');
+                // $('#machineChart').html('<div class="well text-blue" style="height: 100%"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart Init Failed</i></div>');
             }
 
         });
+    }
 
+    function resultChartCreate(timers) {
+        result_chart.showLoading();
+
+        $.ajax({
+            type: "post",
+            url: "{:url('DashBoard/resultChart')}",
+            data: {
+                timer: timers
+            },
+            success: function (result) {
+                var series = [];
+
+                result = JSON.parse(result);
+                if (null !== result && undefined !== result && 0 !== result.length) {
+                    for (var i = 0; i < result.length; i++) {
+                        console.log(result[i].status);
+                        series.push({
+                            name:result[i].status,
+                            type:'bar',
+                            stack: '111', // 堆叠
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'insideRight'
+                                }
+                            },
+                            data:result[i].toolData
+                        });
+                        console.log(series);
+                    }
+                    result_chart.hideLoading();
+                    // console.log(series);
+                    result_chart.setOption({
+                        tooltip : {
+                            trigger: 'axis',
+                            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        legend: {
+                            data: ['ongoing', 'pending', 'fail', 'pass', 'expired']
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis:  {
+                            type: 'value'
+                        },
+                        yAxis: {
+                            type: 'category',
+                            data: ['JumpStart','Recovery','C-Test']
+                        },
+                        series: series
+                    }, true);
+                }
+
+            },
+            error: function () {
+
+            }
+        });
 
     }
 
@@ -425,95 +451,6 @@
         return days;
     }
 
-
-    var toolChart = echarts.init(document.getElementById('toolChart'));
-    option = {
-        tooltip : {
-            trigger: 'axis',
-            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
-        },
-        legend: {
-            data: ['pass', 'failed', 'ongoing','pending', 'expired']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis:  {
-            type: 'value'
-        },
-        yAxis: {
-            type: 'category',
-            data: ['JumpStart','Recovery','C-Test']
-        },
-        series: [
-            {
-                name: 'pass',
-                type: 'bar',
-                stack: '总量', // 堆叠的效果
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [320, 302, 301]
-            },
-            {
-                name: 'failed',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [120, 132, 101]
-            },
-            {
-                name: 'ongoing',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [220, 182, 191]
-            },
-            {
-                name: 'pending',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [220, 182, 191]
-            },
-            {
-                name: 'expired',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [220, 182, 191]
-            }
-        ]
-    };
-    toolChart.setOption(option);
 
     var lineChart = echarts.init(document.getElementById('line-chart'));
 
