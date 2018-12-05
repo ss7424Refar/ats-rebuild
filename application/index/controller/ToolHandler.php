@@ -95,7 +95,7 @@ class ToolHandler extends Common {
             AtsTaskToolSteps::create([
                 'task_id'  =>  $taskId,
                 'tool_name' =>  $formObj[$i]->Tool_Type,
-                'status' => '0',  // pending
+                'status' => PENDING,  // pending
                 'steps' => $i + 1,
                 'element_json' => json_encode($formObj[$i]), // trans to String
                 'tool_start_time' => $startTime
@@ -120,7 +120,7 @@ class ToolHandler extends Common {
                 AtsTaskToolSteps::create([
                     'task_id'  =>  $taskId,
                     'tool_name' =>  $formObj[$i]->Tool_Type,
-                    'status' => '0',  // pending
+                    'status' => PENDING,  // pending
                     'steps' => $i + 1,
                     'element_json' => json_encode($formObj[$i]), // trans to String
                     'tool_start_time' => $startTime
@@ -137,7 +137,7 @@ class ToolHandler extends Common {
 
         $res = AtsTaskBasic::get(['task_id' => $taskId]);
 
-        if (0 == $res->getData('status') ){
+        if (PENDING == $res->getData('status') ){
             // delete steps
             AtsTaskToolSteps::destroy($taskId);
             return 'done';

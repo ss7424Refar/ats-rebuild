@@ -43,3 +43,14 @@ echo '----';
 if (stristr('Altair TX CS1', 'Altair') !== false) {
     echo  'Inhouse';
 }
+
+echo '----';
+
+$optionResult['seriesData'][] = 1;
+$optionResult['seriesData'][] = 2;
+var_dump($optionResult);
+
+echo '--';
+
+
+echo "$week_start"."$week_end";
