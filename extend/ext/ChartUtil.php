@@ -64,4 +64,25 @@ class ChartUtil {
         return $serialTimeData;
     }
 
+    public static function getWeekStart() {
+
+        //当前日期
+        $today = date("Y-m-d");
+        //$first =1 表示每周星期一为开始日期 0表示每周日为开始日期
+        $first=1;
+        //获取当前周的第几天 周日是 0 周一到周六是 1 - 6
+        $w=date('w',strtotime($today));
+        //获取本周开始日期，如果$w是0，则表示周日，减去 6 天
+        $weekStart=date('Y-m-d',strtotime("$today -".($w ? $w - $first : 6).' days'));
+        return $weekStart;
+    }
+
+    public static function getWeekEnd() {
+
+        $weekStart = self::getWeekStart();
+        //本周结束日期
+        $weekEnd=date('Y-m-d',strtotime("$weekStart + 6 days"));
+
+        return $weekEnd;
+    }
 }
