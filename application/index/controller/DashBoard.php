@@ -17,6 +17,41 @@ use ext\ChartUtil;
 
 class DashBoard extends Common
 {
+
+    private $statusArray;
+    private $toolArray;
+    private $weekStart;
+    private $weekEnd;
+
+    public function _initialize(){
+        parent::_initialize();
+
+        $this->statusArray = [PENDING, ONGOING, FAIL, PASS, EXPIRED];
+        $this->toolArray = [JUMP_START, RECOVERY, C_TEST];
+
+        $this->weekStart = ChartUtil::getWeekStart();
+        $this->weekEnd = ChartUtil::getWeekEnd();
+    }
+    /*
+     * myTaskInit
+     */
+    public function myTaskInit() {
+        $myTaskResult = array('finished' => 0);
+        for ($i = 0; $i < count($this->statusArray); $i++) {
+            $res = Db::query('select count(*) as total from ats_task_basic where status = ?  '.
+                ' and date(task_create_time) = curdate();', [$this->statusArray[$i]]);
+
+            $status = $this->statusArray[$i];
+
+            if (FAIL == $status || PASS == $status) {
+                $myTaskResult['finished'] += $res[0]['total'];
+            } else {
+                $myTaskResult[$status] = $res[0]['total'];
+            }
+        }
+
+        return json_encode($myTaskResult);
+    }
     /*
      * machine chart
      */
@@ -40,25 +75,15 @@ class DashBoard extends Common
                 ' GROUP BY hour, category ORDER BY hour;', ['ODM']);
 
         } elseif (WEEK == $timer) {
-            //当前日期
-            $today = date("Y-m-d");
-            //$first =1 表示每周星期一为开始日期 0表示每周日为开始日期
-            $first=1;
-            //获取当前周的第几天 周日是 0 周一到周六是 1 - 6
-            $w=date('w',strtotime($today));
-            //获取本周开始日期，如果$w是0，则表示周日，减去 6 天
-            $weekStart=date('Y-m-d',strtotime("$today -".($w ? $w - $first : 6).' days'));
-            //本周结束日期
-            $weekEnd=date('Y-m-d',strtotime("$weekStart + 6 days"));
 
             //查询本周的数据并且以Week分组(0=星期一，1=星期二, ……6= 星期天)
             $resIn_house = Db::query(' SELECT WEEKDAY(task_create_time) week, count(*) as total, category ' .
                                 ' FROM ats_task_basic WHERE task_create_time BETWEEN ? AND ?  and category = ? ' .
-                                ' group by week, category ORDER BY week;', [$weekStart, $weekEnd, 'In_House']);
+                                ' group by week, category ORDER BY week;', [$this->weekStart, $this->weekEnd, 'In_House']);
 
             $resODM = Db::query(' SELECT WEEKDAY(task_create_time) week, count(*) as total, category ' .
                 ' FROM ats_task_basic WHERE task_create_time BETWEEN ? AND ?  and category = ? ' .
-                ' group by week, category ORDER BY week;', [$weekStart, $weekEnd, 'ODM']);
+                ' group by week, category ORDER BY week;', [$this->weekStart, $this->weekEnd, 'ODM']);
 
         } elseif (DAY == $timer) {
             // 本月按天数统计的数据
@@ -125,32 +150,47 @@ class DashBoard extends Common
     /*
      * resultChart
      */
-    public function resultChart() {
+    public function statusChart() {
 
         $timer = $this->request->param('timer');
 
-        $statusArray = [PENDING, ONGOING, FAIL, PASS, EXPIRED];
-        $toolArray = [JUMP_START, RECOVERY, C_TEST];
-
         $optionResult = array();
 
-        for ($i = 0; $i < count($statusArray); $i++) {
+        for ($i = 0; $i < count($this->statusArray); $i++) {
             $serialArray = array();
-            $serialArray['status'] = $statusArray[$i];
+            $serialArray['status'] = $this->statusArray[$i];
             if (DAY == $timer) {
-                for ($j = 0; $j < count($toolArray); $j++) {
+                for ($j = 0; $j < count($this->toolArray); $j++) {
                     $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
-                        ' and date(tool_start_time) = curdate();', [$statusArray[$i], $toolArray[$j]]);
+                        ' and date(tool_start_time) = curdate();', [$this->statusArray[$i], $this->toolArray[$j]]);
 
-                    $serialArray['toolData'][] = $res[0]['total'];
+                    $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']); // ‘—’代表数据不存在，就不再绘制了
                 }
 
             } elseif (WEEK == $timer) {
 
+                for ($j = 0; $j < count($this->toolArray); $j++) {
+                    $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
+                        ' and tool_start_time  BETWEEN ? AND ? ;', [$this->statusArray[$i], $this->toolArray[$j], $this->weekStart, $this->weekEnd]);
+
+                    $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+                }
+
             } elseif (MONTH == $timer) {
+                for ($j = 0; $j < count($this->toolArray); $j++) {
+                    $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
+                        ' AND DATE_FORMAT(tool_start_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) ;', [$this->statusArray[$i], $this->toolArray[$j]]);
+
+                    $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+                }
 
             } elseif (YEAR == $timer) {
+                for ($j = 0; $j < count($this->toolArray); $j++) {
+                    $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
+                        ' AND YEAR(tool_start_time)=YEAR(NOW());', [$this->statusArray[$i], $this->toolArray[$j]]);
 
+                    $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+                }
             }
 
             $optionResult[] = $serialArray;
@@ -158,5 +198,102 @@ class DashBoard extends Common
 
         return json_encode($optionResult);
 
+    }
+
+    public function resultChart() {
+        $timer = $this->request->param('timer');
+
+        $serialData = array();
+        $optionResult = array();
+
+        if (DAY == $timer) {
+            for ($i = 0; $i < count($this->statusArray); $i++) {
+                $res = Db::query('select count(*) as total from ats_task_basic where status = ?  '.
+                    ' and date(task_create_time) = curdate();', [$this->statusArray[$i]]);
+
+                $serialData['name'] = $this->statusArray[$i];
+                // ‘—’代表数据不存在，就不再绘制了
+                $serialData['value'] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+                $optionResult[] = $serialData;
+            }
+        } elseif (WEEK == $timer) {
+            for ($i = 0; $i < count($this->statusArray); $i++) {
+                $res = Db::query('select count(*) as total from ats_task_basic where status = ?  '.
+                    ' and task_create_time  BETWEEN ? AND ? ;', [$this->statusArray[$i], $this->weekStart, $this->weekEnd]);
+
+                $serialData['name'] = $this->statusArray[$i];
+                // ‘—’代表数据不存在，就不再绘制了
+                $serialData['value'] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+                $optionResult[] = $serialData;
+            }
+
+        } elseif (MONTH == $timer) {
+            for ($i = 0; $i < count($this->statusArray); $i++) {
+                $res = Db::query('select count(*) as total from ats_task_basic where status = ?  '.
+                    ' AND DATE_FORMAT(task_create_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) ;', [$this->statusArray[$i]]);
+
+                $serialData['name'] = $this->statusArray[$i];
+                // ‘—’代表数据不存在，就不再绘制了
+                $serialData['value'] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+                $optionResult[] = $serialData;
+            }
+        } elseif (YEAR == $timer) {
+            for ($i = 0; $i < count($this->statusArray); $i++) {
+                $res = Db::query('select count(*) as total from ats_task_basic where status = ?  '.
+                    ' AND YEAR(task_create_time)=YEAR(NOW());', [$this->statusArray[$i]]);
+
+                $serialData['name'] = $this->statusArray[$i];
+                // ‘—’代表数据不存在，就不再绘制了
+                $serialData['value'] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+                $optionResult[] = $serialData;
+            }
+        }
+
+        return json_encode($optionResult);
+    }
+
+    public function testerChart() {
+        $timer = $this->request->param('timer');
+
+        $seriesData = array();
+        $legendData = array();
+        $selectedData = array();
+        $optionResult = array();
+
+        $res = null;
+
+        if (DAY == $timer) {
+            $res = Db::query('select tester, count(*) as total from ats_task_basic where '.
+                'date(task_create_time) = curdate() group by tester;');
+        } elseif (WEEK == $timer) {
+            $res = Db::query('select tester, count(*) as total from ats_task_basic where '.
+                'task_create_time  BETWEEN ? AND ? group by tester;', [$this->weekStart, $this->weekEnd]);
+        } elseif (MONTH == $timer) {
+            $res = Db::query('select tester, count(*) as total from ats_task_basic where '.
+                'DATE_FORMAT(task_create_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) group by tester;');
+        } elseif (YEAR == $timer) {
+            $res = Db::query('select tester, count(*) as total from ats_task_basic where '.
+                'YEAR(task_create_time)=YEAR(NOW()) group by tester;');
+        }
+        // create option
+        for ($i = 0; $i < count($res); $i++) {
+            $name = $res[$i]['tester'];
+            $legendData[] = $name;
+
+            $seriesData[$i]['name'] = $name;
+            $seriesData[$i]['value'] = $res[$i]['total'];
+            // 初始化选中个数
+            if ($i < 6) {
+                $selectedData[$name] = true;
+            } else {
+                $selectedData[$name] = false;
+            }
+        }
+
+        $optionResult['legendData'] = $legendData;
+        $optionResult['seriesData'] = $seriesData;
+        $optionResult['selectedData'] = $selectedData;
+
+        return json_encode($optionResult);
     }
 }
