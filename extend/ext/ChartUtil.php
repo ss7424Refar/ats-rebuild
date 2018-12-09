@@ -74,7 +74,7 @@ class ChartUtil {
         $w=date('w',strtotime($today));
         //获取本周开始日期，如果$w是0，则表示周日，减去 6 天
         $weekStart=date('Y-m-d',strtotime("$today -".($w ? $w - $first : 6).' days'));
-        return $weekStart;
+        return $weekStart.' 00:00:00';
     }
 
     public static function getWeekEnd() {
@@ -83,6 +83,6 @@ class ChartUtil {
         //本周结束日期
         $weekEnd=date('Y-m-d',strtotime("$weekStart + 6 days"));
 
-        return $weekEnd;
+        return $weekEnd. ' 23:59:59';
     }
 }
