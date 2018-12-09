@@ -26,3 +26,18 @@ function stringSerializeToArray($str){
     }
     return $serializeArray;
 }
+
+/*
+ * 以逗号形式返回里面的value值
+ */
+
+function appendCommaValue($arr) {
+    $str = '';
+    for ($i = 0; $i < count($arr); $i++) {
+
+        $str = $str . $arr[$i]. ',';
+    }
+    return substr($str, 0, strlen($str) - 1);
+
+//    return $str;
+}
