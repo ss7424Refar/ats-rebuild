@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 use app\index\model\AtsTaskBasic;
+use app\index\model\AtsTaskToolSteps;
 use think\Db;
 
 class TaskManager extends Common{
@@ -117,6 +118,40 @@ class TaskManager extends Common{
         $atsTaskBasic->save();
 
         return "success";
+    }
+
+
+    /*
+     * delete pending task
+     */
+    public function deleteTask() {
+        $multiTask = json_decode($this->request->param('multiTask'));
+        $result = array();
+        // check if pending
+        for ($i = 0; $i < count($multiTask); $i++) {
+            $taskId = $multiTask[$i]->task_id;
+            $status = AtsTaskBasic::where('task_id', $taskId)->column('status');
+            if (PENDING == $status[0]) {
+                // steps
+                AtsTaskToolSteps::destroy($taskId);
+                // basic
+                AtsTaskBasic::destroy($taskId);
+
+                $result['success'][] = $taskId;
+            } else {
+
+                $result['notWell'][] = $taskId;
+            }
+        }
+
+        if (array_key_exists('notWell', $result)) {
+            $result['notWell'] = appendCommaValue($result['notWell']);
+        }
+        if (array_key_exists('success', $result)) {
+            $result['success'] = appendCommaValue($result['success']);
+        }
+
+        return json_encode($result);
     }
 
     /*

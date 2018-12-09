@@ -20,8 +20,8 @@ define('C_TEST', 'C-Test');
 
 define('ATS_IMAGES_PATH', '/home/refar');
 define('ATS_FILE_suffix', '.csv');
-define('ATS_PREPARE_PATH', '/home/refar/Phpproject/ats_sizu/resource/prepare/');
-//define('ATS_PREPARE_PATH', '/home/refar/PhpstormProjects/ats_sizu/resource/prepare/');
+//define('ATS_PREPARE_PATH', '/home/refar/Phpproject/ats_sizu/resource/prepare/');
+define('ATS_PREPARE_PATH', '/home/refar/PhpstormProjects/ats_sizu/resource/prepare/');
 define('ATS_PREPARE_FILE', 'TestPC');
 define('ATS_TMP_TASKS_PATH', '/home/refar/Phpproject/ATS/ats/resource/tmp/');
 define('ATS_FILE_UNDERLINE', '_');

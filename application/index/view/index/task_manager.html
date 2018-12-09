@@ -178,7 +178,7 @@ desired effect
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                <button type="submit" class="btn btn-primary btn-sm" id="sub">Submit</button>
                                 <!--<button type="reset" class="btn btn-primary btn-sm">reset</button>-->
                                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
                             </div>
@@ -371,19 +371,9 @@ desired effect
                         field: 'status',
                         title: 'Status',
                         formatter:function(value, row, index){
-                            // if (0==value){
-                            //     return "pending";
-                            // }else if (1==value){
-                            //     return "ongoing";
-                            // }else if (2==value){
-                            //     return "finished";
-                            // }else if (3==value){
-                            //     return "Cancelled";
-                            // }else if (4==value){
-                            //     return "Abnormal End";
-                            // }else if (5==value){
-                            //     return "expired";
-                            // }
+                            if (null !== value) {
+                                return value;
+                            }
                             return "N/A";
                         }
                     },
@@ -414,15 +404,15 @@ desired effect
                     },
                 ],
                 rowStyle: function(row, index){
-                    if("Fail"==row.result){
+                    if("fail" === row.result){
                         return {classes: 'danger'};
-                    }else if("Pass"==row.result){
+                    }else if("pass" === row.result){
                         return {classes: 'success'};
                     }
-                    else if(0==row.status){
+                    else if("pending" === row.status){
                         return {classes: 'default'};
                     }
-                    else if(1==row.status){
+                    else if("ongoing" === row.status){
                         return {classes: 'warning'};
                     }
                     return {classes: 'active'};
@@ -478,6 +468,10 @@ desired effect
         // delete
         deleteTaskButtonInit();
 
+        $('#addModal').on('hide.bs.modal', function () {
+            resetAddTaskForm();
+        });
+
     });
 
     // 决定工具的操作
@@ -507,7 +501,6 @@ desired effect
                             url: "{:url('ToolHandler/deleteToolSteps')}",
                             data: {taskId: taskId},
                             success: function (result) {
-                                console.log(result);
                                 if ('fail' !== result) {
                                     toastr.success("Delete Steps Success");
                                     $('#taskTable').bootstrapTable('selectPage', 1);
@@ -526,6 +519,7 @@ desired effect
 
         }
     }
+
     function taskButton(){
         var buttonGroup=$('.btn-group:eq(1)');
         var time=null;
@@ -543,7 +537,6 @@ desired effect
     function tableInit(queryPs){
         $('#taskTable').bootstrapTable({
             url: "{:url('TaskManager/taskPagination')}",    //请求后台的URL（*）
-            // url: "/ats_kimi/index/TaskManager/taskPagination",    //请求后台的URL（*）
             method: 'post',                      //请求方式（*）
             classes: 'table table-responsive table-hover table-no-bordered', // table 样式
             iconSize: 'sm',
@@ -592,19 +585,6 @@ desired effect
                 field: 'status',
                 title: 'Task Status',
                 formatter:function(value, row, index){
-                    // if (0==value){
-                    //     return "pending";
-                    // }else if (1==value){
-                    //     return "ongoing";
-                    // }else if (2==value){
-                    //     return "finished";
-                    // }else if (3==value){
-                    //     return "Cancelled";
-                    // }else if (4==value){
-                    //     return "Abnormal End";
-                    // }else if (5==value){
-                    //     return "expired";
-                    // }
                     if (null != value) {
                         return value;
                     }
@@ -670,13 +650,13 @@ desired effect
                 }
             ],
             rowStyle: function(row, index){
-                if("Fail"==row.result){
+                if("fail" === row.result){
                     return {classes: 'danger'};
-                }else if("Pass"==row.result){
+                }else if("pass" === row.result){
                     return {classes: 'success'};
-                }else if(0==row.status){
+                }else if("pending" === row.status){
                     return {classes: 'default'};
-                }else if(1==row.status){
+                }else if("ongoning" === row.status){
                     return {classes: 'warning'};
                 }
                 return {classes: 'active'};
@@ -778,14 +758,12 @@ desired effect
             $('#addTaskForm').data('bootstrapValidator').destroy();
             addFormValidatorInit();
 
-            console.log(testMachine.val());
             var testMachineVal = testMachine.val();
             var machineId = testMachine.select2('data')[0].text;
             if (null != machineId) {
                 machineId = machineId.replace(testMachineVal, '');
                 machineId = machineId.substring(1, machineId.length - 1);
             }
-            console.log(machineId);
 
             $.ajax({
                 type: 'post',
@@ -870,76 +848,51 @@ desired effect
         });
     }
 
-
     function deleteTaskButtonInit() {
         $('#deleteTask').click(function () {
             var ckArr = $('#taskTable').bootstrapTable('getSelections');
-            console.log(ckArr);
             if(ckArr.length == 0){
                 toastr.info("Please select at least one checkbox");
                 return false;
             }
-            if(ckArr.length >= 1 && ckArr.length<= 5){
-                bootbox.confirm({
-                    message: " Do you want delete ?",
-                    buttons: {
-                        confirm: {
-                            label: 'Yes',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'No',
-                            className: 'btn-danger'
-                        }
+            bootbox.confirm({
+                message: " Do You Want Delete ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
                     },
-                    callback: function (result) {
-                        if(result){
-                            $.ajax({
-                                type: "post",
-                                url: "../functions/atsController.php?do=checkAtsInfoByMultiTaskId",
-                                data: {multiTask: ckArr},
-                                dataType: 'json',
-                                success: function (result2) {
-                                    console.log(result2.NoTaskIdFlag);
-                                    console.log(result2.NotPendingFlag);
-                                    if (result2.NoTaskIdFlag){
-                                        toastr.info("TaskID = " + result2.saveNoTaskId + " didn't found! Please Refresh Table!");
-                                        return false;
-                                    }
-                                    if (result2.NotPendingFlag) {
-                                        toastr.info("TaskID = " + result2.saveNotPending + " not pending! cannnot delete");
-                                        return false;
-                                    }
-                                    // delete
-                                    $.ajax({
-                                        type: "get",
-                                        url: "../functions/atsController.php?do=deleteAtsInfoByMultiTaskId",
-                                        data: {multiTask: ckArr},
-                                        // dataType: 'json',
-                                        success: function (result2) {
-                                            if("done" == result2){
-                                                toastr.success("success deleted");
-                                                $('#taskTable').bootstrapTable('selectPage', 1);
-                                            } else {
-                                                toastr.error(result2);
-                                            }
-                                        },
-                                        error: function () {
-                                            toastr.error("fail deleted");
-                                        }
-                                    });
-                                },
-                                error: function (xhr,status,error) {
-                                    toastr.error(xhr.status + " " + xhr.statusText);
-                                }
-                            });
-                        }
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
                     }
-                });
-            } else {
-                toastr.warning("Please select not more than five checkbox");
-                return false;
-            }
+                },
+                callback: function (result) {
+                    if(result){
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('TaskManager/deleteTask')}",
+                            data: {multiTask: JSON.stringify(ckArr)},
+                            success: function (result2) {
+                                result2 = JSON.parse(result2);
+                                msg = '';
+                                if (result2.notWell){
+                                    msg = msg + ' Task Id : ' + result2.notWell + ' Not Pending ';
+
+                                }
+                                if (result2.success) {
+                                    msg = msg + ' Task Id : ' + result2.success + ' Delete Success ';
+                                }
+                                toastr.info(msg);
+                                setTimeout('$(\'#taskTable\').bootstrapTable(\'selectPage\', 1);', 1500);
+                            },
+                            error: function (xhr,status,error) {
+                                toastr.error("Delete Fail");
+                            }
+                        });
+                    }
+                }
+            });
         });
     };
 
@@ -1067,9 +1020,8 @@ desired effect
             var bv = $form.data('bootstrapValidator');
 
             var machineId = testMachine.select2('data')[0].text;
-            console.log(machineId);
             var testMachineVal = testMachine.val();
-            console.log(testMachineVal);
+
             if (null != machineId) {
                 machineId = machineId.replace(testMachineVal, '');
                 machineId = machineId.substring(1, machineId.length - 1);
@@ -1084,24 +1036,33 @@ desired effect
                 data: {
                     formSerialize
                 },
+                beforeSend : function(){
+                    $('#sub').attr('disabled', 'true');
+                },
                 success : function (result) {
-                    console.log(result);
-                    if (result == "success") {
-                        toastr.success('add success!');
+                    if (result === "success") {
+                        toastr.success('Add Success!');
 
                     }
                 },
                 error : function(xhr,status,error){
-                    toastr.error('add fail! try again ');
+                    toastr.error('Add Fail! Try Again ');
                 },
                 complete : function () {
-                    setTimeout("window.location.href=\"TaskManager\"",1500);
+                    setTimeout("window.location.href=\"TaskManager\"",1200);
+                    // $('button[type=sumbit]').removeAttr("disabled");
 
                 }
             });
         });
 
     };
+
+    function resetAddTaskForm() {
+        testMachine.val(null).trigger("change");
+        $('#addTaskForm').data('bootstrapValidator').destroy();
+        addFormValidatorInit();
+    }
 
 </script>
 </body>

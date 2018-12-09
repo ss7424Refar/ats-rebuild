@@ -387,26 +387,12 @@
                     }, true);
 
                 } else {
-                    machine_chart.hideLoading();
-                    // $('#machineChart').html('');
-                    machine_chart.setOption({
-                        title : {
-                            text: 'No Data',
-                            x:'center'
-                        }
-                    }, true);
+                    setChartTitle(machine_chart, 'No Data');
                 }
 
             },
             error : function(xhr,status,error){
-                machine_chart.hideLoading();
-                machine_chart.setOption({
-                    title : {
-                        text: 'Init Error',
-                        x:'center'
-                    }
-                }, true);
-                // $('#machineChart').html('<div class="well text-blue" style="height: 100%"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart Init Failed</i></div>');
+                setChartTitle(machine_chart, 'Init Error');
             }
 
         });
@@ -481,11 +467,13 @@
                         },
                         series: series
                     }, true);
+                } else {
+                    setChartTitle(status_chart, 'No Data');
                 }
 
             },
             error: function () {
-
+                setChartTitle(status_chart, 'Init Error');
             }
         });
 
@@ -572,10 +560,12 @@
                         series : series
 
                     }, true);
+                } else {
+                    setChartTitle(result_chart, 'No Data');
                 }
             },
             error: function () {
-
+                setChartTitle(result_chart, 'Init Error');
             }
         });
     }
@@ -630,11 +620,13 @@
                     }, true);
 
 
+                } else {
+                    setChartTitle(tester_chart, 'No Data');
                 }
 
             },
             error: function () {
-
+                setChartTitle(tester_chart, 'Init Error');
             }
         });
 
@@ -679,6 +671,15 @@
         return (null !== data && undefined !== data && 0 !== data.length) ? false : true;
     }
 
+    function setChartTitle(obj, string) {
+        obj.hideLoading();
+        obj.setOption({
+            title : {
+                text: string,
+                x:'center'
+            }
+        }, true);
+    }
 </script>
 </body>
 </html>

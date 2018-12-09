@@ -188,6 +188,9 @@ desired effect
                         taskId: $('#taskId').val(),
                         formObj : data
                     },
+                    beforeSend : function(){
+                        $('#sub').attr('disabled', 'true');
+                    },
                     success : function (result) {
                         if ("done" == result) {
                             toastr.success("Update Tool Steps Success");
