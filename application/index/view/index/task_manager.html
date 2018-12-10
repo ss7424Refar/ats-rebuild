@@ -798,7 +798,7 @@ desired effect
                 toastr.info("Please select at least one checkbox");
                 return false;
 
-            } else if(ckArr.length >= 1 && ckArr.length<= 5){
+            } else {
                 $.ajax({
                     type: "get",
                     url: "../functions/atsController.php?do=checkAtsInfoByMultiTaskId",
@@ -840,9 +840,6 @@ desired effect
                         toastr.error(xhr.status + " " + xhr.statusText);
                     }
                 });
-            } else {
-                toastr.warning("Please select not more than five checkbox");
-                return false;
             }
 
         });
