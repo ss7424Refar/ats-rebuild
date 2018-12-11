@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="__PUBLIC_CSS__/googleFont.css">
 </head>
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
-<body class="hold-transition skin-purple sidebar-collapse sidebar-mini">
+<body class="{$Think.const.THEME}">
 <div class="wrapper">
   {include file="common/header" /}
   <!-- Left side column. contains the logo and sidebar -->
@@ -55,7 +55,7 @@
 
           <p>
             We could not find the page you were looking for.
-            Meanwhile, you may <a href="../../index.html">return to dashboard</a> or try using the search form.
+            Meanwhile, you may <a href="DashBoard">return to dashboard</a> or try using the search form.
           </p>
 
         </div>
@@ -66,7 +66,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
+  {include file="common/footer" /}
 </div>
 <!-- ./wrapper -->
 

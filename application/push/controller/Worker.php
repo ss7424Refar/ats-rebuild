@@ -9,9 +9,13 @@ namespace app\push\controller;
 
 use think\worker\Server;
 
+use Workerman\Lib\Timer;
+
 class Worker extends Server
 {
-    protected $socket = 'websocket://localhost:2346';
+    protected $socket = 'websocket://0.0.0.0:2346';
+
+    private $clientMsg = array('port_check');
 
     /**
      * 收到信息
@@ -20,8 +24,16 @@ class Worker extends Server
      */
     public function onMessage($connection, $data)
     {
-        $connection->send('我收到你的信息了');
-        dump($data);
+
+        if ($this->clientMsg[0] == $data) {
+            $port = controller('push/PortChecker');
+            $connection->port_timer_id = Timer::add(5, function()use($connection, $data, &$port_timer_id, $port)
+            {
+                $connection->send($port->getPortInfo());
+            });
+
+        }
+
     }
 
     /**
@@ -30,7 +42,7 @@ class Worker extends Server
      */
     public function onConnect($connection)
     {
-        dump($connection);
+
     }
 
     /**
@@ -39,7 +51,8 @@ class Worker extends Server
      */
     public function onClose($connection)
     {
-
+        // 删除定时器
+        Timer::del($connection->port_timer_id);
     }
 
     /**
@@ -59,6 +72,24 @@ class Worker extends Server
      */
     public function onWorkerStart($worker)
     {
+
+//        // 只在id编号为0的进程上设置定时器，其它1、2、3号进程不设置定时器
+//        if($worker->id === 0) {
+//            Timer::add(5, function()use($worker){
+//
+//                $port = controller('push/PortChecker');
+//
+//                foreach($worker->connections as $connection) {
+//                    $connection->send($port->getPortInfo());
+//                }
+//
+//
+//            });
+//        } else if($worker->id === 1) {
+//            Timer::add(4, function()use($worker){
+//                echo date("Y-m-d H:i:s", time()). '\n' ;
+//            });
+//        }
 
     }
 }

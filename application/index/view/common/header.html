@@ -2,6 +2,10 @@
 <script src="__PUBLIC_JS__/jquery/jquery.min.js"></script>
 <!--    toastr-->
 <script src="__PUBLIC_JS__/toastr/toastr.min.js"></script>
+<!--PACE-->
+<script src="__PUBLIC_JS__/pace/pace.js"></script>
+<!--PACE-->
+<link rel="stylesheet" href="__PUBLIC_CSS__/pace/pace.css">
 <!--    toastr-->
 <link href="__PUBLIC_CSS__/toastr/toastr.min.css" rel="stylesheet" />
 
@@ -17,29 +21,6 @@
        toastr.options.extendedTimeOut = 2000; // How long the toast will display after a user hovers over it
 
        // toastr.options.progressBar = true;
-
-       $('#useToggle').click(function () {
-           console.log($(this).attr('aria-expanded'));
-           if (!$(this).attr('aria-expanded')){
-               $.ajax({
-                   type: 'post',
-                   url: "../functions/getUserInfo.php",
-                   data: {username: $('#useToggle span').text()},
-                   dataType: 'json',
-                   success: function(result){
-                       console.log(result);
-
-                       $('.user-header p').html(result.login + ' - '+ result.description + '<small>' + result.email +'</small>');
-                   },
-                   error: function () {
-                       toastr.error("get userInfo fail");
-                   }
-               });
-           }
-
-       });
-
-
    });
 </script>
 <!-- Main Header -->
@@ -91,7 +72,7 @@
                         <!-- The user image in the menu -->
                         <li class="user-header">
                             <img src="__PUBLIC_IMG__/sizu.gif" class="img-circle" alt="User Image">
-                            <p></p>
+                            <p>{$login}-{$description}<small>{$email}</small></p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">

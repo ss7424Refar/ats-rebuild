@@ -118,7 +118,7 @@ class ToolMaker {
             '                            </select>'.
             '                        </div>'.
             '                        <div class="input-group clockpicker" data-autoclose="true">'.
-            '                            <input type="text" class="form-control" >'.
+            '                            <input type="text" class="form-control">'.
             '                            <span class="input-group-addon">'.
             '                                <span class="glyphicon glyphicon-time"></span>'.
             '                            </span>'.
