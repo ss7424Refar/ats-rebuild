@@ -19,10 +19,12 @@ class Index extends Common
         return $this->fetch();
 
     }
+
     public function TaskManager(){
         return $this->fetch();
 
     }
+
     public function ToolAdd(){
         $this -> ReferenceCheck();
         $taskId = $this->request->param('taskId');
@@ -44,6 +46,12 @@ class Index extends Common
         return $this->fetch();
 
     }
+
+    public function PortCheck(){
+        return $this->fetch();
+
+    }
+
     /*
      * 防止浏览器恶意输入
      */

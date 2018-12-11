@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
-    <!--PACE-->
-    <link rel="stylesheet" href="__PUBLIC_CSS__/pace/pace.css">
     <!--    bootstrap dataTables-->
     <link rel="stylesheet" type="text/css" href="__PUBLIC_CSS__/bootstrap-table-develop/bootstrap-table.min.css">
     <!--    bootstrap dataTables extensions-->
@@ -66,7 +64,7 @@ desired effect
 |---------------------------------------------------------|
 -->
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
-<body class="hold-transition skin-purple sidebar-collapse sidebar-mini">
+<body class="{$Think.const.THEME}">
 <div class="wrapper">
     {include file="common/header" /}
     <!-- Left side column. contains the logo and sidebar -->
@@ -275,8 +273,7 @@ desired effect
 
 <!-- Bootstrap 3.3.7 -->
 <script src="__PUBLIC_JS__/bootstrap/bootstrap.min.js"></script>
-<!--PACE-->
-<script src="__PUBLIC_JS__/pace/pace.js"></script>
+
 <!--    bootstrap dataTables-->
 <script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/locale/bootstrap-table-en-US.min.js"></script>
@@ -874,11 +871,11 @@ desired effect
                                 result2 = JSON.parse(result2);
                                 msg = '';
                                 if (result2.notWell){
-                                    msg = msg + ' Task Id : ' + result2.notWell + ' Not Pending ';
+                                    msg = msg + ' Task Id : ' + result2.notWell + ' Not Pending ' +  '<br>';
 
                                 }
                                 if (result2.success) {
-                                    msg = msg + ' Task Id : ' + result2.success + ' Delete Success ';
+                                    msg = msg + ' Task Id : ' + result2.success + ' Delete Success ' +  '<br>';
                                 }
                                 toastr.info(msg);
                                 setTimeout('$(\'#taskTable\').bootstrapTable(\'selectPage\', 1);', 1500);

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="__PUBLIC_IMG__/3.ico"/>
+    <title>Automation Test System | Starter</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/fontawesome-all.css">-->
+    <!-- Theme style -->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/AdminLTE/AdminLTE.min.css">
+    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+          page. However, you can choose any other skin. Make sure you
+          apply the skin class to the body tag so the changes take effect. -->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/skins/skin-purple.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="__PUBLIC_CSS__/html5shiv.min.js"></script>
+    <script src="__PUBLIC_CSS__/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Google Font -->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/googleFont.css">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<!--<body class="hold-transition skin-blue sidebar-mini">-->
+<body class="{$Think.const.THEME}">
+<div class="wrapper">
+    {include file="common/header" /}
+    <!-- Left side column. contains the logo and sidebar -->
+    {include file="common/sidebar" /}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Port Status
+                <small>For Check</small>
+            </h1>
+            <!--            <ol class="breadcrumb">-->
+            <!--                <li><a href="atsIndex.php"><i class="fa fa-dashboard"></i> Home</a></li>-->
+            <!--                <li>Auto Tool</li>-->
+            <!--                <li class="active">Port Status</li>-->
+            <!--            </ol>-->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header  with-border" style="padding-top: 20px">
+                            <div class="alert bg-teal color-palette alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <!--                                <h4> Alert!</h4>-->
+                                <i class="icon fa fa-linux fa-1.5x" style="color: black"></i> You are checking Port Status. <i style="font-size: 12px;color: yellow">The Using Shelf as below</i>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="box box-solid">
+
+                                <!--<div class="col-md-12">-->
+                                    <table class="table table-responsive">
+                                        <thead>
+                                        <tr>
+                                            <th>Machine</th>
+                                            <th>MachineId</th>
+                                            <th>LanIp</th>
+                                            <th>Shelf_SwitchId</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="content">
+                                        <tr><td colspan="5">
+                                                <span class="text-warning">
+                                                    <i><i class="fa fa-spinner fa-pulse" style="color: #0A8CC6"></i> Test data detecting, Please wait 5s ...</i>
+                                                </span>
+                                        </td></tr>
+                                        </tbody>
+                                    </table>
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    {include file="common/footer" /}
+
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED JS SCRIPTS -->
+<!-- Bootstrap 3.3.7 -->
+<script src="__PUBLIC_JS__/bootstrap/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
+
+<script>
+    $(function () {
+
+        WebSocketInit();
+
+    });
+
+    function WebSocketInit()
+    {
+        if ("WebSocket" in window)
+        {
+
+            // 打开一个 web socket
+            var ws = new WebSocket("ws://192.168.1.16:2346/");
+            // var ws = new WebSocket("ws://172.30.52.43:8084/");
+
+            ws.onopen = function()
+            {
+                // Web Socket 已连接上，使用 send() 方法发送数据
+                ws.send("port_check");
+            };
+
+            ws.onmessage = function (evt)
+            {
+                // console.log(evt.data);
+                var response = evt.data;
+                if (null != response) {
+                    response = JSON.parse(response);
+                    console.log(response.message);
+                    // list
+                    // $('#list').append('<li><span class="text-info small"><i>' + response.message + '</i></span></li>');
+
+                    // table
+                    console.log(response.result);
+                    var tableData = response.result;
+
+                    $('#content').empty();
+                    if (0 != tableData.length){
+                        for (var i = 0; i < tableData.length; i++) {
+                            $('#content').append('<tr></tr>');
+                            // $('#content tr:last').append('<td>' + tableData[i].id + '</td>');
+                            $('#content tr:last').append('<td>' + tableData[i].machine + '</td>');
+                            $('#content tr:last').append('<td>' + tableData[i].machineId + '</td>');
+                            $('#content tr:last').append('<td>' + tableData[i].LANIP + '</td>');
+                            $('#content tr:last').append('<td>' + tableData[i].ShelfId_SwitchId + '</td>');
+                            $('#content tr:last').append('<td>inUse</td>');
+                        }
+                    }
+                    else {
+                        $('#content').append('<tr></tr>');
+                        $('#content tr:last').append('<td colspan="5"><span><i style="color: green"> The Shelf is not inUse... </i></span></td>');
+                    }
+
+                }
+
+            };
+
+            ws.onclose = function()
+            {
+                // 关闭 websocket
+                setTimeout("toastr.success(\"ws connect close...\");", 80);
+            };
+        }
+
+        else
+        {
+            // 浏览器不支持 WebSocket
+            alert("your browse not support WebSocket!");
+        }
+    }
+</script>
+
+</body>
+</html>

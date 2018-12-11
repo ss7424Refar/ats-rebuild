@@ -60,15 +60,37 @@ function formToJson() {
 function validateFormData() {
     // select option required
     var isNG = false;
+    var msg = '';
     // select option required
     $('#content').find('select').each(function (i) {
-        if (null == $(this).val() || undefined == $(this).val()){
+        if (null == $(this).val() || undefined === $(this).val()){
             var target = $(this).attr('name');
-            toastr.error(target + " Can't Be Empty");
+            msg = msg + target + " Can't Be Empty" + '<br>';
+
             isNG = true;
         }
 
     });
+    //End After Check
+    $('#toolForm').find('button[data-toggle="collapse"]').each(function (i) {
+        _father = $(this).parent();
+        checkedVal = _father.find("input[name^='End After']:checked").val();
+        if (null !== checkedVal || undefined !== checkedVal) {
+            item = null;
+            if ('Terminus' === checkedVal) {
+                time = _father.find('#Terminus').find('input').val();
+
+                if ('' === time || null === time || undefined === time) {
+                    msg = msg + "End After Can't Be Empty" + '<br>';
+                    isNG = true;
+                }
+            }
+        }
+
+    });
+    if (isNG) {
+        toastr.error(msg);
+    }
     return isNG;
 
 }
