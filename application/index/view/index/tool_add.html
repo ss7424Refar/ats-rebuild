@@ -194,6 +194,7 @@ desired effect
                     },
                     error : function(){
                         toastr.error("Submit Fail, Try Again");
+                        $('#sub').attr('disabled', 'true');
                     }
 
                 })

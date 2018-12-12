@@ -44,7 +44,7 @@ class DashBoard extends Common
             $status = $this->statusArray[$i];
 
             if (FAIL == $status || PASS == $status) {
-                $myTaskResult['finished'] += $res[0]['total'];
+                $myTaskResult[FINISHED] += $res[0]['total'];
             } else {
                 $myTaskResult[$status] = $res[0]['total'];
             }
