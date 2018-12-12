@@ -174,6 +174,10 @@ return [
         'path'  => LOG_PATH,
         // 日志记录级别
         'level' => [],
+        // 日志文件最多只会保留30个，超过会自动清理较早的日志文件
+        // 开启自动清理功能后，不会生成日期子目录。
+//        'max_files'	=> 30
+
     ],
 
     // +----------------------------------------------------------------------
@@ -241,4 +245,10 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+
+    // 配置swiftmailer邮件发送服务器
+    'SMTP_HOST'     => '172.30.52.43',
+    'SMTP_PORT1'     => '25',
+    'MAIL_CC'        => '["wanliang.xu@toshiba-tih.com","lin.zhu@toshiba-tih.com",  "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "xiaoyan.ding@toshiba-tih.com"]',
+    'MAIL_FROM'      => 'ats_swv@toshiba-tih.com'
 ];

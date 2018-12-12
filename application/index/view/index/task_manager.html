@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="__PUBLIC_IMG__/3.ico"/>
-    <title>Automation Test System | Starter</title>
+    <title>{$title}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap/css/bootstrap.min.css">
@@ -562,7 +562,16 @@ desired effect
             cardView: false,                    //是否显示详细视图
             detailView: false,                   //是否显示父子表
             columns: [{
-                checkbox: true
+                field: "check",
+                checkbox: true,
+                formatter: function (value, row, index) {
+                    if ('pending' !== row['status'])
+                        return {
+                            disabled : true,//设置是否可用
+                            checked : false//设置选中
+                        };
+                    return value;
+                }
             }, {
                 field: 'task_id',
                 title: 'TaskID',
@@ -613,9 +622,9 @@ desired effect
                     title: 'Test Result',
                     formatter: function(value, row, index){
                         var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
-                        if("Fail"==value){
+                        if("Fail" === value){
                             return '<a href='+ path +'><i class="fa fa-times fa-fw"></i>&nbsp;' + value + '</a>';
-                        } else if("Pass"==value){
+                        } else if("Pass" === value){
                             return '<a href='+ path +'><i class="fa fa-check fa-fw"></i>&nbsp;' + value + '</a>';
                         }
                         return "N/A";
@@ -631,8 +640,8 @@ desired effect
                         var sid = row['sid'];
                         var result="";
 
-                        if ('pending' == row['status']) {
-                            if (null == sid) {
+                        if ('pending' === row['status']) {
+                            if (null === sid) {
                                 result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
                             } else {
                                 result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
@@ -794,50 +803,31 @@ desired effect
             if(ckArr.length == 0){
                 toastr.info("Please select at least one checkbox");
                 return false;
-
             } else {
-                $.ajax({
-                    type: "get",
-                    url: "../functions/atsController.php?do=checkAtsInfoByMultiTaskId",
-                    data: {multiTask: ckArr},
-                    dataType: 'json',
-                    success: function (result) {
-                        console.log(result.NoTaskIdFlag);
-                        console.log(result.NotPendingFlag);
-
-                        if (result.NoTaskIdFlag){
-                            toastr.info("TaskID = " + result.saveNoTaskId + " didn't found! Please Refresh Table!");
-                            return false;
-                        }
-                        if (result.NotPendingFlag) {
-                            toastr.info("TaskID = " + result.saveNotPending + " not pending! cannnot assign to ATS");
-                            return false;
-                        }
-
-                        // assign to ATS
-                        $.ajax({
-                            type: "get",
-                            url: "../functions/atsController.php?do=assignAtsInfoByMultiTaskId",
-                            data: {multiTask: ckArr},
-                            dataType: 'json',
-                            success: function (result) {
-                                if("done" === result){
-                                    toastr.success("success assign to ATS");
-                                    $('#taskTable').bootstrapTable('selectPage', 1);
-                                } else {
-                                    toastr.error(result);
-                                }
-                            },
-                            error: function () {
-                                toastr.error("fail assign to ATS");
-                            }
-                        });
-                    },
-                    error: function (xhr,status,error) {
-                        toastr.error(xhr.status + " " + xhr.statusText);
+                for (var i = 0; i < ckArr.length; i++) {
+                    if (null == ckArr[i].sid) {
+                        toastr.info("TaskId : " + ckArr[i].task_id + " Need Add Tool Steps");
+                        return false;
                     }
-                });
+                }
             }
+
+            $.ajax({
+                type: "post",
+                url: "{:url('TaskManager/assignTask')}",
+                data: {multiTask: JSON.stringify(ckArr)},
+                success: function (result) {
+                    if("done" === result){
+                        toastr.success("success assign to ATS");
+                        $('#taskTable').bootstrapTable('selectPage', 1);
+                    } else {
+                        toastr.error("fail assign to ATS");
+                    }
+                },
+                error: function (xhr,status,error) {
+                    toastr.error("fail assign to ATS");
+                }
+            });
 
         });
     }
@@ -868,20 +858,13 @@ desired effect
                             url: "{:url('TaskManager/deleteTask')}",
                             data: {multiTask: JSON.stringify(ckArr)},
                             success: function (result2) {
-                                result2 = JSON.parse(result2);
-                                msg = '';
-                                if (result2.notWell){
-                                    msg = msg + ' Task Id : ' + result2.notWell + ' Not Pending ' +  '<br>';
-
+                                if ('success' === result2){
+                                    toastr.info('Delete Success!');
+                                    setTimeout('$(\'#taskTable\').bootstrapTable(\'selectPage\', 1);', 1500);
                                 }
-                                if (result2.success) {
-                                    msg = msg + ' Task Id : ' + result2.success + ' Delete Success ' +  '<br>';
-                                }
-                                toastr.info(msg);
-                                setTimeout('$(\'#taskTable\').bootstrapTable(\'selectPage\', 1);', 1500);
                             },
                             error: function (xhr,status,error) {
-                                toastr.error("Delete Fail");
+                                toastr.error("Delete Fail!");
                             }
                         });
                     }
