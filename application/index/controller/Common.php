@@ -36,7 +36,7 @@ class Common extends Controller{
 //        }
 
     }
-    /*
+    /* @throws
      * check right
      */
     public function checkRight(){

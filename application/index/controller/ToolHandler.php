@@ -63,6 +63,9 @@ class ToolHandler extends Common {
 
     }
 
+    /* @throws
+     * setTool
+     */
     public function setTool(){
         $taskId = $this->request->param('taskId');
 
@@ -90,15 +93,14 @@ class ToolHandler extends Common {
         $formObj = json_decode($formObj); // object in array
         for ($i = 0; $i < count($formObj); $i++) {
             // 需要接口更新其他步骤的开始时间
-            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null;
+//            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null;
             // insert ats_task_tool_steps
             AtsTaskToolSteps::create([
                 'task_id'  =>  $taskId,
                 'tool_name' =>  $formObj[$i]->Tool_Type,
                 'status' => PENDING,  // pending
                 'steps' => $i + 1,
-                'element_json' => json_encode($formObj[$i]), // trans to String
-                'tool_start_time' => $startTime
+                'element_json' => json_encode($formObj[$i]) // trans to String
             ]);
 
         }
@@ -129,9 +131,11 @@ class ToolHandler extends Common {
             }
             return "done";
         }
-
     }
 
+    /* @throws
+     *
+     */
     public function deleteToolSteps(){
         $taskId = $this->request->param('taskId');
 

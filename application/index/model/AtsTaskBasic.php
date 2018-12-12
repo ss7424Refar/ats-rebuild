@@ -18,8 +18,8 @@ class AtsTaskBasic extends Model
     protected $autoWriteTimestamp = 'datetime';
     // 定义时间戳字段名
     protected $createTime = 'task_create_time';
-    // 关闭自动写入update_time字段
-    protected $updateTime = false;
+    // 自动写入update_time字段 (当update的时候)
+    protected $updateTime = 'task_start_time';
     // 自动完成插入属性
     protected $insert = ['status' => PENDING, 'tester', 'category'];
     // 自动写入tester

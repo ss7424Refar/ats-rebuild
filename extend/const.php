@@ -20,19 +20,18 @@ define('RECOVERY', 'Recovery');
 define('C_TEST', 'C-Test');
 
 /*
- * ATS path
+ * ATS file path
  */
 
 define('ATS_IMAGES_PATH', '/home/refar');
 define('ATS_FILE_suffix', '.csv');
-define('ATS_PREPARE_PATH', '/home/refar/Phpproject/ats_sizu/resource/prepare/');
-//define('ATS_PREPARE_PATH', '/home/refar/PhpstormProjects/ats_sizu/resource/prepare/');
+define('ATS_PREPARE_PATH', ROOT_PATH. 'public/resource/prepare/');
 define('ATS_PREPARE_FILE', 'TestPC');
-define('ATS_TMP_TASKS_PATH', '/home/refar/Phpproject/ATS/ats/resource/tmp/');
+define('ATS_TMP_TASKS_PATH', RUNTIME_PATH. 'output/');
 define('ATS_FILE_UNDERLINE', '_');
 define('ATS_TMP_TASKS_HEADER', 'Task'. ATS_FILE_UNDERLINE);
-define('ATS_TASKS_PATH', '/mnt/atsShare/Tasks/');
-define('ATS_FINISH_PATH', '/home/refar/Phpproject/ats_sizu/resource/finish/');
+define('ATS_TASKS_PATH', '/opt/');
+//define('ATS_FINISH_PATH', '/home/refar/Phpproject/ats_sizu/resource/finish/');
 
 /*
  * timer type of chart
@@ -53,3 +52,4 @@ define('FAIL', 'fail');
 define('ONGOING', 'ongoing');
 define('PENDING', 'pending');
 define('EXPIRED', 'expired');
+define('FINISHED', 'finished');
