@@ -408,8 +408,8 @@
             success: function (result) {
                 var series = [];
 
-                result = JSON.parse(result);
-                if (!isNull(result)) {
+                if ("No Data" !== result) {
+                    result = JSON.parse(result);
                     for (var i = 0; i < result.length; i++) {
                         series.push({
                             name:result[i].status,
@@ -487,8 +487,8 @@
             },
             success: function (result) {
                 var series = [];
-                result = JSON.parse(result);
-                if (!isNull(result)) {
+                if ("No Data" !== result) {
+                    result = JSON.parse(result);
                     series.push({
                         name:'Area mode',
                         type:'pie',
@@ -577,8 +577,8 @@
                 timer: timers
             },
             success: function (result) {
-                result = JSON.parse(result);
-                if (!isNull(result)) {
+                if ("No Data" !== result) {
+                    result = JSON.parse(result);
                     tester_chart.hideLoading();
                     tester_chart.setOption({
                         title : {
