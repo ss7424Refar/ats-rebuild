@@ -32,8 +32,9 @@ class DashBoard extends Common
         $this->weekStart = ChartUtil::getWeekStart();
         $this->weekEnd = ChartUtil::getWeekEnd();
     }
-    /*
-     * myTaskInit
+
+    /**myTaskInit
+     * @return string
      */
     public function myTaskInit() {
         $myTaskResult = array('finished' => 0);
@@ -52,8 +53,9 @@ class DashBoard extends Common
 
         return json_encode($myTaskResult);
     }
-    /*
-     * machine chart
+
+    /** machine chart
+     * @return string
      */
     public function machineChart()
     {
@@ -147,8 +149,8 @@ class DashBoard extends Common
         return json_encode($optionResult);
     }
 
-    /*
-     * resultChart
+    /** statusChart
+     * @return string
      */
     public function statusChart() {
 
@@ -156,6 +158,8 @@ class DashBoard extends Common
 
         $optionResult = array();
 
+        // 判断数据是否都为0
+        $isNotAllZero = false;
         for ($i = 0; $i < count($this->statusArray); $i++) {
             $serialArray = array();
             $serialArray['status'] = $this->statusArray[$i];
@@ -165,6 +169,11 @@ class DashBoard extends Common
                         ' and date(tool_start_time) = curdate();', [$this->statusArray[$i], $this->toolArray[$j]]);
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']); // ‘—’代表数据不存在，就不再绘制了
+                    if (false == $isNotAllZero) {
+                        if (0 != $res[0]['total']) {
+                            $isNotAllZero = true;
+                        }
+                    }
                 }
 
             } elseif (WEEK == $timer) {
@@ -174,6 +183,12 @@ class DashBoard extends Common
                         ' and tool_start_time  BETWEEN ? AND ? ;', [$this->statusArray[$i], $this->toolArray[$j], $this->weekStart, $this->weekEnd]);
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+
+                    if (false == $isNotAllZero) {
+                        if (0 != $res[0]['total']) {
+                            $isNotAllZero = true;
+                        }
+                    }
                 }
 
             } elseif (MONTH == $timer) {
@@ -182,6 +197,12 @@ class DashBoard extends Common
                         ' AND DATE_FORMAT(tool_start_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) ;', [$this->statusArray[$i], $this->toolArray[$j]]);
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+
+                    if (false == $isNotAllZero) {
+                        if (0 != $res[0]['total']) {
+                            $isNotAllZero = true;
+                        }
+                    }
                 }
 
             } elseif (YEAR == $timer) {
@@ -190,22 +211,35 @@ class DashBoard extends Common
                         ' AND YEAR(tool_start_time)=YEAR(NOW());', [$this->statusArray[$i], $this->toolArray[$j]]);
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
+
+                    if (false == $isNotAllZero) {
+                        if (0 != $res[0]['total']) {
+                            $isNotAllZero = true;
+                        }
+                    }
                 }
             }
 
             $optionResult[] = $serialArray;
         }
 
-        return json_encode($optionResult);
-
+        if ($isNotAllZero) {
+            return json_encode($optionResult);
+        } else {
+            return 'No Data';
+        }
     }
 
+    /** resultChart
+     * @return string
+     */
     public function resultChart() {
         $timer = $this->request->param('timer');
 
         $serialData = array();
         $optionResult = array();
-
+        // 是否都为0
+        $isNotAllZero = false;
         if (DAY == $timer) {
             for ($i = 0; $i < count($this->statusArray); $i++) {
                 $res = Db::query('select count(*) as total from ats_task_basic where status = ?  '.
@@ -215,6 +249,12 @@ class DashBoard extends Common
                 // ‘—’代表数据不存在，就不再绘制了
                 $serialData['value'] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
                 $optionResult[] = $serialData;
+
+                if (false == $isNotAllZero) {
+                    if (0 != $res[0]['total']) {
+                        $isNotAllZero = true;
+                    }
+                }
             }
         } elseif (WEEK == $timer) {
             for ($i = 0; $i < count($this->statusArray); $i++) {
@@ -225,6 +265,12 @@ class DashBoard extends Common
                 // ‘—’代表数据不存在，就不再绘制了
                 $serialData['value'] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
                 $optionResult[] = $serialData;
+
+                if (false == $isNotAllZero) {
+                    if (0 != $res[0]['total']) {
+                        $isNotAllZero = true;
+                    }
+                }
             }
 
         } elseif (MONTH == $timer) {
@@ -236,6 +282,12 @@ class DashBoard extends Common
                 // ‘—’代表数据不存在，就不再绘制了
                 $serialData['value'] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
                 $optionResult[] = $serialData;
+
+                if (false == $isNotAllZero) {
+                    if (0 != $res[0]['total']) {
+                        $isNotAllZero = true;
+                    }
+                }
             }
         } elseif (YEAR == $timer) {
             for ($i = 0; $i < count($this->statusArray); $i++) {
@@ -246,12 +298,26 @@ class DashBoard extends Common
                 // ‘—’代表数据不存在，就不再绘制了
                 $serialData['value'] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
                 $optionResult[] = $serialData;
+
+                if (false == $isNotAllZero) {
+                    if (0 != $res[0]['total']) {
+                        $isNotAllZero = true;
+                    }
+                }
             }
         }
 
-        return json_encode($optionResult);
+        if ($isNotAllZero) {
+            return json_encode($optionResult);
+        } else {
+            return 'No Data';
+        }
     }
 
+    /**
+     * testerChart
+     * @return string
+     */
     public function testerChart() {
         $timer = $this->request->param('timer');
 
@@ -294,6 +360,10 @@ class DashBoard extends Common
         $optionResult['seriesData'] = $seriesData;
         $optionResult['selectedData'] = $selectedData;
 
-        return json_encode($optionResult);
+        if (!empty($seriesData)) {
+            return json_encode($optionResult);
+        } else {
+            return 'No Data';
+        }
     }
 }
