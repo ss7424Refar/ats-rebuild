@@ -15,7 +15,7 @@ define('APP_PATH', __DIR__.'/application/');
 require './thinkphp/start.php';
 
 ---
-##runTime 的权限设置
+##runTime & log 的权限设置
 
  1://        return $this->fetch('common/footer');
  2: //        return $this->fetch();
