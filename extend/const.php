@@ -30,7 +30,7 @@ define('ATS_PREPARE_FILE', 'TestPC');
 define('ATS_TMP_TASKS_PATH', RUNTIME_PATH. 'output/');
 define('ATS_FILE_UNDERLINE', '_');
 define('ATS_TMP_TASKS_HEADER', 'Task'. ATS_FILE_UNDERLINE);
-define('ATS_TASKS_PATH', '/opt/');
+define('ATS_TASKS_PATH', ROOT_PATH. 'public/resource/tasks/');
 //define('ATS_FINISH_PATH', '/home/refar/Phpproject/ats_sizu/resource/finish/');
 
 /*

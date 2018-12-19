@@ -292,8 +292,11 @@ desired effect
 <script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
 <!--selfJs-->
 <script src="__PUBLIC_JS__/assets/eggShell.js"></script>
+<!--const-->
+<script src="__PUBLIC_JS__/assets/const.js"></script>
 <script>
     $(function () {
+
         eggPrinter();
         testMachine = $("select[name='machine_name']");
         inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
@@ -358,8 +361,8 @@ desired effect
                 detailView: false,                   //是否显示父子表
                 columns: [{
                     field: 'steps',
-                    title: 'Steps',
-                    align:'center'
+                    title: 'Steps'
+                    // align:'center'
                 }, {
                     field: 'tool_name',
                     title: 'Tool Name'
@@ -369,7 +372,7 @@ desired effect
                         title: 'Status',
                         formatter:function(value, row, index){
                             if (null !== value) {
-                                return value;
+                               return value;
                             }
                             return "N/A";
                         }
@@ -382,10 +385,10 @@ desired effect
                         field: 'tool_end_time',
                         title: 'Finish Time'
                     },
-                    {
-                        field: 'result',
-                        title: 'Test Result',
-                    },
+                    // {
+                    //     field: 'result',
+                    //     title: 'Test Result',
+                    // },
                     {
                         field: 'result_path',
                         title: 'Result Path'
@@ -398,18 +401,18 @@ desired effect
                         //     }
                         //     return "N/A";
                         // }
-                    },
+                    }
                 ],
                 rowStyle: function(row, index){
-                    if("fail" === row.result){
+                    if(Fail === row.status){
                         return {classes: 'danger'};
-                    }else if("pass" === row.result){
+                    }else if(Pass === row.status){
                         return {classes: 'success'};
                     }
-                    else if("pending" === row.status){
+                    else if(Pending === row.status){
                         return {classes: 'default'};
                     }
-                    else if("ongoing" === row.status){
+                    else if(Ongoing === row.status){
                         return {classes: 'warning'};
                     }
                     return {classes: 'active'};
@@ -591,7 +594,10 @@ desired effect
                 field: 'status',
                 title: 'Task Status',
                 formatter:function(value, row, index){
-                    if (null != value) {
+                    if (null !== value) {
+                        if (Pass === value || Fail === value) {
+                            return Finish;
+                        }
                         return value;
                     }
                     return "N/A";
@@ -618,18 +624,6 @@ desired effect
                     }
                 },
                 {
-                    field: 'result',
-                    title: 'Test Result',
-                    formatter: function(value, row, index){
-                        var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
-                        if("Fail" === value){
-                            return '<a href='+ path +'><i class="fa fa-times fa-fw"></i>&nbsp;' + value + '</a>';
-                        } else if("Pass" === value){
-                            return '<a href='+ path +'><i class="fa fa-check fa-fw"></i>&nbsp;' + value + '</a>';
-                        }
-                        return "N/A";
-                    }
-                }, {
                     field: 'tester',
                     title: 'Tester'
                 }, {
@@ -656,13 +650,11 @@ desired effect
                 }
             ],
             rowStyle: function(row, index){
-                if("fail" === row.result){
-                    return {classes: 'danger'};
-                }else if("pass" === row.result){
+                if(Fail === row.status || Pass === row.status){
                     return {classes: 'success'};
-                }else if("pending" === row.status){
+                }else if(Pending === row.status){
                     return {classes: 'default'};
-                }else if("ongoning" === row.status){
+                }else if(Ongoing === row.status){
                     return {classes: 'warning'};
                 }
                 return {classes: 'active'};
@@ -680,7 +672,7 @@ desired effect
             }
         }).on('dbl-click-row.bs.table', function(row, $element, field){
 
-            console.log($element);
+            // console.log($element);
             var taskId=$element.task_id;
 
             //init modal tab
@@ -798,9 +790,9 @@ desired effect
     function assignButtonInit(){
         $('#assignTask').click( function () {
             var ckArr = $('#taskTable').bootstrapTable('getSelections');
-            console.log(ckArr);
+            // console.log(ckArr);
 
-            if(ckArr.length == 0){
+            if(ckArr.length === 0){
                 toastr.info("Please select at least one checkbox");
                 return false;
             } else {
@@ -835,7 +827,7 @@ desired effect
     function deleteTaskButtonInit() {
         $('#deleteTask').click(function () {
             var ckArr = $('#taskTable').bootstrapTable('getSelections');
-            if(ckArr.length == 0){
+            if(ckArr.length === 0){
                 toastr.info("Please select at least one checkbox");
                 return false;
             }
@@ -871,7 +863,7 @@ desired effect
                 }
             });
         });
-    };
+    }
 
     function addFormValidatorInit(){
         $('#addTaskForm').bootstrapValidator({

@@ -175,17 +175,17 @@ desired effect
                     result = JSON.parse(result);
                     $('#forCollapse').val(result.length + 1);
                     $.each(result, function (i, item) {
-                        if ('JumpStart' === item.Tool_Type) {
+                        if (JumpStart === item.Tool_Type) {
                             $('#box_body').append('<div>' + setJumpStart(i) + '</div>');
                             lastDiv = $('#box_body').children('div:last');
                             setJumpStartData(lastDiv, item);
                         }
-                        if ('Recovery' === item.Tool_Type) {
+                        if (Recovery === item.Tool_Type) {
                             $('#box_body').append('<div>' + setRecovery(i) + '</div>');
                             lastDiv = $('#box_body').children('div:last');
                             setRecoveryData(lastDiv, item);
                         }
-                        if ('C-Test' === item.Tool_Type) {
+                        if (C_Test === item.Tool_Type) {
                             $('#box_body').append('<div>' + setCTest(i) + '</div>');
                             lastDiv = $('#box_body').children('div:last');
                             setCTestData(lastDiv, item);
@@ -217,6 +217,9 @@ desired effect
                         taskId: $('#taskId').val(),
                         formObj : data
                     },
+                    beforeSend : function(){
+                        $('#sub').attr('disabled', 'true');
+                    },
                     success : function (result) {
                         if ("done" == result) {
                             toastr.success("Update Tool Steps Success");
@@ -226,6 +229,7 @@ desired effect
                     },
                     error : function(){
                         toastr.error("Submit Fail, Try Again");
+                        $('#sub').attr('disabled', 'true');
                     }
 
                 })
@@ -273,7 +277,7 @@ desired effect
     }
 
     function addThenInit(selection, obj) {
-        if ('JumpStart' === selection) {
+        if (JumpStart === selection) {
             // testImage
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
@@ -307,7 +311,7 @@ desired effect
                     {radioClass: 'iradio_minimal-blue'}
                 );
             });
-        } else if ('Recovery' === selection) {
+        } else if (Recovery === selection) {
             // testImage
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
@@ -337,7 +341,7 @@ desired effect
                 );
             });
 
-        } else if ('C-Test' === selection) {
+        } else if (C_Test === selection) {
             // week
             obj.find('#week').select2({
                 width: "100%"
