@@ -146,8 +146,6 @@ desired effect
 <script>
     $(function () {
 
-        // $('.selectpicker').selectpicker();
-
         // selection for toolName
         $('select[name="selection"]').select2({
                 width: "100%"
@@ -177,7 +175,7 @@ desired effect
                 data = formToJson();
                 $.ajax({
                     type : "post",
-                    url: "{:url('ToolHandler/updateToolSteps')}",
+                    url: "{:url('ToolHandler/insertAddTool')}",
                     data: {
                         taskId: $('#taskId').val(),
                         formObj : data
@@ -187,7 +185,7 @@ desired effect
                     },
                     success : function (result) {
                         if ("done" == result) {
-                            toastr.success("Update Tool Steps Success");
+                            toastr.success("Add Tool Steps Success");
                             setTimeout("window.location.href=\"TaskManager\";",1500);
                         }
 
@@ -202,29 +200,6 @@ desired effect
         })
         
     });
-
-    function addJsonData(data) {
-        console.log(data);
-        $.ajax({
-            type : "post",
-            url: "{:url('ToolHandler/insertAddTool')}",
-            data: {
-                taskId: $('#taskId').val(),
-                formObj : data
-            },
-            success : function (result) {
-                if ("done" === result) {
-                    toastr.success("Add Tool Steps Success");
-                    setTimeout("window.location.href=\"TaskManager\";",1500);
-                }
-            },
-            error : function(){
-                toastr.error("Submit Fail, Try Again");
-            }
-
-        })
-
-    }
 
     function addToolByButton(type, obj) {
         var selection, toolId;
@@ -263,7 +238,7 @@ desired effect
     }
 
     function addThenInit(selection, obj) {
-        if ('JumpStart' === selection) {
+        if (JumpStart === selection) {
             // testImage
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
@@ -299,7 +274,7 @@ desired effect
             });
 
 
-        } else if ('Recovery' === selection) {
+        } else if (Recovery === selection) {
             // testImage
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
@@ -330,7 +305,7 @@ desired effect
             });
 
 
-        } else if ('C-Test' === selection) {
+        } else if (C_Test === selection) {
             // week
             obj.find('#week').select2({
                 width: "100%"

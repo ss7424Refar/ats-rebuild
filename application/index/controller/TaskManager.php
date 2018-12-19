@@ -152,6 +152,7 @@ class TaskManager extends Common{
             $taskId = $multiTask[$i]->task_id;
 
             $outPut = array();
+
             $outPut['task_basic'] = AtsTaskBasic::where('task_id', $taskId)->select();
             $outPut['task_steps'] = AtsTaskToolSteps::where('task_id', $taskId)->select();
 
@@ -182,23 +183,29 @@ class TaskManager extends Common{
                     Log::record('remove fail '. $fileName);
                     exit();
                 } else {
+
+                    $startTime = date("Y-m-d H:i:s");
+
                     // update status for task
                     $atsTaskBasic = new AtsTaskBasic();
 
                     $atsTaskBasic->save([
                         'status'  => ONGOING,
-                        'process' => 0
+                        'process' => 0,
+                        'task_start_time' => $startTime
                     ],['task_id' => $taskId]);
 
                     $atsTaskToolSteps = new AtsTaskToolSteps();
                     $atsTaskToolSteps->save([
-                        'status'  => ONGOING
-                    ],['task_id' => $taskId, 'steps' => 1]);
+                        'status'  => ONGOING,
+                        'tool_start_time' => $startTime
+                    ], ['task_id' => $taskId, 'steps' => 1]);
                 }
             }
 
-        }
 
+        }
+        return "done";
     }
 
     /* @throws

@@ -166,7 +166,7 @@ class DashBoard extends Common
             if (DAY == $timer) {
                 for ($j = 0; $j < count($this->toolArray); $j++) {
                     $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
-                        ' and date(tool_start_time) = curdate();', [$this->statusArray[$i], $this->toolArray[$j]]);
+                        ' and date(tool_create_time) = curdate();', [$this->statusArray[$i], $this->toolArray[$j]]);
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']); // ‘—’代表数据不存在，就不再绘制了
                     if (false == $isNotAllZero) {
@@ -180,7 +180,7 @@ class DashBoard extends Common
 
                 for ($j = 0; $j < count($this->toolArray); $j++) {
                     $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
-                        ' and tool_start_time  BETWEEN ? AND ? ;', [$this->statusArray[$i], $this->toolArray[$j], $this->weekStart, $this->weekEnd]);
+                        ' and tool_create_time  BETWEEN ? AND ? ;', [$this->statusArray[$i], $this->toolArray[$j], $this->weekStart, $this->weekEnd]);
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
 
@@ -194,7 +194,7 @@ class DashBoard extends Common
             } elseif (MONTH == $timer) {
                 for ($j = 0; $j < count($this->toolArray); $j++) {
                     $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
-                        ' AND DATE_FORMAT(tool_start_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) ;', [$this->statusArray[$i], $this->toolArray[$j]]);
+                        ' AND DATE_FORMAT(tool_create_time, \'%Y%m\' ) = DATE_FORMAT(CURDATE() , \'%Y%m\' ) ;', [$this->statusArray[$i], $this->toolArray[$j]]);
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
 
@@ -208,7 +208,7 @@ class DashBoard extends Common
             } elseif (YEAR == $timer) {
                 for ($j = 0; $j < count($this->toolArray); $j++) {
                     $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
-                        ' AND YEAR(tool_start_time)=YEAR(NOW());', [$this->statusArray[$i], $this->toolArray[$j]]);
+                        ' AND YEAR(tool_create_time)=YEAR(NOW());', [$this->statusArray[$i], $this->toolArray[$j]]);
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
 

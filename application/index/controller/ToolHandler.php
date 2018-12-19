@@ -91,16 +91,18 @@ class ToolHandler extends Common {
         $taskId = $this->request->param('taskId');
         $formObj = $this->request->param('formObj');
         $formObj = json_decode($formObj); // object in array
+
+        $createTime = date("Y-m-d H:i:s");
+
         for ($i = 0; $i < count($formObj); $i++) {
-            // 需要接口更新其他步骤的开始时间
-//            $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null;
             // insert ats_task_tool_steps
             AtsTaskToolSteps::create([
                 'task_id'  =>  $taskId,
                 'tool_name' =>  $formObj[$i]->Tool_Type,
                 'status' => PENDING,  // pending
                 'steps' => $i + 1,
-                'element_json' => json_encode($formObj[$i]) // trans to String
+                'element_json' => json_encode($formObj[$i]), // trans to String
+                'tool_create_time' => $createTime
             ]);
 
         }
@@ -112,12 +114,12 @@ class ToolHandler extends Common {
         $formObj = $this->request->param('formObj');
         $formObj = json_decode($formObj); // object in array
 
+        $createTime = date("Y-m-d H:i:s");
+
         if (0 != count($formObj)) {
             // delete steps
             AtsTaskToolSteps::destroy($taskId);
             for ($i = 0; $i < count($formObj); $i++) {
-                // 需要接口更新其他步骤的开始时间
-                $startTime = ($i == 0) ? date("Y-m-d H:i:s") : null;
                 // insert ats_task_tool_steps
                 AtsTaskToolSteps::create([
                     'task_id'  =>  $taskId,
@@ -125,7 +127,7 @@ class ToolHandler extends Common {
                     'status' => PENDING,  // pending
                     'steps' => $i + 1,
                     'element_json' => json_encode($formObj[$i]), // trans to String
-                    'tool_start_time' => $startTime
+                    'tool_create_time' => $createTime
                 ]);
 
             }
