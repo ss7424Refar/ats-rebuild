@@ -35,3 +35,9 @@ require './thinkphp/start.php';
     4) chmod 0440 /etc/sudoers
 
 
+## memo
+1. DB:query () 返回的是二维数组。不包括模型数据。
+2. 对外接口可以继承控制器，直接使用Request对象。内部使用，可以不继承。
+
+## Test
+1. 测试github merge
