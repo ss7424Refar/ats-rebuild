@@ -53,3 +53,8 @@ define('ONGOING', 'ongoing');
 define('PENDING', 'pending');
 define('EXPIRED', 'expired');
 define('FINISHED', 'finished');
+
+/*
+ * send mail
+ */
+define('ATS_URL', 'http://172.30.52.43/ats/index/index/TaskManager');

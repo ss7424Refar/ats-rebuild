@@ -77,19 +77,20 @@ class Worker extends Server
         // 执行watchExpired
         if($worker->id === 0) {
             Timer::add(5, function()use($worker){
+                echo 'expired dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL;
                 // 每天0点执行任务
                 if(time() / 86400 == 0) {
                     $watcher = controller('push/WatchExpired');
                     $watcher->dog();
-
                 }
 
             });
-        } else if($worker->id === 1) {
-            Timer::add(4, function()use($worker){
-                echo date("Y-m-d H:i:s", time()). '\n' ;
-            });
         }
+//        else if($worker->id === 1) {
+//            Timer::add(4, function()use($worker){
+//                echo date("Y-m-d H:i:s", time()). '\n' ;
+//            });
+//        }
 
     }
 }
