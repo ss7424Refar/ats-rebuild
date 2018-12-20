@@ -1,0 +1,37 @@
+{
+    "task_basic": [
+        {
+            "task_id": 82,
+            "machine_id": 1607128,
+            "machine_name": "Altair G",
+            "category": "In_House",
+            "lan_ip": "192.168.1.105",
+            "shelf_switch": "1_11",
+            "dmi_product_name": "dynabook Tab S61\/NG",
+            "dmi_part_number": "PS68NNP-NXC",
+            "dmi_serial_number": "7G1217893",
+            "dmi_oem_string": "PRT10U-AAAA6,PCN3381CCZ01FA1\/S3C-----X--",
+            "dmi_system_config": "1",
+            "bios_ec": "234",
+            "status": "pending",
+            "process": null,
+            "task_create_time": "2018-12-19 20:47:26",
+            "task_start_time": null,
+            "task_end_time": null,
+            "tester": "Zhao Tianer"
+        }
+    ],
+    "task_steps": [
+        {
+            "task_id": 82,
+            "tool_name": "JumpStart",
+            "status": "pending",
+            "steps": 1,
+            "element_json": "{\"Tool_Type\": \"JumpStart\", \"Test_Image\": \"Keep Current Image\", \"Execute_Job\": \"Fast Startup,Standby,Microsoft Edge\", \"OS_Activation\": \"YES\"}",
+            "result_path": null,
+            "tool_create_time": "2018-12-19 20:47:34",
+            "tool_start_time": null,
+            "tool_end_time": null
+        }
+    ]
+}

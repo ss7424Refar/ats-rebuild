@@ -73,23 +73,23 @@ class Worker extends Server
     public function onWorkerStart($worker)
     {
 
-//        // 只在id编号为0的进程上设置定时器，其它1、2、3号进程不设置定时器
-//        if($worker->id === 0) {
-//            Timer::add(5, function()use($worker){
-//
-//                $port = controller('push/PortChecker');
-//
-//                foreach($worker->connections as $connection) {
-//                    $connection->send($port->getPortInfo());
-//                }
-//
-//
-//            });
-//        } else if($worker->id === 1) {
-//            Timer::add(4, function()use($worker){
-//                echo date("Y-m-d H:i:s", time()). '\n' ;
-//            });
-//        }
+        // 只在id编号为0的进程上设置定时器，其它1、2、3号进程不设置定时器
+        // 执行watchExpired
+        if($worker->id === 0) {
+            Timer::add(5, function()use($worker){
+                // 每天0点执行任务
+                if(time() / 86400 == 0) {
+                    $watcher = controller('push/WatchExpired');
+                    $watcher->dog();
+
+                }
+
+            });
+        } else if($worker->id === 1) {
+            Timer::add(4, function()use($worker){
+                echo date("Y-m-d H:i:s", time()). '\n' ;
+            });
+        }
 
     }
 }

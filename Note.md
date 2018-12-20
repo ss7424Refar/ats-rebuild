@@ -15,7 +15,7 @@ define('APP_PATH', __DIR__.'/application/');
 require './thinkphp/start.php';
 
 ---
-##runTime 的权限设置
+##runTime & log 的权限设置
 
  1://        return $this->fetch('common/footer');
  2: //        return $this->fetch();
@@ -36,3 +36,9 @@ require './thinkphp/start.php';
 
 ## 测试merge
 
+## memo
+1. DB:query () 返回的是二维数组。不包括模型数据。
+2. 对外接口可以继承控制器，直接使用Request对象。内部使用，可以不继承。
+
+## Test
+1. 测试github merge

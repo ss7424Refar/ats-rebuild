@@ -8,7 +8,7 @@
 
 namespace ext;
 use think\Loader;
-Loader::import('lib.swift_required');
+Loader::import('lib.swift_required'); // 不要问我为什么，本尊也不造。
 //require_once '../../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 use Swift_SmtpTransport;
 use Swift_Mailer;
@@ -28,7 +28,7 @@ class MailerUtil {
      */
     public static function send($to, $mailTitle, $content) {
 
-        $transport = Swift_SmtpTransport::newInstance(config('SMTP_HOST'), config('SMTP_PORT1'));
+        $transport = Swift_SmtpTransport::newInstance(config('SMTP_HOST'), config('SMTP_PORT'));
 
         $mailer = Swift_Mailer::newInstance($transport);
 
