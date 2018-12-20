@@ -46,6 +46,13 @@ class WatchExpired {
                         'status' => EXPIRED,
                         'tool_start_time' => $startTime // DB设置了null， 会自动更新tool_start_time，所以只能手动加入更新接下来的step为null
                     ]);
+
+                // send expired mail
+                $sendRes = controller('services/SendMail')->sendStepsResult($taskId, $j);
+
+                if (0 != $sendRes) {
+                    Log::record('TaskId = ' . $taskId . ', ' . 'Steps = '. $j. ' Send Fail');
+                }
             }
             // update task status
             Db::table('ats_task_basic')
@@ -53,11 +60,6 @@ class WatchExpired {
                 ->update([
                     'status' => EXPIRED
                 ]);
-
-            // send mail
-            $hello = controller('services/SendMail')->getUserAddress($taskId);
-
-            echo $hello;
         }
 
     }

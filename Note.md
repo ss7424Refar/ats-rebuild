@@ -34,11 +34,16 @@ require './thinkphp/start.php';
     3)  www-data ALL=NOPASSWD: ALL
     4) chmod 0440 /etc/sudoers
 
-## 测试merge
-
 ## memo
 1. DB:query () 返回的是二维数组。不包括模型数据。
 2. 对外接口可以继承控制器，直接使用Request对象。内部使用，可以不继承。
 
-## Test
-1. 测试github merge
+## TODO list
+1. 在steps中存储test result path 
+2. 添加查询task功能
+3. 修改tp5的README.md为本项目介绍。
+4. 把重复的js一块内容删除
+5. 添加releasenote功能。
+6. 修改public/img的名字
+7. 修改chart的名字和title, 添加提示之类的
+8. 添加fakeLoader.js, 用于提交或者修改steps
