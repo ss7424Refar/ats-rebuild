@@ -34,4 +34,5 @@ require './thinkphp/start.php';
     3)  www-data ALL=NOPASSWD: ALL
     4) chmod 0440 /etc/sudoers
 
+## 测试merge
 
