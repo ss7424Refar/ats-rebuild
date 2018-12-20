@@ -68,7 +68,7 @@ class SendMail extends Controller {
             '			<td>' . $info[0]['machine_id'] . '</td>' .
             '			<td>' . $info[0]['machine_name'] . '</td>' .
             '			<td>JumpStart</td>' .
-            '			<td>' . $info[0]['result'] . '</td>' .
+            '			<td>' . $info[0]['status'] . '</td>' .
             '			<td>' . $info[0]['task_start_time'] . '</td>' .
             '			<td>' . 'N/A' . '</td>' .
             '		</tr>' .
@@ -86,7 +86,7 @@ class SendMail extends Controller {
 
     }
 
-    private function getUserAddress($taskId) {
+    public function getUserAddress($taskId) {
         $testerRes = Db::table('ats_task_basic')->where('task_id', $taskId)->field('tester')->select();
 
         $emailRes = Db::table('users')->where('login', $testerRes[0]['tester'])->field('email')->select();
