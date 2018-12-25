@@ -84,7 +84,96 @@ desired effect
         <section class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="box">
+                    <div class="box box-default">
+                        <!--<div class="box-header with-border">-->
+                            <!--<h4 class="box-title">Search Condition</h4>-->
+                        <!--</div>-->
+                        <div class="box-body">
+                            <!--<div class="margin input-group pull-right col-md-2">-->
+                                <!--<div class="input-group-btn">-->
+                                    <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">-->
+                                        <!--<span class="fa fa-caret-down"></span> Action-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                                <!--&lt;!&ndash; /btn-group &ndash;&gt;-->
+                                <!--<input type="text" class="form-control">-->
+                                <!--<span class="input-group-btn">-->
+                                  <!--<button type="button" class="btn btn-info btn-flat">Go!</button>-->
+                                <!--</span>-->
+                            <!--</div>-->
+                            <div class="panel panel-heading">
+                                <small id="caidan"><i class="fas fa-search-plus fa-fw">&nbsp;Search</i></small>
+                                <i class="fas fa-chevron-circle-down fa-fw pull-right"></i>
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-horizontal form-group-sm">
+                                    <!--                        first line form-->
+                                    <div class="form-group">
+                                        <label for="TaskID" class="col-sm-1 control-label">TaskID</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" id="TaskID" placeholder="TaskID">
+                                        </div>
+                                        <label for="TestPC" class="col-sm-1 control-label">TestPC</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" id="TestPC" placeholder="TestPC">
+                                        </div>
+                                        <label class="col-sm-1 control-label">TestImage</label>
+                                        <div class="col-sm-2">
+                                            <!--                                <input type="text" class="form-control" id="TestImage" placeholder="TestImage">-->
+                                            <select class="form-control" name="testImage">
+                                            </select>
+                                        </div>
+                                        <label for="SerialNo" class="col-sm-1 control-label">SerialNo</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" id="SerialNo" placeholder="SerialNo">
+                                        </div>
+                                    </div>
+                                    <!--                        second line form-->
+                                    <div class="form-group">
+                                        <label for="StartDate" class="col-sm-1 control-label">StartDate</label>
+                                        <div class="col-sm-2">
+                                            <input type="text"  class="form_datetime form-control" id="StartDate" placeholder="StartDate">
+                                        </div>
+                                        <label for="FinishDate" class="col-sm-1 control-label">FinishDate</label>
+                                        <div class="col-sm-2">
+                                            <input type="text"  class="form_datetime form-control" id="FinishDate" placeholder="FinishDate">
+                                        </div>
+                                        <label class="col-sm-1 control-label">AssignTask</label>
+                                        <div class="col-sm-2">
+                                            <!--                                <input type="text" class="form-control" id="AssignTask" placeholder="AssignTask">-->
+                                            <select class="form-control" >
+                                                <option value="0">Please Select</option>
+                                                <option value="1">JumpStart</option>
+                                                <option value="2">Treboot</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-1 control-label">TestStatus</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" >
+                                                <option value="">Select</option>
+                                                <option value="0">Pending</option>
+                                                <option value="1">OnGoing</option>
+                                                <option value="2">Finished</option>
+                                                <option value="3">Cancelled</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <button type="submit" class="btn btn-info btn-sm col-md-offset-4" ><i class="fas fa-check-circle fa-fw"></i>&nbsp;Submit</button>
+                                    <button type="reset" class="btn btn-success btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</button>
+                                    <button class="btn btn-primary btn-sm col-md-offset-1" id="returnSearch"><i class="fas fa-long-arrow-alt-left fa-fw"></i>&nbsp;Back</button>
+
+                                </form>
+
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
                         <div class="box-body">
                             <div id="toolbar" class="btn-toolbar" role="toolbar">
                                 <div class="btn-group" role="group" >
@@ -756,17 +845,10 @@ desired effect
             $('#addTaskForm').data('bootstrapValidator').destroy();
             addFormValidatorInit();
 
-            var testMachineVal = testMachine.val();
-            var machineId = testMachine.select2('data')[0].text;
-            if (null != machineId) {
-                machineId = machineId.replace(testMachineVal, '');
-                machineId = machineId.substring(1, machineId.length - 1);
-            }
-
             $.ajax({
                 type: 'post',
                 url: "{:url('TaskManager/readTestPCDetail')}",
-                data: {machineId: machineId},
+                data: {machineId: testMachine.val()},
                 dataType: 'json',
                 success: function(result){
                     inputDmiInfo.css('display', 'block');
@@ -988,15 +1070,10 @@ desired effect
             // Get the BootstrapValidator instance
             var bv = $form.data('bootstrapValidator');
 
-            var machineId = testMachine.select2('data')[0].text;
-            var testMachineVal = testMachine.val();
+            // 前台machineId和name实际传反了。但是没有办法。
+            var formSerialize = $form.serialize() + '&machine_id=' + testMachine.select2('data')[0].text;
 
-            if (null != machineId) {
-                machineId = machineId.replace(testMachineVal, '');
-                machineId = machineId.substring(1, machineId.length - 1);
-            }
-
-            var formSerialize = $form.serialize() + '&machine_id=' + machineId;
+            // console.log(formSerialize);
 
             // Use Ajax to submit form data
             $.ajax({
@@ -1019,7 +1096,6 @@ desired effect
                 },
                 complete : function () {
                     setTimeout("window.location.href=\"TaskManager\"",1200);
-                    // $('button[type=sumbit]').removeAttr("disabled");
 
                 }
             });
