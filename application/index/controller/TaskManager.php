@@ -29,11 +29,11 @@ class TaskManager extends Common{
                 $machineId=$data[2];
                 $appendedTestMachine=$data[1]. "(". $machineId. ")" ;
                 if (empty(trim($query))) {
-                    $tmpArray = array('id' => $data[1], 'text' => $appendedTestMachine);
+                    $tmpArray = array('id' => $data[2], 'text' => $appendedTestMachine);
                     array_push($jsonResult, $tmpArray);
                 }else {
                     if (stristr($appendedTestMachine, $query) !== false){
-                        $tmpArray = array('id' => $data[1], 'text' => $appendedTestMachine);
+                        $tmpArray = array('id' => $data[2], 'text' => $appendedTestMachine);
                         array_push($jsonResult, $tmpArray);
                     }
 
@@ -113,6 +113,15 @@ class TaskManager extends Common{
      */
     public function addTask(){
         $form = stringSerializeToArray($this->request->param('formSerialize'));
+
+        // 修改转换machine_id至machine_name
+        // machine_name至machine_id
+        $machine_name = str_replace($form['machine_name'], '', $form['machine_id']);
+        $machine_name = str_replace('()', '', $machine_name);
+
+        $form['machine_id'] = $form['machine_name'];
+        $form['machine_name'] = $machine_name;
+
         $atsTaskBasic = new AtsTaskBasic();
 
         $atsTaskBasic->data($form);
