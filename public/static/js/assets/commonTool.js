@@ -10,7 +10,7 @@ function formToJson() {
         _father = $(this).parent();
         toolType = $(this).children('b').html();
 
-        if ('JumpStart' === toolType) {
+        if (JumpStart === toolType) {
             var item ={
                 Tool_Type:toolType,
                 Test_Image:_father.find("#TestImage").select2('val'),
@@ -19,14 +19,14 @@ function formToJson() {
             }
 
             obj.push(item);
-        } else if ('Recovery' === toolType) {
+        } else if (Recovery === toolType) {
             var item ={
                 Tool_Type:toolType,
                 Test_Image:_father.find("#TestImage").select2('val'),
                 OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
             }
             obj.push(item);
-        }else if ('C-Test' === toolType) {
+        }else if (C_Test === toolType) {
             checkedVal = _father.find("input[name^='End After']:checked").val();
             if (null !== checkedVal || undefined !== checkedVal) {
                 item = null;
