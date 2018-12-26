@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
+    <!--datetimepicker-->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.css">
     <!--    bootstrap dataTables-->
     <link rel="stylesheet" type="text/css" href="__PUBLIC_CSS__/bootstrap-table-develop/bootstrap-table.min.css">
     <!--    bootstrap dataTables extensions-->
@@ -85,92 +87,77 @@ desired effect
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-default">
-                        <!--<div class="box-header with-border">-->
-                            <!--<h4 class="box-title">Search Condition</h4>-->
-                        <!--</div>-->
-                        <div class="box-body">
-                            <!--<div class="margin input-group pull-right col-md-2">-->
-                                <!--<div class="input-group-btn">-->
-                                    <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">-->
-                                        <!--<span class="fa fa-caret-down"></span> Action-->
-                                    <!--</button>-->
-                                <!--</div>-->
-                                <!--&lt;!&ndash; /btn-group &ndash;&gt;-->
-                                <!--<input type="text" class="form-control">-->
-                                <!--<span class="input-group-btn">-->
-                                  <!--<button type="button" class="btn btn-info btn-flat">Go!</button>-->
-                                <!--</span>-->
-                            <!--</div>-->
-                            <div class="panel panel-heading">
-                                <small id="caidan"><i class="fas fa-search-plus fa-fw">&nbsp;Search</i></small>
-                                <i class="fas fa-chevron-circle-down fa-fw pull-right"></i>
+                        <div class="box-header with-border">
+                            <i class="fa fa-search-plus">&nbsp;Search</i>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
                             </div>
+                        </div>
+                        <div class="box-body">
                             <div class="panel-body">
-                                <form class="form-horizontal form-group-sm">
+                                <form class="form-horizontal">
                                     <!--                        first line form-->
                                     <div class="form-group">
-                                        <label for="TaskID" class="col-sm-1 control-label">TaskID</label>
+                                        <label class="col-sm-1 control-label">Task ID</label>
                                         <div class="col-sm-2">
-                                            <input type="text" class="form-control" id="TaskID" placeholder="TaskID">
+                                            <input type="text" class="form-control" id="search_taskId" placeholder="Task ID">
                                         </div>
-                                        <label for="TestPC" class="col-sm-1 control-label">TestPC</label>
+                                        <label class="col-sm-1 control-label">Machine Id</label>
                                         <div class="col-sm-2">
-                                            <input type="text" class="form-control" id="TestPC" placeholder="TestPC">
+                                            <input type="text" class="form-control" id="search_machineId" placeholder="Machine Id">
                                         </div>
-                                        <label class="col-sm-1 control-label">TestImage</label>
+                                        <label class="col-sm-1 control-label">Machine Name</label>
                                         <div class="col-sm-2">
-                                            <!--                                <input type="text" class="form-control" id="TestImage" placeholder="TestImage">-->
-                                            <select class="form-control" name="testImage">
-                                            </select>
+                                            <input type="text" class="form-control" id="search_machineName" placeholder="Machine Name">
                                         </div>
-                                        <label for="SerialNo" class="col-sm-1 control-label">SerialNo</label>
+                                        <label class="col-sm-1 control-label">Serial No</label>
                                         <div class="col-sm-2">
-                                            <input type="text" class="form-control" id="SerialNo" placeholder="SerialNo">
+                                            <input type="text" class="form-control" id="search_serialNo" placeholder="Serial No">
                                         </div>
                                     </div>
                                     <!--                        second line form-->
                                     <div class="form-group">
-                                        <label for="StartDate" class="col-sm-1 control-label">StartDate</label>
+                                        <label class="col-sm-1 control-label">Start Date</label>
                                         <div class="col-sm-2">
-                                            <input type="text"  class="form_datetime form-control" id="StartDate" placeholder="StartDate">
+                                            <input type="text" readonly class="form_datetime form-control">
                                         </div>
-                                        <label for="FinishDate" class="col-sm-1 control-label">FinishDate</label>
+                                        <label class="col-sm-1 control-label">Finish Date</label>
                                         <div class="col-sm-2">
-                                            <input type="text"  class="form_datetime form-control" id="FinishDate" placeholder="FinishDate">
+                                            <input type="text" readonly class="form_datetime form-control" id="search_finishDate">
                                         </div>
-                                        <label class="col-sm-1 control-label">AssignTask</label>
+                                        <label class="col-sm-1 control-label">Include Tool</label>
                                         <div class="col-sm-2">
-                                            <!--                                <input type="text" class="form-control" id="AssignTask" placeholder="AssignTask">-->
-                                            <select class="form-control" >
-                                                <option value="0">Please Select</option>
-                                                <option value="1">JumpStart</option>
-                                                <option value="2">Treboot</option>
+                                            <select class="form-control" name="option" multiple="multiple">
+                                                <option>JumpStart</option>
+                                                <option>Recovery</option>
+                                                <option>C-Test</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-1 control-label">TestStatus</label>
+                                        <label class="col-sm-1 control-label">Task Status</label>
                                         <div class="col-sm-2">
-                                            <select class="form-control" >
-                                                <option value="">Select</option>
-                                                <option value="0">Pending</option>
-                                                <option value="1">OnGoing</option>
-                                                <option value="2">Finished</option>
-                                                <option value="3">Cancelled</option>
+                                            <select class="form-control" name="option">
+                                                <option></option>
+                                                <option>pending</option>
+                                                <option>ongoing</option>
+                                                <option>finish</option>
+                                                <option>expired</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <hr>
-                                    <button type="submit" class="btn btn-info btn-sm col-md-offset-4" ><i class="fas fa-check-circle fa-fw"></i>&nbsp;Submit</button>
-                                    <button type="reset" class="btn btn-success btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</button>
-                                    <button class="btn btn-primary btn-sm col-md-offset-1" id="returnSearch"><i class="fas fa-long-arrow-alt-left fa-fw"></i>&nbsp;Back</button>
+                                    <!--<hr>-->
 
                                 </form>
-
                             </div>
                         </div>
-                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info btn-sm col-md-offset-5" ><i class="fa fa-check-circle fa-fw"></i>&nbsp;Submit</button>
+                            <button type="reset" class="btn btn-success btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</button>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-default">
@@ -184,11 +171,8 @@ desired effect
                                 <div class="btn-group" role="group" style="display: none">
                                     <button type="button" class="btn btn-success btn-sm" id="addTask" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus fa-fw"></i>&nbsp;Add</button>
                                     <button type="button" class="btn btn-warning btn-sm" id="assignTask"><i class="fa fa-wrench fa-fw"></i>&nbsp;Assign</button>
-                                    <!--                                    <button type="button" class="btn btn-info btn-sm" id="editTask" data-toggle="modal"><i class="fa fa-edit fa-fw"></i>&nbsp;Edit</button>-->
                                     <button type="button" class="btn btn-danger btn-sm" id="deleteTask"><i class="fa fa-close  fa-fw"></i>&nbsp;Delete</button>
-                                    <!--                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-copy fa-fw"></i>&nbsp;Copy</button>-->
                                 </div>
-                                <!--                <button class="btn btn-warning pull-right btn-sm" href="#"><i class="fa fa-sync fa-spin fa-fw" aria-hidden="true"></i></button>-->
                             </div>
                             <table id="taskTable" class="" data-show-jumpto="true"></table>
                         </div>
@@ -270,9 +254,9 @@ desired effect
                                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
                             </div>
                         </form>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
             <!--        detail info-->
             <div class="modal fade" id="detailInfo"  role="dialog">
                 <div class="modal-dialog" style="width:800px">
@@ -344,15 +328,12 @@ desired effect
                             <div id="stepsDetail"></div>
                             <button type="button" class="btn btn-default col-md-offset-10" data-dismiss="modal">close</button>
                         </div>
-
-                        <!--<div class="modal-footer">-->
-
-                        <!--</div>-->
                     </div>
                 </div>
             </div>
         </section>
     </div>
+
     <!-- Main Footer -->
     {include file="common/footer" /}
 
@@ -368,11 +349,12 @@ desired effect
 <script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/locale/bootstrap-table-en-US.min.js"></script>
 <!--    bootstrap dataTables extensions-->
 <script src="__PUBLIC_JS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
-
 <!-- iCheck 1.0.1 -->
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!-- bootbox4.4 -->
 <script src="__PUBLIC_JS__/bootbox4.4/bootbox.min.js"></script>
+<!--datetimepicker-->
+<script src="__PUBLIC_JS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.js"></script>
 <!-- Select2 -->
 <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
 <!--    bootstrapValidator-->
@@ -384,9 +366,24 @@ desired effect
 <!--const-->
 <script src="__PUBLIC_JS__/assets/const.js"></script>
 <script>
+
+    $("select[name='option']").select2({
+        width: "100%",
+        placeholder: ''
+    });
+
     $(function () {
 
         eggPrinter();
+
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "bottom-left",
+            minView: "month" //选择日期后，不会再跳转去选择时分秒
+        });
+
         testMachine = $("select[name='machine_name']");
         inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
 
@@ -666,7 +663,7 @@ desired effect
                 }
             }, {
                 field: 'task_id',
-                title: 'TaskID',
+                title: 'Task ID',
                 formatter:function(value, row, index){
                     return 'ATS_' + value;
                 }
@@ -678,7 +675,7 @@ desired effect
                 }
             }, {
                 field: 'machine_id',
-                title: 'MachineID'
+                title: 'Machine ID'
             }, {
                 field: 'status',
                 title: 'Task Status',
