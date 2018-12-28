@@ -39,6 +39,9 @@ require './thinkphp/start.php';
 2. 对外接口可以继承控制器，直接使用Request对象。内部使用，可以不继承。
 
 ## TODO list
+0-1. Baseline Image 需要添加到JumpStart中
+0-2. Execute Job 需要1,2,5,6
+0-3. 添加tool时需要增加对192.168.40.XXX check
 1. 在steps中存储test result path 
 2. 添加查询task功能
 3. 修改tp5的README.md为本项目介绍。
