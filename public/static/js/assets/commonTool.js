@@ -15,8 +15,9 @@ function formToJson() {
                 Tool_Type:toolType,
                 Test_Image:_father.find("#TestImage").select2('val'),
                 Execute_Job:_father.find("#ExecuteJob").select2('val'),
-                OS_Activation:_father.find("input[name^='OS Activation']:checked").val() // OS Activation first
-            }
+                OS_Activation:_father.find("input[name^='OS Activation']:checked").val(), // OS Activation
+                BaseLine_Image:_father.find("input[name^='BaseLine Image']:checked").val() // BaseLine Image
+            };
 
             obj.push(item);
         } else if (Recovery === toolType) {
@@ -24,7 +25,7 @@ function formToJson() {
                 Tool_Type:toolType,
                 Test_Image:_father.find("#TestImage").select2('val'),
                 OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
-            }
+            };
             obj.push(item);
         }else if (C_Test === toolType) {
             checkedVal = _father.find("input[name^='End After']:checked").val();
@@ -34,7 +35,8 @@ function formToJson() {
                     item ={
                         Tool_Type:toolType,
                         End_After:'Count',
-                        Count:_father.find('#Count').find('input').val()
+                        Count:_father.find('#Count').find('input').val(),
+                        Test_Image:_father.find("#TestImage").select2('val')
                     }
 
                 } else if ('Terminus' === checkedVal) {
@@ -43,6 +45,7 @@ function formToJson() {
                         End_After:'Terminus',
                         Week:_father.find('#Terminus').find('#week').select2('val'),
                         Time:_father.find('#Terminus').find('input').val(),
+                        Test_Image:_father.find("#TestImage").select2('val')
                     }
 
                 } else if ('Interval' === checkedVal) {
@@ -52,6 +55,7 @@ function formToJson() {
                         Day:_father.find('#Interval').find('input:eq(0)').val(),
                         Hour:_father.find('#Interval').find('input:eq(1)').val(),
                         Min:_father.find('#Interval').find('input:eq(2)').val(),
+                        Test_Image:_father.find("#TestImage").select2('val')
                     }
                 }
                 obj.push(item);
@@ -101,9 +105,9 @@ function validateFormData() {
 }
 
 function setJumpStart(i) {
-    $template = '';
+    var template = '';
 
-    $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>JumpStart</b></button>' +
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>JumpStart</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
@@ -131,19 +135,28 @@ function setJumpStart(i) {
         '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="NO"/> NO'+
         '                </label>'+
         '            </div>'+
+        '            <label class="col-sm-1 control-label">BaseLine Image</label>'+
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="BaseLine Image_'+ i +'" class="minimal" value="YES"/> YES'+
+        '                </label>'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="BaseLine Image_'+ i +'" class="minimal" value="NO"/> NO'+
+        '                </label>'+
+        '            </div>'+
         '        </div>'+
         '        <hr>'+
-        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"> Add</button></div>'+
-        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"> delete</button></div>'+
+        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
         '    </div>'+
         '</div>';
-    return $template;
+    return template;
 }
 
 function setRecovery(i) {
-    $template = '';
+    var template = '';
 
-    $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>Recovery</b></button>' +
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>Recovery</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
@@ -162,19 +175,19 @@ function setRecovery(i) {
         '            </div>'+
         '        </div>'+
         '        <hr>'+
-        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"> Add</button></div>'+
-        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"> delete</button></div>'+
+        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
         '    </div>'+
         '</div>';
 
-    return $template;
+    return template;
 
 }
 
 function setCTest(i) {
-    $template = '';
+    var template = '';
 
-    $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>C-Test</b></button>' +
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>C-Test</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
@@ -252,11 +265,17 @@ function setCTest(i) {
         '                </div>'+
         '            </div>'+
         '        </div>'+
+        '        <div class="form-group">'+
+        '            <label class="col-sm-1 control-label">Test Image</label>'+
+        '            <div class="col-sm-4">'+
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'+
+        '            </div>'+
+        '        </div>'+
         '        <hr>'+
-        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"> Add</button></div>'+
-        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"> delete</button></div>'+
+        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
         '    </div>'+
         '</div>';
 
-    return $template;
+    return template;
 }
