@@ -81,7 +81,7 @@ desired effect
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-7">
+                                <div class="col-md-6">
                                     <select class="form-control" style="width: 100%;" name="selection">
                                         <option>JumpStart</option>
                                         <option>Recovery</option>
@@ -92,7 +92,7 @@ desired effect
                                 <!--从taskManager页面传递过来的taskId-->
                                 <input type="text" id="taskId" hidden value="{$taskId}">
                                 <div class="col-md-5">
-                                    <button type="button" class="btn btn-success" id="addTool"> Add Tool </button>
+                                    <button type="button" class="btn btn-success" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add Tool </button>
                                 </div>
                             </div>
 
@@ -109,7 +109,7 @@ desired effect
                 <form  id="toolForm">
                     <div class="box-body" id="box_body"></div>
                     <div class="box-footer">
-                        <button type="button" class="btn btn-primary pull-right" id="sub">Submit</button>
+                        <button type="button" class="btn btn-primary pull-right" id="sub"><i class="fa fa-hand-o-right fa-fw"></i> Submit</button>
                     </div>
                 </form>
             </div>
@@ -200,7 +200,7 @@ desired effect
                 setTimeout("window.location.href=\"TaskManager\";",1500);
             }
 
-        })
+        });
 
         $('#addTool').click(function () {
             addToolByButton(1);
@@ -221,7 +221,7 @@ desired effect
                         $('#sub').attr('disabled', 'true');
                     },
                     success : function (result) {
-                        if ("done" == result) {
+                        if ("done" === result) {
                             toastr.success("Update Tool Steps Success");
                             setTimeout("window.location.href=\"TaskManager\";",1500);
                         }
@@ -237,7 +237,7 @@ desired effect
         });
 
 
-    })
+    });
 
     function addToolByButton(type, obj) {
         var selection, toolId;
@@ -305,7 +305,7 @@ desired effect
             obj.find('.select').each(function () {
                 $(this).select2();
             });
-            // OS Activation
+            // OS Activation & BaseLine Image
             obj.find('input[type="radio"].minimal').each(function () {
                 $(this).iCheck(
                     {radioClass: 'iradio_minimal-blue'}
@@ -399,14 +399,24 @@ desired effect
         obj.find('.select').each(function () {
             $(this).select2().val(item.Execute_Job).trigger("change");;
         });
-        // OS Activation
+        // iCheck
         obj.find('input[type="radio"].minimal').each(function () {
             $(this).iCheck(
                 {radioClass: 'iradio_minimal-blue'}
             );
+            // OS Activation
+            var nameV = $(this).attr('name');
+            if (nameV.indexOf('OS Activation') >= 0) {
+                if (item.OS_Activation === $(this).val()) {
+                    $(this).iCheck('check');
+                }
+            }
 
-            if (item.OS_Activation == $(this).val()) {
-                $(this).iCheck('check');
+            // BaseLine_Image
+            if (nameV.indexOf('BaseLine Image') >= 0) {
+                if (item.BaseLine_Image === $(this).val()) {
+                    $(this).iCheck('check');
+                }
             }
         });
 
@@ -491,6 +501,29 @@ desired effect
             obj.find('#Interval').find('input:eq(1)').val(item.Hour);
             obj.find('#Interval').find('input:eq(2)').val(item.Min);
         }
+
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            _this.select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('ToolHandler/getTestImage')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {q: params.term};
+                    },
+                    processResults: function (data) {
+                        return {results: data};
+                    },
+                    cache: false
+                },
+                placeholder: 'Please Select',
+                allowClear: true
+            }).html('<option value="' + item.Test_Image + '">' + item.Test_Image + '</option>').trigger("change");
+
+        });
 
     }
 </script>

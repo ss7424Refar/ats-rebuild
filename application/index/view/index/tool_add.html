@@ -26,6 +26,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!--<link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-select/css/bootstrap-select.min.css">-->
     <!--jquery.spinner-->
     <link rel="stylesheet" href="__PUBLIC_CSS__/jquery.spinner/bootstrap-spinner.min.css">
+    <!--fakeLoader.min.js-->
+    <!--<link rel="stylesheet" href="__PUBLIC_CSS__/fakeLoader/fakeLoader.css">-->
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/iCheck/all.css">
   <!-- Theme style -->
@@ -37,6 +39,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
     <!--[if lt IE 9]>
     <script src="__PUBLIC_CSS__/html5shiv.min.js"></script>
     <script src="__PUBLIC_CSS__/respond.min.js"></script>
@@ -96,7 +99,7 @@ desired effect
                                 <!--从taskManager页面传递过来的taskId-->
                                 <input type="text" id="taskId" hidden value="{$taskId}">
                                 <div class="col-md-5">
-                                    <button type="button" class="btn btn-success" id="addTool"> Add Tool </button>
+                                    <button type="button" class="btn btn-success" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add Tool </button>
                                 </div>
                             </div>
 
@@ -113,11 +116,13 @@ desired effect
               <form  id="toolForm">
                   <div class="box-body" id="box_body"></div>
                   <div class="box-footer">
-                      <button type="button" class="btn btn-primary pull-right" id="sub">Submit</button>
+                      <button type="button" class="btn btn-primary pull-right" id="sub"><i class="fa fa-hand-o-right fa-fw"></i> Submit</button>
                   </div>
               </form>
           </div>
+
       </section>
+      <div id="fakeLoader"></div>
   </div>
   <!-- /.content-wrapper -->
     {include file="common/footer" /}
@@ -136,6 +141,8 @@ desired effect
 <script src="__PUBLIC_JS__/clockpicker-gh-pages/bootstrap-clockpicker.min.js"></script>
 <!--jquery.spinner-->
 <script src="__PUBLIC_JS__/jquery.spinner/jquery.spinner.min.js"></script>
+<!--fakeLoader-->
+<!--<script src="__PUBLIC_JS__/fakeLoader/fakeLoader.min.js"></script>-->
 <!-- iCheck 1.0.1 -->
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!-- AdminLTE App -->
@@ -173,6 +180,7 @@ desired effect
         $('#sub').click(function () {
             if (!validateFormData()) {
                 data = formToJson();
+
                 $.ajax({
                     type : "post",
                     url: "{:url('ToolHandler/insertAddTool')}",
@@ -266,7 +274,7 @@ desired effect
             obj.find('.select').each(function () {
                 $(this).select2();
             });
-            // OS Activation
+            // OS Activation & BaseLine Image
             obj.find('input[type="radio"].minimal').each(function () {
                 $(this).iCheck(
                     {radioClass: 'iradio_minimal-blue'}
@@ -330,6 +338,28 @@ desired effect
                 });
             });
 
+            // testImage
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "100%",
+                    ajax: {
+                        url: "{:url('ToolHandler/getTestImage')}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {q: params.term};
+                        },
+                        processResults: function (data) {
+                            return {results: data};
+                        },
+                        cache: false
+                    },
+                    placeholder: 'Please Select',
+                    allowClear: true
+                }).html('<option value="' + 'Keep Current Image' + '">' + 'Keep Current Image' + '</option>').trigger("change");
+
+            });
 
         }
     }

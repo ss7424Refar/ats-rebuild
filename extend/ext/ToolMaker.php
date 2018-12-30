@@ -40,10 +40,19 @@ class ToolMaker {
                     '                    <input type="radio" name="OS Activation_'. $index .'" class="minimal" value="NO"/> NO'.
                     '                </label>'.
                     '            </div>'.
+                    '            <label class="col-sm-1 control-label">BaseLine Image</label>'.
+                    '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'.
+                    '                <label style="margin-right: 19px">'.
+                    '                    <input type="radio" name="BaseLine Image_'. $index .'" class="minimal" value="YES" checked/> YES'.
+                    '                </label>'.
+                    '                <label style="margin-right: 19px">'.
+                    '                    <input type="radio" name="BaseLine Image_'. $index .'" class="minimal" value="NO"/> NO'.
+                    '                </label>'.
+                    '            </div>'.
                     '        </div>'.
                     '        <hr>'.
-                    '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"> Add</button></div>'.
-                    '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"> delete</button></div>'.
+                    '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>'.
+                    '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>'.
                     '    </div>'.
                     '</div>';
         return $template;
@@ -72,8 +81,8 @@ class ToolMaker {
                     '            </div>'.
                     '        </div>'.
                     '        <hr>'.
-                    '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"> Add</button></div>'.
-                    '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"> delete</button></div>'.
+                    '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>'.
+                    '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>'.
                     '    </div>'.
                     '</div>';
 
@@ -161,9 +170,15 @@ class ToolMaker {
             '                </div>'.
             '            </div>'.
             '        </div>'.
+            '        <div class="form-group">'.
+            '            <label class="col-sm-1 control-label">Test Image</label>'.
+            '            <div class="col-sm-4">'.
+            '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'.
+            '            </div>'.
+            '        </div>'.
             '        <hr>'.
-            '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"> Add</button></div>'.
-            '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"> delete</button></div>'.
+            '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>'.
+            '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>'.
             '    </div>'.
             '</div>';
 
