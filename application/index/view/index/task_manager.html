@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="__PUBLIC_IMG__/3.ico"/>
+    <link rel="shortcut icon" href="__PUBLIC_IMG__/IMG_1.ico"/>
     <title>{$title}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -86,17 +86,17 @@ desired effect
         <section class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="box box-default">
+                    <div class="box box-default collapsed-box">
                         <div class="box-header with-border">
-                            <i class="fa fa-search-plus">&nbsp;Search</i>
+                            <i class="fa fa-search-plus">&nbsp;Task Search</i>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="box-body">
                             <div class="panel-body">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" id="search_form">
                                     <!--                        first line form-->
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">Task ID</label>
@@ -120,38 +120,36 @@ desired effect
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">Start Date</label>
                                         <div class="col-sm-2">
-                                            <input type="text" readonly class="form_datetime form-control">
+                                            <input type="text" readonly class="form_datetime form-control" id="search_startDate" name="search_startDate">
                                         </div>
                                         <label class="col-sm-1 control-label">Finish Date</label>
                                         <div class="col-sm-2">
-                                            <input type="text" readonly class="form_datetime form-control" id="search_finishDate">
+                                            <input type="text" readonly class="form_datetime form-control" id="search_finishDate" name="search_finishDate">
                                         </div>
                                         <label class="col-sm-1 control-label">Include Tool</label>
                                         <div class="col-sm-2">
-                                            <select class="form-control" name="option" multiple="multiple">
-                                                <option>JumpStart</option>
-                                                <option>Recovery</option>
-                                                <option>C-Test</option>
+                                            <select class="form-control selectOption" multiple="multiple" id="search_tool">
+                                                <option value="JumpStart" selected="selected">JumpStart</option>
+                                                <option value="Recovery" selected="selected">Recovery</option>
+                                                <option value="C-Test" selected="selected">C-Test</option>
                                             </select>
                                         </div>
                                         <label class="col-sm-1 control-label">Task Status</label>
                                         <div class="col-sm-2">
-                                            <select class="form-control" name="option">
-                                                <option></option>
-                                                <option>pending</option>
-                                                <option>ongoing</option>
-                                                <option>finish</option>
-                                                <option>expired</option>
+                                            <select class="form-control selectOption" id="search_status">
+                                                <option value="all" selected="selected">all</option>
+                                                <option value="pending">pending</option>
+                                                <option value="ongoing">ongoing</option>
+                                                <option value="finished">finished</option>
+                                                <option value="expired">expired</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <!--<hr>-->
-
                                 </form>
                             </div>
                         </div>
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-info btn-sm col-md-offset-5" ><i class="fa fa-check-circle fa-fw"></i>&nbsp;Submit</button>
+                            <button type="submit" class="btn btn-info btn-sm col-md-offset-5" id="search_submit"><i class="fa fa-check-circle fa-fw"></i>&nbsp;Submit</button>
                             <button type="reset" class="btn btn-success btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</button>
                         </div>
                     </div>
@@ -366,11 +364,18 @@ desired effect
 <!--const-->
 <script src="__PUBLIC_JS__/assets/const.js"></script>
 <script>
-
-    $("select[name='option']").select2({
+    // Include Tool & Task Status
+    $(".selectOption").select2({
         width: "100%",
         placeholder: ''
     });
+
+    search_startDate = $('#search_startDate');
+    search_finishDate = $('#search_finishDate');
+
+    var today = getToday();
+    search_startDate.val(today);
+    search_finishDate.val(today);
 
     $(function () {
 
@@ -381,8 +386,47 @@ desired effect
             autoclose: true,
             todayBtn: true,
             pickerPosition: "bottom-left",
-            minView: "month" //选择日期后，不会再跳转去选择时分秒
+            minView: "month", //选择日期后，不会再跳转去选择时分秒
+
         });
+        // search function
+        $('#search_submit').click(function () {
+
+            var startTime = $('#search_startDate').val();
+            var finishTime = $('#search_finishDate').val();
+
+            var start = new Date(startTime.replace("-", "/").replace("-", "/"));
+            var end = new Date(finishTime.replace("-", "/").replace("-", "/"));
+
+            if (start > end) {
+                toastr.error('Start Date Great Than Finish Date');
+                return;
+            }
+            if (!timeDifference(start, end)) {
+                toastr.error('Finish Date And Start Date Time Difference Great Than Six Month');
+                return;
+            }
+
+            var search_condition = {
+                taskId:$('#search_taskId').val(),
+                machineId:$('#search_machineId').val(),
+                machineName:$('#search_machineName').val(),
+                serialNo:$('#search_serialNo').val(),
+                startTime:startTime,
+                finishTime:finishTime,
+                tool:JSON.stringify($('#search_tool').val()),           // 获取多选框的值
+                status:$('#search_status').val()
+            };
+
+            $('#taskTable').bootstrapTable('refresh', {
+                silent: true,
+                url: "{:url('TaskManager/taskSearchPagination')}",
+                query: search_condition
+            });
+            // $('#taskTable').bootstrapTable('refreshOptions',{pageNumber:1});
+
+        });
+
 
         testMachine = $("select[name='machine_name']");
         inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
@@ -645,7 +689,7 @@ desired effect
             showColumns: true,                  //是否显示所有的列
             showRefresh: true,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
-            // height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            // height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数决定表格高度
             uniqueId: "task_id",                     //每一行的唯一标识，一般为主键列
             showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
@@ -664,6 +708,7 @@ desired effect
             }, {
                 field: 'task_id',
                 title: 'Task ID',
+                // sortable: true,
                 formatter:function(value, row, index){
                     return 'ATS_' + value;
                 }
@@ -701,7 +746,6 @@ desired effect
                     formatter: function (value, row, index) {
 
                         if (null == value) {
-                            // return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: 2%">0%</div>';
                             return 'N/A';
                         } else {
                             return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: ' + value + '%">' + value + '%</div>';
@@ -749,7 +793,10 @@ desired effect
             formatLoadingMessage: function () {
                 return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
             },
-
+            // onRefresh: function () {
+            //     $('#taskTable').bootstrapTable('destroy');
+            //     tableInit(queryPs);
+            // },
             onLoadError: function () {
                 toastr.error("Table LoadError!");
             },
@@ -802,15 +849,15 @@ desired effect
 
         });
 
-    };
+    }
 
     function queryParams(params) {
         var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
             pageSize : params.pageSize,
             pageNumber : params.pageNumber
         };
-        return temp;//传递参数（*
-    };
+        return temp;//传递参数
+    }
 
     function select2Init() {
 
@@ -1098,12 +1145,44 @@ desired effect
             });
         });
 
-    };
+    }
 
     function resetAddTaskForm() {
         testMachine.val(null).trigger("change");
         $('#addTaskForm').data('bootstrapValidator').destroy();
         addFormValidatorInit();
+    }
+    
+    function getToday() {
+        var myDate = new Date;
+        var year = myDate.getFullYear();//获取当前年
+        var month = myDate.getMonth()+1;//获取当前月
+        var date = myDate.getDate();//获取当前日
+
+        return year + '-' + month + '-' + date;
+    }
+
+    // 相差几个月
+    function timeDifference(date1, date2){
+        var newYear = date1.getFullYear();
+        var newMonth =date1.getMonth() + 6;
+        console.log(newMonth);
+        if(newMonth >= 11){
+            newYear += 1;
+            newMonth -= 11;
+            date1.setFullYear(newYear);
+            date1.setMonth(newMonth-1);
+        }
+        else{
+            date1.setFullYear(newYear);
+            date1.setMonth(newMonth);
+        }
+        if(date1.getTime() >= date2.getTime()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 </script>
