@@ -16,18 +16,47 @@ use think\Request;
 class Index extends Common
 {
     public function DashBoard(){
+
+        // 导航栏的样式
+        $this->assign('dashBoard','active');
+        $this->assign('taskManager','');
+        $this->assign('portCheck','');
         return $this->fetch();
 
     }
 
     public function TaskManager(){
+        // 导航栏的样式
+        $this->assign('taskManager','active');
+        $this->assign('dashBoard','');
+        $this->assign('portCheck','');
         return $this->fetch();
 
+    }
+
+    public function PortCheck(){
+        // 导航栏的样式
+        $this->assign('portCheck','active');
+        $this->assign('taskManager','');
+        $this->assign('dashBoard','');
+
+        return $this->fetch();
+
+    }
+
+    public function Document(){
+        // 获取URL访问的ROOT地址
+        $rootPath = $this->request->root(true);
+        $this->redirect($rootPath. '/public/pdf/web/viewer.html?file=Manual.pdf');
     }
 
     public function ToolAdd(){
         $this -> ReferenceCheck();
         $taskId = $this->request->param('taskId');
+
+        $this->assign('taskManager','active');
+        $this->assign('dashBoard','');
+        $this->assign('portCheck','');
 
         // 模板变量赋值
         $this->assign('taskId',$taskId);
@@ -40,6 +69,10 @@ class Index extends Common
         $this -> ReferenceCheck();
         $taskId = $this->request->param('taskId');
 
+        $this->assign('taskManager','active');
+        $this->assign('dashBoard','');
+        $this->assign('portCheck','');
+
         // 模板变量赋值
         $this->assign('taskId',$taskId);
 
@@ -47,8 +80,8 @@ class Index extends Common
 
     }
 
-    public function PortCheck(){
-        return $this->fetch();
+    public function SignOut(){
+        $this->redirect('http://172.30.52.43/tpms/index.php');
 
     }
 

@@ -87,25 +87,100 @@ class TaskManager extends Common{
         $offset = ($pageNo-1)*$pageSize;
 
         $jsonResult = array();
-        if ($this->hasRight){
-
-            $subMainQuery = Db::table('ats_task_basic')->order('task_id desc')->limit($offset,$pageSize)->buildSql();
-            $subStepsQuery = Db::table('ats_task_tool_steps')->distinct(true)->field('task_id as sid')->buildSql();
-
-            $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid', 'LEFT')->order('task_id desc')->select();
-            $total = Db::table('ats_task_basic')->count();
-        } else {
-            $subMainQuery = Db::table('ats_task_basic')->where('tester', $this->loginUser)->order('task_id desc')->limit($offset,$pageSize)->buildSql();
-            $subStepsQuery = Db::table('ats_task_tool_steps')->distinct(true)->field('task_id as sid')->buildSql();
-
-            $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid', 'LEFT')->order('task_id desc')->select();
-            $total = Db::table('ats_task_basic')->where('tester', $this->loginUser)->count();
+        $map = array();
+        if (!$this->hasRight){
+            $map['tester'] = $this->loginUser;
         }
+
+        $subMainQuery = Db::table('ats_task_basic')->where($map)->order('task_id desc')->limit($offset, $pageSize)->buildSql();
+        $subStepsQuery = Db::table('ats_task_tool_steps')->distinct(true)->field('task_id as sid')->buildSql();
+
+        $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid', 'LEFT')->order('task_id desc')->select();
+        $total = Db::table('ats_task_basic')->count();
 
         $jsonResult['total'] = $total;
         $jsonResult['rows'] = $result;
 
         return json_encode($jsonResult);
+    }
+    /* @throws
+     * task data search page init
+     */
+    public function taskSearchPagination(){
+        $taskId = $this->request->param('taskId');
+        $machineId = $this->request->param('machineId');
+        $machineName = $this->request->param('machineName');
+        $serialNo = $this->request->param('serialNo');
+        $startTime = $this->request->param('startTime');
+        $finishTime = $this->request->param('finishTime');
+        $tool = json_decode($this->request->param('tool'));
+        $status = $this->request->param('status');
+
+        $pageSize = $this->request->param('pageSize');
+        $pageNo = $this->request->param('pageNumber');
+        $offset = ($pageNo-1)*$pageSize;
+
+        $map = array(); // basic查询条件
+        $map2 = array(); // steps查询条件
+
+        if (!empty($taskId)) {
+            $map['task_id'] = $taskId;
+            $map2['task_id'] = $taskId;
+        }
+
+        if (!empty($startTime)) {
+            $map['task_create_time'] = ['>= time', $startTime]; // 自动识别列datetime的属性
+//            $map2['tool_start_time'] = ['>= time', $startTime];
+        }
+        // task的finishTime比steps更新要晚，所以map2没有tool_end_time
+        // exp查询的条件不会被当成字符串，所以后面的查询条件可以使用任何SQL支持的语法，包括使用函数和字段名称。
+        if (!empty($finishTime)) {
+            $map['task_end_time'] = [['<= time', $finishTime. ' 23:59:59'], ['exp', Db::raw('is null')], 'or'];
+        }
+
+        if ('all' != $status) {
+            if (FINISHED == $status) {
+                $map['status'] = ['in', [PASS, FAIL]];
+            } else {
+                $map['status'] = $status;
+            }
+        }
+//        else {
+//            $map['status'] = ['in', [PASS, FAIL]];
+//        }
+
+        if (!$this->hasRight){
+            $map['tester'] = $this->loginUser;
+        }
+
+        if (!empty($machineId)) {
+            $map['machine_id'] = $machineId;
+        }
+
+        if (!empty($machineName)) {
+            $map['machine_name'] = ['like', '%' . $machineName . '%'];
+        }
+
+        if (!empty($serialNo)) {
+            $map['dmi_serial_number'] = $serialNo;
+        }
+
+        if (!empty($tool)) {
+            $map2['tool_name'] = ['in', $tool];
+        }
+
+        $subMainQuery = Db::table('ats_task_basic')->where($map)
+                        ->limit($offset, $pageSize)->buildSql();
+        $subStepsQuery = Db::table('ats_task_tool_steps')->where($map2)->distinct(true)->field('task_id as sid')->buildSql();
+
+        $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid')->order('task_id desc')->select();
+        $total = count($result);
+
+        $jsonResult['total'] = $total;
+        $jsonResult['rows'] = $result;
+
+        return json_encode($jsonResult);
+
     }
 
     /*
