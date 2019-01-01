@@ -28,6 +28,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="__PUBLIC_CSS__/jquery.spinner/bootstrap-spinner.min.css">
     <!--fakeLoader.min.js-->
     <!--<link rel="stylesheet" href="__PUBLIC_CSS__/fakeLoader/fakeLoader.css">-->
+    <!--jquery.shCircleLoader-->
+    <!--<link rel="stylesheet" href="__PUBLIC_CSS__/jquery.shCircleLoader/jquery.shCircleLoader.css">-->
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/iCheck/all.css">
   <!-- Theme style -->
@@ -70,6 +72,7 @@ desired effect
 -->
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
 <body class="{$Think.const.THEME}">
+
 <div class="wrapper">
 
     {include file="common/header" /}
@@ -79,6 +82,7 @@ desired effect
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
       <section class="content">
+
           <div class="row">
               <div class="col-xs-12">
                   <div class="box box-default">
@@ -108,7 +112,6 @@ desired effect
               </div>
           </div>
           <!--<select class="selectpicker" data-live-search="true" data-size="5"></select>-->
-
           <div class="box box-default panel-group" id="content" style="display: none">
               <div class="box-header with-border">
                   <h3 class="box-title">Add</h3>
@@ -122,7 +125,7 @@ desired effect
           </div>
 
       </section>
-      <div id="fakeLoader"></div>
+
   </div>
   <!-- /.content-wrapper -->
     {include file="common/footer" /}
@@ -143,6 +146,8 @@ desired effect
 <script src="__PUBLIC_JS__/jquery.spinner/jquery.spinner.min.js"></script>
 <!--fakeLoader-->
 <!--<script src="__PUBLIC_JS__/fakeLoader/fakeLoader.min.js"></script>-->
+<!--jquery.shCircleLoader-->
+<!--<script src="__PUBLIC_JS__/jquery.shCircleLoader/jquery.shCircleLoader-min.js"></script>-->
 <!-- iCheck 1.0.1 -->
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!-- AdminLTE App -->
@@ -180,7 +185,6 @@ desired effect
         $('#sub').click(function () {
             if (!validateFormData()) {
                 data = formToJson();
-
                 $.ajax({
                     type : "post",
                     url: "{:url('ToolHandler/insertAddTool')}",
@@ -194,7 +198,7 @@ desired effect
                     success : function (result) {
                         if ("done" == result) {
                             toastr.success("Add Tool Steps Success");
-                            setTimeout("window.location.href=\"TaskManager\";",1500);
+                            setTimeout("window.location.href=\"TaskManager\";", 500);
                         }
 
                     },

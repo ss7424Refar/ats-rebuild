@@ -23,7 +23,7 @@ class ChartUtil {
             $end = 7;
         } elseif (DAY == $timer) {
             $start = 1;
-            $end = date("t");
+            $end = date("t") + 1;
         } elseif (MONTH == $timer) {
             $start = 1;
             $end = 13;
@@ -37,11 +37,7 @@ class ChartUtil {
             $key = $data[$i][$timer];
 
             $serialTimeData[$key] = $data[$i]['total'];
-//            if (array_key_exists($key, $serialTimeData)) {
-//                $serialTimeData[$key] += $data[$i]['total'];
-//            } else {
-//                $serialTimeData[$key] = $data[$i]['total'];
-//            }
+
         }
 
         // 填充时间，
@@ -53,11 +49,15 @@ class ChartUtil {
                 }
             }
             // 按照升序排序
-            if (0 == $start) {
+            if (DAY != $timer || MONTH != $timer || YEAR != $timer) {
                 ksort($serialTimeData);
-            } else {
-                sort($serialTimeData);
+                // dashboard.php中json_encode转换关联数组的话
+                // 传给前台就变成了对象，而索引数组则不会，所以用array_values只取出values变成索引数组数组。
+                $serialTimeData = array_values($serialTimeData);
             }
+//            else {
+//                sort($serialTimeData);
+//            }
 
             return $serialTimeData;
         }

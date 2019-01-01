@@ -111,7 +111,7 @@ class TaskManager extends Common{
         $machineId = $this->request->param('machineId');
         $machineName = $this->request->param('machineName');
         $serialNo = $this->request->param('serialNo');
-        $startTime = $this->request->param('startTime');
+        $createTime = $this->request->param('createTime');
         $finishTime = $this->request->param('finishTime');
         $tool = json_decode($this->request->param('tool'));
         $status = $this->request->param('status');
@@ -128,8 +128,8 @@ class TaskManager extends Common{
             $map2['task_id'] = $taskId;
         }
 
-        if (!empty($startTime)) {
-            $map['task_create_time'] = ['>= time', $startTime]; // 自动识别列datetime的属性
+        if (!empty($createTime)) {
+            $map['task_create_time'] = ['>= time', $createTime]; // 自动识别列datetime的属性
 //            $map2['tool_start_time'] = ['>= time', $startTime];
         }
         // task的finishTime比steps更新要晚，所以map2没有tool_end_time
@@ -145,9 +145,6 @@ class TaskManager extends Common{
                 $map['status'] = $status;
             }
         }
-//        else {
-//            $map['status'] = ['in', [PASS, FAIL]];
-//        }
 
         if (!$this->hasRight){
             $map['tester'] = $this->loginUser;
@@ -169,18 +166,16 @@ class TaskManager extends Common{
             $map2['tool_name'] = ['in', $tool];
         }
 
-        $subMainQuery = Db::table('ats_task_basic')->where($map)
-                        ->limit($offset, $pageSize)->buildSql();
+        $subMainQuery = Db::table('ats_task_basic')->where($map)->buildSql();
         $subStepsQuery = Db::table('ats_task_tool_steps')->where($map2)->distinct(true)->field('task_id as sid')->buildSql();
 
-        $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid')->order('task_id desc')->select();
-        $total = count($result);
+        $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid')->order('task_id desc')->limit($offset, $pageSize)->select();
+        $total = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid')->order('task_id desc')->limit($offset, $pageSize)->count();
 
         $jsonResult['total'] = $total;
         $jsonResult['rows'] = $result;
 
         return json_encode($jsonResult);
-
     }
 
     /*

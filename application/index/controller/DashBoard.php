@@ -121,8 +121,8 @@ class DashBoard extends Common
                         ' from ats_task_basic;');
             $minYear = $resYear[0]['minYear'];
             $maxYear = $resYear[0]['maxYear'];
-
-            for ($i = 0; $i <= ($maxYear - $minYear + 1); $i++){
+            $k = $maxYear - $minYear;
+            for ($i = 0; $i <= $k; $i++){
                 $xAxisArray[$i] = $minYear;
                 $minYear++;
             }
@@ -136,6 +136,7 @@ class DashBoard extends Common
             $inhouseSerial = ChartUtil::makeMachineOption($timer, $resIn_house);
             $ODMSerial = ChartUtil::makeMachineOption($timer, $resODM);
         }
+
 
         if (null != $inhouseSerial) {
             $optionResult['seriesData'][] = $inhouseSerial;

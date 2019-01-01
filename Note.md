@@ -43,10 +43,9 @@ require './thinkphp/start.php';
 0-2. Execute Job 需要1,2,5,6
 0-3. 添加tool时需要增加对192.168.40.XXX check
 1. 在steps中存储test result path 
-2. 添加查询task功能
+2. 添加查询task功能  --待 确认
 3. 修改tp5的README.md为本项目介绍。
-4. 把重复的js一块内容删除
+4. 把重复的js一块内容删除  --待 确认
 5. 添加releasenote功能。
-6. 修改public/img的名字
-7. 修改chart的名字和title, 添加提示之类的
-8. 添加fakeLoader.js, 用于提交或者修改steps
+
+8. 添加fakeLoader.js, 用于提交或者修改steps --待 确认
