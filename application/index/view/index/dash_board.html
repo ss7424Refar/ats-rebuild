@@ -51,6 +51,7 @@
 
         <!-- Main content -->
         <section class="content">
+
             <div class="row">
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
@@ -106,6 +107,11 @@
                 <!-- /.col -->
             </div>
 
+            <!--<div class="callout callout-info">-->
+                <!--<h4>The following was created using data tags</h4>-->
+
+                <!--<p>The following three inline (sparkline) chart have been initialized to read and interpret data tags</p>-->
+            <!--</div>-->
             <div class="row">
                 <div class="col-md-6">
                     <!-- Line chart -->
@@ -113,7 +119,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
 
-                            <h3 class="box-title">测试机型的统计</h3>
+                            <h3 class="box-title">Statistical Testing Machine <small id="machineHeader" class="label bg-blue text-sm"></small></h3>
 
                             <div class="box-tools pull-right">
                                 <div class="btn-group">
@@ -134,7 +140,7 @@
                         </div>
                         <div class="box-body">
                             <div id="machineChart" style="height: 300px;"></div>
-                            <div class="well text-blue" style="height: 100%;display: none"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart No Data Init</i></div>
+                            <!--<div class="well text-blue" style="height: 100%;display: none"><i class="fa fa-search" style="margin-top: 10%;margin-left: 40%"> Machine Chart No Data Init</i></div>-->
                         </div>
                         <!-- /.box-body-->
                     </div>
@@ -147,7 +153,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
 
-                            <h3 class="box-title">测试工具结果的统计</h3>
+                            <h3 class="box-title">Statistical Tool Results <small id="statusHeader" class="label bg-blue text-sm"></small></h3>
 
                             <div class="box-tools pull-right">
                                 <div class="btn-group">
@@ -179,7 +185,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
 
-                            <h3 class="box-title">Task pass,failed等结果的统计</h3>
+                            <h3 class="box-title">Statistical Task Results <small id="resultHeader" class="label bg-blue text-sm"></small></h3>
 
                             <div class="box-tools pull-right">
                                 <div class="btn-group">
@@ -209,7 +215,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
 
-                            <h3 class="box-title">测试人员添加task数量的统计</h3>
+                            <h3 class="box-title">Statistics Tasks Added By Testers <small id="testerHeader" class="label bg-blue text-sm"></small></h3>
 
                             <div class="box-tools pull-right">
                                 <div class="btn-group">
@@ -289,7 +295,7 @@
                 $('#expired').find('span:eq(1)').text(result.expired);
             },
             error: function () {
-
+                toastr.error('Get My Task Fail');
             }
 
         })
@@ -298,6 +304,16 @@
     }
 
     function machineChartCreate(timers) {
+        if ('day' == timers) {
+            $('#machineHeader').html(getHeader('month'));
+        } else if ('month' == timers) {
+            $('#machineHeader').html(getHeader('year'));
+        } else if ('year' == timers) {
+            $('#machineHeader').html('');
+        } else {
+            $('#machineHeader').html(getHeader(timers));
+        }
+
         // machine and result chart init
         machine_chart.showLoading();
 
@@ -316,7 +332,7 @@
 
                 if ('year' === timers) {
                     xAxis = result.xAxis;
-                    console.log(xAxis);
+                    // console.log(xAxis);
                 } else {
                     xAxis = createTimerArray(timers);
                 }
@@ -368,7 +384,7 @@
                                 dataView: { //数据视图
                                     show: true,
                                     readOnly: true,
-                                    title: 'dataView'
+                                    // title: 'dataView'
                                 },
                                 magicType : {show: true, type: ['line', 'bar']},
                                 restore : {show: true},
@@ -397,6 +413,9 @@
     }
 
     function statusChartCreate(timers) {
+
+        $('#statusHeader').html(getHeader(timers));
+
         status_chart.showLoading();
 
         $.ajax({
@@ -440,7 +459,7 @@
                                 dataView: { //数据视图
                                     show: true,
                                     readOnly: true,
-                                    title: 'dataView'
+                                    // title: 'dataView'
                                 },
                                 magicType : {show: true, type: ['bar']},
                                 restore : {show: true},
@@ -478,6 +497,9 @@
     }
 
     function resultChartCreate(timers) {
+
+        $('#resultHeader').html(getHeader(timers));
+
         result_chart.showLoading();
         $.ajax({
             type: "post",
@@ -542,6 +564,7 @@
                             data: ['pending', 'ongoing', 'fail', 'pass', 'expired']
                         },
                         toolbox: {
+                            right: 20,
                             show : true,
                             feature : {
                                 dataView : {show: true, readOnly: true},
@@ -569,6 +592,9 @@
     }
 
     function testerChartCreate(timers) {
+
+        $('#testerHeader').html(getHeader(timers));
+
         tester_chart.showLoading();
         $.ajax({
             type: "post",
@@ -678,6 +704,88 @@
             }
         }, true);
     }
+    function getToday() {
+        return transferDate(new Date());
+    }
+
+    function getThisWeek() {
+        var myDate = new Date();
+
+        //今天是这周的第几天
+        var today = myDate.getDay();
+
+        //上周日距离今天的天数（负数表示）
+        var stepSunDay = -today + 1;
+
+        // 如果今天是周日
+        if (today == 0) {
+            stepSunDay = -7;
+        }
+
+        // 周一距离今天的天数（负数表示）
+        var stepMonday = 7 - today;
+
+        var time = myDate.getTime();
+
+        var monday = new Date(time + stepSunDay * 24 * 3600 * 1000);
+        var sunday = new Date(time + stepMonday * 24 * 3600 * 1000);
+        var weekStartDate = transferDate(monday); // 日期变换
+        var weekEndDate = transferDate(sunday); // 日期变换
+
+        return '(' + weekStartDate + ' - ' + weekEndDate + ')';
+    }
+
+    function getThisMonth() {
+        var myDate = new Date();
+        var year = myDate.getFullYear();//获取当前年
+        var month = myDate.getMonth()+1;//获取当前月
+        month = month.length === 2 ? month : '0'+month;
+        return '(' + year + '/' + month + ')';
+    }
+
+    function getThisYear() {
+        var myDate = new Date();
+        var year = myDate.getFullYear();//获取当前年
+        return '(' + year + ')';
+    }
+
+    function getHeader(timers) {
+
+        if ('hour' === timers || 'day' === timers) {
+            return getToday();
+        } else if ('week' === timers) {
+            return getThisWeek();
+        } else if ('month' === timers) {
+            return getThisMonth();
+        } else if ('year' === timers) {
+            return getThisYear();
+        }
+
+    }
+
+    function transferDate(date) {
+
+        // 年
+        var year = date.getFullYear();
+        // 月
+        var month = date.getMonth() + 1;
+        // 日
+        var day = date.getDate();
+
+        if (month >= 1 && month <= 9) {
+
+            month = "0" + month;
+        }
+        if (day >= 0 && day <= 9) {
+
+            day = "0" + day;
+        }
+
+        var dateString = year + '/' + month + '/' + day;
+
+        return dateString;
+    }
+
 </script>
 </body>
 </html>

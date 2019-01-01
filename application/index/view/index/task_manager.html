@@ -118,9 +118,9 @@ desired effect
                                     </div>
                                     <!--                        second line form-->
                                     <div class="form-group">
-                                        <label class="col-sm-1 control-label">Start Date</label>
+                                        <label class="col-sm-1 control-label">Create Date</label>
                                         <div class="col-sm-2">
-                                            <input type="text" readonly class="form_datetime form-control" id="search_startDate" name="search_startDate">
+                                            <input type="text" readonly class="form_datetime form-control" id="search_createDate" name="search_createDate">
                                         </div>
                                         <label class="col-sm-1 control-label">Finish Date</label>
                                         <div class="col-sm-2">
@@ -150,7 +150,7 @@ desired effect
                         </div>
                         <div class="box-footer">
                             <button type="submit" class="btn btn-info btn-sm col-md-offset-5" id="search_submit"><i class="fa fa-check-circle fa-fw"></i>&nbsp;Submit</button>
-                            <button type="reset" class="btn btn-success btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</button>
+                            <a href="TaskManager" class="btn btn-success btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</a>
                         </div>
                     </div>
                 </div>
@@ -370,11 +370,11 @@ desired effect
         placeholder: ''
     });
 
-    search_startDate = $('#search_startDate');
+    search_createDate = $('#search_createDate');
     search_finishDate = $('#search_finishDate');
 
     var today = getToday();
-    search_startDate.val(today);
+    search_createDate.val(today);
     search_finishDate.val(today);
 
     $(function () {
@@ -392,38 +392,23 @@ desired effect
         // search function
         $('#search_submit').click(function () {
 
-            var startTime = $('#search_startDate').val();
-            var finishTime = $('#search_finishDate').val();
+            var createTime = search_createDate.val();
+            var finishTime = search_finishDate.val();
 
-            var start = new Date(startTime.replace("-", "/").replace("-", "/"));
+            var start = new Date(createTime.replace("-", "/").replace("-", "/"));
             var end = new Date(finishTime.replace("-", "/").replace("-", "/"));
 
             if (start > end) {
-                toastr.error('Start Date Great Than Finish Date');
+                toastr.error('Create Date Great Than Finish Date');
                 return;
             }
             if (!timeDifference(start, end)) {
-                toastr.error('Finish Date And Start Date Time Difference Great Than Six Month');
+                toastr.error('Finish Date And Create Date Time Difference Great Than Six Month');
                 return;
             }
 
-            var search_condition = {
-                taskId:$('#search_taskId').val(),
-                machineId:$('#search_machineId').val(),
-                machineName:$('#search_machineName').val(),
-                serialNo:$('#search_serialNo').val(),
-                startTime:startTime,
-                finishTime:finishTime,
-                tool:JSON.stringify($('#search_tool').val()),           // 获取多选框的值
-                status:$('#search_status').val()
-            };
-
-            $('#taskTable').bootstrapTable('refresh', {
-                silent: true,
-                url: "{:url('TaskManager/taskSearchPagination')}",
-                query: search_condition
-            });
-            // $('#taskTable').bootstrapTable('refreshOptions',{pageNumber:1});
+            $('#taskTable').bootstrapTable('destroy');
+            tableInit("{:url('TaskManager/taskSearchPagination')}", searchParams);
 
         });
 
@@ -435,7 +420,7 @@ desired effect
         taskButton();
 
         // table
-        tableInit(queryParams);
+        tableInit("{:url('TaskManager/taskPagination')}", queryParams);
 
         //Tool Tips 为未来元素
         $('#taskTable').on("mouseenter", "[data-toggle='tooltip']", function(){
@@ -664,9 +649,9 @@ desired effect
         });
     }
 
-    function tableInit(queryPs){
+    function tableInit(resUrl, queryPs){
         $('#taskTable').bootstrapTable({
-            url: "{:url('TaskManager/taskPagination')}",    //请求后台的URL（*）
+            url: resUrl,    //请求后台的URL（*）
             method: 'post',                      //请求方式（*）
             classes: 'table table-responsive table-hover table-no-bordered', // table 样式
             iconSize: 'sm',
@@ -793,60 +778,56 @@ desired effect
             formatLoadingMessage: function () {
                 return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
             },
-            // onRefresh: function () {
-            //     $('#taskTable').bootstrapTable('destroy');
-            //     tableInit(queryPs);
-            // },
+            onDblClickRow: function(row, $element){
+
+                var taskId=row['task_id'];
+
+                //init modal tab
+                $('.nav-tabs li').each(function () {
+                    $(this).removeClass('active');
+                });
+                // delete steps detail
+                if ($('#stepsDetail').attr('class','well')) {
+                    $('#stepsDetail').html('').removeClass('well');
+                }
+
+                $("a[href='#tab_1']").parent().addClass('active');
+                $("div[id*='#tab_']").each(function () {
+                    $(this).removeClass('active');
+                });
+                $('#tab_1').addClass('active');
+
+                $('#tab_2').html('<table id="stepsTable" class="" data-show-jumpto="true"></table>');
+                // get info
+                $.ajax({
+                    type: "post",
+                    url: "{:url('TaskManager/getTaskInfoById')}",
+                    data: {taskId: taskId},
+                    dataType: "json",
+                    success: function (result) {
+                        if(result){
+                            var i = 0;
+                            for(var key in result[0]){
+                                $("#tab_1").find('p:eq(' + i + ')').html(result[0][key]);
+                                i++;
+                            }
+                            $("#detailInfo").modal("toggle");
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Get Info Fail");
+                        return false;
+                    }
+
+                });
+
+            },
             onLoadError: function () {
                 toastr.error("Table LoadError!");
             },
             formatNoMatches: function () {  //没有匹配的结果
                 return '<i class="text-danger">No matching records found</i>';
             }
-        }).on('dbl-click-row.bs.table', function(row, $element, field){
-
-            // console.log($element);
-            var taskId=$element.task_id;
-
-            //init modal tab
-            $('.nav-tabs li').each(function () {
-                $(this).removeClass('active');
-            });
-            // delete steps detail
-            if ($('#stepsDetail').attr('class','well')) {
-                $('#stepsDetail').html('').removeClass('well');
-            }
-
-            $("a[href='#tab_1']").parent().addClass('active');
-            $("div[id*='#tab_']").each(function () {
-                $(this).removeClass('active');
-            });
-            $('#tab_1').addClass('active');
-
-            $('#tab_2').html('<table id="stepsTable" class="" data-show-jumpto="true"></table>');
-            // get info
-            $.ajax({
-                type: "post",
-                url: "{:url('TaskManager/getTaskInfoById')}",
-                data: {taskId: taskId},
-                dataType: "json",
-                success: function (result) {
-                    if(result){
-                        var i = 0;
-                        for(var key in result[0]){
-                            $("#tab_1").find('p:eq(' + i + ')').html(result[0][key]);
-                            i++;
-                        }
-                        $("#detailInfo").modal("toggle");
-                    }
-                },
-                error: function () {
-                    toastr.error("Get Info Fail");
-                    return false;
-                }
-
-            });
-
         });
 
     }
@@ -859,6 +840,22 @@ desired effect
         return temp;//传递参数
     }
 
+    function searchParams(params) {
+        var temp = {
+            pageSize : params.pageSize,
+            pageNumber : params.pageNumber,
+            taskId:$('#search_taskId').val(),
+            machineId:$('#search_machineId').val(),
+            machineName:$('#search_machineName').val(),
+            serialNo:$('#search_serialNo').val(),
+            createTime:search_createDate.val(),
+            finishTime:search_finishDate.val(),
+            tool:JSON.stringify($('#search_tool').val()),           // 获取多选框的值
+            status:$('#search_status').val()
+        };
+        return temp;//传递参数
+
+    }
     function select2Init() {
 
         testMachine.select2({
@@ -1159,6 +1156,8 @@ desired effect
         var month = myDate.getMonth()+1;//获取当前月
         var date = myDate.getDate();//获取当前日
 
+        month = month.length === 2 ? month : '0'+month;
+        date = date.length === 2 ? date : '0'+date;
         return year + '-' + month + '-' + date;
     }
 
