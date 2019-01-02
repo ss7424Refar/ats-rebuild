@@ -1,16 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="__PUBLIC_IMG__/IMG_1.ico"/>
-    <title>{$title}</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/font-awesome.min.css">
-    <!--<link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/fontawesome-all.css">-->
+    {include file="render/common_css" /}
+
     <!-- Ionicons -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
     <!-- Select2 -->
@@ -28,22 +20,9 @@
     <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
     <!--    bootstrapValidator-->
     <link href="__PUBLIC_CSS__/bootstrapValidator/bootstrapValidator.min.css" rel="stylesheet">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="__PUBLIC_CSS__/AdminLTE/AdminLTE.min.css">
-    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-          page. However, you can choose any other skin. Make sure you
-          apply the skin class to the body tag so the changes take effect. -->
-    <link rel="stylesheet" href="__PUBLIC_CSS__/skins/skin-purple.css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="__PUBLIC_CSS__/html5shiv.min.js"></script>
-    <script src="__PUBLIC_CSS__/respond.min.js"></script>
-    <![endif]-->
+    {include file="render/theme_css" /}
 
-    <!-- Google Font -->
-    <link rel="stylesheet" href="__PUBLIC_CSS__/googleFont.css">
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -338,9 +317,7 @@ desired effect
 </div>
 
 <!-- REQUIRED JS SCRIPTS -->
-
-<!-- Bootstrap 3.3.7 -->
-<script src="__PUBLIC_JS__/bootstrap/bootstrap.min.js"></script>
+{include file="render/common_js" /}
 
 <!--    bootstrap dataTables-->
 <script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/bootstrap-table.min.js"></script>
@@ -357,8 +334,6 @@ desired effect
 <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
 <!--    bootstrapValidator-->
 <script src="__PUBLIC_JS__/bootstrapvalidator/bootstrapValidator.min.js"></script>
-<!-- AdminLTE App -->
-<script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
 <!--selfJs-->
 <script src="__PUBLIC_JS__/assets/eggShell.js"></script>
 <!--const-->

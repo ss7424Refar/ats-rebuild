@@ -5,18 +5,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="__PUBLIC_IMG__/IMG_1.ico"/>
-  <title>{$title}</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="__PUBLIC_CSS__/font-awesome/css/font-awesome.min.css">
-    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">-->
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
+    {include file="render/common_css" /}
+
     <!-- Select2 -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
     <!-- bootstrap datepicker -->
@@ -32,23 +22,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!--<link rel="stylesheet" href="__PUBLIC_CSS__/jquery.shCircleLoader/jquery.shCircleLoader.css">-->
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/iCheck/all.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="__PUBLIC_CSS__/AdminLTE/AdminLTE.min.css">
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect. -->
-  <link rel="stylesheet" href="__PUBLIC_CSS__/skins/skin-purple.css">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!-- Ionicons -->
+    <!--<link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">-->
 
-    <!--[if lt IE 9]>
-    <script src="__PUBLIC_CSS__/html5shiv.min.js"></script>
-    <script src="__PUBLIC_CSS__/respond.min.js"></script>
-    <![endif]-->
-
-  <!-- Google Font -->
-    <link rel="stylesheet" href="__PUBLIC_CSS__/googleFont.css">
+    {include file="render/theme_css" /}
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -134,9 +112,8 @@ desired effect
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
+{include file="render/common_js" /}
 
-<!-- Bootstrap 3.3.7 -->
-<script src="__PUBLIC_JS__/bootstrap/bootstrap.min.js"></script>
 <!-- Select2 -->
 <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
 <!-- bootstrap datepicker -->
@@ -144,14 +121,8 @@ desired effect
 <script src="__PUBLIC_JS__/clockpicker-gh-pages/bootstrap-clockpicker.min.js"></script>
 <!--jquery.spinner-->
 <script src="__PUBLIC_JS__/jquery.spinner/jquery.spinner.min.js"></script>
-<!--fakeLoader-->
-<!--<script src="__PUBLIC_JS__/fakeLoader/fakeLoader.min.js"></script>-->
-<!--jquery.shCircleLoader-->
-<!--<script src="__PUBLIC_JS__/jquery.shCircleLoader/jquery.shCircleLoader-min.js"></script>-->
 <!-- iCheck 1.0.1 -->
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
-<!-- AdminLTE App -->
-<script src="__PUBLIC_JS__/adminlte/adminlte.min.js"></script>
 <!--selfJs-->
 <script src="__PUBLIC_JS__/assets/commonTool.js"></script>
 
