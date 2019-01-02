@@ -62,6 +62,11 @@ class Common extends Controller{
      * 空操作
      */
     public function _empty(){
+        // 导航栏的样式
+        $this->assign('portCheck','');
+        $this->assign('taskManager','');
+        $this->assign('dashBoard','');
+
         return $this->fetch('common/404');
     }
 }
