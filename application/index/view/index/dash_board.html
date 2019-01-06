@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {include file="render/common_css" /}
+    {include file="render/render_css" /}
     {include file="render/theme_css" /}
 
 </head>
@@ -224,8 +224,9 @@
 </div>
 <!-- ./wrapper -->
 
-{include file="render/common_js" /}
-
+{include file="render/render_js" /}
+<!--moment.js-->
+<script src="__PUBLIC_JS__/moment/moment.min.js"></script>
 <!--echarts-->
 <script src="__PUBLIC_JS__/echarts/echarts.min.js"></script>
 <!-- 引入 vintage 主题 -->
@@ -236,17 +237,16 @@
         // tooltip init
         // $("[data-toggle='tooltip']").tooltip();
 
-
         machine_chart = echarts.init(document.getElementById('machineChart'));
         status_chart = echarts.init(document.getElementById('statusChart'));
         result_chart = echarts.init(document.getElementById('resultChart'));
         tester_chart = echarts.init(document.getElementById('testerChart'), 'roma');
 
         myTaskInit();
-        machineChartCreate('week');
-        statusChartCreate('week');
-        resultChartCreate('week');
-        testerChartCreate('week');
+        machineChartCreate(Week);
+        statusChartCreate(Week);
+        resultChartCreate(Week);
+        testerChartCreate(Week);
 
         $(window).resize(function(){
             machine_chart.resize();
@@ -277,11 +277,11 @@
     }
 
     function machineChartCreate(timers) {
-        if ('day' == timers) {
-            $('#machineHeader').html(getHeader('month'));
-        } else if ('month' == timers) {
-            $('#machineHeader').html(getHeader('year'));
-        } else if ('year' == timers) {
+        if (Day === timers) {
+            $('#machineHeader').html(getHeader(Month));
+        } else if (Month === timers) {
+            $('#machineHeader').html(getHeader(Year));
+        } else if (Year === timers) {
             $('#machineHeader').html('');
         } else {
             $('#machineHeader').html(getHeader(timers));
@@ -303,7 +303,7 @@
 
                 result = JSON.parse(result);
 
-                if ('year' === timers) {
+                if (Year === timers) {
                     xAxis = result.xAxis;
                     // console.log(xAxis);
                 } else {
@@ -440,7 +440,7 @@
                             }
                         },
                         legend: {
-                            data: ['pending', 'ongoing', 'fail', 'pass', 'expired']
+                            data: [Pending, Ongoing, Fail, Pass, Expired]
                         },
                         grid: {
                             left: '3%',
@@ -453,7 +453,7 @@
                         },
                         yAxis: {
                             type: 'category',
-                            data: ['JumpStart','Recovery','C-Test']
+                            data: [JumpStart, Recovery, C_Test]
                         },
                         series: series
                     }, true);
@@ -534,7 +534,7 @@
                         legend: {
                             x : 'center',
                             y : 'bottom',
-                            data: ['pending', 'ongoing', 'fail', 'pass', 'expired']
+                            data: [Pending, Ongoing, Fail, Pass, Expired]
                         },
                         toolbox: {
                             right: 20,
@@ -631,41 +631,25 @@
     
     function createTimerArray(timers) {
         timer = [];
-        if ('hour' == timers) {
+        if (Hour === timers) {
             for (var i = 0; i < 24; i++) {
                 timer[i] = i + ':00';
             }
 
-        } else if ('week' == timers) {
+        } else if (Week === timers) {
             timer = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        } else if ('day' == timers) {
+        } else if (Day === timers) {
             var days = getDaysOfMonth();
             for (var i = 0; i < days; i++) {
                 timer[i] = i + 1;
             }
 
-        } else if ('month' == timers) {
+        } else if (Month === timers) {
             timer = ['Jan','Feb','Mar','Apr','May','Jun','July','Aug','Sept','Oct','Nov','Dec']
 
         }
 
         return timer;
-    }
-
-    function getDaysOfMonth() {
-        var now = new Date();
-        var year = now.getFullYear();       //年
-        var month = now.getMonth() + 1;     //月
-        var days = (new Date(year, month, 0)).getDate();
-        return days;
-    }
-
-    /**
-     * 判断是否null
-     * @param data
-     */
-    function isNull(data){
-        return (null !== data && undefined !== data && 0 !== data.length) ? false : true;
     }
 
     function setChartTitle(obj, string) {
@@ -677,87 +661,7 @@
             }
         }, true);
     }
-    function getToday() {
-        return transferDate(new Date());
-    }
 
-    function getThisWeek() {
-        var myDate = new Date();
-
-        //今天是这周的第几天
-        var today = myDate.getDay();
-
-        //上周日距离今天的天数（负数表示）
-        var stepSunDay = -today + 1;
-
-        // 如果今天是周日
-        if (today == 0) {
-            stepSunDay = -7;
-        }
-
-        // 周一距离今天的天数（负数表示）
-        var stepMonday = 7 - today;
-
-        var time = myDate.getTime();
-
-        var monday = new Date(time + stepSunDay * 24 * 3600 * 1000);
-        var sunday = new Date(time + stepMonday * 24 * 3600 * 1000);
-        var weekStartDate = transferDate(monday); // 日期变换
-        var weekEndDate = transferDate(sunday); // 日期变换
-
-        return '(' + weekStartDate + ' - ' + weekEndDate + ')';
-    }
-
-    function getThisMonth() {
-        var myDate = new Date();
-        var year = myDate.getFullYear();//获取当前年
-        var month = myDate.getMonth()+1;//获取当前月
-        month = month.length === 2 ? month : '0'+month;
-        return '(' + year + '/' + month + ')';
-    }
-
-    function getThisYear() {
-        var myDate = new Date();
-        var year = myDate.getFullYear();//获取当前年
-        return '(' + year + ')';
-    }
-
-    function getHeader(timers) {
-
-        if ('hour' === timers || 'day' === timers) {
-            return getToday();
-        } else if ('week' === timers) {
-            return getThisWeek();
-        } else if ('month' === timers) {
-            return getThisMonth();
-        } else if ('year' === timers) {
-            return getThisYear();
-        }
-
-    }
-
-    function transferDate(date) {
-
-        // 年
-        var year = date.getFullYear();
-        // 月
-        var month = date.getMonth() + 1;
-        // 日
-        var day = date.getDate();
-
-        if (month >= 1 && month <= 9) {
-
-            month = "0" + month;
-        }
-        if (day >= 0 && day <= 9) {
-
-            day = "0" + day;
-        }
-
-        var dateString = year + '/' + month + '/' + day;
-
-        return dateString;
-    }
 
 </script>
 </body>
