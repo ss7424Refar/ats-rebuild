@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {include file="render/common_css" /}
+    {include file="render/render_css" /}
 
     <!-- Ionicons -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
@@ -317,7 +317,7 @@ desired effect
 </div>
 
 <!-- REQUIRED JS SCRIPTS -->
-{include file="render/common_js" /}
+{include file="render/render_js" /}
 
 <!--    bootstrap dataTables-->
 <script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/bootstrap-table.min.js"></script>
@@ -334,10 +334,7 @@ desired effect
 <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
 <!--    bootstrapValidator-->
 <script src="__PUBLIC_JS__/bootstrapvalidator/bootstrapValidator.min.js"></script>
-<!--selfJs-->
-<script src="__PUBLIC_JS__/assets/eggShell.js"></script>
-<!--const-->
-<script src="__PUBLIC_JS__/assets/const.js"></script>
+
 <script>
     // Include Tool & Task Status
     $(".selectOption").select2({
@@ -352,6 +349,9 @@ desired effect
     search_createDate.val(today);
     search_finishDate.val(today);
 
+    testMachine = $("select[name='machine_name']");
+    inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
+
     $(function () {
 
         eggPrinter();
@@ -364,6 +364,42 @@ desired effect
             minView: "month", //选择日期后，不会再跳转去选择时分秒
 
         });
+
+        searchSubmitInit();
+
+        //Task
+        taskButton();
+
+        // table
+        tableInit("{:url('TaskManager/taskPagination')}", queryParams);
+
+        //Tool Tips 为未来元素
+        $('#taskTable').on("mouseenter", "[data-toggle='tooltip']", function(){
+            $(this).tooltip('show');
+        }).on("mouseleave", "[data-toggle='tooltip']", function(){
+            $(this).tooltip('hide');
+        });
+
+        // select2
+        select2Init();
+
+        addFormValidatorInit();
+
+        stepsTabInit();
+
+        // assign
+        assignButtonInit();
+
+        // delete
+        deleteTaskButtonInit();
+
+        $('#addModal').on('hide.bs.modal', function () {
+            resetAddTaskForm();
+        });
+
+    });
+
+    function searchSubmitInit() {
         // search function
         $('#search_submit').click(function () {
 
@@ -386,29 +422,9 @@ desired effect
             tableInit("{:url('TaskManager/taskSearchPagination')}", searchParams);
 
         });
+    }
 
-
-        testMachine = $("select[name='machine_name']");
-        inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
-
-        //Task
-        taskButton();
-
-        // table
-        tableInit("{:url('TaskManager/taskPagination')}", queryParams);
-
-        //Tool Tips 为未来元素
-        $('#taskTable').on("mouseenter", "[data-toggle='tooltip']", function(){
-            $(this).tooltip('show');
-        }).on("mouseleave", "[data-toggle='tooltip']", function(){
-            $(this).tooltip('hide');
-        });
-
-        // select2
-        select2Init();
-
-        addFormValidatorInit();
-
+    function stepsTabInit() {
         // 当点击steps tab的时候
         $('a[href="#tab_1"]').click(function () {
             if ('block' == $('#stepsDetail').css('display')){
@@ -416,6 +432,7 @@ desired effect
             }
         });
         $('a[href="#tab_2"]').click(function () {
+            // 找到tab_1的task_id
             var taskId = $("#tab_1").find('p:eq(0)').html()
             $('#stepsTable').bootstrapTable({
                 url: "{:url('TaskManager/stepsPagination')}?taskId=" + taskId,    //请求后台的URL（*）
@@ -462,7 +479,7 @@ desired effect
                         title: 'Status',
                         formatter:function(value, row, index){
                             if (null !== value) {
-                               return value;
+                                return value;
                             }
                             return "N/A";
                         }
@@ -551,18 +568,7 @@ desired effect
             });
 
         });
-
-        // assign
-        assignButtonInit();
-
-        // delete
-        deleteTaskButtonInit();
-
-        $('#addModal').on('hide.bs.modal', function () {
-            resetAddTaskForm();
-        });
-
-    });
+    }
 
     // 决定工具的操作
     function checkTool(taskId, toolOp) {
@@ -658,7 +664,7 @@ desired effect
                 field: "check",
                 checkbox: true,
                 formatter: function (value, row, index) {
-                    if ('pending' !== row['status'])
+                    if (Pending !== row['status'])
                         return {
                             disabled : true,//设置是否可用
                             checked : false//设置选中
@@ -724,7 +730,7 @@ desired effect
                         var sid = row['sid'];
                         var result="";
 
-                        if ('pending' === row['status']) {
+                        if (Pending === row['status']) {
                             if (null === sid) {
                                 result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
                             } else {
@@ -1123,40 +1129,6 @@ desired effect
         testMachine.val(null).trigger("change");
         $('#addTaskForm').data('bootstrapValidator').destroy();
         addFormValidatorInit();
-    }
-    
-    function getToday() {
-        var myDate = new Date;
-        var year = myDate.getFullYear();//获取当前年
-        var month = myDate.getMonth()+1;//获取当前月
-        var date = myDate.getDate();//获取当前日
-
-        month = month.length === 2 ? month : '0'+month;
-        date = date.length === 2 ? date : '0'+date;
-        return year + '-' + month + '-' + date;
-    }
-
-    // 相差几个月
-    function timeDifference(date1, date2){
-        var newYear = date1.getFullYear();
-        var newMonth =date1.getMonth() + 6;
-        console.log(newMonth);
-        if(newMonth >= 11){
-            newYear += 1;
-            newMonth -= 11;
-            date1.setFullYear(newYear);
-            date1.setMonth(newMonth-1);
-        }
-        else{
-            date1.setFullYear(newYear);
-            date1.setMonth(newMonth);
-        }
-        if(date1.getTime() >= date2.getTime()){
-            return true;
-        }
-        else{
-            return false;
-        }
     }
 
 </script>

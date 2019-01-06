@@ -44,7 +44,7 @@ define('MONTH', 'month');
 define('YEAR', 'year');
 
 /*
- * 测试结果或者状态
+ * 测试结果
  */
 
 define('PASS', 'pass');

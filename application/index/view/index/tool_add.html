@@ -5,7 +5,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
-    {include file="render/common_css" /}
+    {include file="render/render_css" /}
 
     <!-- Select2 -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
@@ -112,7 +112,7 @@ desired effect
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-{include file="render/common_js" /}
+{include file="render/render_js" /}
 
 <!-- Select2 -->
 <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
@@ -124,7 +124,7 @@ desired effect
 <!-- iCheck 1.0.1 -->
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!--selfJs-->
-<script src="__PUBLIC_JS__/assets/commonTool.js"></script>
+<script src="__PUBLIC_JS__/assets/toolHandler.js"></script>
 
 <script>
     $(function () {
@@ -167,7 +167,7 @@ desired effect
                         $('#sub').attr('disabled', 'true');
                     },
                     success : function (result) {
-                        if ("done" == result) {
+                        if ("done" === result) {
                             toastr.success("Add Tool Steps Success");
                             setTimeout("window.location.href=\"TaskManager\";", 500);
                         }

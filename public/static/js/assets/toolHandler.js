@@ -1,8 +1,3 @@
-// 工具名字
-const JumpStart = 'JumpStart';
-const Recovery = 'Recovery';
-const C_Test = 'C-Test';
-
 function formToJson() {
     var obj = [];
     $('#toolForm').find('button[data-toggle="collapse"]').each(function (i) {
