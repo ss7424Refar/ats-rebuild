@@ -9,7 +9,7 @@
 /*
  * adminLTE theme
  */
-define('THEME', 'hold-transition skin-purple sidebar-collapse sidebar-mini');
+define('THEME', 'hold-transition skin-purple layout-top-nav');
 
 /*
  * tool name
