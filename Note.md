@@ -45,7 +45,5 @@ require './thinkphp/start.php';
 1. 在steps中存储test result path 
 2. 添加查询task功能  --待 确认
 3. 修改tp5的README.md为本项目介绍。
-4. 把重复的js一块内容删除  --待 确认
-5. 添加releasenote功能。
 
-8. 添加fakeLoader.js, 用于提交或者修改steps --待 确认
+5. 添加releasenote功能。
