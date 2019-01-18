@@ -18,6 +18,7 @@ define('THEME', 'hold-transition skin-purple layout-top-nav');
 define('JUMP_START', 'JumpStart');
 define('RECOVERY', 'Recovery');
 define('C_TEST', 'C-Test');
+define('TREBOOT', 'Treboot');
 
 /*
  * ATS file path
@@ -31,7 +32,7 @@ define('ATS_TMP_TASKS_PATH', RUNTIME_PATH. 'output/');
 define('ATS_FILE_UNDERLINE', '_');
 define('ATS_TMP_TASKS_HEADER', 'Task'. ATS_FILE_UNDERLINE);
 define('ATS_TASKS_PATH', ROOT_PATH. 'public/resource/tasks/');
-//define('ATS_FINISH_PATH', '/home/refar/Phpproject/ats_sizu/resource/finish/');
+define('ATS_RESULT_PATH', '\\\\172.30.52.28\\JSDataBK\\#Temp\\@ATS_Results\\');
 
 /*
  * timer type of chart

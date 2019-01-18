@@ -186,4 +186,33 @@ class ToolMaker {
 
     }
 
+    public static function getTreboot($index) {
+        $template = '';
+
+        $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. TREBOOT .'</b></button>'.
+            '<div id="collapse_'. $index .'" class="panel-collapse collapse in">'.
+            '    <div class="panel-body form-horizontal">'.
+            '        <div class="form-group">'.
+            '            <label class="col-sm-1 control-label">Test Image</label>'.
+            '            <div class="col-sm-4">'.
+            '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'.
+            '            </div>'.
+            '            <label class="col-sm-1 control-label">Count</label>'.
+            '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'.
+            '                <label style="margin-right: 19px">'.
+            '                    <input type="radio" name="Count_'. $index .'" class="minimal" value="500" checked/> 500'.
+            '                </label>'.
+            '                <label style="margin-right: 19px">'.
+            '                    <input type="radio" name="Count_'. $index .'" class="minimal" value="300"/> 300'.
+            '                </label>'.
+            '            </div>'.
+            '        </div>'.
+            '        <hr>'.
+            '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>'.
+            '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>'.
+            '    </div>'.
+            '</div>';
+
+        return $template;
+    }
 }

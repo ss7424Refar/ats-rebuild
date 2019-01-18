@@ -62,11 +62,13 @@ desired effect
                                         <option>JumpStart</option>
                                         <option>Recovery</option>
                                         <option>C-Test</option>
+                                        <option>Treboot</option>
                                     </select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
-                                <!--从taskManager页面传递过来的taskId-->
+                                <!--从taskManager页面传递过来的taskId & ip-->
                                 <input type="text" id="taskId" hidden value="{$taskId}">
+                                <input type="text" id="ip" hidden value="{$ipCheck}">
                                 <div class="col-md-5">
                                     <button type="button" class="btn btn-success" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add Tool </button>
                                 </div>
@@ -80,7 +82,7 @@ desired effect
 
             <div class="box box-default panel-group" id="content" style="display: none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Add</h3>
+                    <h3 class="box-title">Edit</h3>
                 </div>
                 <form  id="toolForm">
                     <div class="box-body" id="box_body"></div>
@@ -159,6 +161,11 @@ desired effect
                             $('#box_body').append('<div>' + setCTest(i) + '</div>');
                             lastDiv = $('#box_body').children('div:last');
                             setCTestData(lastDiv, item);
+                        }
+                        if (Treboot === item.Tool_Type) {
+                            $('#box_body').append('<div>' + setTreboot(i) + '</div>');
+                            lastDiv = $('#box_body').children('div:last');
+                            setTrebootData(lastDiv, item);
                         }
                     })
 
@@ -336,6 +343,57 @@ desired effect
                 });
             });
 
+            // testImage
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "100%",
+                    ajax: {
+                        url: "{:url('ToolHandler/getTestImage')}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {q: params.term};
+                        },
+                        processResults: function (data) {
+                            return {results: data};
+                        },
+                        cache: false
+                    },
+                    placeholder: 'Please Select',
+                    allowClear: true
+                });
+
+            });
+        } else if (Treboot === selection) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "100%",
+                    ajax: {
+                        url: "{:url('ToolHandler/getTestImage')}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {q: params.term};
+                        },
+                        processResults: function (data) {
+                            return {results: data};
+                        },
+                        cache: false
+                    },
+                    placeholder: 'Please Select',
+                    allowClear: true
+                });
+
+            });
+            // Count
+            obj.find('input[type="radio"].minimal').each(function () {
+                $(this).iCheck(
+                    {radioClass: 'iradio_minimal-blue'}
+                );
+            });
 
         }
     }
@@ -495,6 +553,42 @@ desired effect
 
         });
 
+    }
+
+    function setTrebootData(obj, item) {
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            _this.select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('ToolHandler/getTestImage')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {q: params.term};
+                    },
+                    processResults: function (data) {
+                        return {results: data};
+                    },
+                    cache: false
+                },
+                placeholder: 'Please Select',
+                allowClear: true
+            }).html('<option value="' + item.Test_Image + '">' + item.Test_Image + '</option>').trigger("change");
+
+        });
+
+        // Count
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            );
+
+            if (item.Count == $(this).val()) {
+                $(this).iCheck('check');
+            }
+        });
     }
 </script>
 

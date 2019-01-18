@@ -249,6 +249,7 @@ return [
     // 配置swiftmailer邮件发送服务器
     'SMTP_HOST'     => '172.30.52.43',
     'SMTP_PORT'     => '25',
-    'MAIL_CC'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "xiaoyan.ding@toshiba-tih.com"]',
+    'MAIL_CC'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
+    'MAIL_CC_BASELINE'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
     'MAIL_FROM'      => 'ats_swv@toshiba-tih.com'
 ];

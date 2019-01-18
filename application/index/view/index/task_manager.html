@@ -108,9 +108,11 @@ desired effect
                                         <label class="col-sm-1 control-label">Include Tool</label>
                                         <div class="col-sm-2">
                                             <select class="form-control selectOption" multiple="multiple" id="search_tool">
-                                                <option value="JumpStart" selected="selected">JumpStart</option>
-                                                <option value="Recovery" selected="selected">Recovery</option>
-                                                <option value="C-Test" selected="selected">C-Test</option>
+                                                <!--<option value="JumpStart" selected="selected">JumpStart</option>-->
+                                                <option value="JumpStart">JumpStart</option>
+                                                <option value="Recovery">Recovery</option>
+                                                <option value="C-Test">C-Test</option>
+                                                <option value="Treboot">Treboot</option>
                                             </select>
                                         </div>
                                         <label class="col-sm-1 control-label">Task Status</label>
@@ -492,22 +494,17 @@ desired effect
                         field: 'tool_end_time',
                         title: 'Finish Time'
                     },
-                    // {
-                    //     field: 'result',
-                    //     title: 'Test Result',
-                    // },
                     {
                         field: 'result_path',
-                        title: 'Result Path'
-                        // formatter: function(value, row, index){
-                        //     var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['ShelfID'] + "_" + row.SwitchId + "_" + row.TaskID;
-                        //     if("Fail"==value){
-                        //         return '<a href='+ path +'><i class="fa fa-times fa-fw"></i>&nbsp;' + value + '</a>';
-                        //     } else if("Pass"==value){
-                        //         return '<a href='+ path +'><i class="fa fa-check fa-fw"></i>&nbsp;' + value + '</a>';
-                        //     }
-                        //     return "N/A";
-                        // }
+                        title: 'Result Path',
+                        formatter: function(value, row, index){
+                            if(Fail === row.status){
+                                return '<a href='+ value +'><i class="fa fa-times fa-fw"></i>&nbsp;linkTo</a>';
+                            } else if(Pass === row.status){
+                                return '<a href='+ value +'><i class="fa fa-check fa-fw"></i>&nbsp;linkTo</a>';
+                            }
+                            return "N/A";
+                        }
                     }
                 ],
                 rowStyle: function(row, index){
