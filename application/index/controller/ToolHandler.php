@@ -59,6 +59,9 @@ class ToolHandler extends Common {
         } else if (C_TEST == $selection) {
             return ToolMaker::getCTest($index) ;
 
+        } else if (TREBOOT == $selection) {
+            return ToolMaker::getTreboot($index) ;
+
         }
 
     }

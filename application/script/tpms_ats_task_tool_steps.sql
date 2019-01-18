@@ -28,7 +28,7 @@ CREATE TABLE `ats_task_tool_steps` (
   `status` varchar(8) DEFAULT NULL,
   `steps` int(3) DEFAULT NULL,
   `element_json` json DEFAULT NULL,
-  `result_path` varchar(40) DEFAULT NULL,
+  `result_path` varchar(80) DEFAULT NULL,
   `tool_create_time` datetime DEFAULT NULL,
   `tool_start_time` datetime DEFAULT NULL,
   `tool_end_time` datetime DEFAULT NULL,
