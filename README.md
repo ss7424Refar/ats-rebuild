@@ -138,3 +138,17 @@ ver 1.3.0.0
 2) rebuid web UI and use thinkphp5
 3) https://github.com/ss7424Refar/ats_kimi.git
 ~~~
+
+
+### 部署
+`vi /etc/nginx/sites-available/default`
+~~~
+    location /ats/ {
+        index index.php;
+        if (!-e $request_filename){
+            rewrite ^/ats/(.*)$ /ats/index.php?s=/$1 last;
+            break;
+        }
+    }
+
+~~~
