@@ -45,8 +45,14 @@ function getToday() {
     return moment().format('YYYY-MM-DD');
 }
 function getThisWeek() {
-    let weekOfday = parseInt(moment().format('d'));
-    return '(' + moment().subtract(weekOfday, 'days').format('YYYY-MM-DD') + ' - ' + moment().add(7 - weekOfday - 1, 'days').format('YYYY-MM-DD') + ')';
+    var weekOfday = parseInt(moment().format('d'));
+    // console.log(weekOfday);
+    // 不为星期天
+    if (0 !== weekOfday) {
+        return '(' + moment().subtract(weekOfday - 1, 'days').format('YYYY-MM-DD') + ' - ' + moment().add(7 - weekOfday, 'days').format('YYYY-MM-DD') + ')';
+    }
+    return '(' + moment().subtract(6 - weekOfday, 'days').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD') + ')';
+
 }
 function getThisMonth() {
     return '(' + moment().startOf('month').format('YYYY-MM-DD') + ' - ' + moment().endOf('month').format('YYYY-MM-DD') + ')';
