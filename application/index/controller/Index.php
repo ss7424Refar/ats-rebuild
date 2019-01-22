@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 use think\Request;
+use think\Db;
 
 /*
  * 控制页面跳转
@@ -60,6 +61,7 @@ class Index extends Common
 
         // 模板变量赋值
         $this->assign('taskId',$taskId);
+        $this->assign('ipCheck',  $this -> ipCheck($taskId));
 
         return $this->fetch();
 
@@ -74,7 +76,8 @@ class Index extends Common
         $this->assign('portCheck','');
 
         // 模板变量赋值
-        $this->assign('taskId',$taskId);
+        $this->assign('taskId', $taskId);
+        $this->assign('ipCheck',  $this -> ipCheck($taskId));
 
         return $this->fetch();
 
@@ -93,5 +96,17 @@ class Index extends Common
             $this->error('please click link from taskManager', url('Index/TaskManager'));
             return;
         }
+    }
+
+    /*
+     * ip = 192.168.0.40 check
+     * if equal 40 return upstairs
+     */
+
+    private function ipCheck($taskId) {
+        $ip = Db::query('select lan_ip from ats_task_basic where task_id = ? ', [$taskId]);
+        $tmp = explode('.', $ip[0]['lan_ip']);
+
+        return 40 == $tmp[3] ? 'up' : 'down';
     }
 }

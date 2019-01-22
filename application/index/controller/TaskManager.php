@@ -235,6 +235,24 @@ class TaskManager extends Common{
             $outPut['task_basic'] = AtsTaskBasic::where('task_id', $taskId)->select();
             $outPut['task_steps'] = AtsTaskToolSteps::where('task_id', $taskId)->select();
 
+            // 给31用的需要转换Execute_Job
+            for ($i = 0; $i < count($outPut['task_steps']); $i++) {
+                $jsonElement = json_decode($outPut['task_steps'][$i]['element_json']);
+                if (JUMP_START == $jsonElement->Tool_Type) {
+                    if ('Fast Startup,Standby,Microsoft Edge' == $jsonElement->Execute_Job){
+                        $jsonElement->Execute_Job = 1;
+                    } elseif ('Fast Startup' == $jsonElement->Execute_Job){
+                        $jsonElement->Execute_Job = 2;
+                    } elseif ('BatteryLife' == $jsonElement->Execute_Job){
+                        $jsonElement->Execute_Job = 5;
+                    } elseif('Fast Startup,Standby,Microsoft Edge,BatteryLife,DataGrab' == $jsonElement->Execute_Job) {
+                        $jsonElement->Execute_Job = 6;
+                    }
+
+                    $outPut['task_steps'][$i]['element_json'] = json_encode($jsonElement);
+                }
+            }
+
             if (null != $outPut['task_steps']) {
                 $fileName = ATS_TMP_TASKS_HEADER. $outPut['task_basic'][0]['shelf_switch'].
                                 ATS_FILE_UNDERLINE. $taskId. ATS_FILE_suffix;

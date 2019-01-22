@@ -74,12 +74,14 @@ desired effect
                                         <option>JumpStart</option>
                                         <option>Recovery</option>
                                         <option>C-Test</option>
+                                        <option>Treboot</option>
                                     </select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
                                 <input type="text" id="knowTool" hidden>
                                 <!--从taskManager页面传递过来的taskId-->
                                 <input type="text" id="taskId" hidden value="{$taskId}">
+                                <input type="text" id="ip" hidden value="{$ipCheck}">
                                 <div class="col-md-5">
                                     <button type="button" class="btn btn-success" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add Tool </button>
                                 </div>
@@ -334,6 +336,36 @@ desired effect
                     allowClear: true
                 }).html('<option value="' + 'Keep Current Image' + '">' + 'Keep Current Image' + '</option>').trigger("change");
 
+            });
+
+        } else if (Treboot === selection) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                _this.select2({
+                    width: "100%",
+                    ajax: {
+                        url: "{:url('ToolHandler/getTestImage')}",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {q: params.term};
+                        },
+                        processResults: function (data) {
+                            return {results: data};
+                        },
+                        cache: false
+                    },
+                    placeholder: 'Please Select',
+                    allowClear: true
+                });
+
+            });
+            // count
+            obj.find('input[type="radio"].minimal').each(function () {
+                $(this).iCheck(
+                    {radioClass: 'iradio_minimal-blue'}
+                );
             });
 
         }
