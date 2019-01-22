@@ -40,9 +40,6 @@ require './thinkphp/start.php';
 
 ## TODO list
 
-0-2. Execute Job 需要1,2,5,6
-0-3. 添加tool时需要增加对192.168.40.XXX check
-1. 在steps中存储test result path 
 2. 添加查询task功能  --待 确认
 3. 修改tp5的README.md为本项目介绍。
 

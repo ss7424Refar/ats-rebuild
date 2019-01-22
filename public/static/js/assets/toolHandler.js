@@ -22,7 +22,7 @@ function formToJson() {
                 OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
             };
             obj.push(item);
-        }else if (C_Test === toolType) {
+        } else if (C_Test === toolType) {
             checkedVal = _father.find("input[name^='End After']:checked").val();
             if (null !== checkedVal || undefined !== checkedVal) {
                 item = null;
@@ -55,6 +55,13 @@ function formToJson() {
                 }
                 obj.push(item);
             }
+        } else if (Treboot === toolType) {
+            var item ={
+                Tool_Type:toolType,
+                Test_Image:_father.find("#TestImage").select2('val'),
+                Count:_father.find("input[name^='Count']:checked").val()
+            };
+            obj.push(item);
         }
 
     });
@@ -75,12 +82,12 @@ function validateFormData() {
         }
 
     });
-    //End After Check
+    //data Check
     $('#toolForm').find('button[data-toggle="collapse"]').each(function (i) {
         _father = $(this).parent();
+        // End After Check
         checkedVal = _father.find("input[name^='End After']:checked").val();
         if (null !== checkedVal || undefined !== checkedVal) {
-            item = null;
             if ('Terminus' === checkedVal) {
                 time = _father.find('#Terminus').find('input').val();
 
@@ -90,7 +97,15 @@ function validateFormData() {
                 }
             }
         }
-
+        // ip = 40's check
+        if ('up' === $('#ip').val()) {
+            // Execute Job
+            executeJob = _father.find("#ExecuteJob").select2('val');
+            if (job1 == executeJob || job2 == executeJob) {
+                msg = msg + "Job Can't Select Battery For Ip = 40" + '<br>';
+                isNG = true;
+            }
+        }
     });
     if (isNG) {
         toastr.error(msg);
@@ -273,4 +288,35 @@ function setCTest(i) {
         '</div>';
 
     return template;
+}
+
+function setTreboot(i) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>Treboot</b></button>' +
+        '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
+        '    <div class="panel-body form-horizontal">'+
+        '        <div class="form-group">'+
+        '            <label class="col-sm-1 control-label">Test Image</label>'+
+        '            <div class="col-sm-4">'+
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'+
+        '            </div>'+
+        '            <label class="col-sm-1 control-label">Count</label>'+
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="Count_'+ i +'" class="minimal" value="500"/> 500'+
+        '                </label>'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="Count_'+ i +'" class="minimal" value="300"/> 300'+
+        '                </label>'+
+        '            </div>'+
+        '        </div>'+
+        '        <hr>'+
+        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>'+
+        '</div>';
+
+    return template;
+
 }

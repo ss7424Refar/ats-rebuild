@@ -11,6 +11,7 @@ const Expired = 'expired';
 const JumpStart = 'JumpStart';
 const Recovery = 'Recovery';
 const C_Test = 'C-Test';
+const Treboot = 'Treboot';
 
 // times
 const Hour = 'hour';
@@ -19,6 +20,9 @@ const Week = 'week';
 const Month = 'month';
 const Year = 'year';
 
+// Execute Job
+const job1 = 'Fast Startup,Standby,Microsoft Edge,BatteryLife,DataGrab';
+const job2 = 'BatteryLife';
 
 // |--------------dash_board.html-------------|
 function getDaysOfMonth() {
@@ -41,7 +45,8 @@ function getToday() {
     return moment().format('YYYY-MM-DD');
 }
 function getThisWeek() {
-    return '(' + moment().subtract(6, 'days').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD') + ')';
+    let weekOfday = parseInt(moment().format('d'));
+    return '(' + moment().subtract(weekOfday, 'days').format('YYYY-MM-DD') + ' - ' + moment().add(7 - weekOfday - 1, 'days').format('YYYY-MM-DD') + ')';
 }
 function getThisMonth() {
     return '(' + moment().startOf('month').format('YYYY-MM-DD') + ' - ' + moment().endOf('month').format('YYYY-MM-DD') + ')';

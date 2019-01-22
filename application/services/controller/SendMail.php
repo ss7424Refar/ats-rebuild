@@ -42,8 +42,10 @@ class SendMail extends Controller {
 
         $mailTitle = '[ATS][' . $this->today . ']'. $info[0]['tool_name'] .'You Need to run the baseline image';
 
-        $content = '<html>' .
-            '	<head>' .
+        $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/' .
+            'office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">' .
+            '   <head>' .
+            '       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="Generator" >' .
             '		<style type="text/css">' .
             '			p {margin: 5px;font-size: 13px;}' .
             '			th {' .
@@ -83,7 +85,7 @@ class SendMail extends Controller {
             '</html>';
 
 //        return $content;
-        return MailerUtil::send($emailTo, $mailTitle, $content);
+        return MailerUtil::send($emailTo, config('MAIL_CC_BASELINE'), $mailTitle, $content);
     }
 
     /**
@@ -101,8 +103,10 @@ class SendMail extends Controller {
 
         $mailTitle = '[ATS][' . $this->today  . ']['. $info[0]['tool_name'] .']Test result is '. $info[0]['status'];
 
-        $content = '<html>' .
-            '	<head>' .
+        $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/' .
+            'office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">' .
+            '   <head>' .
+            '       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="Generator" >' .
             '		<style type="text/css">' .
             '			p {margin: 5px;font-size: 13px;}' .
             '			th {' .
@@ -141,7 +145,7 @@ class SendMail extends Controller {
             '</html>';
 
 //            return $content;
-        return MailerUtil::send($emailTo, $mailTitle, $content);
+        return MailerUtil::send($emailTo, config('MAIL_CC'), $mailTitle, $content);
 
     }
 

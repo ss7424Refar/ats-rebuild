@@ -21,12 +21,12 @@ use Swift_Message;
 class MailerUtil {
     /**
      * @param $to
-     * @param $subject
+     * @param $cc
      * @param $mailTitle
      * @param $content
      * @return mixed
      */
-    public static function send($to, $mailTitle, $content) {
+    public static function send($to, $cc, $mailTitle, $content) {
 
         $transport = Swift_SmtpTransport::newInstance(config('SMTP_HOST'), config('SMTP_PORT'));
 
@@ -36,7 +36,7 @@ class MailerUtil {
         $message = Swift_Message::newInstance($mailTitle)
             ->setFrom(array(config('Mail_FROM')))
             ->setTo($to)
-            ->setCc(json_decode(config('MAIL_CC'), true))
+            ->setCc(json_decode($cc, true))
             ->setBody($content, 'text/html', 'utf-8');
 
         // Send the message

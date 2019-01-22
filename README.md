@@ -1,6 +1,27 @@
 Auto Test System(Web)
 ===============
 
+ ### 界面效果图
+ 
+ ![layout1](public/static/img/readme/layout1.png)
+ 
+ ![layout2](public/static/img/readme/layout2.png)
+ 
+ ![layout3](public/static/img/readme/layout3.png)
+ 
+ ![layout4](public/static/img/readme/layout4.png)
+ 
+ ![layout5](public/static/img/readme/layout5.png)
+ 
+ ![layout6](public/static/img/readme/layout6.png)
+ 
+ ![layout7](public/static/img/readme/layout7.png)
+ 
+ ![layout8](public/static/img/readme/layout8.png)
+ ![layout9](public/static/img/readme/layout9.png)
+ 
+
+ 
 ## 运行环境
 
 > ThinkPHP5的运行环境要求PHP5.4以上。
@@ -90,3 +111,44 @@ www  WEB部署目录（或者子目录）
 ### 数据表和字段
 *   数据表和字段采用小写加下划线方式命名，并注意字段名不要以下划线开头，例如 `think_user` 表和 `user_name`字段，不建议使用驼峰和中文作为数据表字段命名。
 
+
+## Release Note
+
+~~~
+Ver1.0.0.0
+
+1) Add JumpStart Performance Test
+2) https://github.com/ss7424Refar/ATS.git
+
+Ver1.1.0.0
+
+1) Add JumpStart Performance Test
+2) Chage UI to AdminLTE
+3) https://github.com/ss7424Refar/ats_sizu.git
+
+Ver1.2.0.0
+
+1) Add JumpStart Performance Test
+2) OS Active
+3) Image Recovery
+3) https://github.com/ss7424Refar/ats_sizu.git
+
+ver 1.3.0.0
+1) Add C-Test and Treboot
+2) rebuid web UI and use thinkphp5
+3) https://github.com/ss7424Refar/ats_kimi.git
+~~~
+
+
+### 部署
+`vi /etc/nginx/sites-available/default`
+~~~
+    location /ats/ {
+        index index.php;
+        if (!-e $request_filename){
+            rewrite ^/ats/(.*)$ /ats/index.php?s=/$1 last;
+            break;
+        }
+    }
+
+~~~
