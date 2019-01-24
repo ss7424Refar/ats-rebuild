@@ -368,7 +368,12 @@
                             boundaryGap : true, //坐标轴两边留白策略
                             data : xAxis
                         },
-                        yAxis: {type : 'value'},
+                        yAxis: [
+                            {
+                                type: 'value',
+                                minInterval: 1
+                            }
+                        ],
                         series: series
                     }, true);
 
@@ -447,9 +452,12 @@
                             bottom: '3%',
                             containLabel: true
                         },
-                        xAxis:  {
-                            type: 'value'
-                        },
+                        xAxis: [
+                            {
+                                type: 'value',
+                                minInterval: 1
+                            }
+                        ],
                         yAxis: {
                             type: 'category',
                             data: [JumpStart, Recovery, C_Test, Treboot]
