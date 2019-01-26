@@ -16,7 +16,7 @@ use think\Db;
  */
 class MachineDetail extends Controller {
     /*
-     * http://localhost/ats/server/MachineDetail/getMachineInfo?fix_no=0512013
+     * http://localhost/ats/services/MachineDetail/getMachineInfo?fix_no=0512013
      */
     public function getMachineInfo(){
         $no = $this->request->param('fix_no');
