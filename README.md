@@ -139,7 +139,7 @@ ver 1.3.0.0
 3) https://github.com/ss7424Refar/ats_kimi.git
 ~~~
 
-
+cd
 ### 部署
 `vi /etc/nginx/sites-available/default`
 ~~~
