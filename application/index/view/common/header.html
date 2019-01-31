@@ -1,26 +1,35 @@
-
 <!-- Main Header -->
 <header class="main-header">
-    <div style="height:3em;background: #ECF0F5">
-        <div style="margin-top: 0.8em;float:left">
-            <img src="__PUBLIC_IMG__/logo.png" alt="" style="height: 26px;width:130px">
-        </div>
-        <div class="collapse navbar-collapse pull-right"  id="navbar-collapse2">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a>
-                        <i class="fa fa-user"></i>&nbsp;<span class="text-primary">&nbsp;{$Think.session.transToAts}</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="SignOut">
-                        <i class="fa fa-sign-out">&nbsp;</i><span class="text-danger">&nbsp;Sign out</span>
-                    </a>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
+    <nav class="navbar navbar-static-top" role="navigation" style="background-color: #FFFFFF">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" style="padding-top: 10px">
+                    <img src="__PUBLIC_IMG__/logo.png" class="img-rounded">
+                </a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse2">
+                    <i class="fa fa-bars bg-navy"></i>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse2">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a>
+                            <i class="fa fa-user" style="color: grey"></i>&nbsp;
+                            <span class="text-primary">&nbsp;{$Think.session.transToAts}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="SignOut">
+                            <i class="fa fa-sign-out"  style="color: black">&nbsp;</i><span class="text-danger">&nbsp;Sign out</span>
+                        </a>
+                    </li>
+                </ul>
 
-    </div>
+            </div>
+
+        </div>
+
+    </nav>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -55,7 +64,7 @@
                 <li class="{$portCheck}"><a href="PortCheck">
                     <!--<i class="fa fa-link"></i>-->
                     Port Check
-                    </a>
+                </a>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -73,35 +82,35 @@
         </div>
         <!-- Navbar Right Menu -->
         <!--<div class="navbar-custom-menu">-->
-            <!--<ul class="nav navbar-nav">-->
-                <!--&lt;!&ndash; User Account Menu &ndash;&gt;-->
-                <!--<li class="dropdown user user-menu">-->
-                    <!--&lt;!&ndash; Menu Toggle Button &ndash;&gt;-->
-                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="useToggle">-->
-                        <!--&lt;!&ndash; The user image in the navbar&ndash;&gt;-->
-                        <!--<img src="__PUBLIC_IMG__/IMG_2.gif" class="user-image" alt="User Image">-->
-<!--&lt;!&ndash;                        <img src="../dist/img/user3-128x128.jpg" class="user-image" alt="User Image">&ndash;&gt;-->
-                        <!--&lt;!&ndash; hidden-xs hides the username on small devices so only the image appears. &ndash;&gt;-->
-                        <!--<span class="hidden-xs">{$Think.session.transToAts}</span>-->
-                    <!--</a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--&lt;!&ndash; The user image in the menu &ndash;&gt;-->
-                        <!--<li class="user-header">-->
-                            <!--<img src="__PUBLIC_IMG__/IMG_2.gif" class="img-circle" alt="User Image">-->
-                            <!--<p>{$login}-{$description}<small>{$email}</small></p>-->
-                        <!--</li>-->
-                        <!--&lt;!&ndash; Menu Footer&ndash;&gt;-->
-                        <!--<li class="user-footer">-->
-                            <!--<div class="pull-left">-->
-<!--&lt;!&ndash;                                <a href="#" class="btn btn-default btn-flat">Profile</a>&ndash;&gt;-->
-                            <!--</div>-->
-                            <!--<div class="pull-right">-->
-                                <!--<a href="SignOut" class="btn btn-default btn-flat">Sign out</a>-->
-                            <!--</div>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</li>-->
-            <!--</ul>-->
+        <!--<ul class="nav navbar-nav">-->
+        <!--&lt;!&ndash; User Account Menu &ndash;&gt;-->
+        <!--<li class="dropdown user user-menu">-->
+        <!--&lt;!&ndash; Menu Toggle Button &ndash;&gt;-->
+        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="useToggle">-->
+        <!--&lt;!&ndash; The user image in the navbar&ndash;&gt;-->
+        <!--<img src="__PUBLIC_IMG__/IMG_2.gif" class="user-image" alt="User Image">-->
+        <!--&lt;!&ndash;                        <img src="../dist/img/user3-128x128.jpg" class="user-image" alt="User Image">&ndash;&gt;-->
+        <!--&lt;!&ndash; hidden-xs hides the username on small devices so only the image appears. &ndash;&gt;-->
+        <!--<span class="hidden-xs">{$Think.session.transToAts}</span>-->
+        <!--</a>-->
+        <!--<ul class="dropdown-menu">-->
+        <!--&lt;!&ndash; The user image in the menu &ndash;&gt;-->
+        <!--<li class="user-header">-->
+        <!--<img src="__PUBLIC_IMG__/IMG_2.gif" class="img-circle" alt="User Image">-->
+        <!--<p>{$login}-{$description}<small>{$email}</small></p>-->
+        <!--</li>-->
+        <!--&lt;!&ndash; Menu Footer&ndash;&gt;-->
+        <!--<li class="user-footer">-->
+        <!--<div class="pull-left">-->
+        <!--&lt;!&ndash;                                <a href="#" class="btn btn-default btn-flat">Profile</a>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="pull-right">-->
+        <!--<a href="SignOut" class="btn btn-default btn-flat">Sign out</a>-->
+        <!--</div>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</li>-->
+        <!--</ul>-->
         <!--</div>-->
     </nav>
 </header>
