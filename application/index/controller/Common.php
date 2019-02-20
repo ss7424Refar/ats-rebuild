@@ -54,7 +54,7 @@ class Common extends Controller{
             'login'=>$result[0]['login'],
             'email'=>$result[0]['email'],
             'description'=>$result[0]['description'],
-            'title'=> 'Automation Test System'
+            'title'=> 'ATS'
         ]);
 //        return $this->fetch('common/header',[]);
     }
