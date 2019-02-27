@@ -24,7 +24,7 @@ class Common extends Controller{
         $this->checkRight();
     }
 
-    /*
+    /* @throws
      * check session
      */
     protected function checkSession(){
