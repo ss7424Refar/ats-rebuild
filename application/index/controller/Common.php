@@ -28,12 +28,15 @@ class Common extends Controller{
      * check session
      */
     protected function checkSession(){
-        Session::set('transToAts','Zhao Tianer');
-        $this->loginUser = Session::get('transToAts');
-//        if (!Session::has('transToAts') || null == Request::instance()->server('HTTP_REFERER')){
-//            $this->error('Login Time Out', 'http://172.30.52.43/tpms/index.php');
-//
-//        }
+//        Session::set('transToAts','Zhao Tianer');
+//        $this->loginUser = Session::get('transToAts');
+        $user_cookie=$_COOKIE['TESTLINK_USER_AUTH_COOKIE'];
+        $user=Db::table('users')->field('login')->where('cookie_string',$user_cookie)->find();
+        Session::set('transToAts', $user['login']);
+
+        if (null == Session::get('transToAts') || null == $this->request->server('HTTP_REFERER')){
+            $this->error('Login Time Out', 'http://172.30.52.43/tpms/index.php');
+        }
 
     }
     /* @throws
