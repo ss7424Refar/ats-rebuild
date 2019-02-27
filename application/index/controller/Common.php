@@ -30,12 +30,11 @@ class Common extends Controller{
     protected function checkSession(){
 //        Session::set('transToAts','Zhao Tianer');
 //        $this->loginUser = Session::get('transToAts');
-        $user_cookie=$_COOKIE['TESTLINK_USER_AUTH_COOKIE'];
-        $user=Db::table('users')->field('login')->where('cookie_string',$user_cookie)->find();
-        Session::set('transToAts', $user['login']);
 
         if (null == Session::get('transToAts') || null == $this->request->server('HTTP_REFERER')){
-            $this->error('Login Time Out', 'http://172.30.52.43/tpms/index.php');
+            // $this->error('Login Time Out', 'http://172.30.52.43/tpms/index.php');
+            $this->error('Login Time Out', 'http://192.168.100.43/tpms/index.php');
+
         }
 
     }
