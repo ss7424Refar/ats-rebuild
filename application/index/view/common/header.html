@@ -78,39 +78,23 @@
                         </li>
                     </ul>
                 </li>
+                {if condition="($description == 'admin')"}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <!--<i class="fa fa-book"></i>-->
+                            Administration
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{:url('index/Admin/startServer');}"><i class="fa fa-server"></i> <span>&nbsp;Server Start</span></a>
+                                <a href="{:url('index/Admin/stopServer');}"><i class="fa fa-server"></i> <span>&nbsp;Server Stop</span></a>
+                                <a href="{:url('index/Admin/getStatus');}"><i class="fa fa-server"></i> <span>&nbsp;Server Status</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                {/if}
             </ul>
         </div>
-        <!-- Navbar Right Menu -->
-        <!--<div class="navbar-custom-menu">-->
-        <!--<ul class="nav navbar-nav">-->
-        <!--&lt;!&ndash; User Account Menu &ndash;&gt;-->
-        <!--<li class="dropdown user user-menu">-->
-        <!--&lt;!&ndash; Menu Toggle Button &ndash;&gt;-->
-        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="useToggle">-->
-        <!--&lt;!&ndash; The user image in the navbar&ndash;&gt;-->
-        <!--<img src="__PUBLIC_IMG__/IMG_2.gif" class="user-image" alt="User Image">-->
-        <!--&lt;!&ndash;                        <img src="../dist/img/user3-128x128.jpg" class="user-image" alt="User Image">&ndash;&gt;-->
-        <!--&lt;!&ndash; hidden-xs hides the username on small devices so only the image appears. &ndash;&gt;-->
-        <!--<span class="hidden-xs">{$Think.session.transToAts}</span>-->
-        <!--</a>-->
-        <!--<ul class="dropdown-menu">-->
-        <!--&lt;!&ndash; The user image in the menu &ndash;&gt;-->
-        <!--<li class="user-header">-->
-        <!--<img src="__PUBLIC_IMG__/IMG_2.gif" class="img-circle" alt="User Image">-->
-        <!--<p>{$login}-{$description}<small>{$email}</small></p>-->
-        <!--</li>-->
-        <!--&lt;!&ndash; Menu Footer&ndash;&gt;-->
-        <!--<li class="user-footer">-->
-        <!--<div class="pull-left">-->
-        <!--&lt;!&ndash;                                <a href="#" class="btn btn-default btn-flat">Profile</a>&ndash;&gt;-->
-        <!--</div>-->
-        <!--<div class="pull-right">-->
-        <!--<a href="SignOut" class="btn btn-default btn-flat">Sign out</a>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</div>-->
     </nav>
 </header>

@@ -197,14 +197,88 @@ class ToolMaker {
             '            <div class="col-sm-4">'.
             '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'.
             '            </div>'.
-            '            <label class="col-sm-1 control-label">Count</label>'.
-            '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'.
-            '                <label style="margin-right: 19px">'.
-            '                    <input type="radio" name="Count_'. $index .'" class="minimal" value="500" checked/> 500'.
-            '                </label>'.
-            '                <label style="margin-right: 19px">'.
-            '                    <input type="radio" name="Count_'. $index .'" class="minimal" value="300"/> 300'.
-            '                </label>'.
+            '            <label class="col-sm-1 control-label">Reboot</label>'.
+            '            <div class="col-sm-5">'.
+            '                <div id="Count">'.
+            '                    <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
+            '                        <input id="reboot" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                        <div class="input-group-addon">'.
+            '	                         <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '		                     <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                        </div>'.
+            '                        <label class="input-group-addon"><input type="checkbox" name="reboot_'. $index .'" class="flat" checked/></label>'.
+            '                    </div>'.
+            '                </div>'.
+            '            </div>'.
+            '        </div>'.
+            '        <div class="form-group">'.
+            '            <label class="col-sm-1 control-label">Power Off</label>'.
+            '            <div class="col-sm-4">'.
+            '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
+            '                     <input id="powerOff" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <div class="input-group-addon">'.
+            '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                     </div>'.
+            '                     <label class="input-group-addon"><input type="checkbox" name="powerOff_'. $index .'" class="flat" checked/></label>'.
+            '                </div>'.
+            '            </div>'.
+            '            <label class="col-sm-1 control-label">Standby</label>'.
+            '            <div class="col-sm-5">'.
+            '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
+            '                     <input id="standBy" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <div class="input-group-addon">'.
+            '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                     </div>'.
+            '                     <label class="input-group-addon"><input type="checkbox" name="standBy_'. $index .'" class="flat" checked/></label>'.
+            '                </div>'.
+            '            </div>'.
+            '        </div>'.
+            '        <div class="form-group">'.
+            '            <label class="col-sm-1 control-label">Hibernation</label>'.
+            '            <div class="col-sm-4">'.
+            '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
+            '                     <input id="hibernation" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <div class="input-group-addon">'.
+            '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                     </div>'.
+            '                     <label class="input-group-addon"><input type="checkbox" name="Hibernation_'. $index .'" class="flat" checked/></label>'.
+            '                </div>'.
+            '            </div>'.
+            '            <label class="col-sm-1 control-label">Hybrid Shutdown</label>'.
+            '            <div class="col-sm-5">'.
+            '                <div class="input-group spinner col-sm-4" data-trigger="spinner" id="spinner">'.
+            '                     <input id="hybridShutdown" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <div class="input-group-addon">'.
+            '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                     </div>'.
+            '                     <label class="input-group-addon"><input type="checkbox" name="hybrid_'. $index .'" class="flat" checked/></label>'.
+            '                </div>'.
+            '            </div>'.
+            '        </div>'.
+            '        <div class="form-group">'.
+            '            <label class="col-sm-1 control-label">delay to start up</label>'.
+            '            <div class="col-sm-4">'.
+            '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
+            '                     <input id="delay" type="text" class="form-control text-center" value="1" data-max="60" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <div class="input-group-addon">'.
+            '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                     </div>'.
+            '                </div>'.
+            '            </div>'.
+            '            <label class="col-sm-1 control-label">time out to exit</label>'.
+            '            <div class="col-sm-5">'.
+            '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
+            '                     <input id="timeOut" type="text" class="form-control text-center" value="90" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <div class="input-group-addon">'.
+            '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
+            '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
+            '                     </div>'.
+            '                </div>'.
             '            </div>'.
             '        </div>'.
             '        <hr>'.
