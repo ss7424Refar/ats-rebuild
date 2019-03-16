@@ -53,8 +53,8 @@ class Common extends Controller{
         }
         // 给header.html中的变量赋值, index继承了common, index里面有fetch方法
         $this->assign([
-            'login'=>$result[0]['login'],
-            'email'=>$result[0]['email'],
+//            'login'=>$result[0]['login'],
+//            'email'=>$result[0]['email'],
             'description'=>$result[0]['description'],
             'title'=> 'ATS'
         ]);

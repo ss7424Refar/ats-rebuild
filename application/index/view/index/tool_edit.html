@@ -388,11 +388,21 @@ desired effect
                 });
 
             });
-            // Count
-            obj.find('input[type="radio"].minimal').each(function () {
+            // jquery spinner init
+            obj.find('[data-trigger="spinner"]').spinner();
+
+            // configure
+            obj.find('input[type="checkbox"].flat').each(function () {
                 $(this).iCheck(
-                    {radioClass: 'iradio_minimal-blue'}
-                );
+                    {checkboxClass: 'icheckbox_flat-yellow'}
+                ).on('ifChecked', function () {
+                    _father = $(this).parent().parent().parent();
+                    _father.find('input[type="text"]').removeAttr("disabled").val(300);
+
+                }).on('ifUnchecked', function () {
+                    _father = $(this).parent().parent().parent();
+                    _father.find('input[type="text"]').attr("disabled","disabled").val(0);
+                });
             });
 
         }
@@ -579,15 +589,41 @@ desired effect
 
         });
 
-        // Count
-        obj.find('input[type="radio"].minimal').each(function () {
-            $(this).iCheck(
-                {radioClass: 'iradio_minimal-blue'}
-            );
+        // jquery spinner init
+        obj.find('[data-trigger="spinner"]').spinner();
 
-            if (item.Count == $(this).val()) {
-                $(this).iCheck('check');
+        obj.find('#reboot').val(item.Reboot);
+        obj.find('#powerOff').val(item.PowerOff);
+        obj.find('#standBy').val(item.Suspend);
+        obj.find('#hibernation').val(item.Hibernation);
+        obj.find('#hybridShutdown').val(item.HybridShutdown);
+        obj.find('#timeOut').val(item.MinPowerUp);
+        obj.find('#delay').val(item.SecDelay);
+
+        // set check
+        obj.find('input[type="text"]').each(function () {
+            if ($(this).val() > 0) {
+                $(this).parent().find('.flat').iCheck('check'); // 无需担心delay和timeOut。因为它们的parent下没有flat
+            } else {
+                if ('timeOut' !== $(this).attr('id') || 'delay' !== $(this).attr('id') ) {
+                    $(this).attr("disabled","disabled");
+                }
+
             }
+        });
+
+        // configure 重置
+        obj.find('input[type="checkbox"].flat').each(function () {
+            $(this).iCheck(
+                {checkboxClass: 'icheckbox_flat-yellow'}
+            ).on('ifChecked', function () {
+                _father = $(this).parent().parent().parent();
+                _father.find('input[type="text"]').removeAttr("disabled").val(300);
+
+            }).on('ifUnchecked', function () {
+                _father = $(this).parent().parent().parent();
+                _father.find('input[type="text"]').attr("disabled","disabled").val(0);
+            });
         });
     }
 </script>

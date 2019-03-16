@@ -361,11 +361,22 @@ desired effect
                 });
 
             });
-            // count
-            obj.find('input[type="radio"].minimal').each(function () {
+
+            // jquery spinner init
+            obj.find('[data-trigger="spinner"]').spinner();
+
+            // configure
+            obj.find('input[type="checkbox"].flat').each(function () {
                 $(this).iCheck(
-                    {radioClass: 'iradio_minimal-blue'}
-                );
+                    {checkboxClass: 'icheckbox_flat-yellow'}
+                ).on('ifChecked', function () {
+                    _father = $(this).parent().parent().parent();
+                    _father.find('input[type="text"]').removeAttr("disabled").val(300);
+
+                }).on('ifUnchecked', function () {
+                    _father = $(this).parent().parent().parent();
+                    _father.find('input[type="text"]').attr("disabled","disabled").val(0);
+                });
             });
 
         }
