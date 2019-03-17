@@ -251,5 +251,10 @@ return [
     'SMTP_PORT'     => '25',
     'MAIL_CC'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
     'MAIL_CC_BASELINE'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
-    'MAIL_FROM'      => 'ats_swv@toshiba-tih.com'
+    'MAIL_FROM'      => 'ats_swv@toshiba-tih.com',
+
+    // FTP 配置
+    'HOST_NAME'   => '192.168.0.103',
+    'HOST_USER'   => 'refar',
+    'HOST_PASS'   => '1'
 ];

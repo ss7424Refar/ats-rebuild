@@ -10,6 +10,7 @@ namespace app\push\controller;
 use think\worker\Server;
 
 use Workerman\Lib\Timer;
+use think\Log;
 
 class Worker extends Server
 {
@@ -77,7 +78,7 @@ class Worker extends Server
         // 执行watchExpired
         if($worker->id === 0) {
             Timer::add(5, function()use($worker){
-                echo 'expired dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL;
+                Log::record('expired dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
                 // 每天0点执行任务
                 if(time() / 86400 == 0) {
                     $watcher = controller('push/WatchExpired');
@@ -86,11 +87,15 @@ class Worker extends Server
 
             });
         }
-//        else if($worker->id === 1) {
-//            Timer::add(4, function()use($worker){
-//                echo date("Y-m-d H:i:s", time()). '\n' ;
-//            });
-//        }
+        // 检测ftp上的关于测试机文件是否修改，如果修改了则download。
+        else if($worker->id === 1) {
+            Timer::add(5, function()use($worker){
+                Log::record('ftp dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
+                $watcher = controller('push/WatchFTP');
+                $watcher->dog();
+            });
+
+        }
 
     }
 }

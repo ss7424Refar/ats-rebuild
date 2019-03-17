@@ -38,9 +38,7 @@ require './thinkphp/start.php';
 1. DB:query () 返回的是二维数组。不包括模型数据。
 2. 对外接口可以继承控制器，直接使用Request对象。内部使用，可以不继承。
 
+## ftp 设定
+1. 需要对runtime中ftp文件夹加777权限
+
 ## TODO list
-
-2. 添加查询task功能  --待 确认
-3. 修改tp5的README.md为本项目介绍。
-
-5. 添加releasenote功能。

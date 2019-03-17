@@ -12,6 +12,8 @@ use app\index\model\AtsTaskBasic;
 use app\index\model\AtsTaskToolSteps;
 use think\Db;
 use think\Log;
+use ext\FTPUtil;
+
 
 class TaskManager extends Common{
     /*
@@ -19,7 +21,10 @@ class TaskManager extends Common{
      */
     public function readMachineInfo(){
         $query = $this->request->param('q');
-        $file = fopen(ATS_PREPARE_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix,'r');
+
+        $localFile = ATS_PREPARE_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix;
+
+        $file = fopen($localFile,'r');
 
         $jsonResult=array();
         $line=0;
