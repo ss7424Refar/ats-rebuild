@@ -65,12 +65,49 @@ class FTPUtil
 
     }
 
+    /**
+     * @param $path
+     * @param $newpath
+     * @return bool
+     * path 为ftp上的路径， new path为本地路径
+     */
     function down_file($path, $newpath) {
         return ftp_get($this->connector, $newpath, $path,FTP_BINARY);
     }
     function mode($pasvmode)
     {
         ftp_pasv($this->connector, $pasvmode);
+    }
+
+    /**
+     * @param $localFile
+     * @param $ftpFile
+     * @return bool
+     * 最后的修改时间相同则为false，不相同为true
+     *
+     */
+    function check_is_update($ftpFile) {
+
+        $ftpFileTime = $this->last_modtime($ftpFile);
+
+        if ($ftpFileTime != -1) {
+            Log::record("[checkUpdate] FTP's TestStatus file last modify time is : ". date ("F d Y H:i:s.", $ftpFileTime));
+            Log::record('[checkUpdate] [ftpTime]:'. $ftpFileTime);
+
+            $saveUnix = file_get_contents(ATS_PREPARE_PATH. 'unix_time.txt');
+            if ('' == $saveUnix) {
+                file_put_contents(ATS_PREPARE_PATH. 'unix_time.txt', $ftpFileTime);
+                return true;
+            } else {
+                if ($ftpFileTime != $saveUnix) {
+                    file_put_contents(ATS_PREPARE_PATH. 'unix_time.txt', $ftpFileTime);
+                    return true;
+                }
+            }
+        } else {
+            Log::record("[checkUpdate] get FTP's TestStatus fail");
+            return false;
+        }
     }
 
     //退出
