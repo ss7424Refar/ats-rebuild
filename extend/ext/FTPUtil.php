@@ -33,7 +33,7 @@ class FTPUtil
             Log::record("FTP login success!");
         }
     }
-    //  获取最后修改时间, 如果成功返回一个 UNIX 时间戳，否则返回 -1。
+    //  获取最后修改时间, 如果成功返回一个 UNIX 时间戳，否则返回 -1
     function last_modtime($value)
     {
         return ftp_mdtm($this->connector, $value);
