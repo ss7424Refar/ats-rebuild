@@ -22,7 +22,7 @@ class TaskManager extends Common{
     public function readMachineInfo(){
         $query = $this->request->param('q');
 
-        $localFile = ATS_PREPARE_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix;
+        $localFile = config('ats_local_test_pc'). config('ats_test_pc_file'). config('ats_file_suffix');
 
         $file = fopen($localFile,'r');
 
@@ -56,7 +56,7 @@ class TaskManager extends Common{
      * read machine info
      */
     public function readTestPCDetail(){
-        $file = fopen(ATS_PREPARE_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix,'r');
+        $file = fopen(config('ats_local_test_pc'). config('ats_test_pc_file'). config('ats_file_suffix'),'r');
 
         $machineId = $this->request->param('machineId');
 
@@ -262,11 +262,11 @@ class TaskManager extends Common{
             }
 
             if (null != $outPut['task_steps']) {
-                $fileName = ATS_TMP_TASKS_HEADER. $outPut['task_basic'][0]['shelf_switch'].
-                                ATS_FILE_UNDERLINE. $taskId. ATS_FILE_suffix;
-                $fileCreate = ATS_TMP_TASKS_PATH. $fileName;
+                $fileName = config('ats_tasks_header'). $outPut['task_basic'][0]['shelf_switch'].
+                                config('ats_file_underline'). $taskId. config('ats_file_suffix');
+                $fileCreate = config('ats_task_path'). $fileName;
 
-                $file = fopen($fileCreate,"x+");
+                $file = fopen($fileCreate,"w");
                 file_put_contents($fileCreate, json_encode($outPut, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT),FILE_APPEND);
 
                 fclose($file);
@@ -275,14 +275,8 @@ class TaskManager extends Common{
                 Log::record('chmod 777 '. $fileName);
                 chmod($fileCreate, 0777);
 
-//                Log::record('cp '. $fileName);
-//                $cpRes = copy($fileCreate, ATS_TASKS_PATH. $fileName);
-//
-//                Log::record('rm '. $fileName);
-//                $rmRes = unlink($fileCreate);
-
-                $ftpUtil = new FTPUtil(config('HOST_NAME'), config('HOST_USER'), config('HOST_PASS'));
-                $result =  $ftpUtil->up_file($fileCreate, '/Tasks/hello.txt');
+                $ftpUtil = new FTPUtil(config('host_name'), config('host_user'), config('host_pass'));
+                $result =  $ftpUtil->up_file($fileCreate, config('ats_ftp_task'). $fileName);
                 $ftpUtil-> ftp_bye();
 
                 if($result){

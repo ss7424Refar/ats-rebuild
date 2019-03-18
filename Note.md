@@ -41,4 +41,13 @@ require './thinkphp/start.php';
 ## ftp 设定
 1. 需要对runtime中ftp文件夹加777权限
 
+## workman
+
+1. 考虑到一个进程下加入比较定时器，而这个任务比较繁重。会出现阻塞的情况，，所以就新建另外一个线程。
+2. 根据workman手册，可以建立另一个workman实例。
+
+
+## thinkphp 
+1. 获取二级配置文件内容为： 'cookie.expire'
+
 ## TODO list

@@ -94,13 +94,13 @@ class FTPUtil
             Log::record("[checkUpdate] FTP's TestStatus file last modify time is : ". date ("F d Y H:i:s.", $ftpFileTime));
             Log::record('[checkUpdate] [ftpTime]:'. $ftpFileTime);
 
-            $saveUnix = file_get_contents(ATS_PREPARE_PATH. 'unix_time.txt');
+            $saveUnix = file_get_contents(config('ats_local_test_pc'). 'unix_time.txt');
             if ('' == $saveUnix) {
-                file_put_contents(ATS_PREPARE_PATH. 'unix_time.txt', $ftpFileTime);
+                file_put_contents(config('ats_local_test_pc'). 'unix_time.txt', $ftpFileTime);
                 return true;
             } else {
                 if ($ftpFileTime != $saveUnix) {
-                    file_put_contents(ATS_PREPARE_PATH. 'unix_time.txt', $ftpFileTime);
+                    file_put_contents(config('ats_local_test_pc'). 'unix_time.txt', $ftpFileTime);
                     return true;
                 }
             }

@@ -21,14 +21,14 @@ class ToolHandler extends Common {
     public function getTestImage(){
         $query = $this->request->param('q');
 
-        $ftpUtil = new FTPUtil(config('HOST_NAME'), config('HOST_USER'), config('HOST_PASS'));
-        $images = $ftpUtil->get_file_list('/Image');
+        $ftpUtil = new FTPUtil(config('host_name'), config('host_user'), config('host_pass'));
+        $images = $ftpUtil->get_file_list(config('ats_ftp_image'));
 
         $jsonResult = array();
 
         if ($images) {
             for ($i = 0; $i < count($images); $i++) {
-                $filename = str_replace('/Image/', '', $images[$i]);
+                $filename = str_replace(config('ats_ftp_image'), '', $images[$i]);
                 if (empty(trim($query))) {
                     $tmpArray = array('id' => $filename, 'text' => $filename);
                     $i = $i + 1;

@@ -19,7 +19,7 @@ return [
     // 应用Trace
     'app_trace'              => false,
     // 应用模式状态
-    'app_status'             => 'config_home',
+    'app_status'             => '',
     // 是否支持多模块
     'app_multi_module'       => true,
     // 入口自动绑定模块
@@ -247,32 +247,14 @@ return [
     ],
 
     // 配置swiftmailer邮件发送服务器
-    'smtp_host'     => '172.30.52.43',
-    'smtp_port'     => '25',
-    'mail_cc'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
-    'mail_cc_baseline'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
-    'mail_from'      => 'ats_swv@toshiba-tih.com',
+    'SMTP_HOST'     => '172.30.52.43',
+    'SMTP_PORT'     => '25',
+    'MAIL_CC'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
+    'MAIL_CC_BASELINE'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
+    'MAIL_FROM'      => 'ats_swv@toshiba-tih.com',
 
     // FTP 配置
-    'host_name'   => '192.168.0.99',
-    'host_user'   => 'ats',
-    'host_pass'   => '123456.abcd',
-
-    // ATS FTP path
-    'ats_ftp_test_pc'    =>  '/TestPCs/',
-    'ats_ftp_image'      =>  '/Image/',
-    'ats_ftp_task'      =>  '/Tasks/',
-
-    // ATS local path
-    'ats_local_test_pc'  =>  RUNTIME_PATH. 'saveFtp/',
-    'ats_task_path'     =>  RUNTIME_PATH. 'output/',
-
-    // TestPC.csv
-    'ats_test_pc_file'   =>  'TestPC',
-    'ats_file_suffix'    =>  '.csv',
-
-    // Task.csv
-    'ats_file_underline' =>  '_',
-    'ats_tasks_header'   =>  'Task_'
-
+    'HOST_NAME'   => '192.168.0.99',
+    'HOST_USER'   => 'ats',
+    'HOST_PASS'   => '123456.abcd'
 ];

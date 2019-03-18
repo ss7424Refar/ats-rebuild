@@ -14,7 +14,7 @@ namespace app\push\controller;
 class PortChecker
 {
     public function getPortInfo(){
-        $detectFileName = ATS_PREPARE_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix;
+        $detectFileName = config('ats_local_test_pc'). config('ats_test_pc_file'). config('ats_file_suffix');
 
         $jsonResult = array();
 

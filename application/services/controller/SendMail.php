@@ -85,7 +85,7 @@ class SendMail extends Controller {
             '</html>';
 
 //        return $content;
-        return MailerUtil::send($emailTo, config('MAIL_CC_BASELINE'), $mailTitle, $content);
+        return MailerUtil::send($emailTo, config('mail_cc_baseline'), $mailTitle, $content);
     }
 
     /**
@@ -145,7 +145,7 @@ class SendMail extends Controller {
             '</html>';
 
 //            return $content;
-        return MailerUtil::send($emailTo, config('MAIL_CC'), $mailTitle, $content);
+        return MailerUtil::send($emailTo, config('mail_cc'), $mailTitle, $content);
 
     }
 

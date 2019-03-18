@@ -15,10 +15,10 @@ class WatchFTP {
 
     public function dog() {
 
-        $ftpUtil = new FTPUtil(config('HOST_NAME'), config('HOST_USER'), config('HOST_PASS'));
+        $ftpUtil = new FTPUtil(config('host_name'), config('host_user'), config('host_pass'));
 
-        $localFile = ATS_PREPARE_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix;
-        $ftpFile = ATS_FTP_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix;
+        $localFile = config('ats_local_test_pc'). config('ats_test_pc_file'). config('ats_file_suffix');
+        $ftpFile = config('ats_ftp_test_pc'). config('ats_test_pc_file'). config('ats_file_suffix');
 
         $flag = $ftpUtil->check_is_update($ftpFile);
 

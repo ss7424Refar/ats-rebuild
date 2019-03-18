@@ -19,7 +19,7 @@ return [
     // 应用Trace
     'app_trace'              => false,
     // 应用模式状态
-    'app_status'             => 'config_home',
+    'app_status'             => '',
     // 是否支持多模块
     'app_multi_module'       => true,
     // 入口自动绑定模块
@@ -254,14 +254,14 @@ return [
     'mail_from'      => 'ats_swv@toshiba-tih.com',
 
     // FTP 配置
-    'host_name'   => '192.168.0.99',
-    'host_user'   => 'ats',
-    'host_pass'   => '123456.abcd',
+    'host_name'   => '192.168.0.103',
+    'host_user'   => 'refar',
+    'host_pass'   => '1',
 
     // ATS FTP path
-    'ats_ftp_test_pc'    =>  '/TestPCs/',
-    'ats_ftp_image'      =>  '/Image/',
-    'ats_ftp_task'      =>  '/Tasks/',
+    'ats_ftp_test_pc'    =>  '/home/refar/Desktop/',
+    'ats_ftp_image'      =>  '/home/refar/',
+    'ats_ftp_task'      =>  '/home/refar/Desktop/',
 
     // ATS local path
     'ats_local_test_pc'  =>  RUNTIME_PATH. 'saveFtp/',
