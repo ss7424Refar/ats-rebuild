@@ -23,7 +23,8 @@ define('TREBOOT', 'Treboot');
 /*
  * ATS file path
  */
-define('ATS_FTP_PATH', '/home/refar/Desktop/');
+//define('ATS_FTP_PATH', '/home/refar/Desktop/');
+define('ATS_FTP_PATH', '/TestPCs/');
 define('ATS_PREPARE_PATH', RUNTIME_PATH. 'saveFtp/');
 
 define('ATS_IMAGES_PATH', '/home/refar/');

@@ -254,7 +254,12 @@ return [
     'MAIL_FROM'      => 'ats_swv@toshiba-tih.com',
 
     // FTP 配置
-    'HOST_NAME'   => '192.168.0.103',
-    'HOST_USER'   => 'refar',
-    'HOST_PASS'   => '1'
+//    'HOST_NAME'   => '192.168.0.103',
+//    'HOST_USER'   => 'refar',
+//    'HOST_PASS'   => '1',
+
+    // FTP 配置
+    'HOST_NAME'   => '192.168.0.99',
+    'HOST_USER'   => 'ats',
+    'HOST_PASS'   => '123456.abcd'
 ];

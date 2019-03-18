@@ -47,9 +47,9 @@ class TaskManager extends Common{
             }
 
         }
-        echo json_encode($jsonResult);
-
         fclose($file);
+
+        echo json_encode($jsonResult);
 
     }
     /*
@@ -79,8 +79,11 @@ class TaskManager extends Common{
             }
 
         }
-        echo json_encode($jsonResult);
+
         fclose($file);
+
+        echo json_encode($jsonResult);
+
     }
 
     /* @throws
@@ -272,19 +275,18 @@ class TaskManager extends Common{
                 Log::record('chmod 777 '. $fileName);
                 chmod($fileCreate, 0777);
 
-                Log::record('cp '. $fileName);
-                $cpRes = copy($fileCreate, ATS_TASKS_PATH. $fileName);
+//                Log::record('cp '. $fileName);
+//                $cpRes = copy($fileCreate, ATS_TASKS_PATH. $fileName);
+//
+//                Log::record('rm '. $fileName);
+//                $rmRes = unlink($fileCreate);
 
-                Log::record('rm '. $fileName);
-                $rmRes = unlink($fileCreate);
+                $ftpUtil = new FTPUtil(config('HOST_NAME'), config('HOST_USER'), config('HOST_PASS'));
+                $result =  $ftpUtil->up_file($fileCreate, '/Tasks/hello.txt');
+                $ftpUtil-> ftp_bye();
 
-                if(1 != $cpRes){
-                    Log::record('copy fail '. $fileName);
-                    exit();
-                }else if (1 != $rmRes){
-                    Log::record('remove fail '. $fileName);
-                    exit();
-                } else {
+                if($result){
+                    Log::record('success '. $fileName);
 
                     $startTime = date("Y-m-d H:i:s");
 
@@ -302,12 +304,18 @@ class TaskManager extends Common{
                         'status'  => ONGOING,
                         'tool_start_time' => $startTime
                     ], ['task_id' => $taskId, 'steps' => 1]);
+
+                    return "done";
+
+                } else {
+                    Log::record('success '. $fileName);
+                    return "fail";
                 }
+
+
             }
-
-
         }
-        return "done";
+        return "undo";
     }
 
     /* @throws

@@ -12,6 +12,7 @@ use app\index\model\AtsTaskBasic;
 use app\index\model\AtsTaskToolSteps;
 
 use ext\ToolMaker;
+use ext\FTPUtil;
 
 class ToolHandler extends Common {
     /*
@@ -19,14 +20,15 @@ class ToolHandler extends Common {
      */
     public function getTestImage(){
         $query = $this->request->param('q');
-        $handler = opendir(ATS_IMAGES_PATH);
 
-        $i = 1;
+        $ftpUtil = new FTPUtil(config('HOST_NAME'), config('HOST_USER'), config('HOST_PASS'));
+        $images = $ftpUtil->get_file_list('/Image');
+
         $jsonResult = array();
 
-        while (($filename = readdir($handler)) !== false) {
-            //略过linux目录的名字为'.'和‘..'的文件
-            if ($filename != "." && $filename != "..") {
+        if ($images) {
+            for ($i = 0; $i < count($images); $i++) {
+                $filename = str_replace('/Image/', '', $images[$i]);
                 if (empty(trim($query))) {
                     $tmpArray = array('id' => $filename, 'text' => $filename);
                     $i = $i + 1;
@@ -39,7 +41,10 @@ class ToolHandler extends Common {
                     }
                 }
             }
+
         }
+
+        $ftpUtil->ftp_bye();
 
         return json_encode($jsonResult);
 
