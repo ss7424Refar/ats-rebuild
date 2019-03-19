@@ -165,5 +165,4 @@ class SendMail extends Controller {
 
         return $res;
     }
-
 }

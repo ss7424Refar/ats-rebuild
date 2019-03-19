@@ -280,7 +280,7 @@ class TaskManager extends Common{
                 $ftpUtil-> ftp_bye();
 
                 if($result){
-                    Log::record('success '. $fileName);
+                    Log::record('[assignTask] ['. $fileName .']upload to ftp success ');
 
                     $startTime = date("Y-m-d H:i:s");
 
@@ -302,10 +302,9 @@ class TaskManager extends Common{
                     return "done";
 
                 } else {
-                    Log::record('success '. $fileName);
+                    Log::record('[assignTask] ['. $fileName .']upload to ftp fail ');
                     return "fail";
                 }
-
 
             }
         }
