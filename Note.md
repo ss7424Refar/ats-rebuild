@@ -46,8 +46,14 @@ require './thinkphp/start.php';
 1. 考虑到一个进程下加入比较定时器，而这个任务比较繁重。会出现阻塞的情况，，所以就新建另外一个线程。
 2. 根据workman手册，可以建立另一个workman实例。
 
-
 ## thinkphp 
 1. 获取二级配置文件内容为： 'cookie.expire'
 
+## postfix
+
+1. 搭建postfix。本人也是稀里糊涂地搭建了smtp服务器。。踩了坑有点多
+2. 在命令打入echo， mail验证的时候需要不能随便乱输入文字，否则qq邮箱会收不到。
+3. 用php写代码的时候，需要将mail_from 这个加入qq邮箱的域名白名单，否则接收不到邮件。
+
 ## TODO list
+1. 添加ftp notice 假设超时3次则调试我。

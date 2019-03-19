@@ -84,9 +84,7 @@ class Index extends Common
     }
 
     public function SignOut(){
-        $this->redirect('http://192.168.100.43/tpms/index.php');
-        // $this->redirect('http://172.30.52.43/tpms/index.php');
-
+        $this->redirect(config('ats_sign_out_url'));
     }
 
     /*

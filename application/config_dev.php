@@ -291,11 +291,11 @@ return [
     ],
 
     // 配置swiftmailer邮件发送服务器
-    'smtp_host'     => '172.30.52.43',
-    'smtp_port'     => '25',
-    'mail_cc'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
-    'mail_cc_baseline'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
-    'mail_from'      => 'ats_swv@toshiba-tih.com',
+    'smtp_host'         => 'localhost',
+    'smtp_port'         => '25',
+    'mail_cc'           => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
+    'mail_cc_baseline'  => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
+    'mail_from'         => 'ats_swv@toshiba-tih.com',
 
     // FTP 配置
     'host_name'   => '192.168.0.99',

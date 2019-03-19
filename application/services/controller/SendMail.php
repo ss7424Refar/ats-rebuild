@@ -40,7 +40,7 @@ class SendMail extends Controller {
         $testImage = json_decode($info[0]['element_json']);
         $testImage = $testImage->Test_Image;
 
-        $mailTitle = '[ATS][' . $this->today . ']'. $info[0]['tool_name'] .'You Need to run the baseline image';
+        $mailTitle = '[ATS][' . $this->today . ']['. $info[0]['tool_name'] .']You Need to run the baseline image';
 
         $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/' .
             'office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">' .
@@ -84,7 +84,6 @@ class SendMail extends Controller {
             '<p style="margin-top: 15px">Click here to view task list:&nbsp;&nbsp;&nbsp;<a style="font-size:12px;" href="'.ATS_URL .'">Link To ATS</a></p>' .
             '</html>';
 
-//        return $content;
         return MailerUtil::send($emailTo, config('mail_cc_baseline'), $mailTitle, $content);
     }
 
@@ -146,6 +145,11 @@ class SendMail extends Controller {
 
 //            return $content;
         return MailerUtil::send($emailTo, config('mail_cc'), $mailTitle, $content);
+
+    }
+
+    public function sendFtpNotice() {
+
 
     }
 
