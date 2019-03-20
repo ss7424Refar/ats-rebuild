@@ -56,4 +56,4 @@ require './thinkphp/start.php';
 3. 用php写代码的时候，需要将mail_from 这个加入qq邮箱的域名白名单，否则接收不到邮件。
 
 ## TODO list
-1. 添加ftp notice 假设超时3次则调试我。
+1. 在saveFtp中ftp_mail.txt

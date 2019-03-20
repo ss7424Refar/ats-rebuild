@@ -40,4 +40,3 @@ function appendCommaValue($arr) {
     return substr($str, 0, strlen($str) - 1);
 
 }
-

@@ -12,6 +12,7 @@
 namespace think\worker;
 
 use Workerman\Worker;
+use think\Log;
 
 /**
  * Worker控制器扩展类
@@ -50,6 +51,7 @@ abstract class Server
 
     protected function init()
     {
+        Log::record('server init');
     }
 
 }

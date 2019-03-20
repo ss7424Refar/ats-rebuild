@@ -296,6 +296,7 @@ return [
     'mail_cc'           => '["812647742@qq.com"]',
     'mail_cc_baseline'  => '["lin.zhu@toshiba-tih.com"]',
     'mail_from'         => 'ats_swv@toshiba-tih.com',
+    'ftp_notice'        => '812647742@qq.com',
 
     // FTP 配置
     'host_name'   => '192.168.0.103',

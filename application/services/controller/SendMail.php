@@ -148,11 +148,6 @@ class SendMail extends Controller {
 
     }
 
-    public function sendFtpNotice() {
-
-
-    }
-
     private function getUserAddress($taskId) {
         $testerRes = Db::table('ats_task_basic')->where('task_id', $taskId)->field('tester')->select();
 

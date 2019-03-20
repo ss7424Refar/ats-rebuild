@@ -9,6 +9,7 @@
 namespace ext;
 
 use think\Log;
+use ext\MailerUtil;
 
 class FTPUtil
 {
@@ -20,17 +21,26 @@ class FTPUtil
     function __construct($ftp_server, $uname, $passwd)
     {
         $this->connector = ftp_connect($ftp_server);
+        // connect
         if (!$this->connector) {
             Log::record("FTP connection failed!");
+
+            $status = file_get_contents(config('ats_local_test_pc'). 'ftp_mail.txt');
+
+            if ('not send' == $status) {
+                MailerUtil::send(config('ftp_notice'), null, 'FTP  connection failed!', ' connection failed!');
+                file_put_contents(config('ats_local_test_pc'). 'ftp_mail.txt', 'send');
+            }
             die;
+        } else {
+            file_put_contents(config('ats_local_test_pc'). 'ftp_mail.txt', 'not send');
         }
 
+        // login
         $this->login_result = ftp_login($this->connector, "$uname", "$passwd");
         if (!$this->login_result) {
             Log::record("FTP login failed!");
             die;
-        } else {
-            Log::record("FTP login success!");
         }
     }
     //  获取最后修改时间, 如果成功返回一个 UNIX 时间戳，否则返回 -1
