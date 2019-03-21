@@ -1,5 +1,6 @@
 ##set thinkphp pathinfo for nginx
-1:
+1. 添加/etc/nginx/sites-available/default中
+```
 	location /atsTp5/ {
 		index index.php;
 		if (!-e $request_filename){
@@ -7,6 +8,7 @@
 			break;
 		}
 	}
+```
 
 2:修改index.php到根目录
 // 应用目录
@@ -40,7 +42,9 @@ require './thinkphp/start.php';
 
 ## ftp 设定
 1. 需要对runtime中ftp文件夹加777权限
-
+  - 添加ftp_mail.txt
+  - 添加unix_time.txt
+  
 ## workman
 
 1. 考虑到一个进程下加入比较定时器，而这个任务比较繁重。会出现阻塞的情况，，所以就新建另外一个线程。

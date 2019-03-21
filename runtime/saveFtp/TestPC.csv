@@ -1,0 +1,2 @@
+ID,Machine,MachineID,LANIP,ShelfID,SwitchID,ProductName,SerialNumber,PartNumber,OEMString,SystemConfig,BIOS_EC
+1_9,Altair R CS2,1607122,192.168.1.109,1,1,dynabook Tab S69/NG,7G1217891,PS68NNP-NXA,"PRT10U-AAAA4,PCN3381CCZ01FA1F/S3A-----X--",2,22

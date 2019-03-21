@@ -140,9 +140,9 @@ return [
 
     // 视图输出字符串内容替换
     'view_replace_str'       => [
-        '__PUBLIC_CSS__'=>'/ats_kimi/public/static/css', //css
-        '__PUBLIC_JS__'=>'/ats_kimi/public/static/js', //js
-        '__PUBLIC_IMG__'=>'/ats_kimi/public/static/img', //js
+        '__PUBLIC_CSS__'=>'/ats/public/static/css', //css
+        '__PUBLIC_JS__'=>'/ats/public/static/js', //js
+        '__PUBLIC_IMG__'=>'/ats/public/static/img', //js
 
     ],
     // 默认跳转页面对应的模板文件
@@ -291,11 +291,12 @@ return [
     ],
 
     // 配置swiftmailer邮件发送服务器
-    'smtp_host'     => '172.30.52.43',
-    'smtp_port'     => '25',
-    'mail_cc'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
-    'mail_cc_baseline'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
-    'mail_from'      => 'ats_swv@toshiba-tih.com',
+    'smtp_host'         => '172.30.52.43',
+    'smtp_port'         => '25',
+    'mail_cc'           => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
+    'mail_cc_baseline'  => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
+    'mail_from'         => 'ats_swv@toshiba-tih.com',
+    'ftp_notice'        => '812647742@qq.com',
 
     // FTP 配置
     'host_name'   => '192.168.0.99',

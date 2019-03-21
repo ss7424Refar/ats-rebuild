@@ -140,9 +140,9 @@ return [
 
     // 视图输出字符串内容替换
     'view_replace_str'       => [
-        '__PUBLIC_CSS__'=>'/ats_kimi/public/static/css', //css
-        '__PUBLIC_JS__'=>'/ats_kimi/public/static/js', //js
-        '__PUBLIC_IMG__'=>'/ats_kimi/public/static/img', //js
+        '__PUBLIC_CSS__'=>'/ats/public/static/css', //css
+        '__PUBLIC_JS__'=>'/ats/public/static/js', //js
+        '__PUBLIC_IMG__'=>'/ats/public/static/img', //js
 
     ],
     // 默认跳转页面对应的模板文件
