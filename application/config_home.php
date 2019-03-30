@@ -19,7 +19,7 @@ return [
     // 应用Trace
     'app_trace'              => false,
     // 应用模式状态
-    'app_status'             => 'config_home',
+    'app_status'             => '',
     // 是否支持多模块
     'app_multi_module'       => true,
     // 入口自动绑定模块
@@ -140,9 +140,9 @@ return [
 
     // 视图输出字符串内容替换
     'view_replace_str'       => [
-        '__PUBLIC_CSS__'=>'/ats/public/static/css', //css
-        '__PUBLIC_JS__'=>'/ats/public/static/js', //js
-        '__PUBLIC_IMG__'=>'/ats/public/static/img', //js
+        '__PUBLIC_CSS__'=>'/ats_kimi/public/static/css', //css
+        '__PUBLIC_JS__'=>'/ats_kimi/public/static/js', //js
+        '__PUBLIC_IMG__'=>'/ats_kimi/public/static/img', //js
 
     ],
     // 默认跳转页面对应的模板文件
@@ -251,13 +251,13 @@ return [
         // 数据库类型
         'type'        => 'mysql',
         // 服务器地址
-        'hostname'    => '172.30.52.29',
+        'hostname'    => '127.0.0.1',
         // 数据库名
         'database'    => 'tpms',
         // 数据库用户名
         'username'    => 'root',
         // 数据库密码
-        'password'    => 'root',
+        'password'    => '123456',
         // 端口
         'hostport'        => '',
         // 连接dsn
@@ -291,7 +291,7 @@ return [
     ],
 
     // 配置swiftmailer邮件发送服务器
-    'smtp_host'         => '172.30.52.43',
+    'smtp_host'         => '127.0.0.1',
     'smtp_port'         => '25',
     'mail_cc'           => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
     'mail_cc_baseline'  => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
@@ -302,9 +302,9 @@ return [
     // | ATS path
     // +----------------------------------------------------------------------
     // ATS PE path
-    'ats_pe_test_pc'    =>  '/opt/hello/TestPCs/',
-    'ats_pe_image'      =>  '/opt/hello/Image/',
-    'ats_pe_task'      =>  '/opt/hello/Tasks/',
+    'ats_pe_test_pc'    =>  ROOT_PATH. 'public/resource/prepare/',
+    'ats_pe_image'      =>  '/home/refar/',
+    'ats_pe_task'      =>  ROOT_PATH. 'public/resource/tasks/',
     // ATS local path
     'ats_temp_task_path'     =>  RUNTIME_PATH. 'output/',
     // TestPC.csv
@@ -314,10 +314,10 @@ return [
     'ats_file_underline' =>  '_',
     'ats_tasks_header'   =>  'Task_',
 
-    'ats_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
+    'ats_sign_out_url'    =>  'http://localhost/tpms/index.php',
 
     // session是否开启tpms的session
-    'session_debug'       => false,
+    'session_debug'       => true,
     // port check web socket
-    'workman_web_socket'  => 'ws://172.30.52.43:2346/'
+    'workman_web_socket'  => 'ws://127.0.0.1:2346/'
 ];

@@ -19,7 +19,7 @@ class ToolHandler extends Common {
      */
     public function getTestImage(){
         $query = $this->request->param('q');
-        $handler = opendir(ATS_IMAGES_PATH);
+        $handler = opendir(config('ats_pe_image'));
 
         $i = 1;
         $jsonResult = array();
