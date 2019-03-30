@@ -19,7 +19,7 @@ class TaskManager extends Common{
      */
     public function readMachineInfo(){
         $query = $this->request->param('q');
-        $file = fopen(ATS_PREPARE_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix,'r');
+        $file = fopen(config('ats_pe_test_pc'). config('ats_test_pc_file'). config('ats_file_suffix'),'r');
 
         $jsonResult=array();
         $line=0;
@@ -51,7 +51,7 @@ class TaskManager extends Common{
      * read machine info
      */
     public function readTestPCDetail(){
-        $file = fopen(ATS_PREPARE_PATH. ATS_PREPARE_FILE. ATS_FILE_suffix,'r');
+        $file = fopen(config('ats_pe_test_pc'). config('ats_test_pc_file'). config('ats_file_suffix'),'r');
 
         $machineId = $this->request->param('machineId');
 
@@ -254,9 +254,16 @@ class TaskManager extends Common{
             }
 
             if (null != $outPut['task_steps']) {
-                $fileName = ATS_TMP_TASKS_HEADER. $outPut['task_basic'][0]['shelf_switch'].
-                                ATS_FILE_UNDERLINE. $taskId. ATS_FILE_suffix;
-                $fileCreate = ATS_TMP_TASKS_PATH. $fileName;
+                $fileName = config('ats_tasks_header'). $outPut['task_basic'][0]['shelf_switch'].
+                                config('ats_file_underline'). $taskId. config('ats_file_suffix');
+                $fileCreate = config('ats_temp_task_path'). $fileName;
+
+                // 如果文件存在
+                if (file_exists($fileCreate)) {
+                    // 删除文件
+                    Log::record('[assignTask] delete exist file '. $fileName);
+                    unlink($fileCreate);
+                }
 
                 $file = fopen($fileCreate,"x+");
                 file_put_contents($fileCreate, json_encode($outPut, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT),FILE_APPEND);
@@ -264,20 +271,20 @@ class TaskManager extends Common{
                 fclose($file);
 
                 // unix
-                Log::record('chmod 777 '. $fileName);
+                Log::record('[assignTask] chmod 777 '. $fileName);
                 chmod($fileCreate, 0777);
 
-                Log::record('cp '. $fileName);
-                $cpRes = copy($fileCreate, ATS_TASKS_PATH. $fileName);
+                Log::record('[assignTask] cp '. $fileName);
+                $cpRes = copy($fileCreate, config('ats_pe_task'). $fileName);
 
-                Log::record('rm '. $fileName);
+                Log::record('[assignTask] rm '. $fileName);
                 $rmRes = unlink($fileCreate);
 
                 if(1 != $cpRes){
-                    Log::record('copy fail '. $fileName);
+                    Log::record('[assignTask] copy fail '. $fileName);
                     exit();
                 }else if (1 != $rmRes){
-                    Log::record('remove fail '. $fileName);
+                    Log::record('[assignTask] remove fail '. $fileName);
                     exit();
                 } else {
 

@@ -116,8 +116,7 @@ desired effect
         {
 
             // 打开一个 web socket
-            var ws = new WebSocket("ws://127.0.0.1:2346/");
-            // var ws = new WebSocket("ws://172.30.52.43:8084/");
+            var ws = new WebSocket("{$webSocketUrl}");
 
             ws.onopen = function()
             {
@@ -148,7 +147,7 @@ desired effect
                             $('#content tr:last').append('<td>' + tableData[i].machineId + '</td>');
                             $('#content tr:last').append('<td>' + tableData[i].LANIP + '</td>');
                             $('#content tr:last').append('<td>' + tableData[i].ShelfId_SwitchId + '</td>');
-                            $('#content tr:last').append('<td>inUse</td>');
+                            $('#content tr:last').append('<td><i class="fa fa-circle text-red"></i> inUse</td>');
                         }
                     }
                     else {

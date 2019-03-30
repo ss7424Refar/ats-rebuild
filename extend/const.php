@@ -24,14 +24,6 @@ define('TREBOOT', 'Treboot');
  * ATS file path
  */
 
-define('ATS_IMAGES_PATH', '/home/refar');
-define('ATS_FILE_suffix', '.csv');
-define('ATS_PREPARE_PATH', ROOT_PATH. 'public/resource/prepare/');
-define('ATS_PREPARE_FILE', 'TestPC');
-define('ATS_TMP_TASKS_PATH', RUNTIME_PATH. 'output/');
-define('ATS_FILE_UNDERLINE', '_');
-define('ATS_TMP_TASKS_HEADER', 'Task'. ATS_FILE_UNDERLINE);
-define('ATS_TASKS_PATH', ROOT_PATH. 'public/resource/tasks/');
 define('ATS_RESULT_PATH', '\\\\172.30.52.28\\JSDataBK\\#Temp\\@ATS_Results\\');
 
 /*

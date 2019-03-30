@@ -41,6 +41,10 @@ class Index extends Common
         $this->assign('taskManager','');
         $this->assign('dashBoard','');
 
+
+        // web socket url
+        $this->assign('webSocketUrl',config('workman_web_socket'));
+
         return $this->fetch();
 
     }
