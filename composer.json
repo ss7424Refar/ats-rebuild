@@ -26,7 +26,8 @@
         "topthink/think-queue": "1.*",
         "topthink/think-helper": "1.*",
         "topthink/think-worker" : "1.*",
-        "swiftmailer/swiftmailer": "5.4.3"
+        "swiftmailer/swiftmailer": "5.4.3",
+        "phpoffice/phpexcel": "^1.8"
     },
     "autoload": {
         "psr-4": {
