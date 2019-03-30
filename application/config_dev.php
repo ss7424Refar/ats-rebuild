@@ -290,6 +290,9 @@ return [
         'sql_explain'     => false
     ],
 
+    //数据库配置2 (样机管理系统)
+    'db_config2' => 'mysql://root:123456@192.168.0.29:3306/itd#utf8',
+
     // 配置swiftmailer邮件发送服务器
     'smtp_host'         => '127.0.0.1',
     'smtp_port'         => '25',

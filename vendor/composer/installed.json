@@ -1,5 +1,70 @@
 [
     {
+        "name": "phpoffice/phpexcel",
+        "version": "1.8.2",
+        "version_normalized": "1.8.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PHPOffice/PHPExcel.git",
+            "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/1441011fb7ecdd8cc689878f54f8b58a6805f870",
+            "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "ext-xml": "*",
+            "ext-xmlwriter": "*",
+            "php": "^5.2|^7.0"
+        },
+        "require-dev": {
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2018-11-22T23:07:24+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PHPExcel": "Classes/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1"
+        ],
+        "authors": [
+            {
+                "name": "Maarten Balliauw",
+                "homepage": "http://blog.maartenballiauw.be"
+            },
+            {
+                "name": "Erik Tilt"
+            },
+            {
+                "name": "Franck Lefevre",
+                "homepage": "http://rootslabs.net"
+            },
+            {
+                "name": "Mark Baker",
+                "homepage": "http://markbakeruk.net"
+            }
+        ],
+        "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+        "homepage": "https://github.com/PHPOffice/PHPExcel",
+        "keywords": [
+            "OpenXML",
+            "excel",
+            "php",
+            "spreadsheet",
+            "xls",
+            "xlsx"
+        ],
+        "abandoned": "phpoffice/phpspreadsheet"
+    },
+    {
         "name": "swiftmailer/swiftmailer",
         "version": "v5.4.3",
         "version_normalized": "5.4.3.0",
@@ -56,17 +121,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v5.0.23",
-        "version_normalized": "5.0.23.0",
+        "version": "v5.0.24",
+        "version_normalized": "5.0.24.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "4cbc0b5e93314446243ebc7d5f005f9c32864737"
+            "reference": "c255c22b2f5fa30f320ecf6c1d29f7740eb3e8be"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/4cbc0b5e93314446243ebc7d5f005f9c32864737",
-            "reference": "4cbc0b5e93314446243ebc7d5f005f9c32864737",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/c255c22b2f5fa30f320ecf6c1d29f7740eb3e8be",
+            "reference": "c255c22b2f5fa30f320ecf6c1d29f7740eb3e8be",
             "shasum": ""
         },
         "require": {
@@ -81,7 +146,7 @@
             "phpunit/phpunit": "4.8.*",
             "sebastian/phpcpd": "2.*"
         },
-        "time": "2018-12-09T12:40:40+00:00",
+        "time": "2019-01-11T08:04:58+00:00",
         "type": "think-framework",
         "installation-source": "dist",
         "autoload": {
@@ -109,20 +174,24 @@
     },
     {
         "name": "topthink/think-captcha",
-        "version": "v1.0.7",
-        "version_normalized": "1.0.7.0",
+        "version": "v1.0.8",
+        "version_normalized": "1.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-captcha.git",
-            "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44"
+            "reference": "1d64363c814c92f6086c4fa5e3223fe7e23db09d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-captcha/zipball/0c55455df26a1626a60d0dc35d2d89002b741d44",
-            "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44",
+            "url": "https://api.github.com/repos/top-think/think-captcha/zipball/1d64363c814c92f6086c4fa5e3223fe7e23db09d",
+            "reference": "1d64363c814c92f6086c4fa5e3223fe7e23db09d",
             "shasum": ""
         },
-        "time": "2016-07-06T01:47:11+00:00",
+        "require": {
+            "topthink/framework": "~5.0.0",
+            "topthink/think-installer": ">=1.0.10"
+        },
+        "time": "2019-01-28T04:48:36+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -147,20 +216,20 @@
     },
     {
         "name": "topthink/think-helper",
-        "version": "v1.0.6",
-        "version_normalized": "1.0.6.0",
+        "version": "v1.0.7",
+        "version_normalized": "1.0.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-helper.git",
-            "reference": "0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f"
+            "reference": "5f92178606c8ce131d36b37a57c58eb71e55f019"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-helper/zipball/0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f",
-            "reference": "0c99dc625b0d2d4124e1b6ca15a3ad6f0125963f",
+            "url": "https://api.github.com/repos/top-think/think-helper/zipball/5f92178606c8ce131d36b37a57c58eb71e55f019",
+            "reference": "5f92178606c8ce131d36b37a57c58eb71e55f019",
             "shasum": ""
         },
-        "time": "2017-04-05T07:15:37+00:00",
+        "time": "2018-10-05T00:43:21+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -436,17 +505,17 @@
     },
     {
         "name": "workerman/workerman",
-        "version": "v3.5.16",
-        "version_normalized": "3.5.16.0",
+        "version": "v3.5.18",
+        "version_normalized": "3.5.18.0",
         "source": {
             "type": "git",
             "url": "https://github.com/walkor/Workerman.git",
-            "reference": "b374bb86f9dae74bf373e924173a891eb6435c7a"
+            "reference": "f615edc0a550645778c6f8911830e4e12b0c5d45"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/walkor/Workerman/zipball/b374bb86f9dae74bf373e924173a891eb6435c7a",
-            "reference": "b374bb86f9dae74bf373e924173a891eb6435c7a",
+            "url": "https://api.github.com/repos/walkor/Workerman/zipball/f615edc0a550645778c6f8911830e4e12b0c5d45",
+            "reference": "f615edc0a550645778c6f8911830e4e12b0c5d45",
             "shasum": ""
         },
         "require": {
@@ -455,7 +524,7 @@
         "suggest": {
             "ext-event": "For better performance. "
         },
-        "time": "2018-11-18T06:16:58+00:00",
+        "time": "2019-01-19T02:36:12+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
