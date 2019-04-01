@@ -28,15 +28,16 @@ class Common extends Controller{
      * check session
      */
     protected function checkSession(){
-        Session::set('transToAts','Zhao Tianer');
-        $this->loginUser = Session::get('transToAts');
 
-//        if (null == Session::get('transToAts') || null == $this->request->server('HTTP_REFERER')){
-//            // $this->error('Login Time Out', 'http://172.30.52.43/tpms/index.php');
-//            $this->error('Login Time Out', 'http://192.168.100.43/tpms/index.php');
-//
-//        }
-
+        if (config('session_debug')) {
+            Session::set('transToAts','Zhao Tianer');
+            $this->loginUser = Session::get('transToAts');
+        } else {
+            $this->loginUser = Session::get('transToAts');
+            if (null == Session::get('transToAts') || null == $this->request->server('HTTP_REFERER')){
+                $this->error('Login Time Out', config('ats_sign_out_url'));
+            }
+        }
     }
     /* @throws
      * check right
@@ -53,9 +54,7 @@ class Common extends Controller{
         }
         // 给header.html中的变量赋值, index继承了common, index里面有fetch方法
         $this->assign([
-//            'login'=>$result[0]['login'],
-//            'email'=>$result[0]['email'],
-            'description'=>$result[0]['description'],
+            'description'=>$result[0]['description'], // 查看权限用的，不要删除
             'title'=> 'ATS'
         ]);
 //        return $this->fetch('common/header',[]);

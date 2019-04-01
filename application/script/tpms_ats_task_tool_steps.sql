@@ -27,7 +27,8 @@ CREATE TABLE `ats_task_tool_steps` (
   `tool_name` varchar(10) DEFAULT NULL COMMENT '	',
   `status` varchar(8) DEFAULT NULL,
   `steps` int(3) DEFAULT NULL,
-  `element_json` json DEFAULT NULL,
+--   奇怪的json，php会报错
+  `element_json` text DEFAULT NULL,
   `result_path` varchar(80) DEFAULT NULL,
   `tool_create_time` datetime DEFAULT NULL,
   `tool_start_time` datetime DEFAULT NULL,
@@ -57,3 +58,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-12-19 17:03:32
+delete from ats_task_tool_steps;

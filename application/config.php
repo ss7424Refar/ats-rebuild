@@ -19,7 +19,7 @@ return [
     // 应用Trace
     'app_trace'              => false,
     // 应用模式状态
-    'app_status'             => '',
+    'app_status'             => 'config_home',
     // 是否支持多模块
     'app_multi_module'       => true,
     // 入口自动绑定模块
@@ -140,9 +140,9 @@ return [
 
     // 视图输出字符串内容替换
     'view_replace_str'       => [
-        '__PUBLIC_CSS__'=>'/ats_kimi/public/static/css', //css
-        '__PUBLIC_JS__'=>'/ats_kimi/public/static/js', //js
-        '__PUBLIC_IMG__'=>'/ats_kimi/public/static/img', //js
+        '__PUBLIC_CSS__'=>'/ats/public/static/css', //css
+        '__PUBLIC_JS__'=>'/ats/public/static/js', //js
+        '__PUBLIC_IMG__'=>'/ats/public/static/img', //js
 
     ],
     // 默认跳转页面对应的模板文件
@@ -246,15 +246,81 @@ return [
         'list_rows' => 15,
     ],
 
-    // 配置swiftmailer邮件发送服务器
-    'SMTP_HOST'     => '172.30.52.43',
-    'SMTP_PORT'     => '25',
-    'MAIL_CC'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
-    'MAIL_CC_BASELINE'        => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
-    'MAIL_FROM'      => 'ats_swv@toshiba-tih.com',
+    /* 数据库设置 */
+    'database'               => [
+        // 数据库类型
+        'type'        => 'mysql',
+        // 服务器地址
+        'hostname'    => '172.30.52.29',
+        // 数据库名
+        'database'    => 'tpms',
+        // 数据库用户名
+        'username'    => 'root',
+        // 数据库密码
+        'password'    => 'root',
+        // 端口
+        'hostport'        => '',
+        // 连接dsn
+        'dsn'             => '',
+        // 数据库连接参数
+        'params'          => [],
+        // 数据库编码默认采用utf8
+        'charset'         => 'utf8',
+        // 数据库表前缀
+        'prefix'          => '',
+        // 数据库调试模式
+        'debug'           => true,
+        // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
+        'deploy'          => 0,
+        // 数据库读写是否分离 主从式有效
+        'rw_separate'     => false,
+        // 读写分离后 主服务器数量
+        'master_num'      => 1,
+        // 指定从服务器序号
+        'slave_no'        => '',
+        // 是否严格检查字段是否存在
+        'fields_strict'   => true,
+        // 数据集返回类型
+        'resultset_type'  => 'array',
+        // 自动写入时间戳字段
+        'auto_timestamp'  => false,
+        // 时间字段取出后的默认时间格式
+        'datetime_format' => 'Y-m-d H:i:s',
+        // 是否需要进行SQL性能分析
+        'sql_explain'     => false
+    ],
 
-    // FTP 配置
-    'HOST_NAME'   => '192.168.0.103',
-    'HOST_USER'   => 'refar',
-    'HOST_PASS'   => '1'
+    //数据库配置2 (样机管理系统)
+    'db_config2' => 'mysql://root:root@172.30.52.29:3306/itd#utf8',
+
+    // 配置swiftmailer邮件发送服务器
+    'smtp_host'         => '172.30.52.43',
+    'smtp_port'         => '25',
+    'mail_cc'           => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
+    'mail_cc_baseline'  => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
+    'mail_from'         => 'ats_swv@toshiba-tih.com',
+
+
+    // +----------------------------------------------------------------------
+    // | ATS path
+    // +----------------------------------------------------------------------
+    // ATS PE path
+    'ats_pe_test_pc'    =>  '/opt/hello/TestPCs/',
+    'ats_pe_image'      =>  '/opt/hello/Image/',
+    'ats_pe_task'      =>  '/opt/hello/Tasks/',
+    // ATS local path
+    'ats_temp_task_path'     =>  RUNTIME_PATH. 'output/',
+    // TestPC.csv
+    'ats_test_pc_file'   =>  'TestPC',
+    'ats_file_suffix'    =>  '.csv',
+    // Task.csv
+    'ats_file_underline' =>  '_',
+    'ats_tasks_header'   =>  'Task_',
+
+    'ats_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
+
+    // session是否开启tpms的session
+    'session_debug'       => false,
+    // port check web socket
+    'workman_web_socket'  => 'ws://172.30.52.43:2346/'
 ];
