@@ -12,6 +12,7 @@
 namespace think\worker;
 
 use Workerman\Worker;
+use think\Log;
 
 /**
  * Worker控制器扩展类
@@ -50,6 +51,16 @@ abstract class Server
 
     protected function init()
     {
+        Log::record('server init');
+
+        // 查找runtime是否有output文件夹
+        if (!is_dir(config('ats_temp_task_path'))) {
+            Log::record('server create runtime tasks folder');
+            mkdir(config('ats_temp_task_path'));
+            $cmd = "chmod -R 777  " . config('ats_temp_task_path'); // 创建的文件夹为root/root, 可能server是以root启动的
+            shell_exec($cmd);
+        }
+
     }
 
 }

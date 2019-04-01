@@ -65,3 +65,5 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-12-19 17:03:32
+
+delete from ats_task_basic;

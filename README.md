@@ -141,7 +141,7 @@ ver 1.3.0.0
 
 cd
 ### 部署
-`vi /etc/nginx/sites-available/default`
+1. `vi /etc/nginx/sites-available/default`
 ~~~
     location /ats/ {
         index index.php;
@@ -151,4 +151,8 @@ cd
         }
     }
 
+~~~
+2. `要将项目的权限改成757, 因为正式环境是其他组的用户, workman没有权限写入pid文件`
+~~~
+    chmod -R 757 ats
 ~~~

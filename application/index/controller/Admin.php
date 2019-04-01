@@ -22,7 +22,7 @@ class Admin extends Controller
     public function startServer()
     {
 
-        $cmd = "sudo php " . ROOT_PATH . "server.php start > /dev/null 2>&1 &";
+        $cmd = "php " . ROOT_PATH . "server.php start > /dev/null 2>&1 &";
         shell_exec($cmd);
 
         return "start server";
@@ -34,7 +34,7 @@ class Admin extends Controller
     public function stopServer()
     {
 
-        $cmd = "sudo php " . ROOT_PATH . "server.php stop > /dev/null 2>&1 &";
+        $cmd = "php " . ROOT_PATH . "server.php stop > /dev/null 2>&1 &";
 
         shell_exec($cmd);
 
@@ -47,7 +47,7 @@ class Admin extends Controller
     public function getStatus()
     {
 
-        $cmd = "sudo php " . ROOT_PATH . "server.php status";
+        $cmd = "php " . ROOT_PATH . "server.php status";
 
         echo '<pre>';
         echo shell_exec($cmd);
