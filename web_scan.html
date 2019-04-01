@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<script>
+
+    $(function () {
+        $('#hello').on("keydown", function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) {
+                var str = $('#hello').val();
+                if (str.length !== 7) {
+                    alert("输入有误");
+                } else {
+                    $('#hello').val('');
+                    str = str + ' / ';
+                    $('#list:eq(0)').prepend('<li class="alert alert-success"><span class="text-black"><i> ' + str + '</i> <button name="delete" class="btn btn-warning btn-sm pull-right">Delete This</button></span></li>');
+                }
+
+
+
+            }
+        });
+        $('#list').on("click", "[name='delete']", function(){
+            $(this).parent().parent().remove();
+        });
+
+
+        setInterval(function(){
+            $('#hello').focus();
+        },60);
+
+
+    });
+
+</script>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>扫码界面</h1>
+            <p>学的不仅是技术，更是梦想！！！</p>
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Your Code" id="hello" maxlength="7">
+            <div class="input-group-append">
+                <span class="input-group-text">@扫码</span>
+            </div>
+        </div>
+        <div class="alert alert-warning">
+            <div class="row">
+                <div class="col-sm-4"><i>detect machine as blows</i></div>
+                <div class="col-sm-4 offset-sm-4">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-dark">操作=></button>
+                        <button type="button" class="btn btn-primary">清空 </button>
+                        <button type="button" class="btn btn-primary">提交</button>
+                        <button type="button" class="btn btn-primary">比对</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="height:600px;width:100%;overflow: auto;">
+                <ul class="list-unstyled" id="list"></ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
