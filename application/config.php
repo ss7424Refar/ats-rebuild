@@ -299,6 +299,7 @@ return [
     'mail_cc'           => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
     'mail_cc_baseline'  => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
     'mail_from'         => 'ats_swv@toshiba-tih.com',
+    'cifs_notice'       => 'lin.zhu@toshiba-tih.com',
 
 
     // +----------------------------------------------------------------------
