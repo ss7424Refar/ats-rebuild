@@ -41,4 +41,7 @@ require './thinkphp/start.php';
 ## ftp 设定
 1. 需要对runtime中ftp文件夹加777权限
 
+## cifs_mail.txt
+1. 可以不用创建, 会自动生成
+
 ## TODO list
