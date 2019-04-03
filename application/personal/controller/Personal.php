@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: refar
- * Date: 18-12-11
- * Time: 下午4:18
+ * Date: 19-4-3
+ * Time: 下午9:52
  */
 
-namespace app\services\controller;
+namespace app\personal\controller;
 
 use think\Controller;
 use think\Db;
@@ -14,49 +14,32 @@ use PHPExcel; // 导出
 use PHPExcel_Style_Fill;
 
 /*
- * interface for ats
+ * interface for personal
  */
-class MachineDetail extends Controller {
+class Personal extends Controller {
     /**
-     * http://localhost/ats/services/MachineDetail/getMachineInfo?fix_no=0512013
-     *
-     * @return false|string
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * 比较导出成excel
      */
-    public function getMachineInfo(){
-        $no = $this->request->param('fix_no');
+    public function compareToExcel(){
+        $users = $this->request->param('users');
+        $user = explode(',', $users);
+        $items = $this->request->param('items');
+        $items = json_decode($items);
 
+        // 根据users查询所借的机子
         Db::connect('db_config2');
-        $res = Db::table('d_main_engine')
-            ->where('fixed_no','=', $no)
-            ->select();
+        $list = Db::table('d_main_engine')->where('user_name','in', $user)->order('MODEL_NAME')->select();
 
-//        $res = Db::query('SELECT * FROM itd.d_main_engine where fixed_no = ?;', [$no]);
-        return json_encode($res, JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * http://localhost/ats/services/MachineDetail/export?user=朱林,徐万亮
-     * @throws \PHPExcel_Exception
-     * @throws \PHPExcel_Reader_Exception
-     * @throws \PHPExcel_Writer_Exception
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function export() {
-
-        $user = $this->request->param('user');
-        $user = explode(',', $user);
-
-        Db::connect('db_config2');
-        $list = Db::table('d_main_engine')->where('user_name','in',$user)->order('MODEL_NAME')->select();
+        for ($i = 0; $i < count($list); $i++) {
+            if (in_array($list[$i]['fixed_no'], $items)) {
+                $list[$i]['flag'] = 'found in scan';
+            } else {
+                $list[$i]['flag'] = 'not found in scan';
+            }
+        }
 
         dump($list);
+        // 生成excel
         //3.实例化PHPExcel类
         $objPHPExcel = new PHPExcel();
         //4.激活当前的sheet表
@@ -72,9 +55,10 @@ class MachineDetail extends Controller {
         $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setWidth(10);
         $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('C')->setWidth(25);
         $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('D')->setWidth(7);
+        $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('E')->setWidth(15);
 
-        $letter = ['A', 'B', 'C', 'D'];//列坐标
-        $header= ['No', 'Machine Id', 'Machine Name', 'User']; //表头,名称可自定义
+        $letter = ['A', 'B', 'C', 'D', 'E'];//列坐标
+        $header= ['No', 'Machine Id', 'Machine Name', 'User', 'Desc']; //表头,名称可自定义
         //生成表头
         for($i=0;$i<count($letter);$i++)
         {
@@ -103,6 +87,14 @@ class MachineDetail extends Controller {
             $objPHPExcel->getActiveSheet()->setCellValue('B'.($i+2), $list[$i]['fixed_no']);//Machine Id
             $objPHPExcel->getActiveSheet()->setCellValue('C'.($i+2), $list[$i]['MODEL_NAME']);//Machine Name
             $objPHPExcel->getActiveSheet()->setCellValue('D'.($i+2), $list[$i]['user_name']);//user_name
+            $objPHPExcel->getActiveSheet()->setCellValue('E'.($i+2), $list[$i]['flag']);//flag
+
+            // 设置行的颜色
+            if ('found in scan' == $list[$i]['flag']) {
+                // 设置填充颜色(灰色)
+                $objPHPExcel->getActiveSheet()->getStyle('A'.($i+2).':E'.($i+2))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+                $objPHPExcel->getActiveSheet()->getStyle('A'.($i+2).':E'.($i+2))->getFill()->getStartColor()->setARGB('FF808080');
+            }
         }
         //7.设置保存的Excel表格名称
         $filename = 'machine_user_'.time().'.xlsx';
@@ -121,5 +113,7 @@ class MachineDetail extends Controller {
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         //下载文件在浏览器窗口
         $objWriter->save('php://output');
+
     }
+
 }
