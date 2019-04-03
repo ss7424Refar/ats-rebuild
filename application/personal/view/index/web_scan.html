@@ -19,10 +19,8 @@
                 } else {
                     $('#hello').val('');
                     str = str + ' / ';
-                    $('#list:eq(0)').prepend('<li class="alert alert-success"><span class="text-black"><i> ' + str + '</i> <button name="delete" class="btn btn-warning btn-sm pull-right">Delete This</button></span></li>');
+                    $('#list:eq(0)').prepend('<li class="alert alert-success"><span class="text-black"><i name="item"> ' + str + '</i> <button name="delete" class="btn btn-warning btn-sm pull-right">Delete This</button></span></li>');
                 }
-
-
 
             }
         });
@@ -30,11 +28,34 @@
             $(this).parent().parent().remove();
         });
 
-
         setInterval(function(){
             $('#hello').focus();
         },60);
 
+        $('#sub').click(function () {
+
+            var itemArray = [];
+            $("[name=item]").each(function (i) {
+                var str = $(this).html();
+                str = str.replace(' / ', '');
+                itemArray.push(str);
+            });
+
+            console.log(itemArray);
+            if (0 == itemArray.length) {
+                alert('请输入或扫码至少一台机子编号');
+                return false;
+            }
+            window.location.href='{:url("personal/Personal/compareToExcel")}?users='+ $('#users').val() + '&items=' + JSON.stringify(itemArray);
+
+        });
+
+        $('#clearAll').click(function () {
+            $("[name=item]").each(function () {
+                $(this).parent().parent().remove();
+            });
+
+        });
 
     });
 
@@ -47,20 +68,26 @@
         </div>
 
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Your Code" id="hello" maxlength="7">
+            <div class="input-group-prepend">
+                <span class="input-group-text">@用户名</span>
+            </div>
+            <input type="text" class="form-control" disabled value="{$users}" id="users">
+        </div>
+
+        <div class="input-group mb-3">
             <div class="input-group-append">
                 <span class="input-group-text">@扫码</span>
             </div>
+            <input type="text" class="form-control" placeholder="Your Code" id="hello" maxlength="7">
         </div>
         <div class="alert alert-warning">
             <div class="row">
                 <div class="col-sm-4"><i>detect machine as blows</i></div>
                 <div class="col-sm-4 offset-sm-4">
                     <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-dark">操作=></button>
-                        <button type="button" class="btn btn-primary">清空 </button>
-                        <button type="button" class="btn btn-primary">提交</button>
-                        <button type="button" class="btn btn-primary">比对</button>
+                        <button type="button" class="btn btn-dark">操作 => </button>
+                        <button type="button" class="btn btn-primary" id="clearAll">清空 </button>
+                        <button type="button" class="btn btn-primary" id="sub">提交比对</button>
                     </div>
 
                 </div>

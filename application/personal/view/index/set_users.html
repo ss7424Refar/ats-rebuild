@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>用户输入界面</h1>
+            <p>学的不仅是技术，更是哲学！！！</p>
+        </div>
+        <div class="form-signin">
+            <h2 class="form-signin-heading">Please set users</h2>
+            <label for="users" class="sr-only">Users</label>
+            <input type="text" id="users" class="form-control" placeholder="请以逗号隔开输入用户(eg. 朱林,徐万亮)" required="" autofocus="">
+            <p> </p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="sub">Set up</button>
+        </div>
+
+    </div>
+</body>
+<script>
+    $(function () {
+        $('#sub').click(function () {
+
+            // console.log('{:url("personal/Index/WebScan")}?users=');
+            window.location.href='{:url("personal/Index/WebScan")}?users='+ $('#users').val() ;
+
+        });
+
+    });
+</script>
+</html>
