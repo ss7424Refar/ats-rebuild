@@ -254,9 +254,9 @@ class TaskManager extends Common{
             }
 
             if (null != $outPut['task_steps']) {
-                $fileName = ATS_TMP_TASKS_HEADER. $outPut['task_basic'][0]['shelf_switch'].
-                                ATS_FILE_UNDERLINE. $taskId. ATS_FILE_suffix;
-                $fileCreate = ATS_TMP_TASKS_PATH. $fileName;
+                $fileName = config('ats_tasks_header'). $outPut['task_basic'][0]['shelf_switch'].
+                                config('ats_file_underline'). $taskId. config('ats_file_suffix');
+                $fileCreate = config('ats_temp_task_path'). $fileName;
 
                 $file = fopen($fileCreate,"x+");
                 file_put_contents($fileCreate, json_encode($outPut, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT),FILE_APPEND);
@@ -268,7 +268,7 @@ class TaskManager extends Common{
                 chmod($fileCreate, 0777);
 
                 Log::record('cp '. $fileName);
-                $cpRes = copy($fileCreate, ATS_TASKS_PATH. $fileName);
+                $cpRes = copy($fileCreate, config('ats_pe_task'). $fileName);
 
                 Log::record('rm '. $fileName);
                 $rmRes = unlink($fileCreate);

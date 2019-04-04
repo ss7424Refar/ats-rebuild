@@ -53,8 +53,7 @@ class MachineDetail extends Controller {
         $user = $this->request->param('user');
         $user = explode(',', $user);
 
-        Db::connect('db_config2');
-        $list = Db::table('d_main_engine')->where('user_name','in',$user)->order('MODEL_NAME')->select();
+        $list = Db::table('itd.d_main_engine')->where('user_name','in',$user)->order('MODEL_NAME')->select();
 
         dump($list);
         //3.实例化PHPExcel类
@@ -105,7 +104,7 @@ class MachineDetail extends Controller {
             $objPHPExcel->getActiveSheet()->setCellValue('D'.($i+2), $list[$i]['user_name']);//user_name
         }
         //7.设置保存的Excel表格名称
-        $filename = 'machine_user_'.time().'.xlsx';
+        $filename = 'machine_user_'.time().'.xls';
         //8.设置当前激活的sheet表格名称；
         $objPHPExcel->getActiveSheet()->setTitle('used');
 
