@@ -98,7 +98,7 @@ class Worker extends Server
 //        }
 
         else if($worker->id === 1) {
-            Timer::add(5, function()use($worker){
+            Timer::add(3600, function()use($worker){
                 Log::record('cifs dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
                 $watcher = controller('push/WatchCifs');
                 $watcher->dog();

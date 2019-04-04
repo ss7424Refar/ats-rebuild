@@ -27,8 +27,7 @@ class Personal extends Controller {
         $items = json_decode($items);
 
         // 根据users查询所借的机子
-        Db::connect('db_config2');
-        $list = Db::table('d_main_engine')->where('user_name','in', $user)->order('MODEL_NAME')->select();
+        $list = Db::table('itd.d_main_engine')->where('user_name','in', $user)->order('MODEL_NAME')->select();
 
         for ($i = 0; $i < count($list); $i++) {
             if (in_array($list[$i]['fixed_no'], $items)) {
@@ -97,7 +96,7 @@ class Personal extends Controller {
             }
         }
         //7.设置保存的Excel表格名称
-        $filename = 'machine_user_'.time().'.xlsx';
+        $filename = 'machine_user_'.time().'.xls';
         //8.设置当前激活的sheet表格名称；
         $objPHPExcel->getActiveSheet()->setTitle('used');
 
