@@ -14,7 +14,7 @@
             var e = event || window.event || arguments.callee.caller.arguments[0];
             if (e && e.keyCode == 13) {
                 var str = $('#hello').val();
-                if (str.length !== 7) {
+                if (str.length > 13) {
                     alert("输入有误");
                 } else {
                     $('#hello').val('');
@@ -34,19 +34,12 @@
 
         $('#sub').click(function () {
 
-            var itemArray = [];
-            $("[name=item]").each(function (i) {
-                var str = $(this).html();
-                str = str.replace(' / ', '');
-                itemArray.push(str);
-            });
-
-            console.log(itemArray);
+            var itemArray = getItem();
             if (0 == itemArray.length) {
                 alert('请输入或扫码至少一台机子编号');
                 return false;
             }
-            window.location.href='{:url("personal/Personal/compareToExcel")}?users='+ $('#users').val() + '&items=' + JSON.stringify(itemArray);
+            window.location.href='{:url("personal/Personal/compareToExcel")}?users='+ $('#users').val() + '&items=' + JSON.stringify(getItem());
 
         });
 
@@ -57,7 +50,27 @@
 
         });
 
+        $('#output').click(function () {
+            var itemArray = getItem();
+            if (0 == itemArray.length) {
+                alert('请输入或扫码至少一台机子编号');
+                return false;
+            }
+            window.location.href='{:url("personal/Personal/outputExcel")}?&items=' + JSON.stringify(getItem());
+        });
     });
+
+    function getItem() {
+        var itemArray = [];
+        $("[name=item]").each(function (i) {
+            var str = $(this).html();
+            str = str.replace(' / ', '');
+            itemArray.push(str);
+        });
+
+        console.log(itemArray);
+        return itemArray;
+    }
 
 </script>
 <body>
@@ -65,21 +78,31 @@
         <div class="jumbotron">
             <h1>扫码界面</h1>
             <p>学的不仅是技术，更是梦想！！！</p>
+            <p><a class="btn btn-primary btn-lg" href="{:url('personal/Index/SetUsers')}" role="button">Set Users</a></p>
         </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">@用户名</span>
+        <form class="input-group mb-3" action="{:url('personal/Personal/inputExcel')}" method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">@用户名</span>
+                </div>
+                <input type="text" class="form-control" readonly value="{$users}" id="users" name="users">
             </div>
-            <input type="text" class="form-control" disabled value="{$users}" id="users">
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text">@扫码</span>
+            <div class="input-group mb-3">
+                <div class="input-group-append">
+                    <span class="input-group-text">@导入数据<i class="text-success">(数据要在Excel的A列)</i></span>
+                </div>
+                <input type="file" name="excel" style="margin-left: 10px;margin-top: 2px"/>
+                <input type="submit" class="form-control col-sm-3 btn btn-info" value="通过excel提交比对">
             </div>
-            <input type="text" class="form-control" placeholder="Your Code" id="hello" maxlength="7">
-        </div>
+        </form>
+
+            <div class="input-group mb-3">
+                <div class="input-group-append">
+                    <span class="input-group-text">@扫码</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Your Code" id="hello">
+            </div>
+
         <div class="alert alert-warning">
             <div class="row">
                 <div class="col-sm-4"><i>detect machine as blows</i></div>
@@ -87,7 +110,8 @@
                     <div class="btn-group btn-group-sm">
                         <button type="button" class="btn btn-dark">操作 => </button>
                         <button type="button" class="btn btn-primary" id="clearAll">清空 </button>
-                        <button type="button" class="btn btn-primary" id="sub">提交比对</button>
+                        <button type="button" class="btn btn-primary" id="output">导出 </button>
+                        <button type="button" class="btn btn-primary" id="sub">通过扫码提交比对 </button>
                     </div>
 
                 </div>

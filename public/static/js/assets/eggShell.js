@@ -28,4 +28,5 @@ function eggPrinter() {
     console.log('              ,,,rHAri1h1rh&@#353Sh:          8@@@@@@@@@@@@@@@@@@@@@@@@@#:');
     console.log('            .A3hH@#5S553&@@#h   i:i9S          #@@@@@@@@@@@@@@@@@@@@@@@@@A.');
     console.log('    又看源码，看你妹妹呀！');
+    console.log('    http://ip/ats/personal/Index/SetUsers.html');
 }
