@@ -236,8 +236,8 @@ class TaskManager extends Common{
             $outPut['task_steps'] = AtsTaskToolSteps::where('task_id', $taskId)->select();
 
             // 给31用的需要转换Execute_Job
-            for ($i = 0; $i < count($outPut['task_steps']); $i++) {
-                $jsonElement = json_decode($outPut['task_steps'][$i]['element_json']);
+            for ($j = 0; $j < count($outPut['task_steps']); $j++) {
+                $jsonElement = json_decode($outPut['task_steps'][$j]['element_json']);
                 if (JUMP_START == $jsonElement->Tool_Type) {
                     if ('Fast Startup,Standby,Microsoft Edge' == $jsonElement->Execute_Job){
                         $jsonElement->Execute_Job = 1;
@@ -249,14 +249,18 @@ class TaskManager extends Common{
                         $jsonElement->Execute_Job = 6;
                     }
 
-                    $outPut['task_steps'][$i]['element_json'] = json_encode($jsonElement);
+                    $outPut['task_steps'][$j]['element_json'] = json_encode($jsonElement);
                 }
             }
 
             if (null != $outPut['task_steps']) {
                 $fileName = config('ats_tasks_header'). $outPut['task_basic'][0]['shelf_switch'].
-                                config('ats_file_underline'). $taskId. config('ats_file_suffix');
+                    config('ats_file_underline'). $taskId. config('ats_file_suffix');
                 $fileCreate = config('ats_temp_task_path'). $fileName;
+
+                if (file_exists($fileCreate)) {
+                    unlink($fileCreate);
+                }
 
                 $file = fopen($fileCreate,"x+");
                 file_put_contents($fileCreate, json_encode($outPut, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT),FILE_APPEND);
@@ -268,6 +272,7 @@ class TaskManager extends Common{
                 chmod($fileCreate, 0777);
 
                 Log::record('cp '. $fileName);
+                // 如果目标文件已存在，将会被覆盖。
                 $cpRes = copy($fileCreate, config('ats_pe_task'). $fileName);
 
                 Log::record('rm '. $fileName);
@@ -280,18 +285,14 @@ class TaskManager extends Common{
                     Log::record('remove fail '. $fileName);
                     exit();
                 } else {
-
                     $startTime = date("Y-m-d H:i:s");
-
                     // update status for task
                     $atsTaskBasic = new AtsTaskBasic();
-
                     $atsTaskBasic->save([
                         'status'  => ONGOING,
                         'process' => 0,
                         'task_start_time' => $startTime
                     ],['task_id' => $taskId]);
-
                     $atsTaskToolSteps = new AtsTaskToolSteps();
                     $atsTaskToolSteps->save([
                         'status'  => ONGOING,
@@ -299,8 +300,6 @@ class TaskManager extends Common{
                     ], ['task_id' => $taskId, 'steps' => 1]);
                 }
             }
-
-
         }
         return "done";
     }

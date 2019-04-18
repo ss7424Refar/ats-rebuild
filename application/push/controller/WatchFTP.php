@@ -8,6 +8,7 @@
 
 namespace app\push\controller;
 
+// 暂时不使用这个类
 use think\Log;
 use ext\FTPUtil;
 

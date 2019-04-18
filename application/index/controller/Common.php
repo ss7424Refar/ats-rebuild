@@ -29,15 +29,12 @@ class Common extends Controller{
      */
     protected function checkSession(){
 
-        if (config('session_debug')) {
-            Session::set('transToAts','Zhao Tianer');
-            $this->loginUser = Session::get('transToAts');
-        } else {
-            $this->loginUser = Session::get('transToAts');
-            if (null == Session::get('transToAts') || null == $this->request->server('HTTP_REFERER')){
-                $this->error('Login Time Out', config('ats_sign_out_url'));
-            }
+        if (null == Session::get('transToAts')){
+            $this->error('Login Time Out', config('ats_sign_out_url'));
         }
+//        if (null == $this->request->server('HTTP_REFERER')) {
+//            $this->error('please click link from tpms', config('ats_sign_out_url'));
+//        }
     }
     /* @throws
      * check right

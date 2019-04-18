@@ -217,6 +217,8 @@ return [
         'type'           => '',
         // 是否自动开启 SESSION
         'auto_start'     => true,
+        // 设置session过期时间
+        "expire" => 1440 // 随缘控制
     ],
 
     // +----------------------------------------------------------------------
@@ -296,10 +298,10 @@ return [
     // 配置swiftmailer邮件发送服务器
     'smtp_host'         => '172.30.52.43',
     'smtp_port'         => '25',
-    'mail_cc'           => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
-    'mail_cc_baseline'  => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
-    'mail_from'         => 'ats_swv@toshiba-tih.com',
-    'cifs_notice'       => 'lin.zhu@toshiba-tih.com',
+    'mail_cc'           => '["wanliang.xu@dbh.dynabook.com", "lin.zhu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com"]',
+    'mail_cc_baseline'  => '["wanliang.xu@dbh.dynabook.com", "lin.zhu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com", "TIH_SWV@dbh.dynabook.com"]',
+    'mail_from'         => 'ats_swv@dbh.dynabook.com',
+    'cifs_notice'       => 'lin.zhu@dbh.dynabook.com',
 
 
     // +----------------------------------------------------------------------

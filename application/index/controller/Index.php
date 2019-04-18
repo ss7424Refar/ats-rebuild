@@ -10,6 +10,7 @@ namespace app\index\controller;
 
 use think\Request;
 use think\Db;
+use think\Session;
 
 /*
  * 控制页面跳转
@@ -88,6 +89,7 @@ class Index extends Common
     }
 
     public function SignOut(){
+        Session::flush();
         $this->redirect(config('ats_sign_out_url'));
     }
 
