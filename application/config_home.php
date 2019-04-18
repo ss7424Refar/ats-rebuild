@@ -217,6 +217,8 @@ return [
         'type'           => '',
         // 是否自动开启 SESSION
         'auto_start'     => true,
+        // 设置session过期时间
+        "expire" => 1440 // 随缘控制
     ],
 
     // +----------------------------------------------------------------------
@@ -296,9 +298,9 @@ return [
     // 配置swiftmailer邮件发送服务器
     'smtp_host'         => '127.0.0.1',
     'smtp_port'         => '25',
-    'mail_cc'           => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com"]',
-    'mail_cc_baseline'  => '["wanliang.xu@toshiba-tih.com", "lin.zhu@toshiba-tih.com", "lin.qiu@toshiba-tih.com", "bin.yan@toshiba-tih.com", "erkai.gao@toshiba-tih.com", "TIH_SWV@toshiba-tih.com"]',
-    'mail_from'         => 'ats_swv@toshiba-tih.com',
+    'mail_cc'           => '["wanliang.xu@dbh.dynabook.com", "lin.zhu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com"]',
+    'mail_cc_baseline'  => '["wanliang.xu@dbh.dynabook.com", "lin.zhu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com", "TIH_SWV@dbh.dynabook.com"]',
+    'mail_from'         => 'ats_swv@dbh.dynabook.com',
     'cifs_notice'       => '812647742@qq.com',
 
     // +----------------------------------------------------------------------
@@ -320,7 +322,7 @@ return [
     'ats_sign_out_url'    =>  'http://localhost/tpms/index.php',
 
     // session是否开启tpms的session
-    'session_debug'       => true,
+    'session_debug'       => false,
     // port check web socket
     'workman_web_socket'  => 'ws://127.0.0.1:2346/'
 ];

@@ -40,7 +40,7 @@ class SendMail extends Controller {
         $testImage = json_decode($info[0]['element_json']);
         $testImage = $testImage->Test_Image;
 
-        $mailTitle = '[ATS][' . $this->today . ']'. $info[0]['tool_name'] .'You Need to run the baseline image';
+        $mailTitle = '[ATS][' . $this->today . ']['. $info[0]['tool_name'] .']You Need to run the baseline image';
 
         $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/' .
             'office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">' .
@@ -77,7 +77,7 @@ class SendMail extends Controller {
             '			<td>'. $testImage .'</td>' .
             '			<td>' . $info[0]['status'] . '</td>' .
             '			<td>' . $info[0]['task_start_time'] . '</td>' .
-            '			<td>' . 'N/A' . '</td>' .
+            '			<td>' . $info[0]['task_end_time'] . '</td>' .
             '		</tr>' .
             '	</table>'.
             '</body>' .

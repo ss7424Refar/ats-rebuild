@@ -80,7 +80,7 @@ class Worker extends Server
             Timer::add(5, function()use($worker){
                 Log::record('expired dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
                 // 每天0点执行任务
-                if(time() / 86400 == 0) {
+                if('00' == date("H", time())) {
                     $watcher = controller('push/WatchExpired');
                     $watcher->dog();
                 }
@@ -105,6 +105,13 @@ class Worker extends Server
             });
 
         }
-
+//        else if($worker->id === 2) {
+//            Timer::add(2, function()use($worker){
+//                Log::record('task dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
+//                $watcher = controller('push/WatchTask');
+//                $watcher->dog();
+//            });
+//
+//        }
     }
 }
