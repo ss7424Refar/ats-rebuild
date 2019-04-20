@@ -28,7 +28,6 @@
 
 详细开发文档参考 [ThinkPHP5完全开发手册](http://www.kancloud.cn/manual/thinkphp5)
 
-> ThinkPHP5的运行环境要求PHP5.4以上。
 
 ## Release Note
 
@@ -79,5 +78,8 @@ chmod -R 757 ats
    1. http://localhost/ats/personal/index/webscan
    2. http://localhost/ats/services/MachineDetail/export?user=XXX,YYY
    ```
+2. Branch
+   + `no_dynamic` 任务的panel不是动态添加的
+   + `ftp_process`文件通过ftp的方式上传,然而并没有使用   
 
    
