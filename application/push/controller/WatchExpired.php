@@ -14,6 +14,7 @@ namespace app\push\controller;
 
 use think\Db;
 use think\Log;
+use think\Exception;
 
 class WatchExpired {
     /*
@@ -60,6 +61,25 @@ class WatchExpired {
                 ->update([
                     'status' => EXPIRED
                 ]);
+
+            // rename file name to expired
+            $info = Db::table('ats_task_basic')->where('task_id', $taskId)->field('shelf_switch')->find();
+            $fileName = config('ats_tasks_header'). $info['shelf_switch']. config('ats_file_underline'). $taskId;
+
+            $findName = $fileName. config('ats_file_suffix');
+            // 31要求变成大写的Expired,所以不把这个值设入常量
+            $newFileName = $fileName.config('ats_file_underline').'Expired'. config('ats_file_suffix');
+
+            Log::record('[rename] '. $findName. ' to '. $newFileName);
+            try{
+                exec('mv '. config('ats_pe_task'). $findName. ' '. config('ats_pe_task').$newFileName);
+                Log::record('[rename][success] '. $findName. ' to '. $newFileName);
+
+            }catch (Exception $e){
+                Log::record('[rename][fail] '. $findName. ' to '. $newFileName);
+
+            }
+
         }
 
     }
