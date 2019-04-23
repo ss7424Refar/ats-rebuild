@@ -28,13 +28,13 @@ class MailerUtil {
      */
     public static function send($to, $cc, $mailTitle, $content) {
 
-        $transport = Swift_SmtpTransport::newInstance(config('SMTP_HOST'), config('SMTP_PORT'));
+        $transport = Swift_SmtpTransport::newInstance(config('smtp_host'), config('smtp_port'));
 
         $mailer = Swift_Mailer::newInstance($transport);
 
         // Create a message
         $message = Swift_Message::newInstance($mailTitle)
-            ->setFrom(array(config('Mail_FROM')))
+            ->setFrom(array(config('mail_from')))
             ->setTo($to)
             ->setCc(json_decode($cc, true))
             ->setBody($content, 'text/html', 'utf-8');
