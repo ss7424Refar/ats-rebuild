@@ -77,7 +77,7 @@ class Worker extends Server
         // 只在id编号为0的进程上设置定时器，其它1、2、3号进程不设置定时器
         // 执行watchExpired
         if($worker->id === 0) {
-            Timer::add(5, function()use($worker){
+            Timer::add(3600, function()use($worker){
                 Log::record('expired dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
                 // 每天0点执行任务
                 if('00' == date("H", time())) {

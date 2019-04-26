@@ -41,7 +41,7 @@ class UpdateTask extends Controller {
         $total = Db::query('select count(*) as total from ats_task_tool_steps where task_id = ? ', [$taskId]);
         // get shelf_switch from  ats_task_basic
         $shelf_switch = Db::query('select shelf_switch from ats_task_basic where task_id = ? ', [$taskId]);
-        $resultPath = ATS_RESULT_PATH. config('ats_temp_task_path'). $shelf_switch[0]['shelf_switch']. config('ats_file_underline'). $taskId;
+        $resultPath = ATS_RESULT_PATH. config('ats_tasks_header'). $shelf_switch[0]['shelf_switch']. config('ats_file_underline'). $taskId;
 
         $total = $total[0]['total'];
         // update ats_task_tool_steps by taskId and steps
