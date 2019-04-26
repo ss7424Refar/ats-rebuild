@@ -683,7 +683,7 @@
             },
                 {
                 field: 'task_start_time',
-                title: 'Start Time',
+                title: 'Start Time'
             }, {
                 field: 'task_end_time',
                 title: 'Finish Time'
@@ -1084,7 +1084,7 @@
                 type : "post",
                 url: "{:url('TaskManager/addTask')}",
                 data: {
-                    formSerialize
+                    formSerialize:formSerialize
                 },
                 beforeSend : function(){
                     $('#sub').attr('disabled', 'true');

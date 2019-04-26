@@ -32,6 +32,8 @@ class Common extends Controller{
         if (null == Session::get('transToAts')){
             $this->error('Login Time Out', config('ats_sign_out_url'));
         }
+
+        $this->loginUser = Session::get('transToAts');
 //        if (null == $this->request->server('HTTP_REFERER')) {
 //            $this->error('please click link from tpms', config('ats_sign_out_url'));
 //        }
