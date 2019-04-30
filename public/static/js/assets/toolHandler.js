@@ -64,8 +64,8 @@ function formToJson() {
                 Suspend:_father.find('#standBy').val(),
                 Hibernation:_father.find('#hibernation').val(),
                 HybridShutdown:_father.find('#hybridShutdown').val(),
-                MinPowerUp:_father.find('#timeOut').val(),
-                SecDelay:_father.find('#delay').val()
+                MinPowerUp:_father.find('#delay').val(),
+                SecDelay:_father.find('#timeOut').val()
             };
             obj.push(item);
         }
