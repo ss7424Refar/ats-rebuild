@@ -96,7 +96,7 @@ class TaskManager extends Common{
         $subStepsQuery = Db::table('ats_task_tool_steps')->distinct(true)->field('task_id as sid')->buildSql();
 
         $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid', 'LEFT')->order('task_id desc')->select();
-        $total = Db::table('ats_task_basic')->count();
+        $total = Db::table('ats_task_basic')->where($map)->count();
 
         $jsonResult['total'] = $total;
         $jsonResult['rows'] = $result;
