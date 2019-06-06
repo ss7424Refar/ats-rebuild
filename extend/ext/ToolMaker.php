@@ -202,7 +202,7 @@ class ToolMaker {
             '            <div class="col-sm-5">'.
             '                <div id="Count">'.
             '                    <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
-            '                        <input id="reboot" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                        <input id="reboot" type="text" class="form-control text-center" value="500" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
             '                        <div class="input-group-addon">'.
             '	                         <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
             '		                     <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
@@ -216,7 +216,7 @@ class ToolMaker {
             '            <label class="col-sm-1 control-label">Power Off</label>'.
             '            <div class="col-sm-4">'.
             '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
-            '                     <input id="powerOff" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <input id="powerOff" type="text" class="form-control text-center" value="500" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
             '                     <div class="input-group-addon">'.
             '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
             '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
@@ -227,7 +227,7 @@ class ToolMaker {
             '            <label class="col-sm-1 control-label">Standby</label>'.
             '            <div class="col-sm-5">'.
             '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
-            '                     <input id="standBy" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <input id="standBy" type="text" class="form-control text-center" value="500" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
             '                     <div class="input-group-addon">'.
             '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
             '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
@@ -240,7 +240,7 @@ class ToolMaker {
             '            <label class="col-sm-1 control-label">Hibernation</label>'.
             '            <div class="col-sm-4">'.
             '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'.
-            '                     <input id="hibernation" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <input id="hibernation" type="text" class="form-control text-center" value="500" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
             '                     <div class="input-group-addon">'.
             '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
             '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
@@ -251,7 +251,7 @@ class ToolMaker {
             '            <label class="col-sm-1 control-label">Hybrid Shutdown</label>'.
             '            <div class="col-sm-5">'.
             '                <div class="input-group spinner col-sm-4" data-trigger="spinner" id="spinner">'.
-            '                     <input id="hybridShutdown" type="text" class="form-control text-center" value="300" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
+            '                     <input id="hybridShutdown" type="text" class="form-control text-center" value="500" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'.
             '                     <div class="input-group-addon">'.
             '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'.
             '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'.
