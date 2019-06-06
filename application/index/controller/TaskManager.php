@@ -110,7 +110,7 @@ class TaskManager extends Common{
         $taskId = $this->request->param('taskId');
         $machineId = $this->request->param('machineId');
         $machineName = $this->request->param('machineName');
-        $serialNo = $this->request->param('serialNo');
+        $searchTester = $this->request->param('searchTester');
         $createTime = $this->request->param('createTime');
         $finishTime = $this->request->param('finishTime');
         $tool = json_decode($this->request->param('tool'));
@@ -146,10 +146,6 @@ class TaskManager extends Common{
             }
         }
 
-        if (!$this->hasRight){
-            $map['tester'] = $this->loginUser;
-        }
-
         if (!empty($machineId)) {
             $map['machine_id'] = $machineId;
         }
@@ -158,8 +154,20 @@ class TaskManager extends Common{
             $map['machine_name'] = ['like', '%' . $machineName . '%'];
         }
 
-        if (!empty($serialNo)) {
-            $map['dmi_serial_number'] = $serialNo;
+        if (!empty($searchTester)) {
+            if (!$this->hasRight){
+                if ($searchTester == $this->loginUser) {
+                    $map['tester'] = $this->loginUser;
+                } else {
+                    $map['tester'] = ''; // 当输入值为不为空, 没有权限不能让用户搜索到其他人的信息
+                }
+            } else {
+                $map['tester'] = $searchTester;
+            }
+        } else {
+            if (!$this->hasRight){
+                $map['tester'] = $this->loginUser;
+            }
         }
 
         if (!empty($tool)) {
@@ -339,6 +347,11 @@ class TaskManager extends Common{
         $taskId = $this->request->param('taskId');
         $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec')->select();
         return json_encode($result);
+    }
+
+    public function getUsers(){
+        $query = $this->request->param('q');
+
     }
 
 }

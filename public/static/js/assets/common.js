@@ -44,6 +44,14 @@ function isNull(data){
 function getToday() {
     return moment().format('YYYY-MM-DD');
 }
+// 给create time 显示用
+function getLasWeekDay() {
+    var weekOfday = parseInt(moment().format('d'));
+    if (0 !== weekOfday) {
+        return  moment().subtract(weekOfday - 1, 'days').format('YYYY-MM-DD');
+    }
+    return moment().subtract(6 - weekOfday, 'days').format('YYYY-MM-DD');
+}
 function getThisWeek() {
     var weekOfday = parseInt(moment().format('d'));
     // console.log(weekOfday);

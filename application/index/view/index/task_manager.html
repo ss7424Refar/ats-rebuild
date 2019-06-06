@@ -45,11 +45,11 @@
         <section class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="box box-default collapsed-box">
+                    <div class="box box-default">
                         <div class="box-header with-border">
                             <i class="fa fa-search-plus">&nbsp;Task Search</i>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>
                             </div>
                         </div>
@@ -70,9 +70,9 @@
                                         <div class="col-sm-2">
                                             <input type="text" class="form-control" id="search_machineName" placeholder="Machine Name">
                                         </div>
-                                        <label class="col-sm-1 control-label">Serial No</label>
+                                        <label class="col-sm-1 control-label">Tester</label>
                                         <div class="col-sm-2">
-                                            <input type="text" class="form-control" id="search_serialNo" placeholder="Serial No">
+                                            <input type="text" class="form-control" id="search_tester" placeholder="Tester">
                                         </div>
                                     </div>
                                     <!--                        second line form-->
@@ -127,7 +127,7 @@
                                     <button type="button" class="btn btn-primary btn-sm" id="task"><i class="glyphicon glyphicon-th-list"></i>&nbsp;Task</button>
                                 </div>
 
-                                <div class="btn-group" role="group" style="display: none">
+                                <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-success btn-sm" id="addTask" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus fa-fw"></i>&nbsp;Add</button>
                                     <button type="button" class="btn btn-warning btn-sm" id="assignTask"><i class="fa fa-wrench fa-fw"></i>&nbsp;Assign</button>
                                     <button type="button" class="btn btn-danger btn-sm" id="deleteTask"><i class="fa fa-close  fa-fw"></i>&nbsp;Delete</button>
@@ -328,7 +328,8 @@
     search_finishDate = $('#search_finishDate');
 
     var today = getToday();
-    search_createDate.val(today);
+    var lastWeek = getLasWeekDay();
+    search_createDate.val(lastWeek);
     search_finishDate.val(today);
 
     testMachine = $("select[name='machine_name']");
@@ -348,9 +349,6 @@
         });
 
         searchSubmitInit();
-
-        //Task
-        taskButton();
 
         // table
         tableInit("{:url('TaskManager/taskPagination')}", queryParams);
@@ -593,20 +591,6 @@
         }
     }
 
-    function taskButton(){
-        var buttonGroup=$('.btn-group:eq(1)');
-        var time=null;
-
-        $('.btn-group:eq(0), .btn-group:eq(1)').mouseenter(function () {
-            clearTimeout(time);
-            buttonGroup.css('display', 'block');
-        }).mouseleave(function () {
-            time=setTimeout(function(){
-                buttonGroup.css('display', 'none');
-            },300);
-        });
-    }
-
     function tableInit(resUrl, queryPs){
         $('#taskTable').bootstrapTable({
             url: resUrl,    //请求后台的URL（*）
@@ -625,7 +609,7 @@
             clickToSelect: false,               //点击行即可选中单选/复选框
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber:1,                       //初始化加载第一页，默认第一页
-            pageSize: 10,                       //每页的记录行数（*）
+            pageSize: 25,                       //每页的记录行数（*）
             pageList: [10, 25, 50],        //可供选择的每页的行数（*）
             search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端
             strictSearch: true,
@@ -719,8 +703,10 @@
                                 result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
                                 result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
                             }
-                        } else {
-                            result += "<a class='btn btn-xs bg-yellow' href='#' " + "data-toggle=\"tooltip\" data-placement=\"bottom\" title='ban' style='margin: 3px'><span class='glyphicon glyphicon-ban-circle'></span></a>";
+                        }
+                        else {
+                            // result += "<a class='btn btn-xs bg-yellow' href='#' " + "data-toggle=\"tooltip\" data-placement=\"bottom\" title='ban' style='margin: 3px'><span class='glyphicon glyphicon-ban-circle'></span></a>";
+                            result += "-";
                         }
 
                         return result;
@@ -810,7 +796,7 @@
             taskId:$('#search_taskId').val(),
             machineId:$('#search_machineId').val(),
             machineName:$('#search_machineName').val(),
-            serialNo:$('#search_serialNo').val(),
+            searchTester:$('#search_tester').val(),
             createTime:search_createDate.val(),
             finishTime:search_finishDate.val(),
             tool:JSON.stringify($('#search_tool').val()),           // 获取多选框的值
