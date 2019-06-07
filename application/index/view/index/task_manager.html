@@ -494,7 +494,6 @@
         // collapse and expand rows
         $('#expand').click(function () {
             var expand1 = $('#expand');
-            console.log(expand1.text());
             if ('Expand' === expand1.text().trim()) {
                 taskTable.bootstrapTable('expandAllRows');
                 expand1.html('<i class="fa fa-mouse-pointer fa-fw"></i>&nbsp;Collapse');
@@ -1019,7 +1018,6 @@
     function assignButtonInit(){
         $('#assignTask').click( function () {
             var ckArr = taskTable.bootstrapTable('getSelections');
-            // console.log(ckArr);
 
             if(ckArr.length === 0){
                 toastr.info("Please select at least one checkbox");
@@ -1210,12 +1208,9 @@
         }).on('success.form.bv', function (e) {
             // Prevent form submission
             e.preventDefault();
-            console.log(option);
             if ('add' === option) {
                 // 前台machineId和name实际传反了。但是没有办法。
                 var formSerialize = addForm.serialize() + '&machine_id=' + testMachine.select2('data')[0].text;
-
-                // console.log(formSerialize);
 
                 // Use Ajax to submit form data
                 $.ajax({
@@ -1243,8 +1238,6 @@
             }else if ('edit' === option) {
                 // 前台machineId和name实际传反了。但是没有办法。
                 var formSerialize = editForm.serialize();
-
-                console.log(formSerialize);
 
                 // Use Ajax to submit form data
                 $.ajax({
