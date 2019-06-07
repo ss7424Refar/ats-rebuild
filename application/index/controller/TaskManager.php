@@ -91,7 +91,8 @@ class TaskManager extends Common{
         if (!$this->hasRight){
             $map['tester'] = $this->loginUser;
         }
-
+        // 反馈说不需要显示expired的数据，但是search form可以显示出来
+        $map['status']  = ['<>', EXPIRED];
         $subMainQuery = Db::table('ats_task_basic')->where($map)->order('task_id desc')->limit($offset, $pageSize)->buildSql();
         $subStepsQuery = Db::table('ats_task_tool_steps')->distinct(true)->field('task_id as sid')->buildSql();
 
@@ -177,8 +178,13 @@ class TaskManager extends Common{
         $subMainQuery = Db::table('ats_task_basic')->where($map)->buildSql();
         $subStepsQuery = Db::table('ats_task_tool_steps')->where($map2)->distinct(true)->field('task_id as sid')->buildSql();
 
-        $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid')->order('task_id desc')->limit($offset, $pageSize)->select();
-        $total = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid')->order('task_id desc')->limit($offset, $pageSize)->count();
+        if (!empty($tool)) {
+            $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid')->order('task_id desc')->limit($offset, $pageSize)->select();
+            $total = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid')->count();
+        } else {
+            $result = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid', 'LEFT')->order('task_id desc')->limit($offset, $pageSize)->select();
+            $total = Db::table($subMainQuery . ' a')->join([$subStepsQuery=> 'b'], 'a.task_id = b.sid',  'LEFT')->count();
+        }
 
         $jsonResult['total'] = $total;
         $jsonResult['rows'] = $result;
@@ -208,6 +214,18 @@ class TaskManager extends Common{
         return "success";
     }
 
+    /*
+     * edit modal task
+     */
+    public function editTask(){
+        $form = stringSerializeToArray($this->request->param('formSerialize'));
+
+        $atsTaskBasic = new AtsTaskBasic();
+        // 如果传入update的数据包含主键的话，可以无需使用where方法
+        $atsTaskBasic->update($form);
+
+        return "success";
+    }
 
     /*
      * delete pending task
@@ -349,9 +367,94 @@ class TaskManager extends Common{
         return json_encode($result);
     }
 
+    public function getUpdateTaskInfoById(){
+        $taskId = $this->request->param('taskId');
+        $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, machine_name, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec, lan_ip, shelf_switch')->select();
+        return json_encode($result);
+    }
+
+    public function getSubTaskInfoById(){
+        $taskId = $this->request->param('taskId');
+        $pageSize = $this->request->param('pageSize');
+        $pageNo = $this->request->param('pageNumber');
+        $offset = ($pageNo-1)*$pageSize;
+
+        $jsonResult = array();
+
+        $result = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->order('steps')->field('tool_name, status, element_json')->limit($offset,$pageSize)->select();
+        $total = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->count();
+
+        if (!empty($result)){
+            // 删除tool_type 键
+            for ($i = 0; $i < count($result); $i++) {
+                $tmpArray = json_decode($result[$i]['element_json'], true);  //得到的则是数组。
+                unset($tmpArray['Tool_Type']);
+                $result[$i]['element_json'] = json_encode($tmpArray, JSON_UNESCAPED_UNICODE);
+            }
+        }
+
+        $jsonResult['total'] = $total;
+        $jsonResult['rows'] = $result;
+
+        // 转成utf-8
+        return json_encode($jsonResult);
+    }
+
+    public function rerunTask() {
+        $multiTask = json_decode($this->request->param('multiTask'));
+        $result = array();
+        // check if pending
+        for ($i = 0; $i < count($multiTask); $i++) {
+            $taskId = $multiTask[$i]->task_id;
+
+            $sqlBasic = "insert into ats_task_basic (task_id, machine_id, machine_name, category, lan_ip, shelf_switch, ".
+                    "    dmi_product_name, dmi_part_number, dmi_serial_number, dmi_oem_string, dmi_system_config, bios_ec,".
+                    "    status, process, task_create_time, task_start_time, task_end_time, tester) ".
+                    "SELECT NULL, machine_id, machine_name, category, lan_ip, shelf_switch, dmi_product_name, dmi_part_number,".
+                    "    dmi_serial_number,dmi_oem_string, dmi_system_config, bios_ec, '" . PENDING . "', NULL, now(), NULL, NULL, '". $this->loginUser ."' ".
+                    "FROM ats_task_basic where task_id = ? ";
+
+            $sqlSteps = "insert into ats_task_tool_steps(".
+                    "	task_id, tool_name, status, steps, element_json, ".
+                    "    result_path, tool_create_time, tool_start_time, tool_end_time)".
+                    "select ?, tool_name, '". PENDING ."', steps, element_json, NUll, now(),".
+                    "	NULL, NULL from ats_task_tool_steps where task_id = ?";
+
+            // 复制ats_task_basic表
+            Db::query($sqlBasic, [$taskId]);
+            $newTaskId = Db::name('ats_task_basic')->getLastInsID();
+
+            $total = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->count();
+
+            if (0 != $total) {
+                Db::query($sqlSteps, [$newTaskId, $taskId]);
+            }
+        }
+
+        return "success";
+    }
+
     public function getUsers(){
         $query = $this->request->param('q');
 
+        $jsonResult=array();
+
+        $result = Db::table('users')->field('login')->select();
+        if (empty(trim($query))) {
+            for ($i = 0; $i < count($result); $i++) {
+                $tmpArray = array('id' => $result[$i]['login'], 'text' => $result[$i]['login']);
+                array_push($jsonResult, $tmpArray);
+            }
+        }else {
+            for ($i = 0; $i < count($result); $i++) {
+                if (stristr($result[$i]['login'], $query) !== false){
+                    $tmpArray = array('id' => $result[$i]['login'], 'text' => $result[$i]['login']);
+                    array_push($jsonResult, $tmpArray);
+                }
+            }
+        }
+
+        return json_encode($jsonResult);
     }
 
 }

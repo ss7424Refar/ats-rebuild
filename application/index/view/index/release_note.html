@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include file="render/render_css" /}
+    {include file="render/theme_css" /}
+</head>
+<body class="{$Think.const.THEME}">
+<div class="wrapper">
+    {include file="common/header" /}
+    <!-- Left side column. contains the logo and sidebar -->
+    {// include file="common/sidebar" /}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Release
+                <small>Note</small>
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12" id="result">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    {include file="common/footer" /}
+
+</div>
+<!-- ./wrapper -->
+<script src="__PUBLIC_JS__/showdown/showdown.min.js"></script>
+{include file="render/render_js" /}
+
+<script>
+    var converter = new showdown.Converter(),
+        text = '# hello, markdown222!',
+        html = converter.makeHtml(text);
+    document.getElementById("result").innerHTML = html;
+</script>
+
+</body>
+</html>
