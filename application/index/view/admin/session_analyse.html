@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include file="render/render_css" /}
+    {include file="render/theme_css" /}
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+</head>
+<body class="{$Think.const.THEME}">
+<div class="wrapper">
+    {include file="common/header" /}
+    <!-- Left side column. contains the logo and sidebar -->
+    {// include file="common/sidebar" /}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Session Anaylyse
+                <!--<small>ATS</small>-->
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <table
+                            id="table"
+                            data-toggle="table"
+                            data-height="460"
+                            data-ajax="ajaxRequest"
+                            data-search="true"
+                            data-side-pagination="server"
+                            data-show-toggle="true"
+                            data-show-refresh="true"
+                            data-show-columns="true"
+                            data-show-fullscreen="true"
+                            data-buttons-class="primary"
+                            data-pagination="true">
+                        <thead>
+                        <tr>
+                            <th data-field="date">Date</th>
+                            <th data-field="sessions">Sessions</th>
+                        </tr>
+                        </thead>
+                    </table>
+
+                    <table id="table1">
+                        <thead>
+                        <tr>
+                            <th data-field="date">Date</th>
+                            <th data-field="sessions">Sessions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Main Footer -->
+{include file="common/footer" /}
+
+{include file="render/render_js" /}
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+<!-- Latest compiled and minified Locales -->
+<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-en-US.min.js"></script>
+
+<script>
+    function ajaxRequest(params) {
+        var url = "{:url('index/Admin/getAnalyseData');}";
+        $.get(url + '?' + $.param(params.data)).then(function (res) {
+
+            console.log(res);
+            params.success(res)
+        })
+    }
+    var $table = $('#table1');
+
+    $(function() {
+        var data = [
+            {"date":"2019-06-08","sessions":"{\"Zhu Jiafeng\":1,\"Zhu Lin\":1,\"admin\":3}"}
+        ];
+        $table.bootstrapTable({data: data})
+    });
+</script>
+
+</body>
+</html>
