@@ -72,6 +72,13 @@ SET SQL_SAFE_UPDATES=0;
 
     3. 对外接口可以继承控制器，直接使用Request对象。内部使用，可以不继承。
 
+
+### default_ajax_return
+  1. tp5设置成json之后，return要接json($array), 如果设置空, 则为json_encode，不想改了
+
+### default_return_type
+  1. 设置成json之后，网页都会被解析，只能设置成html便于跳转
+  
        
 ---
 ## thinkphp5目录结构

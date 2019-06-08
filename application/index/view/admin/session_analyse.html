@@ -3,20 +3,20 @@
 <head>
     {include file="render/render_css" /}
     {include file="render/theme_css" /}
-    <!-- Latest compiled and minified CSS -->
+    <!--datetimepicker-->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.css">
+
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
 </head>
 <body class="{$Think.const.THEME}">
 <div class="wrapper">
     {include file="common/header" /}
-    <!-- Left side column. contains the logo and sidebar -->
-    {// include file="common/sidebar" /}
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Session Anaylyse
+                Session Analyse
                 <!--<small>ATS</small>-->
             </h1>
         </section>
@@ -24,13 +24,25 @@
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-12">
-                    <table
+                <div class="col-md-8">
+                    <div id="toolbar">
+                        <div class="form-inline" role="form">
+                            <div class="form-group">
+                                <span>Start Time: </span>
+                                <input type="text" readonly class="form_datetime form-control" id="search_startDate" name="search_startDate">
+                            </div>
+                            <div class="form-group">
+                                <span>End Time: </span>
+                                <input type="text" readonly class="form_datetime form-control" id="search_endDate" name="search_endDate">
+                            </div>
+                            <button id="ok" type="submit" class="btn btn-primary">OK</button>
+                        </div>
+                    </div>
+                    <table class="table-bordered table-hover table-striped table-primary"
                             id="table"
                             data-toggle="table"
-                            data-height="460"
-                            data-ajax="ajaxRequest"
-                            data-search="true"
+                            data-height="500"
+                            data-toolbar="#toolbar"
                             data-side-pagination="server"
                             data-show-toggle="true"
                             data-show-refresh="true"
@@ -45,15 +57,9 @@
                         </tr>
                         </thead>
                     </table>
-
-                    <table id="table1">
-                        <thead>
-                        <tr>
-                            <th data-field="date">Date</th>
-                            <th data-field="sessions">Sessions</th>
-                        </tr>
-                        </thead>
-                    </table>
+                </div>
+                <div class="col-md-4">
+                    <div id="sessionChart" style="height: 500px;"></div>
                 </div>
             </div>
         </section>
@@ -70,23 +76,142 @@
 <!-- Latest compiled and minified Locales -->
 <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-en-US.min.js"></script>
 
+<!--datetimepicker-->
+<script src="__PUBLIC_JS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.js"></script>
+
+<!--echarts-->
+<script src="__PUBLIC_JS__/echarts/echarts.min.js"></script>
+<!-- 引入 vintage 主题 -->
+<script src="__PUBLIC_JS__/echarts/themes/roma.js"></script>
+
 <script>
-    function ajaxRequest(params) {
-        var url = "{:url('index/Admin/getAnalyseData');}";
-        $.get(url + '?' + $.param(params.data)).then(function (res) {
 
-            console.log(res);
-            params.success(res)
+    $(function () {
+
+        search_startDate = $('#search_startDate');
+        search_endDate = $('#search_endDate');
+
+        var today = getToday();
+        var lastMonth = moment().startOf('month').format('YYYY-MM-DD');
+        search_startDate.val(lastMonth);
+        search_endDate.val(today);
+
+        sessionChart = echarts.init(document.getElementById('sessionChart'), 'roma');
+
+        $(window).resize(function(){
+            sessionChart.resize();
+        });
+
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "bottom-left",
+            minView: "month", //选择日期后，不会再跳转去选择时分秒
+        });
+
+        // 初始化
+        $('#table').bootstrapTable('refresh',
+            {
+                silent: true,
+                url: "{:url('index/Admin/getAnalyseAllData');}"
+            }
+        );
+
+        sessionChartInit({});
+
+        $("#ok").click(function () {
+            var startDate = search_startDate.val();
+            var endDate = search_endDate.val();
+
+            var start = new Date(startDate.replace("-", "/").replace("-", "/"));
+            var end = new Date(endDate.replace("-", "/").replace("-", "/"));
+
+            if (start > end) {
+                toastr.error('Start Date Great Than End Date');
+                return;
+            }
+            if (!timeDifference(start, end)) {
+                toastr.error('End Date And Start Date Time Difference Great Than Six Month');
+                return;
+            }
+            // update for bs table
+            $('#table').bootstrapTable('refresh',
+                {
+                    silent: true,
+                    url: "{:url('index/Admin/getAnalyseSearchData');}",
+                    query: {
+                        start: startDate,
+                        end: endDate
+                    }
+                }
+            );
+
+            sessionChartInit({start: startDate,end: endDate});
         })
-    }
-    var $table = $('#table1');
-
-    $(function() {
-        var data = [
-            {"date":"2019-06-08","sessions":"{\"Zhu Jiafeng\":1,\"Zhu Lin\":1,\"admin\":3}"}
-        ];
-        $table.bootstrapTable({data: data})
     });
+
+    function sessionChartInit(data) {
+        // update session chart
+        $.ajax({
+            type: "post",
+            url: "{:url('index/Admin/getSessionChart')}",
+            data: data,
+            success: function (result) {
+                if ("No Data" !== result) {
+                    result = JSON.parse(result);
+                    sessionChart.hideLoading();
+                    sessionChart.setOption({
+                        tooltip : {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            type: 'scroll',
+                            orient: 'vertical',
+                            right: 10,
+                            top: 20,
+                            bottom: 20,
+                            data: result.legendData,
+                            selected: result.selectedData
+                        },
+                        series : [
+                            {
+                                name: 'Name',
+                                type: 'pie',
+                                radius : '55%',
+                                center: ['40%', '50%'],
+                                data: result.seriesData,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    }, true);
+                } else {
+                    setChartTitle(sessionChart, 'No Data');
+                }
+
+            },
+            error: function () {
+                setChartTitle(sessionChart, 'Init Error');
+            }
+        });
+    }
+
+    function setChartTitle(obj, string) {
+        obj.hideLoading();
+        obj.setOption({
+            title : {
+                text: string,
+                x:'center'
+            }
+        }, true);
+    }
 </script>
 
 </body>

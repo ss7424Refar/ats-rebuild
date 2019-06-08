@@ -65,22 +65,90 @@ class Admin extends Common
 
     }
 
-    public function getAnalyseData() {
-        $search = $this->request->param('search');
+    public function getAnalyseAllData() {
         $offset = $this->request->param('offset');
-        $pageSize = $this->request->param('pageSize');
+        $pageSize = $this->request->param('limit');
 
         $jsonResult = array();
 
-        $result = Db::table('ats_session_analyse')->orderRaw('str_to_date(date,\'%Y-%m-%d\')')->limit($offset, $pageSize)->select();
+        $result = Db::table('ats_session_analyse')->order('date')->limit($offset, $pageSize)->select();
         $total = Db::table('ats_session_analyse')->count();
 
         $jsonResult['total'] = $total;
-        $jsonResult['totalNotFiltered'] = $total;
         $jsonResult['rows'] = $result;
 
-        return json_encode($jsonResult);
+        return json($jsonResult); // 这里改成json()方法是因为bs-table@1.14.2接受json，而不是html类型
+    }
 
+    public function getAnalyseSearchData() {
+        $start = $this->request->param('start');
+        $end = $this->request->param('end');
+        $offset = $this->request->param('offset');
+        $pageSize = $this->request->param('limit');
 
+        $jsonResult = array();
+
+        $result = Db::query("select * from ats_session_analyse where `date` between ? and ? order by date limit ?, ?", [$start, $end, $offset, $pageSize]);
+        $total = Db::query("select count(*) as t from ats_session_analyse where `date`  between ? and ? ", [$start, $end]);
+
+        $jsonResult['total'] = $total[0]['t'];
+        $jsonResult['rows'] = $result;
+
+        return json($jsonResult);
+    }
+
+    public function getSessionChart() {
+        $start = $this->request->param('start');
+        $end = $this->request->param('end');
+
+        $result = Db::query("select * from ats_session_analyse");
+        if (null != $start && null != $end) {
+            $result = Db::query("select * from ats_session_analyse where `date` between ? and ? ", [$start, $end]);
+        }
+
+        $seriesData = array();
+        $legendData = array();
+        $selectedData = array();
+        $optionResult = array();
+
+        $saveData = array();
+
+        for ($i = 0; $i < count($result); $i++) {
+            $sessions = $result[$i]['sessions'];
+            $json = json_decode($sessions, true);
+
+            foreach($json as $key => $value){
+                if (array_key_exists($key, $saveData)) {
+                    $saveData[$key] = $saveData[$key] + $value;
+                } else {
+                    $saveData[$key] = $value;
+                }
+            }
+        }
+        // create option
+        $i = 0;
+        foreach($saveData as $name => $value){
+            $legendData[] = $name;
+
+            $seriesData[$i]['name'] = $name;
+            $seriesData[$i]['value'] = $saveData[$name];
+            // 初始化选中个数
+            if ($i < 6) {
+                $selectedData[$name] = true;
+            } else {
+                $selectedData[$name] = false;
+            }
+            $i++;
+        }
+
+        $optionResult['legendData'] = $legendData;
+        $optionResult['seriesData'] = $seriesData;
+        $optionResult['selectedData'] = $selectedData;
+
+        if (!empty($seriesData)) {
+            return json_encode($optionResult);
+        } else {
+            return 'No Data';
+        }
     }
 }
