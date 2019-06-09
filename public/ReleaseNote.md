@@ -4,6 +4,7 @@
 + **[Add]** JumpStart Performance Test
 
 
+
 ## ATS 1.2.0.0
 `2018-09-10`
 
@@ -21,4 +22,4 @@
 `2019-06-09`
 + **[Add]** ATS Release Note 
 + **[Add]** Expand and Rerun function for tasks
-+ **[Update]** Enhancing User Experience
++ **[Update]** Enhancing User Experience 
