@@ -8,7 +8,6 @@
 
 namespace app\index\controller;
 
-use think\Controller;
 use think\db;
 
 /*
@@ -65,36 +64,27 @@ class Admin extends Common
 
     }
 
-    public function getAnalyseAllData() {
+    public function getAnalyseData() {
         $offset = $this->request->param('offset');
         $pageSize = $this->request->param('limit');
+        $start = $this->request->param('start');
+        $end = $this->request->param('end');
 
         $jsonResult = array();
+        $result = null; $total= null;
 
-        $result = Db::table('ats_session_analyse')->order('date')->limit($offset, $pageSize)->select();
-        $total = Db::table('ats_session_analyse')->count();
-
-        $jsonResult['total'] = $total;
+        if (null != $start && null != $end) {
+            $result = Db::query("select * from ats_session_analyse where `date` between ? and ? order by date limit ?, ?", [$start, $end, $offset, $pageSize]);
+            $total = Db::query("select count(*) as t from ats_session_analyse where `date`  between ? and ? ", [$start, $end]);
+            $jsonResult['total'] = $total[0]['t'];
+        } else {
+            $result = Db::table('ats_session_analyse')->order('date')->limit($offset, $pageSize)->select();
+            $total = Db::table('ats_session_analyse')->count();
+            $jsonResult['total'] = $total;
+        }
         $jsonResult['rows'] = $result;
 
         return json($jsonResult); // 这里改成json()方法是因为bs-table@1.14.2接受json，而不是html类型
-    }
-
-    public function getAnalyseSearchData() {
-        $start = $this->request->param('start');
-        $end = $this->request->param('end');
-        $offset = $this->request->param('offset');
-        $pageSize = $this->request->param('limit');
-
-        $jsonResult = array();
-
-        $result = Db::query("select * from ats_session_analyse where `date` between ? and ? order by date limit ?, ?", [$start, $end, $offset, $pageSize]);
-        $total = Db::query("select count(*) as t from ats_session_analyse where `date`  between ? and ? ", [$start, $end]);
-
-        $jsonResult['total'] = $total[0]['t'];
-        $jsonResult['rows'] = $result;
-
-        return json($jsonResult);
     }
 
     public function getSessionChart() {
@@ -110,7 +100,6 @@ class Admin extends Common
         $legendData = array();
         $selectedData = array();
         $optionResult = array();
-
         $saveData = array();
 
         for ($i = 0; $i < count($result); $i++) {
@@ -126,6 +115,7 @@ class Admin extends Common
             }
         }
         // create option
+        arsort($saveData); // 从大到小排序
         $i = 0;
         foreach($saveData as $name => $value){
             $legendData[] = $name;

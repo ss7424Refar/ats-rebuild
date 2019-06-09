@@ -6,7 +6,7 @@
     <!--datetimepicker-->
     <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.css">
 
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-table@1.14.2/bootstrap-table.min.css">
 </head>
 <body class="{$Think.const.THEME}">
 <div class="wrapper">
@@ -27,11 +27,11 @@
                 <div class="col-md-8">
                     <div id="toolbar">
                         <div class="form-inline" role="form">
-                            <div class="form-group">
+                            <div class="form-group" style="margin-left: 3px">
                                 <span>Start Time: </span>
                                 <input type="text" readonly class="form_datetime form-control" id="search_startDate" name="search_startDate">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="margin-left: 15px">
                                 <span>End Time: </span>
                                 <input type="text" readonly class="form_datetime form-control" id="search_endDate" name="search_endDate">
                             </div>
@@ -43,6 +43,7 @@
                             data-toggle="table"
                             data-height="500"
                             data-toolbar="#toolbar"
+                            data-ajax="ajaxRequest"
                             data-side-pagination="server"
                             data-show-toggle="true"
                             data-show-refresh="true"
@@ -72,9 +73,9 @@
 
 {include file="render/render_js" /}
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+<script src="__PUBLIC_JS__/bootstrap-table@1.14.2/bootstrap-table.min.js"></script>
 <!-- Latest compiled and minified Locales -->
-<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-en-US.min.js"></script>
+<script src="__PUBLIC_JS__/bootstrap-table@1.14.2/locale/bootstrap-table-en-US.min.js"></script>
 
 <!--datetimepicker-->
 <script src="__PUBLIC_JS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.js"></script>
@@ -82,7 +83,7 @@
 <!--echarts-->
 <script src="__PUBLIC_JS__/echarts/echarts.min.js"></script>
 <!-- 引入 vintage 主题 -->
-<script src="__PUBLIC_JS__/echarts/themes/roma.js"></script>
+<script src="__PUBLIC_JS__/echarts/themes/macarons.js"></script>
 
 <script>
 
@@ -96,7 +97,7 @@
         search_startDate.val(lastMonth);
         search_endDate.val(today);
 
-        sessionChart = echarts.init(document.getElementById('sessionChart'), 'roma');
+        sessionChart = echarts.init(document.getElementById('sessionChart'), 'macarons');
 
         $(window).resize(function(){
             sessionChart.resize();
@@ -109,14 +110,6 @@
             pickerPosition: "bottom-left",
             minView: "month", //选择日期后，不会再跳转去选择时分秒
         });
-
-        // 初始化
-        $('#table').bootstrapTable('refresh',
-            {
-                silent: true,
-                url: "{:url('index/Admin/getAnalyseAllData');}"
-            }
-        );
 
         sessionChartInit({});
 
@@ -139,7 +132,6 @@
             $('#table').bootstrapTable('refresh',
                 {
                     silent: true,
-                    url: "{:url('index/Admin/getAnalyseSearchData');}",
                     query: {
                         start: startDate,
                         end: endDate
@@ -150,6 +142,13 @@
             sessionChartInit({start: startDate,end: endDate});
         })
     });
+
+    function ajaxRequest(params) {
+        var url = "{:url('index/Admin/getAnalyseData');}";
+        $.get(url + '?' + $.param(params.data)).then(function (res) {
+            params.success(res)
+        })
+    }
 
     function sessionChartInit(data) {
         // update session chart
