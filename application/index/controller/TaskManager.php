@@ -420,13 +420,13 @@ class TaskManager extends Common{
                     "	NULL, NULL from ats_task_tool_steps where task_id = ?";
 
             // 复制ats_task_basic表
-            Db::query($sqlBasic, [$taskId]);
+            Db::execute($sqlBasic, [$taskId]);
             $newTaskId = Db::name('ats_task_basic')->getLastInsID();
 
             $total = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->count();
 
             if (0 != $total) {
-                Db::query($sqlSteps, [$newTaskId, $taskId]);
+                Db::execute($sqlSteps, [$newTaskId, $taskId]);
             }
         }
 

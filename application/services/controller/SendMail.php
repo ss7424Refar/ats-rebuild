@@ -103,6 +103,11 @@ class SendMail extends Controller {
 
         $mailTitle = '[ATS][' . $this->today  . ']['. $info[0]['tool_name'] .']Test result is '. $info[0]['status'];
 
+        $notice = '';
+        if (EXPIRED == $info[0]['status']) {
+            $notice = '<p style="margin-top: 5px; font-size:12px;color:red" >This step may run over times updated to expired &nbsp;&nbsp;</p>';
+        }
+
         $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/' .
             'office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">' .
             '   <head>' .
@@ -141,11 +146,12 @@ class SendMail extends Controller {
             '			<td>' . $info[0]['tool_end_time'] . '</td>' .
             '		</tr>' .
             '	</table></body>' .
-            '<p style="margin-top: 15px">Click here to view task list:&nbsp;&nbsp;&nbsp;<a style="font-size:12px;" href="'.ATS_URL .'">Link To ATS</a></p>' .
+            $notice.
+            '<p style="margin-top: 10px">Click here to view task list:&nbsp;&nbsp;&nbsp;<a style="font-size:12px;" href="'.ATS_URL .'">Link To ATS</a></p>' .
             '</html>';
 
-//            return $content;
-        return MailerUtil::send($emailTo, config('mail_cc'), $mailTitle, $content);
+            return $content;
+//        return MailerUtil::send($emailTo, config('mail_cc'), $mailTitle, $content);
 
     }
 
