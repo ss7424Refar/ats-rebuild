@@ -56,6 +56,15 @@ class Index extends Common
         $this->redirect($rootPath. '/public/pdf/web/viewer.html?file=Manual.pdf');
     }
 
+    public function ReleaseNote(){
+        // 导航栏的样式
+        $this->assign('portCheck','');
+        $this->assign('taskManager','');
+        $this->assign('dashBoard','');
+
+        return $this->fetch();
+    }
+
     public function ToolAdd(){
         $this -> ReferenceCheck();
         $taskId = $this->request->param('taskId');

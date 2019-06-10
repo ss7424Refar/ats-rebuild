@@ -72,7 +72,7 @@
                                         </div>
                                         <label class="col-sm-1 control-label">Tester</label>
                                         <div class="col-sm-2">
-                                            <input type="text" class="form-control" id="search_tester" placeholder="Tester">
+                                            <select class="form-control" id="search_tester"></select>
                                         </div>
                                     </div>
                                     <!--                        second line form-->
@@ -129,8 +129,13 @@
 
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-success btn-sm" id="addTask" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus fa-fw"></i>&nbsp;Add</button>
+                                    <button type="button" class="btn btn-info btn-sm" id="editTask" data-toggle="modal"><i class="fa fa-edit fa-fw"></i>&nbsp;Edit</button>
                                     <button type="button" class="btn btn-warning btn-sm" id="assignTask"><i class="fa fa-wrench fa-fw"></i>&nbsp;Assign</button>
-                                    <button type="button" class="btn btn-danger btn-sm" id="deleteTask"><i class="fa fa-close  fa-fw"></i>&nbsp;Delete</button>
+                                    <button type="button" class="btn btn-danger btn-sm" id="deleteTask"><i class="fa fa-close fa-fw"></i>&nbsp;Delete</button>
+                                    <button type="button" class="btn btn-default btn-sm" id="rerunTask" data-toggle="modal" data-target="#rerunModal"><i class="fa fa-recycle fa-fw"></i>&nbsp;Rerun</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-flat bg-purple btn-sm" id="expand"><i class="fa fa-mouse-pointer fa-fw"></i>&nbsp;Expand</button>
                                 </div>
                             </div>
                             <table id="taskTable" class="" data-show-jumpto="true"></table>
@@ -140,20 +145,19 @@
             </div>
 
             <!-- ADD 模态框（Modal） -->
-            <div class="modal fade" id="addModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" >Add Task</h4>
                         </div>
-                        <form class="form-horizontal form-group-sm" id="addTaskForm" method="post">
+                        <form class="form-horizontal form-group-sm" id="addForm" method="post">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Test Machine</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" name="machine_name">
-                                        </select>
+                                        <select class="form-control" name="machine_name"></select>
                                     </div>
                                 </div>
                                 <div style="display:none;" data-topic="inputDmiInfo">
@@ -213,6 +217,105 @@
                                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
                             </div>
                         </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+            <!-- EDIT 模态框（Modal） -->
+            <div class="modal fade" id="editModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Edit Task</h4>
+                        </div>
+                        <form class="form-horizontal form-group-sm" id="editForm" method="post">
+                            <div class="modal-body" data-topic="editDmiInfo">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Task ID</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="task_id" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Test Machine</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="machine_name" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Product Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_product_name" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Serial Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_serial_number" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Part Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_part_number" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">OEM String</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_oem_string" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">SystemConfig</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_system_config">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">BIOS/EC</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="bios_ec" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">LANIP</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="lan_ip" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">ShelfID/SwitchID</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="shelf_switch" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm" id="sub2">Submit</button>
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+
+            <!-- RERUN 模态框（Modal） -->
+            <div class="modal fade" id="rerunModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog"  style="width:800px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Rerun Task</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table id="rerunTable" class="" data-show-jumpto="true"></table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-sm" id="sub3">Submit</button>
+                            <!--<button type="reset" class="btn btn-primary btn-sm">reset</button>-->
+                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                        </div>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
@@ -334,6 +437,16 @@
 
     testMachine = $("select[name='machine_name']");
     inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
+    editDmiInfo = $('div[data-topic="editDmiInfo"]');
+
+    stepsDetail = $('#stepsDetail');
+    taskTable = $('#taskTable');
+    rerunTable = $('#rerunTable');
+
+    addForm = $('#addForm');
+    editForm = $('#editForm');
+
+    tester = $('#search_tester');
 
     $(function () {
 
@@ -345,7 +458,6 @@
             todayBtn: true,
             pickerPosition: "bottom-left",
             minView: "month", //选择日期后，不会再跳转去选择时分秒
-
         });
 
         searchSubmitInit();
@@ -363,7 +475,7 @@
         // select2
         select2Init();
 
-        addFormValidatorInit();
+        taskFormValidatorInit(addForm, 'add');
 
         stepsTabInit();
 
@@ -377,6 +489,25 @@
             resetAddTaskForm();
         });
 
+        editTaskForm();
+
+        // collapse and expand rows
+        $('#expand').click(function () {
+            var expand1 = $('#expand');
+            if ('Expand' === expand1.text().trim()) {
+                taskTable.bootstrapTable('expandAllRows');
+                expand1.html('<i class="fa fa-mouse-pointer fa-fw"></i>&nbsp;Collapse');
+            } else {
+                taskTable.bootstrapTable('collapseAllRows');
+                expand1.html('<i class="fa fa-mouse-pointer fa-fw"></i>&nbsp;Expand');
+            }
+        });
+
+        $('#rerunTask').click(function () {
+            rerunTableInit();
+        });
+
+        rerunProcess();
     });
 
     function searchSubmitInit() {
@@ -398,7 +529,7 @@
                 return;
             }
 
-            $('#taskTable').bootstrapTable('destroy');
+            taskTable.bootstrapTable('destroy');
             tableInit("{:url('TaskManager/taskSearchPagination')}", searchParams);
 
         });
@@ -407,13 +538,13 @@
     function stepsTabInit() {
         // 当点击steps tab的时候
         $('a[href="#tab_1"]').click(function () {
-            if ('block' == $('#stepsDetail').css('display')){
-                $('#stepsDetail').css('display', 'none');
+            if ('block' === stepsDetail.css('display')){
+                stepsDetail.css('display', 'none');
             }
         });
         $('a[href="#tab_2"]').click(function () {
             // 找到tab_1的task_id
-            var taskId = $("#tab_1").find('p:eq(0)').html()
+            var taskId = $("#tab_1").find('p:eq(0)').html();
             $('#stepsTable').bootstrapTable({
                 url: "{:url('TaskManager/stepsPagination')}?taskId=" + taskId,    //请求后台的URL（*）
                 method: 'post',                      //请求方式（*）
@@ -510,8 +641,8 @@
                 formatNoMatches: function () {  //没有匹配的结果
                     return '<i class="text-danger">No matching records found</i>';
                 }
-            }).on('click-row.bs.table', function(row, $element, field){
-                $('#stepsDetail').addClass('well');
+            }).on('click-row.bs.table', function(row, $element){
+                stepsDetail.addClass('well');
 
                 var item = JSON.parse($element['element_json']);
 
@@ -535,9 +666,9 @@
                         }
                     }
                     result += '</form>';
-                    $('#stepsDetail').html(result);
-                    if ('none' === $('#stepsDetail').css('display')){
-                        $('#stepsDetail').css('display', 'block');
+                    stepsDetail.html(result);
+                    if ('none' === stepsDetail.css('display')){
+                        stepsDetail.css('display', 'block');
                     }
                 }
             });
@@ -574,7 +705,7 @@
                             success: function (result) {
                                 if ('fail' !== result) {
                                     toastr.success("Delete Steps Success");
-                                    $('#taskTable').bootstrapTable('selectPage', 1);
+                                    taskTable.bootstrapTable('selectPage', 1);
                                 }
                             },
                             error: function () {
@@ -592,7 +723,7 @@
     }
 
     function tableInit(resUrl, queryPs){
-        $('#taskTable').bootstrapTable({
+        taskTable.bootstrapTable({
             url: resUrl,    //请求后台的URL（*）
             method: 'post',                      //请求方式（*）
             classes: 'table table-responsive table-hover table-no-bordered', // table 样式
@@ -609,7 +740,7 @@
             clickToSelect: false,               //点击行即可选中单选/复选框
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber:1,                       //初始化加载第一页，默认第一页
-            pageSize: 25,                       //每页的记录行数（*）
+            pageSize: 20,                       //每页的记录行数（*）
             pageList: [10, 25, 50],        //可供选择的每页的行数（*）
             search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端
             strictSearch: true,
@@ -620,11 +751,11 @@
             uniqueId: "task_id",                     //每一行的唯一标识，一般为主键列
             showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
-            detailView: false,                   //是否显示父子表
+            detailView: true,                   //是否显示父子表
             columns: [{
                 field: "check",
                 checkbox: true,
-                formatter: function (value, row, index) {
+                formatter: function (value, row) {
                     if (Pending !== row['status'])
                         return {
                             disabled : true,//设置是否可用
@@ -636,13 +767,14 @@
                 field: 'task_id',
                 title: 'Task ID',
                 // sortable: true,
-                formatter:function(value, row, index){
-                    return 'ATS_' + value;
+                formatter:function(value, row){
+                    var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['shelf_switch'] + "_" + row['task_id'];
+                    return '<a href='+ path +'>' + 'ATS_' + value + '</a> ';
                 }
             }, {
                 field: 'machine_name',
                 title: 'Test Machine',
-                formatter:function(value, row, index){
+                formatter:function(value){
                     return value;
                 }
             }, {
@@ -651,7 +783,7 @@
             }, {
                 field: 'status',
                 title: 'Task Status',
-                formatter:function(value, row, index){
+                formatter:function(value){
                     if (null !== value) {
                         if (Pass === value || Fail === value) {
                             return Finish;
@@ -675,7 +807,7 @@
                 {
                     field: 'process',
                     title: 'Process',
-                    formatter: function (value, row, index) {
+                    formatter: function (value) {
 
                         if (null == value) {
                             return 'N/A';
@@ -691,7 +823,7 @@
                 }, {
                     field: 'tool',
                     title: 'Tool',
-                    formatter: function (value, row, index) {
+                    formatter: function (value, row) {
                         var id = row['task_id'];
                         var sid = row['sid'];
                         var result="";
@@ -713,6 +845,10 @@
                     }
                 }
             ],
+            //注册加载子表的事件。
+            onExpandRow: function (index, row, $detail) {
+                initSubTable(index, row, $detail);
+            },
             rowStyle: function(row, index){
                 if(Fail === row.status || Pass === row.status){
                     return {classes: 'success'};
@@ -736,8 +872,8 @@
                     $(this).removeClass('active');
                 });
                 // delete steps detail
-                if ($('#stepsDetail').attr('class','well')) {
-                    $('#stepsDetail').html('').removeClass('well');
+                if (stepsDetail.attr('class','well')) {
+                    stepsDetail.html('').removeClass('well');
                 }
 
                 $("a[href='#tab_1']").parent().addClass('active');
@@ -767,7 +903,6 @@
                         toastr.error("Get Info Fail");
                         return false;
                     }
-
                 });
 
             },
@@ -803,10 +938,9 @@
             status:$('#search_status').val()
         };
         return temp;//传递参数
-
     }
-    function select2Init() {
 
+    function select2Init() {
         testMachine.select2({
                 width: "100%",
                 ajax: {
@@ -830,10 +964,9 @@
             }
         );
 
-        testMachine.on("select2:select",function(e){
-
-            $('#addTaskForm').data('bootstrapValidator').destroy();
-            addFormValidatorInit();
+        testMachine.on("select2:select",function(){
+            addForm.data('bootstrapValidator').destroy();
+            taskFormValidatorInit(addForm, 'add');
 
             $.ajax({
                 type: 'post',
@@ -852,17 +985,39 @@
                 }
             });
         });
-        testMachine.on("change", function (e) {
+        testMachine.on("change", function () {
             inputDmiInfo.css('display', 'none').find('input').val('');
-            $('#addTaskForm').data('bootstrapValidator').destroy();
-            addFormValidatorInit();
+            addForm.data('bootstrapValidator').destroy();
+            taskFormValidatorInit(addForm, 'add');
         });
+
+        tester.select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('TaskManager/getUsers')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term // search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: false
+                },
+                placeholder: 'Please Select',
+                allowClear: true
+            }
+        );
     }
 
     function assignButtonInit(){
         $('#assignTask').click( function () {
-            var ckArr = $('#taskTable').bootstrapTable('getSelections');
-            // console.log(ckArr);
+            var ckArr = taskTable.bootstrapTable('getSelections');
 
             if(ckArr.length === 0){
                 toastr.info("Please select at least one checkbox");
@@ -883,12 +1038,12 @@
                 success: function (result) {
                     if("done" === result){
                         toastr.success("success assign to ATS");
-                        $('#taskTable').bootstrapTable('selectPage', 1);
+                        taskTable.bootstrapTable('selectPage', 1);
                     } else {
                         toastr.error("fail assign to ATS");
                     }
                 },
-                error: function (xhr,status,error) {
+                error: function () {
                     toastr.error("fail assign to ATS");
                 }
             });
@@ -898,7 +1053,7 @@
 
     function deleteTaskButtonInit() {
         $('#deleteTask').click(function () {
-            var ckArr = $('#taskTable').bootstrapTable('getSelections');
+            var ckArr = taskTable.bootstrapTable('getSelections');
             if(ckArr.length === 0){
                 toastr.info("Please select at least one checkbox");
                 return false;
@@ -927,7 +1082,7 @@
                                     setTimeout('$(\'#taskTable\').bootstrapTable(\'selectPage\', 1);', 1500);
                                 }
                             },
-                            error: function (xhr,status,error) {
+                            error: function () {
                                 toastr.error("Delete Fail!");
                             }
                         });
@@ -937,8 +1092,8 @@
         });
     }
 
-    function addFormValidatorInit(){
-        $('#addTaskForm').bootstrapValidator({
+    function taskFormValidatorInit(target, option){
+        target.bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -1053,50 +1208,251 @@
         }).on('success.form.bv', function (e) {
             // Prevent form submission
             e.preventDefault();
+            if ('add' === option) {
+                // 前台machineId和name实际传反了。但是没有办法。
+                var formSerialize = addForm.serialize() + '&machine_id=' + testMachine.select2('data')[0].text;
 
-            // Get the form instance
-            var $form = $(e.target);
+                // Use Ajax to submit form data
+                $.ajax({
+                    type : "post",
+                    url: "{:url('TaskManager/addTask')}",
+                    data: {
+                        formSerialize:formSerialize
+                    },
+                    beforeSend : function(){
+                        $('#sub').attr('disabled', 'true');
+                    },
+                    success : function (result) {
+                        if (result === "success") {
+                            toastr.success('Add Success!');
 
-            // Get the BootstrapValidator instance
-            var bv = $form.data('bootstrapValidator');
-
-            // 前台machineId和name实际传反了。但是没有办法。
-            var formSerialize = $form.serialize() + '&machine_id=' + testMachine.select2('data')[0].text;
-
-            // console.log(formSerialize);
-
-            // Use Ajax to submit form data
-            $.ajax({
-                type : "post",
-                url: "{:url('TaskManager/addTask')}",
-                data: {
-                    formSerialize:formSerialize
-                },
-                beforeSend : function(){
-                    $('#sub').attr('disabled', 'true');
-                },
-                success : function (result) {
-                    if (result === "success") {
-                        toastr.success('Add Success!');
-
+                        }
+                    },
+                    error : function(xhr,status,error){
+                        toastr.error('Add Fail! Try Again ');
+                    },
+                    complete : function () {
+                        setTimeout("window.location.href=\"TaskManager\"",1200);
                     }
-                },
-                error : function(xhr,status,error){
-                    toastr.error('Add Fail! Try Again ');
-                },
-                complete : function () {
-                    setTimeout("window.location.href=\"TaskManager\"",1200);
+                });
+            }else if ('edit' === option) {
+                // 前台machineId和name实际传反了。但是没有办法。
+                var formSerialize = editForm.serialize();
 
-                }
-            });
+                // Use Ajax to submit form data
+                $.ajax({
+                    type : "post",
+                    url: "{:url('TaskManager/editTask')}",
+                    data: {
+                        formSerialize:formSerialize
+                    },
+                    beforeSend : function(){
+                        $('#sub2').attr('disabled', 'true');
+                    },
+                    success : function (result) {
+                        if (result === "success") {
+                            toastr.success('Update Success!');
+
+                        }
+                    },
+                    error : function(xhr,status,error){
+                        toastr.error('Update Fail! Try Again ');
+                    },
+                    complete : function () {
+                        setTimeout("window.location.href=\"TaskManager\"",1200);
+                    }
+                });
+            }
         });
 
     }
 
     function resetAddTaskForm() {
         testMachine.val(null).trigger("change");
-        $('#addTaskForm').data('bootstrapValidator').destroy();
-        addFormValidatorInit();
+        addForm.data('bootstrapValidator').destroy();
+        taskFormValidatorInit(addForm, 'add');
+    }
+
+    function resetEditTaskForm() {
+        editForm.data('bootstrapValidator').destroy();
+        taskFormValidatorInit(editForm, 'edit');
+    }
+
+    function editTaskForm() {
+        $('#editTask').click(function () {
+            var ckArr = taskTable.bootstrapTable('getSelections');
+            if(ckArr.length === 0){
+                toastr.info("Please select at least one checkbox");
+                return false;
+            }
+            if(ckArr.length !== 1){
+                toastr.info("Please select only one checkbox");
+                return false;
+            }
+
+            $.ajax({
+                type: "post",
+                url: "{:url('TaskManager/getUpdateTaskInfoById')}",
+                data: {taskId: ckArr[0].task_id},
+                dataType: "json",
+                success: function (result) {
+                    if(result){
+                        resetEditTaskForm();
+                        var i = 0;
+                        for(var key in result[0]){
+                            editDmiInfo.find('input:eq(' + i + ')').val(result[0][key]);
+                            i++;
+                        }
+                        $("#editModal").modal("show");
+                    }
+                },
+                error: function () {
+                    toastr.error("Get Update Info Fail");
+                    return false;
+                }
+            });
+        });
+
+        taskFormValidatorInit(editForm, 'edit');
+    }
+    
+    function initSubTable(index, row, $detail) {
+        var parentId = row.task_id;
+        var cur_table = $detail.html('<table></table>').find('table');
+        $(cur_table).bootstrapTable({
+            url: "{:url('TaskManager/getSubTaskInfoById')}",
+            method: 'get',
+            queryParamsType : "",
+            queryParams: function (params) {
+                var temp = {
+                    taskId: parentId,
+                    pageSize : params.pageSize,
+                    pageNumber : params.pageNumber
+                };
+                return temp;
+            },
+            // ajaxOptions: { taskId: parentId },
+            uniqueId: "task_id",
+            striped: true, //是否显示行间隔色
+            cache: false,
+            pagination: true,//显示分页
+            sidePagination: "server",
+            pageNumber:1,                  //初始化加载第一页，默认第一页
+            pageSize: 10,                  //每页的记录行数（*）
+            pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+            columns: [{
+                field: 'tool_name',
+                title: 'tool name'
+            },
+            {
+                field: 'status',
+                title: 'status'
+            },
+            {
+                field: 'element_json',
+                title: 'desc'
+            }],
+            formatLoadingMessage: function () {
+                return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+            },
+            onLoadError: function () {
+                toastr.error("Table LoadError!");
+            },
+            formatNoMatches: function () {  //没有匹配的结果
+                return '<i class="text-danger">No matching records found</i>';
+            }
+        });
+    }
+
+    function rerunTableInit() {
+        rerunTable.bootstrapTable({
+            url: "{:url('TaskManager/taskPagination')}",
+            method: 'post',
+            queryParamsType : "",
+            queryParams: function (params) {
+                var temp = {
+                    pageSize : params.pageSize,
+                    pageNumber : params.pageNumber
+                };
+                return temp;
+            },
+            // ajaxOptions: { taskId: parentId },
+            uniqueId: "task_id",
+            striped: true, //是否显示行间隔色
+            cache: false,
+            pagination: true,//显示分页
+            sidePagination: "server",
+            pageNumber:1,                  //初始化加载第一页，默认第一页
+            pageSize: 10,                  //每页的记录行数（*）
+            pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+            columns: [{
+                field: "check",
+                checkbox: true,
+            }, {
+                field: 'task_id',
+                title: 'Task ID'
+            }, {
+                field: 'machine_name',
+                title: 'Test Machine',
+            }, {
+                field: 'machine_id',
+                title: 'Machine ID'
+            }, {
+                field: 'status',
+                title: 'Task Status',
+                formatter:function(value){
+                    if (null !== value) {
+                        if (Pass === value || Fail === value) {
+                            return Finish;
+                        }
+                        return value;
+                    }
+                    return "N/A";
+                }
+            },
+            {
+                field: 'shelf_switch',
+                title: 'Location'
+            }],
+            formatLoadingMessage: function () {
+                return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+            },
+            onLoadError: function () {
+                toastr.error("Table LoadError!");
+            },
+            formatNoMatches: function () {  //没有匹配的结果
+                return '<i class="text-danger">No matching records found</i>';
+            }
+        })
+    }
+
+    function rerunProcess() {
+        $('#sub3').click(function () {
+            var ckArr = rerunTable.bootstrapTable('getSelections');
+            $.ajax({
+                type: "post",
+                url: "{:url('TaskManager/rerunTask')}",
+                data: {multiTask: JSON.stringify(ckArr)},
+                beforeSend : function(){
+                    $('#sub3').attr('disabled', 'true');
+                },
+                success: function (result) {
+                    if("success" === result){
+                        toastr.success("success rerun task");
+                        taskTable.bootstrapTable('selectPage', 1);
+                    } else {
+                        toastr.error("fail rerun task");
+                    }
+                },
+                error: function () {
+                    toastr.error("fail rerun task");
+                },
+                complete : function () {
+                    setTimeout("window.location.href=\"TaskManager\"",1200);
+                }
+            });
+
+        })
     }
 
 </script>

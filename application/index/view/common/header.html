@@ -19,7 +19,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="SignOut">
+                        <a href="{:url('index/Index/SignOut');}">
                             <i class="fa fa-sign-out"  style="color: black">&nbsp;</i><span class="text-danger">&nbsp;Sign out</span>
                         </a>
                     </li>
@@ -50,18 +50,18 @@
         <!-- 为了小屏幕有个button可以collapse-->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="{$dashBoard}"><a href="DashBoard">
+                <li class="{$dashBoard}"><a href="{:url('index/Index/DashBoard');}">
                     <!--<i class="fa fa-pie-chart"></i> -->
                     Dash Board
                 </a>
                 </li>
                 <li class="{$taskManager}">
-                    <a href="TaskManager">
+                    <a href="{:url('index/Index/TaskManager');}">
                         <!--<i class="fa fa-edit"></i>-->
                         Task Manager
                     </a>
                 </li>
-                <li class="{$portCheck}"><a href="PortCheck">
+                <li class="{$portCheck}"><a href="{:url('index/Index/PortCheck');}">
                     <!--<i class="fa fa-link"></i>-->
                     Port Check
                 </a>
@@ -74,7 +74,10 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="Document" target="_blank"><i class="fa fa-book"></i> <span>&nbsp;Manual</span></a>
+                            <a href="{:url('index/Index/Document');}" target="_blank"><i class="fa fa-book"></i> <span>&nbsp;Manual</span></a>
+                        </li>
+                        <li>
+                            <a href="{:url('index/Index/ReleaseNote');}"><i class="fa fa-file-text-o"></i> <span>&nbsp;ReleaseNote</span></a>
                         </li>
                     </ul>
                 </li>
@@ -90,6 +93,7 @@
                                 <a href="{:url('index/Admin/startServer');}"><i class="fa fa-server"></i> <span>&nbsp;Server Start</span></a>
                                 <a href="{:url('index/Admin/stopServer');}"><i class="fa fa-server"></i> <span>&nbsp;Server Stop</span></a>
                                 <a href="{:url('index/Admin/getStatus');}"><i class="fa fa-server"></i> <span>&nbsp;Server Status</span></a>
+                                <a href="{:url('index/Admin/sessionAnalyse');}"><i class="fa fa-android"></i> <span>&nbsp;Session Analyse</span></a>
                             </li>
                         </ul>
                     </li>

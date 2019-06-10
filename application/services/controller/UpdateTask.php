@@ -75,7 +75,6 @@ class UpdateTask extends Controller {
                 ]);
         }
 
-
         $process = intval($steps / $total * 100);
 
         $taskStatus = ONGOING;

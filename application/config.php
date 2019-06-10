@@ -29,7 +29,7 @@ return [
     // 扩展函数文件
     'extra_file_list'        => [THINK_PATH . 'helper' . EXT],
     // 默认输出类型
-    'default_return_type'    => 'html',
+    'default_return_type'    => 'html', // 改成json网页都解析了
     // 默认AJAX 数据返回格式,可选json xml ...
     'default_ajax_return'    => '',
     // 默认JSONP格式返回的处理方法
@@ -218,7 +218,7 @@ return [
         // 是否自动开启 SESSION
         'auto_start'     => true,
         // 设置session过期时间
-        "expire" => 1440 // 随缘控制
+        "expire" => 2400 // 随缘控制
     ],
 
     // +----------------------------------------------------------------------

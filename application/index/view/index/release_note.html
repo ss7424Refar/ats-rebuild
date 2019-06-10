@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include file="render/render_css" /}
+    {include file="render/theme_css" /}
+</head>
+<body class="{$Think.const.THEME}">
+<div class="wrapper">
+    {include file="common/header" /}
+    <!-- Left side column. contains the logo and sidebar -->
+    {// include file="common/sidebar" /}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                <i style="color: #00a157">Release Note</i>
+                <!--<small></small>-->
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <!--<div class="jumbotron">-->
+                <!--<h1>ReleaseNote</h1>-->
+                <!--<p>...</p>-->
+                <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
+            <!--</div>-->
+            <div class="row">
+                <div class="col-md-12" id="note">
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    {include file="common/footer" /}
+
+</div>
+<!-- ./wrapper -->
+<script src="__PUBLIC_JS__/showdown/showdown.min.js"></script>
+{include file="render/render_js" /}
+
+<script>
+    $(function () {
+
+        var converter = new showdown.Converter();
+       $.ajax({
+           type : "post",
+           url: "{:url('ReleaseNote/getReleaseNotes')}",
+
+           success : function (result) {
+               var html = converter.makeHtml(result);
+               document.getElementById("note").innerHTML = html;
+           },
+           error : function(){
+               toast.error('get release note fail');
+           }
+       })
+
+    });
+
+</script>
+
+</body>
+</html>
