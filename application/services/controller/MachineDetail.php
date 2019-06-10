@@ -29,12 +29,12 @@ class MachineDetail extends Controller {
     public function getMachineInfo(){
         $no = $this->request->param('fix_no');
 
-        Db::connect('db_config2');
-        $res = Db::table('d_main_engine')
-            ->where('fixed_no','=', $no)
-            ->select();
+//        Db::connect('db_config2');
+//        $res = Db::table('d_main_engine')
+//            ->where('fixed_no','=', $no)
+//            ->select();
 
-//        $res = Db::query('SELECT * FROM itd.d_main_engine where fixed_no = ?;', [$no]);
+        $res = Db::query('SELECT * FROM itd.d_main_engine where fixed_no = ?;', [$no]);
         return json_encode($res, JSON_UNESCAPED_UNICODE);
     }
 
