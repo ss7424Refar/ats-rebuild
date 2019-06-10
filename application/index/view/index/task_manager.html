@@ -432,8 +432,8 @@
     search_finishDate = $('#search_finishDate');
 
     var today = getToday();
-    var lastWeek = getLasWeekDay();
-    search_createDate.val(lastWeek);
+    var thisMonth = moment().startOf('month').format('YYYY-MM-DD');
+    search_createDate.val(thisMonth);
     search_finishDate.val(today);
 
     testMachine = $("select[name='machine_name']");
