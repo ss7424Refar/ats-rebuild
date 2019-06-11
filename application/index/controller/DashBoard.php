@@ -12,7 +12,7 @@ use think\Db;
 use ext\ChartUtil;
 
 /*
- * 统计后台数据，生成图标用的json
+ * 统计后台数据，生成图表用的json
  */
 
 class DashBoard extends Common
@@ -39,9 +39,10 @@ class DashBoard extends Common
     public function myTaskInit() {
         $myTaskResult = array('finished' => 0);
         for ($i = 0; $i < count($this->statusArray); $i++) {
-            $res = Db::query('select count(*) as total from ats_task_basic where status = ?  '.
-                ' and date(task_create_time) = curdate();', [$this->statusArray[$i]]);
+//            $res = Db::query('select count(*) as total from ats_task_basic where status = ?  '.
+//                ' and date(task_create_time) = curdate();', [$this->statusArray[$i]]);
 
+            $res = Db::query('select count(*) as total from ats_task_basic where status = ? and tester = ?', [$this->statusArray[$i], $this->loginUser]);
             $status = $this->statusArray[$i];
 
             if (FAIL == $status || PASS == $status) {
