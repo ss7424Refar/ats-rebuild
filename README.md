@@ -65,6 +65,7 @@ location /ats/ {
 2. `要将项目的权限改成757, 因为正式环境是其他组的用户, workman没有权限写入pid文件`
 ~~~
 chmod -R 757 ats
+本地可只改runtime/output， runtime权限
 ~~~
 
 3. `修改配置config.php中的'app_status'=> ''`
