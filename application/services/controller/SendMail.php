@@ -62,7 +62,7 @@ class SendMail extends Controller {
             '	</head>' .
             '	<body>' .
             '		<p>Dear ' . $info[0]['tester'] . ',</p>' .
-            '		<p>Since OEM image test result is NOT passed the target metrics, please find your target machine on test shelf and click OK to start running baseline image.</p>' .
+            '		<p>Please click OK button to start running baseline image on the target machine on the test shelf as the OEM image test result doesn\'t satisfy the target metric.</p>' .
             '		<p style="font-size:12px;color:red"><i>The Jumpstart task as below.</i></p>' .
             '	<table>' .
             '		<tr bgcolor="##E5EECC">' .
@@ -84,7 +84,7 @@ class SendMail extends Controller {
             '<p style="margin-top: 15px">Click here to view task list:&nbsp;&nbsp;&nbsp;<a style="font-size:12px;" href="'.ATS_URL .'">Link To ATS</a></p>' .
             '</html>';
 
-//        return config('mail_from');
+//        return $content;
         return MailerUtil::send($emailTo, config('mail_cc_baseline'), $mailTitle, $content);
     }
 
