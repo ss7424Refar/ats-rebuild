@@ -284,6 +284,10 @@ class TaskManager extends Common{
                     config('ats_file_underline'). $taskId. config('ats_file_suffix');
                 $fileCreate = config('ats_temp_task_path'). $fileName;
 
+                // 判断ats_temp_task_path是否存在, 因为.gitignore会把runtime下的内容ignore所以在此判断
+                if (!is_dir(config('ats_temp_task_path'))) {
+                    mkdir(config('ats_temp_task_path'), 0757);
+                }
                 if (file_exists($fileCreate)) {
                     unlink($fileCreate);
                 }
