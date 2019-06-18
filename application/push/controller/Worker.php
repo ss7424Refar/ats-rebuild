@@ -16,7 +16,7 @@ class Worker extends Server
 {
     protected $socket = 'websocket://0.0.0.0:2346';
 
-    private $clientMsg = array('port_check');
+    private $clientMsg = array('port_check', 'online');
 
     /**
      * 收到信息
@@ -35,6 +35,14 @@ class Worker extends Server
 
         }
 
+        if ($this->clientMsg[1] == $data) {
+            $port = controller('push/PortChecker');
+            $connection->port_timer_id = Timer::add(1, function()use($connection, $data, &$port_timer_id, $port)
+            {
+                $connection->send($port->getPortInfo());
+            });
+
+        }
     }
 
     /**

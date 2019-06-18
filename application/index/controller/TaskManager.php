@@ -221,6 +221,14 @@ class TaskManager extends Common{
         $form = stringSerializeToArray($this->request->param('formSerialize'));
 
         $atsTaskBasic = new AtsTaskBasic();
+
+        // 修改器那里好像只是针对新增, 所以只能在这里再次判断一下
+        if (stristr($form['machine_name'], 'Altair') !== false) {
+            $form['category'] = 'In_House';
+        } else {
+            $form['category'] = 'ODM';
+        }
+
         // 如果传入update的数据包含主键的话，可以无需使用where方法
         $atsTaskBasic->update($form);
 
@@ -373,7 +381,7 @@ class TaskManager extends Common{
 
     public function getUpdateTaskInfoById(){
         $taskId = $this->request->param('taskId');
-        $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, machine_name, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec, lan_ip, shelf_switch')->select();
+        $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, machine_id, machine_name, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec, lan_ip, shelf_switch')->select();
         return json_encode($result);
     }
 
