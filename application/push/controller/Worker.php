@@ -16,7 +16,8 @@ class Worker extends Server
 {
     protected $socket = 'websocket://0.0.0.0:2346';
 
-    private $clientMsg = array('port_check', 'online');
+    private $clientMsg = array('port_check');
+    private $infoMsg = array();
 
     /**
      * 收到信息
@@ -34,15 +35,6 @@ class Worker extends Server
             });
 
         }
-
-        if ($this->clientMsg[1] == $data) {
-            $port = controller('push/PortChecker');
-            $connection->port_timer_id = Timer::add(1, function()use($connection, $data, &$port_timer_id, $port)
-            {
-                $connection->send($port->getPortInfo());
-            });
-
-        }
     }
 
     /**
@@ -51,7 +43,7 @@ class Worker extends Server
      */
     public function onConnect($connection)
     {
-
+        Log::record('connection id =====> '. $connection->id);
     }
 
     /**
@@ -121,5 +113,15 @@ class Worker extends Server
 //            });
 //
 //        }
+
+        else if($worker->id === 2) {
+            Timer::add(1, function()use($worker){
+                // 遍历当前进程所有的客户端连接，发送当前服务器的时间
+                Log::record('connection id2 =====> '. count($worker->connections));
+
+            });
+
+        }
+
     }
 }
