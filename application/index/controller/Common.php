@@ -54,8 +54,9 @@ class Common extends Controller{
         // 给header.html中的变量赋值, index继承了common, index里面有fetch方法
         $this->assign([
             'description'=>$result[0]['description'], // 查看权限用的，不要删除
-            'title'=> 'ATS'
+            'title'=> 'ATS',
         ]);
+
 //        return $this->fetch('common/header',[]);
     }
     /*

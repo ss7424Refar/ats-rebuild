@@ -17,6 +17,12 @@ use think\Session;
  */
 class Index extends Common
 {
+
+    public function _initialize(){
+        parent::_initialize();
+        $this->assign('pushSocketUrl', config('pushman_web_socket'));
+    }
+
     public function DashBoard(){
 
         // 导航栏的样式
@@ -41,7 +47,6 @@ class Index extends Common
         $this->assign('portCheck','active');
         $this->assign('taskManager','');
         $this->assign('dashBoard','');
-
 
         // web socket url
         $this->assign('webSocketUrl',config('workman_web_socket'));

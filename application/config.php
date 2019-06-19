@@ -325,5 +325,7 @@ return [
     // session是否开启tpms的session
     'session_debug'       => false,
     // port check web socket
-    'workman_web_socket'  => 'ws://172.30.52.43:2346/'
+    'workman_web_socket'  => 'ws://172.30.52.43:2346/',
+    // push man
+    'pushman_web_socket'  => 'ws://172.30.52.43:2345/'
 ];

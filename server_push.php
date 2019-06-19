@@ -8,7 +8,7 @@
 
 define('APP_PATH', __DIR__ . '/application/');
 // 如果你的应用比较简单，模块和控制器都只有一个，那么可以在应用公共文件中绑定模块和控制器
-define('BIND_MODULE', 'push/worker');
+define('BIND_MODULE', 'push/PushMan');
 
 // 自定义变量
 //require __DIR__ . '/extend'. '/const.php';

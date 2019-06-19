@@ -6,7 +6,8 @@
 
 
 <!--PACE-->
-<script src="__PUBLIC_JS__/pace/pace.js"></script>
+<!--有点卡，暂时不用-->
+<!--<script src="__PUBLIC_JS__/pace/pace.js"></script>-->
 <!--    toastr-->
 <script src="__PUBLIC_JS__/toastr/toastr.min.js"></script>
 
@@ -21,8 +22,6 @@
     toastr.options.extendedTimeOut = 2000; // How long the toast will display after a user hovers over it
     // toastr.options.progressBar = true;
 </script>
-
-
 
 <!-- AdminLTE App -->
 <!--/! AdminLTE app.js-->
@@ -39,7 +38,31 @@
 <!--eggShell-->
 <script src="__PUBLIC_JS__/assets/eggShell.js"></script>
 
+<script>
+    // 公用的js, 但是要传入模板变量渲染, 貌似只能放在这里写了。
+    $(function () {
+        onlineSession();
+    });
 
+    // session counter
+    function onlineSession() {
+        if ("WebSocket" in window) {
+            // 打开一个 web socket
+            var ws = new WebSocket("{$pushSocketUrl}");
+
+            ws.onmessage = function (evt) {
+                var response = evt.data;
+                if (null != response) {
+                    console.log(response);
+                    $('#counter').html(response);
+                }
+            };
+        } else {
+            // 浏览器不支持 WebSocket
+            toastr.error("your browse not support WebSocket!");
+        }
+    }
+</script>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>

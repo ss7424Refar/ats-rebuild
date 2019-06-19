@@ -22,10 +22,15 @@ class Admin extends Common
     public function startServer()
     {
 
-        $cmd = "php " . ROOT_PATH . "server.php start > /dev/null 2>&1 &";
-        shell_exec($cmd);
+        $cmd = "sudo php " . ROOT_PATH . "server.php start > /dev/null 2>&1 &";
+        $cmd2 = "sudo php " . ROOT_PATH . "server_push.php start > /dev/null 2>&1 &";
 
-        return "start server";
+        shell_exec($cmd);
+        echo "start server". PHP_EOL;
+
+        shell_exec($cmd2);
+        echo "start server push";
+
     }
 
     /*
@@ -34,11 +39,14 @@ class Admin extends Common
     public function stopServer()
     {
 
-        $cmd = "php " . ROOT_PATH . "server.php stop > /dev/null 2>&1 &";
+        $cmd = "sudo php " . ROOT_PATH . "server.php stop > /dev/null 2>&1 &";
+        $cmd2 = "sudo php " . ROOT_PATH . "server_push.php stop > /dev/null 2>&1 &";
 
         shell_exec($cmd);
+        echo "stop server". PHP_EOL;
 
-        return "stop server";
+        shell_exec($cmd2);
+        echo "stop server push";
     }
 
     /*
@@ -47,7 +55,15 @@ class Admin extends Common
     public function getStatus()
     {
 
-        $cmd = "php " . ROOT_PATH . "server.php status";
+        $cmd = "sudo php " . ROOT_PATH . "server.php status";
+
+        echo '<pre>';
+        echo shell_exec($cmd);
+        echo '</pre>';
+
+        echo '<hr>';
+
+        $cmd = "sudo php " . ROOT_PATH . "server_push.php status";
 
         echo '<pre>';
         echo shell_exec($cmd);

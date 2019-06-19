@@ -105,23 +105,6 @@ class Worker extends Server
             });
 
         }
-//        else if($worker->id === 2) {
-//            Timer::add(2, function()use($worker){
-//                Log::record('task dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
-//                $watcher = controller('push/WatchTask');
-//                $watcher->dog();
-//            });
-//
-//        }
-
-        else if($worker->id === 2) {
-            Timer::add(1, function()use($worker){
-                // 遍历当前进程所有的客户端连接，发送当前服务器的时间
-                Log::record('connection id2 =====> '. count($worker->connections));
-
-            });
-
-        }
 
     }
 }
