@@ -79,7 +79,15 @@ SET SQL_SAFE_UPDATES=0;
 ### default_return_type
   1. 设置成`json`之后，网页都会被解析，只能设置成`html`便于跳转
   
-       
+
+### workman
+  1. workman一个主线程可以开启count个进程, 每个进程都可以连接N个客户端, 但是客户端之间的通信比较麻烦,
+     所以可以开一个进程会来的简单
+  2. 原先做了一个work.php, 但是指定了进程号, 所以又新建了一个server_push.php来推送消息
+  3. thinkphp5.1可以下载绑定多个workman, 但是考虑到可能有坑, 暂时不更新. 
+  4. 长连接说是要客户端和服务端做心跳的, 但是正式环境没有发现问题, 暂时这样子..
+  5. home配置启动workman命令要sudo, 可能www-data没有root权限. 正式环境去掉了sudo.   
+      
 ---
 ## thinkphp5目录结构
 

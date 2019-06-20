@@ -53,13 +53,14 @@
             ws.onmessage = function (evt) {
                 var response = evt.data;
                 if (null != response) {
+                    // 先测试
                     console.log(response);
                     $('#counter').html(response);
                 }
             };
         } else {
             // 浏览器不支持 WebSocket
-            toastr.error("your browse not support WebSocket!");
+            console.log('your browse not support WebSocket!');
         }
     }
 </script>

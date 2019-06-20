@@ -40,9 +40,12 @@ class UpdateTask extends Controller {
         // get total ats_task_tool_steps
         $total = Db::query('select count(*) as total from ats_task_tool_steps where task_id = ? ', [$taskId]);
         // get shelf_switch from  ats_task_basic
-        $shelf_switch = Db::query('select shelf_switch from ats_task_basic where task_id = ? ', [$taskId]);
-        $resultPath = ATS_RESULT_PATH. config('ats_tasks_header'). $shelf_switch[0]['shelf_switch']. config('ats_file_underline'). $taskId;
+//        $machine_name = Db::query('select machine_name from ats_task_basic where task_id = ? ', [$taskId]);
+//        $resultPath = ATS_RESULT_PATH. config('ats_tasks_header'). $shelf_switch[0]['shelf_switch']. config('ats_file_underline'). $taskId;
+        // result_path以机子名字开头, taskId结尾
+//        $resultPath = ATS_RESULT_PATH. $machine_name[0]['machine_name']. config('ats_file_underline'). $taskId;
 
+        // ver1.3.0.3修改, 弃用掉steps中的result_path, 添加result_path到task中
         $total = $total[0]['total'];
         // update ats_task_tool_steps by taskId and steps
         if ($steps < $total) {
@@ -52,8 +55,8 @@ class UpdateTask extends Controller {
                 ->where('steps', $steps)
                 ->update([
                     'status'  => $this->statusArray[$status],
-                    'tool_end_time' => Db::raw('now()'), // V5.0.18+版本开始是数组中使用exp查询和更新的话，必须改成下面的方式：
-                    'result_path' => $resultPath
+                    'tool_end_time' => Db::raw('now()') // V5.0.18+版本开始是数组中使用exp查询和更新的话，必须改成下面的方式：
+//                    'result_path' => $resultPath
                 ]);
             // update next tool start time
             Db::table('ats_task_tool_steps')
@@ -70,8 +73,8 @@ class UpdateTask extends Controller {
                 ->where('steps', $steps)
                 ->update([
                     'status'  => $this->statusArray[$status],
-                    'tool_end_time' => Db::raw('now()'), // V5.0.18+版本开始是数组中使用exp查询和更新的话，必须改成下面的方式：
-                    'result_path' => $resultPath
+                    'tool_end_time' => Db::raw('now()') // V5.0.18+版本开始是数组中使用exp查询和更新的话，必须改成下面的方式：
+//                    'result_path' => $resultPath
                 ]);
         }
 
@@ -93,6 +96,7 @@ class UpdateTask extends Controller {
                     'status'  => $taskStatus,
                     'process' => $process,
                     'task_end_time' => Db::raw('now()')
+//                    'result_path' => $resultPath
                 ]);
         } else {
             // only update process and status

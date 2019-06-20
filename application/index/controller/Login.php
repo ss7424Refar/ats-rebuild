@@ -12,6 +12,7 @@ use think\Controller;
 use think\Cookie;
 use think\Db;
 use think\Session;
+use think\Log;
 
 class Login extends Controller {
     public function check(){
@@ -31,6 +32,7 @@ class Login extends Controller {
                 // 跳转到首页
                 $user = Db::table('users')->field('login')->where('cookie_string', $userCookie)->find();
                 Session::set('transToAts', $user['login']);
+                Log::record('hello '. $user['login']);
                 $this->sessionAnalyse();
                 $this->redirect('index/dashboard');
             }

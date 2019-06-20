@@ -163,6 +163,12 @@
                                 </div>
                                 <div style="display:none;" data-topic="inputDmiInfo">
                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label">Manuafacturer</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="dmi_manufacturer" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-sm-3 control-label">Product Name</label>
                                         <div class="col-sm-9">
                                             <input type="text" class="form-control" name="dmi_product_name" >
@@ -248,6 +254,12 @@
                                     <label class="col-sm-3 control-label">Test Machine</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="machine_name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Manuafacturer</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_manufacturer" >
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -346,6 +358,12 @@
                                         <form class="form-horizontal ">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">Task ID</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Manuafacturer</label>
                                                 <div class="col-sm-8">
                                                     <p class="form-control-static"></p>
                                                 </div>
@@ -605,24 +623,24 @@
                     },
                     {
                         field: 'tool_start_time',
-                        title: 'Start Time',
+                        title: 'Start Time'
                     },
                     {
                         field: 'tool_end_time',
                         title: 'Finish Time'
-                    },
-                    {
-                        field: 'result_path',
-                        title: 'Result Path',
-                        formatter: function(value, row, index){
-                            if(Fail === row.status){
-                                return '<a href='+ value +'><i class="fa fa-times fa-fw"></i>&nbsp;linkTo</a>';
-                            } else if(Pass === row.status){
-                                return '<a href='+ value +'><i class="fa fa-check fa-fw"></i>&nbsp;linkTo</a>';
-                            }
-                            return "N/A";
-                        }
                     }
+                    // {
+                    //     field: 'result_path',
+                    //     title: 'Result Path',
+                    //     formatter: function(value, row, index){
+                    //         if(Fail === row.status){
+                    //             return '<a href='+ value +'><i class="fa fa-times fa-fw"></i>&nbsp;linkTo</a>';
+                    //         } else if(Pass === row.status){
+                    //             return '<a href='+ value +'><i class="fa fa-check fa-fw"></i>&nbsp;linkTo</a>';
+                    //         }
+                    //         return "N/A";
+                    //     }
+                    // }
                 ],
                 rowStyle: function(row, index){
                     if(Fail === row.status){
@@ -776,8 +794,14 @@
                 title: 'Task ID',
                 // sortable: true,
                 formatter:function(value, row){
-                    var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['shelf_switch'] + "_" + row['task_id'];
-                    return '<a href='+ path +'>' + 'ATS_' + value + '</a> ';
+                    // var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['shelf_switch'] + "_" + row['task_id'];
+                    if(null !== row['result_path']){
+                        var path = row['result_path'];
+                        console.log(path);
+                        return '<a href="'+ path +'">' + 'ATS_' + value + '</a> ';
+                    } else {
+                        return 'ATS_' + value;
+                    }
                 }
             }, {
                 field: 'machine_name',
@@ -1101,6 +1125,35 @@
     }
 
     function taskFormValidatorInit(target, option){
+        var machine_name_check = {
+            message: 'the testMachine is not valid',
+            validators: {
+                notEmpty: {
+                    message: 'The testMachine is required and can\'t be empty'
+                }
+            }
+        };
+
+        if ('edit' === option) {
+            machine_name_check = {
+                message: 'the testMachine is not valid',
+                validators: {
+                    notEmpty: {
+                        message: 'The testMachine is required and can\'t be empty'
+                    },
+                    stringLength: {
+                        min: 5,
+                        max: 30,
+                        message: 'The machine name must be more than 5 and less than 30 characters long'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
+                        message: 'The machine name can only consist of special character like ~!@#$%^&*-/, , number, en.'
+                    }
+                }
+            }
+        }
+
         target.bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {
@@ -1127,21 +1180,23 @@
 
                     }
                 },
-                machine_name: {
-                    message: 'the testMachine is not valid',
+                machine_name: machine_name_check,
+                dmi_manufacturer: {
+                    message: 'the Manuafacturer is not valid',
                     validators: {
                         notEmpty: {
-                            message: 'The testMachine is required and can\'t be empty'
+                            message: 'The Manuafacturer is required and can\'t be empty'
                         },
                         stringLength: {
-                            min: 5,
-                            max: 30,
-                            message: 'The machine name must be more than 5 and less than 30 characters long'
+                            min: 3,
+                            max: 50,
+                            message: 'The Manuafacturer must be more than 3 and less than 50 characters long'
                         },
                         regexp: {
                             regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
-                            message: 'The machine name can only consist of special character like ~!@#$%^&*-/, , number, en.'
+                            message: 'The Manuafacturer can only consist of special character like ~!@#$%^&*-/, , number, en.'
                         }
+
                     }
                 },
                 dmi_product_name: {

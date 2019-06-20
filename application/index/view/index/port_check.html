@@ -58,7 +58,7 @@ desired effect
                             <div class="alert bg-teal color-palette alert-dismissible">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                 <!--                                <h4> Alert!</h4>-->
-                                <i class="icon fa fa-linux fa-1.5x" style="color: black"></i> You are checking Port Status. <i style="font-size: 12px;color: yellow">The Using Shelf as below</i>
+                                <i class="icon fa fa-linux fa-1.5x" style="color: black"></i> You are checking Port Status. <i style="font-size: 12px;color: yellow">The Using Shelf Total <span id="ports">Counting</span> as below</i>
                             </div>
                         </div>
                         <div class="box-body">
@@ -135,11 +135,12 @@ desired effect
                     // $('#list').append('<li><span class="text-info small"><i>' + response.message + '</i></span></li>');
 
                     // table
-                    console.log(response.result);
+                    // console.log(response.result);
                     var tableData = response.result;
 
                     $('#content').empty();
                     if (0 != tableData.length){
+                        $('#ports').html(tableData.length);
                         for (var i = 0; i < tableData.length; i++) {
                             $('#content').append('<tr></tr>');
                             // $('#content tr:last').append('<td>' + tableData[i].id + '</td>');
@@ -161,6 +162,7 @@ desired effect
 
             ws.onclose = function()
             {
+                console.log('ws connect close..');
                 // 关闭 websocket
                 // setTimeout("toastr.success(\"ws connect close...\");", 80);
             };
@@ -169,7 +171,8 @@ desired effect
         else
         {
             // 浏览器不支持 WebSocket
-            toastr.error("your browse not support WebSocket!");
+            console.log('your browse not support WebSocket!');
+            // toastr.error("your browse not support WebSocket!");
         }
     }
 </script>

@@ -65,8 +65,8 @@ class TaskManager extends Common{
                     if ($data[2] == $machineId){
 //                        $tmpArray = array('product'=> $data[6], 'sn' => $data[7], 'pn' => $data[8], 'oem' => $data[9], 'sys'=> $data[10], 'lanIp' => $data[3], 'shelfId' => $data[0], 'bios'=>$data[11]);
 //                        array_push($jsonResult, $tmpArray);
-                        $jsonResult[] = $data[6];$jsonResult[] = $data[7];$jsonResult[] = $data[8];$jsonResult[] = $data[9];
-                        $jsonResult[] = $data[10];$jsonResult[] = $data[11];$jsonResult[] = $data[3];$jsonResult[] = $data[0];
+                        $jsonResult[] = $data[6];$jsonResult[] = $data[7];$jsonResult[] = $data[8];$jsonResult[] = $data[9];$jsonResult[] = $data[10];
+                        $jsonResult[] = $data[11];$jsonResult[] = $data[12];$jsonResult[] = $data[3];$jsonResult[] = $data[0];
                         break;
                     }
                 }
@@ -324,12 +324,18 @@ class TaskManager extends Common{
                     exit();
                 } else {
                     $startTime = date("Y-m-d H:i:s");
+
+                    $machine_name = Db::query('select machine_name from ats_task_basic where task_id = ? ', [$taskId]);
+                    // result_path以机子名字开头, taskId结尾
+                    $resultPath = ATS_RESULT_PATH. $machine_name[0]['machine_name']. config('ats_file_underline'). $taskId;
+
                     // update status for task
                     $atsTaskBasic = new AtsTaskBasic();
                     $atsTaskBasic->save([
                         'status'  => ONGOING,
                         'process' => 0,
-                        'task_start_time' => $startTime
+                        'task_start_time' => $startTime,
+                        'result_path' => $resultPath
                     ],['task_id' => $taskId]);
                     $atsTaskToolSteps = new AtsTaskToolSteps();
                     $atsTaskToolSteps->save([
@@ -375,13 +381,13 @@ class TaskManager extends Common{
 
     public function getTaskInfoById(){
         $taskId = $this->request->param('taskId');
-        $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec')->select();
+        $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, dmi_manufacturer, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec')->select();
         return json_encode($result);
     }
 
     public function getUpdateTaskInfoById(){
         $taskId = $this->request->param('taskId');
-        $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, machine_id, machine_name, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec, lan_ip, shelf_switch')->select();
+        $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, machine_id, machine_name, dmi_manufacturer, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec, lan_ip, shelf_switch')->select();
         return json_encode($result);
     }
 
