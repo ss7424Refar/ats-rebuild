@@ -23,3 +23,9 @@
 + **[Add]** ATS Release Note 
 + **[Add]** Expand and Rerun function for tasks
 + **[Update]** Enhancing User Experience 
+
+## ATS 1.3.0.2
+`2019-06-21`
++ **[Add]** DMI Manuafacturer field
++ **[Add]** Online Counter
++ **[Update]** show result path friendly
