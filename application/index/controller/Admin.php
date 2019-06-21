@@ -16,6 +16,12 @@ use think\db;
 
 class Admin extends Common
 {
+
+    public function _initialize(){
+        parent::_initialize();
+        $this->assign('pushSocketUrl', config('pushman_web_socket'));
+    }
+
     /*
      * http://localhost/ats/Index/Admin/startServer
      */
