@@ -35,6 +35,7 @@ class MachineDetail extends Controller {
 //            ->select();
 
         $res = Db::query('SELECT * FROM itd.d_main_engine where fixed_no = ?;', [$no]);
+        // 没数据返回'[]'
         return json_encode($res, JSON_UNESCAPED_UNICODE);
     }
 

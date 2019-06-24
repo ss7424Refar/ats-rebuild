@@ -23,7 +23,7 @@ class WatchExpired {
     public function dog()
     {
         // select the data expired
-        $result = Db::query('select * from ats_task_tool_steps  where TIMESTAMPDIFF(hour, tool_start_time, now()) >= 24 and status = ? ', [ONGOING]);
+        $result = Db::query('select * from ats_task_tool_steps  where TIMESTAMPDIFF(hour, tool_start_time, now()) >= 48 and status = ? ', [ONGOING]);
 
         for ($i = 0; $i < count($result); $i++) {
             $taskId = $result[$i]['task_id'];
