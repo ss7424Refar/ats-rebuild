@@ -255,7 +255,12 @@ class TaskManager extends Common{
 
         return "success";
     }
-    /* @throws
+
+    /**
+     * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * assign pending Task
      */
     public function assignTask() {
@@ -379,18 +384,37 @@ class TaskManager extends Common{
         return $total;
     }
 
+    /**
+     * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getTaskInfoById(){
         $taskId = $this->request->param('taskId');
         $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, dmi_manufacturer, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec')->select();
         return json_encode($result);
     }
 
+    /**
+     * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getUpdateTaskInfoById(){
         $taskId = $this->request->param('taskId');
         $result = Db::table('ats_task_basic')->where('task_id', $taskId)->field('task_id, machine_id, machine_name, dmi_manufacturer, dmi_product_name, dmi_serial_number, dmi_part_number, dmi_oem_string, dmi_system_config, bios_ec, lan_ip, shelf_switch')->select();
         return json_encode($result);
     }
 
+    /**
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getSubTaskInfoById(){
         $taskId = $this->request->param('taskId');
         $pageSize = $this->request->param('pageSize');
@@ -451,6 +475,12 @@ class TaskManager extends Common{
         return "success";
     }
 
+    /**
+     * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getUsers(){
         $query = $this->request->param('q');
 
@@ -474,4 +504,45 @@ class TaskManager extends Common{
         return json_encode($jsonResult);
     }
 
+    /**
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function reverseTask() {
+        $taskId = $this->request->param('taskId');
+
+        $shelf_switch = Db::query('select shelf_switch from ats_task_basic where task_id = ? ', [$taskId]);
+        $filePath = config('ats_pe_task'). config('ats_tasks_header'). $shelf_switch[0]['shelf_switch']. config('ats_file_underline'). $taskId. config('ats_file_suffix');
+
+        if (file_exists($filePath)) {
+            Log::record('reverse task = '. $taskId. ' fileName = '. $filePath);
+            if (!unlink($filePath)) {
+                Log::record('unlink fileName = '. $filePath . ' fail');
+                return 'fail';
+            } else {
+                Log::record('unlink fileName = '. $filePath . ' success');
+                // 更新表字段到pending状态 ats_basic
+                Db::table('ats_task_basic')->where('task_id', $taskId)->where('status', '<>', PENDING)
+                    ->update([
+                       'status' => PENDING,
+                        'process' => 0,
+                        'task_start_time' => null,
+                        'task_end_time' => null  // 好像可以不用更新finish_time, ongoing状态下finish time本身为null
+                    ]);
+
+                // 更新ats_steps pending状态, tool_create_time会被更新掉
+                Db::table('ats_task_tool_steps')->where('task_id', $taskId)->where('status', '<>', PENDING)
+                    ->update([
+                        'status' => PENDING,
+                        'tool_start_time' => null,
+                        'tool_end_time' => null
+                    ]);
+                return 'done';
+            }
+        } else {
+            Log::record( ' fileName = '. $filePath. ' not exist');
+            return 'fail';
+        }
+    }
 }

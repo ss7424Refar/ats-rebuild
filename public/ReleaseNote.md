@@ -21,7 +21,7 @@
 ## ATS 1.3.0.1
 `2019-06-09`
 + **[Add]** ATS Release Note 
-+ **[Add]** Expand and Rerun function for tasks
++ **[Add]** Expand and Copy function for tasks
 + **[Update]** Enhancing User Experience 
 
 ## ATS 1.3.0.2
@@ -29,3 +29,8 @@
 + **[Add]** DMI Manuafacturer field
 + **[Add]** Online Counter
 + **[Update]** show result path friendly
+
+## ATS 1.3.0.3
+`2019-06-26`
++ **[Add]** Revert function to restart testpc session
++ **[Add]** send result mail only once time
