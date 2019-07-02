@@ -248,8 +248,8 @@ class SendMail extends Controller {
                 '<p style="margin-top: 10px">Click here to view task list:&nbsp;&nbsp;&nbsp;<a style="font-size:12px;" href="'.ATS_URL .'">Link To ATS</a></p>' .
                 '</html>';
 
-            return $content;
-//            return MailerUtil::send($emailTo, config('mail_cc'), $mailTitle, $content);
+//            return $content;
+            return MailerUtil::send($emailTo, config('mail_cc'), $mailTitle, $content);
         }
     }
 
