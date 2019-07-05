@@ -433,8 +433,10 @@
 <!--    bootstrap dataTables-->
 <script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/bootstrap-table.min.js"></script>
 <script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/locale/bootstrap-table-en-US.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_JS__/colResizable/colResizable-1.6.min.js"></script>
 <!--    bootstrap dataTables extensions-->
 <script src="__PUBLIC_JS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
+<script src="__PUBLIC_JS__/bootstrap-table-develop/extensions/resizable/bootstrap-table-resizable.min.js"></script>
 <!-- iCheck 1.0.1 -->
 <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
 <!-- bootbox4.4 -->
@@ -752,7 +754,7 @@
         taskTable.bootstrapTable({
             url: resUrl,    //请求后台的URL（*）
             method: 'post',                      //请求方式（*）
-            classes: 'table table-responsive table-hover table-no-bordered', // table 样式
+            classes: 'table table-responsive table-hover table-no-bordered', // table 样式 table-no-bordered
             iconSize: 'sm',
             buttonsClass: '',                   // table 按钮颜色设置
             toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -792,6 +794,7 @@
             }, {
                 field: 'task_id',
                 title: 'Task ID',
+                width: '5%',
                 // sortable: true,
                 formatter:function(value, row){
                     // var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['shelf_switch'] + "_" + row['task_id'];
@@ -839,6 +842,7 @@
                 {
                     field: 'process',
                     title: 'Process',
+                    width: '10%',
                     formatter: function (value) {
 
                         if (null == value) {
@@ -853,8 +857,8 @@
                     field: 'tester',
                     title: 'Tester'
                 }, {
-                    field: 'tool',
-                    title: 'Tool',
+                    field: 'Action',
+                    title: 'Action',
                     formatter: function (value, row) {
                         var id = row['task_id'];
                         var sid = row['sid'];
@@ -862,30 +866,15 @@
 
                         if (Pending === row['status']) {
                             if (null === sid) {
-                                result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
+                                result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add tool' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
                             } else {
-                                result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+                                result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit tool' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete tool' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
                             }
-                        }
-                        else {
+                        } else if (Ongoing === row['status']) {
+                            result += "<a class='btn btn-xs bg-yellow' href='#' " + " onclick=\"return Reverse(\'" + id + "\')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='revert task' style='margin: 3px'><span class='fa fa-reply-all'></span></a>";
+                        } else {
                             // result += "<a class='btn btn-xs bg-yellow' href='#' " + "data-toggle=\"tooltip\" data-placement=\"bottom\" title='ban' style='margin: 3px'><span class='glyphicon glyphicon-ban-circle'></span></a>";
-                            result += "-";
-                        }
-
-                        return result;
-                    }
-                }, {
-                    field: 'add',
-                    title: 'Additional',
-                    formatter: function (value, row) {
-                        var id = row['task_id'];
-                        var result="";
-
-                        if (Ongoing === row['status']) {
-                            result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return Reverse(\'" + id + "\')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='revert' style='margin: 3px'><span class='fa fa-warning'></span></a>";
-                        }
-                        else {
                             result += "-";
                         }
 
@@ -893,6 +882,7 @@
                     }
                 }
             ],
+            resizable: true,
             //注册加载子表的事件。
             onExpandRow: function (index, row, $detail) {
                 initSubTable(index, row, $detail);

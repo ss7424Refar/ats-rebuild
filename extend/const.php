@@ -19,6 +19,7 @@ define('JUMP_START', 'JumpStart');
 define('RECOVERY', 'Recovery');
 define('C_TEST', 'C-Test');
 define('TREBOOT', 'Treboot');
+define('TAndD', 'TAndD');
 
 /*
  * ATS file path

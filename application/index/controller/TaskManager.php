@@ -449,9 +449,9 @@ class TaskManager extends Common{
             $taskId = $multiTask[$i]->task_id;
 
             $sqlBasic = "insert into ats_task_basic (task_id, machine_id, machine_name, category, lan_ip, shelf_switch, ".
-                    "    dmi_product_name, dmi_part_number, dmi_serial_number, dmi_oem_string, dmi_system_config, bios_ec,".
+                    "  dmi_manufacturer, dmi_product_name, dmi_part_number, dmi_serial_number, dmi_oem_string, dmi_system_config, bios_ec,".
                     "    status, process, task_create_time, task_start_time, task_end_time, tester) ".
-                    "SELECT NULL, machine_id, machine_name, category, lan_ip, shelf_switch, dmi_product_name, dmi_part_number,".
+                    "SELECT NULL, machine_id, machine_name, category, lan_ip, shelf_switch, dmi_manufacturer, dmi_product_name, dmi_part_number,".
                     "    dmi_serial_number,dmi_oem_string, dmi_system_config, bios_ec, '" . PENDING . "', NULL, now(), NULL, NULL, '". $this->loginUser ."' ".
                     "FROM ats_task_basic where task_id = ? ";
 

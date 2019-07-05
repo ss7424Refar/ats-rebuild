@@ -290,4 +290,38 @@ class ToolMaker {
 
         return $template;
     }
+
+    public static function getTAndD($index) {
+
+        $template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_'. $index .'">' . '<b>'. TAndD .'</b></button>'.
+            '<div id="collapse_'. $index .'" class="panel-collapse collapse in">'.
+            '    <div class="panel-body form-horizontal">'.
+            '        <div class="form-group">'.
+            '            <label class="col-sm-1 control-label">Test Image</label>'.
+            '            <div class="col-sm-4">'.
+            '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'.
+            '            </div>'.
+            '            <label class="col-sm-1 control-label">TD Image</label>'.
+            '            <div class="col-sm-4">'.
+            '                <select class="form-control select2" name="TestImage" id="tdImage"></select>'.
+            '            </div>'.
+            '        </div>'.
+            '        <div class="form-group">'.
+            '            <label class="col-sm-1 control-label">Test Image</label>'.
+            '            <div class="col-sm-4">'.
+            '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'.
+            '            </div>'.
+            '            <label class="col-sm-1 control-label">TD Image</label>'.
+            '            <div class="col-sm-4">'.
+            '                <select class="form-control select2" name="TestImage" id="tdImage"></select>'.
+            '            </div>'.
+            '        </div>'.
+            '        <hr>'.
+            '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>'.
+            '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>'.
+            '    </div>'.
+            '</div>';
+        return $template;
+
+    }
 }

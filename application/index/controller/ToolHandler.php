@@ -62,6 +62,9 @@ class ToolHandler extends Common {
         } else if (TREBOOT == $selection) {
             return ToolMaker::getTreboot($index) ;
 
+        } else if (TAndD == $selection) {
+            return ToolMaker::getTAndD($index) ;
+
         }
 
     }
