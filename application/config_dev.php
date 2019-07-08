@@ -319,6 +319,13 @@ return [
     'ats_file_underline' =>  '_',
     'ats_tasks_header'   =>  'Task_',
 
+    // +----------------------------------------------------------------------
+    // | TANDD path
+    // +----------------------------------------------------------------------
+    'ats_td_image'  => '/opt/',
+    'ats_td_bios' => '/home/',
+    'ats_td_config' => '/tmp/',
+
     'ats_sign_out_url'    =>  'http://192.168.100.43/tpms/index.php',
 
     // session是否开启tpms的session

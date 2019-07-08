@@ -110,8 +110,8 @@
                             </div>
                         </div>
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-info btn-sm col-md-offset-5" id="search_submit"><i class="fa fa-check-circle fa-fw"></i>&nbsp;Submit</button>
-                            <a href="TaskManager" class="btn btn-success btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</a>
+                            <button type="submit" class="btn btn-primary btn-sm col-md-offset-5" id="search_submit"><i class="fa fa-check-circle fa-fw"></i>&nbsp;Submit</button>
+                            <a href="TaskManager" class="btn btn-default btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</a>
                         </div>
                     </div>
                 </div>
@@ -794,7 +794,7 @@
             }, {
                 field: 'task_id',
                 title: 'Task ID',
-                width: '5%',
+                // width: '5%',
                 // sortable: true,
                 formatter:function(value, row){
                     // var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['shelf_switch'] + "_" + row['task_id'];
@@ -842,7 +842,7 @@
                 {
                     field: 'process',
                     title: 'Process',
-                    width: '10%',
+                    // width: '10%',
                     formatter: function (value) {
 
                         if (null == value) {
@@ -855,7 +855,7 @@
                 },
                 {
                     field: 'tester',
-                    title: 'Tester'
+                    title: 'Tester',
                 }, {
                     field: 'Action',
                     title: 'Action',

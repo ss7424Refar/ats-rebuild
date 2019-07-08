@@ -19,7 +19,8 @@ function formToJson() {
             var item ={
                 Tool_Type:toolType,
                 Test_Image:_father.find("#TestImage").select2('val'),
-                OS_Activation:_father.find("input[name^='OS Activation']:checked").val()
+                OS_Activation:_father.find("input[name^='OS Activation']:checked").val(),
+                Count:_father.find('#count').val()
             };
             obj.push(item);
         } else if (C_Test === toolType) {
@@ -190,6 +191,18 @@ function setRecovery(i) {
         '                </label>'+
         '            </div>'+
         '        </div>'+
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Count</label>'+
+        '            <div class="col-sm-4">'+
+        '                <div class="input-group spinner col-sm-2" data-trigger="spinner">'+
+        '                    <input id="count" type="text" class="form-control text-center" value="1" data-max="1000" data-min="1" data-step="1" data-rule="quantity">'+
+        '                    <div class="input-group-addon">'+
+        '	                     <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
+        '		                 <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
+        '                    </div>'+
+        '                </div>'+
+        '            </div>'+
+        '        </div>'+
         '        <hr>'+
         '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>' +
         '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
@@ -309,15 +322,13 @@ function setTreboot(i) {
         '            </div>'+
         '            <label class="col-sm-1 control-label">Reboot</label>'+
         '            <div class="col-sm-5">'+
-        '                <div id="Count">'+
-        '                    <div class="input-group spinner col-sm-4" data-trigger="spinner">'+
-        '                        <input id="reboot" type="text" class="form-control text-center" value="500" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'+
-        '                        <div class="input-group-addon">'+
-        '	                         <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
-        '		                     <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
-        '                        </div>'+
-        '                        <label class="input-group-addon"><input type="checkbox" name="reboot_'+ i +'" class="flat"/></label>'+
+        '                <div class="input-group spinner col-sm-4" data-trigger="spinner">'+
+        '                    <input id="reboot" type="text" class="form-control text-center" value="500" data-max="1000" data-min="0" data-step="1" data-rule="quantity">'+
+        '                    <div class="input-group-addon">'+
+        '	                     <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
+        '		                 <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
         '                    </div>'+
+        '                    <label class="input-group-addon"><input type="checkbox" name="reboot_'+ i +'" class="flat"/></label>'+
         '                </div>'+
         '            </div>'+
         '        </div>'+

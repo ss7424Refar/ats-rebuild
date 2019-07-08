@@ -172,7 +172,7 @@ desired effect
                     success : function (result) {
                         if ("done" === result) {
                             toastr.success("Add Tool Steps Success");
-                            setTimeout("window.location.href=\"TaskManager\";", 500);
+                            // setTimeout("window.location.href=\"TaskManager\";", 500);
                         }
 
                     },
@@ -289,6 +289,9 @@ desired effect
                     {radioClass: 'iradio_minimal-blue'}
                 );
             });
+
+            // count
+            obj.find('[data-trigger="spinner"]').spinner();
 
 
         } else if (C_Test === selection) {

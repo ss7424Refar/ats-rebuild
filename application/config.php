@@ -320,6 +320,13 @@ return [
     'ats_file_underline' =>  '_',
     'ats_tasks_header'   =>  'Task_',
 
+    // +----------------------------------------------------------------------
+    // | TANDD path
+    // +----------------------------------------------------------------------
+    'ats_td_image'  => '/opt/hello/TandD/Images/',
+    'ats_td_bios' => '/opt/hello/Bios/',
+    'ats_td_config' => '/opt/hello/TandD/TDConfig/',
+
     'ats_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
 
     // session是否开启tpms的session

@@ -63,6 +63,7 @@ desired effect
                                         <option>Recovery</option>
                                         <option>C-Test</option>
                                         <option>Treboot</option>
+                                        <option>TAndD</option>
                                     </select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
@@ -318,6 +319,9 @@ desired effect
                 );
             });
 
+            // count
+            obj.find('[data-trigger="spinner"]').spinner();
+
         } else if (C_Test === selection) {
             // week
             obj.find('#week').select2({
@@ -494,6 +498,11 @@ desired effect
                 $(this).iCheck('check');
             }
         });
+
+        // count
+        obj.find('[data-trigger="spinner"]').spinner();
+        obj.find('#count').val(item.Count);
+
     }
 
     function setCTestData(obj, item) {
