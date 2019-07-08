@@ -69,6 +69,15 @@ function formToJson() {
                 SecDelay:_father.find('#timeOut').val()
             };
             obj.push(item);
+        } else if (TAndD === toolType) {
+            var item ={
+                Tool_Type:toolType,
+                Test_Image:_father.find("#TestImage").select2('val'),
+                Td_Image:_father.find("#tdImage").select2('val'),
+                Td_Bios:_father.find("#bios").select2('val'),
+                TD_Config:_father.find("#tdConfig").select2('val')
+            };
+            obj.push(item);
         }
 
     });
@@ -118,6 +127,48 @@ function validateFormData() {
         toastr.error(msg);
     }
     return isNG;
+
+}
+
+// initData 初始值， dataType表示获取下拉框的类别
+function select2Init(obj, url, initData, dataType) {
+    if ('' === initData) {
+        obj.select2({
+            width: "100%",
+            ajax: {
+                url: url,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {q: params.term, type: dataType};
+                },
+                processResults: function (data) {
+                    return {results: data};
+                },
+                cache: false
+            },
+            placeholder: 'Please Select',
+            allowClear: true
+        });
+    } else {
+        obj.select2({
+            width: "100%",
+            ajax: {
+                url: url,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {q: params.term, type: dataType};
+                },
+                processResults: function (data) {
+                    return {results: data};
+                },
+                cache: false
+            },
+            placeholder: 'Please Select',
+            allowClear: true
+        }).html('<option value="' + initData + '">' + initData + '</option>').trigger("change");
+    }
 
 }
 

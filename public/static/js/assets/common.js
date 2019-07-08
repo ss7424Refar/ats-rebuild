@@ -12,6 +12,7 @@ const JumpStart = 'JumpStart';
 const Recovery = 'Recovery';
 const C_Test = 'C-Test';
 const Treboot = 'Treboot';
+const TAndD = 'TAndD';
 
 // times
 const Hour = 'hour';

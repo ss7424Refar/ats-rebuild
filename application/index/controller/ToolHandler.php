@@ -14,41 +14,26 @@ use app\index\model\AtsTaskToolSteps;
 use ext\ToolMaker;
 
 class ToolHandler extends Common {
-    /*
-     * select2 plugins
-     */
-    public function getTestImage(){
+
+    public function getFileName(){
         $query = $this->request->param('q');
-        $handler = opendir(config('ats_pe_image'));
+        $type = $this->request->param('type');
 
-        $i = 1;
-        $jsonResult = array();
-
-        while (($filename = readdir($handler)) !== false) {
-            //略过linux目录的名字为'.'和‘..'的文件
-            if ($filename != "." && $filename != "..") {
-                if (empty(trim($query))) {
-                    $tmpArray = array('id' => $filename, 'text' => $filename);
-                    $i = $i + 1;
-                    array_push($jsonResult, $tmpArray);
-                } else {
-                    if (stristr($filename, $query) !== false) {
-                        $tmpArray = array('id' => $filename, 'text' => $filename);
-                        $i = $i + 1;
-                        array_push($jsonResult, $tmpArray);
-                    }
-                }
-            }
+        if ('testImage' == $type) {
+            return $this->getSearchFile(config('ats_pe_image'), $query);
+        } elseif ('tdImage' == $type) {
+            return $this->getSearchFile(config('ats_td_image'), $query);
+        } elseif ('bios' == $type) {
+            return $this->getSearchFile(config('ats_td_bios'), $query);
+        } elseif ('tdConfig' == $type) {
+            return $this->getSearchFile(config('ats_td_config'), $query);
         }
-
-        return json_encode($jsonResult);
-
+        return '';
     }
 
     public function getTool(){
         $selection = $this->request->param('selection');// 需要继承控制器
         $index = $this->request->param('collapseId');
-
 
         if (JUMP_START == $selection) {
             return ToolMaker::getJumpStart($index);
@@ -157,5 +142,31 @@ class ToolHandler extends Common {
             return 'fail';
         }
 
+    }
+
+    private function getSearchFile($path, $query) {
+        $handler = opendir($path);
+
+        $i = 1;
+        $jsonResult = array();
+
+        while (($filename = readdir($handler)) !== false) {
+            //略过linux目录的名字为'.'和‘..'的文件
+            if ($filename != "." && $filename != "..") {
+                if (empty(trim($query))) {
+                    $tmpArray = array('id' => $filename, 'text' => $filename);
+                    $i = $i + 1;
+                    array_push($jsonResult, $tmpArray);
+                } else {
+                    if (stristr($filename, $query) !== false) {
+                        $tmpArray = array('id' => $filename, 'text' => $filename);
+                        $i = $i + 1;
+                        array_push($jsonResult, $tmpArray);
+                    }
+                }
+            }
+        }
+
+        return json_encode($jsonResult);
     }
 }

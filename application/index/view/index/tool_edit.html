@@ -259,24 +259,7 @@ desired effect
             // testImage
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
-                _this.select2({
-                    width: "100%",
-                    ajax: {
-                        url: "{:url('ToolHandler/getTestImage')}",
-                        dataType: 'json',
-                        delay: 250,
-                        data: function (params) {
-                            return {q: params.term};
-                        },
-                        processResults: function (data) {
-                            return {results: data};
-                        },
-                        cache: false
-                    },
-                    placeholder: 'Please Select',
-                    allowClear: true
-                }).html('<option value="' + 'Keep Current Image' + '">' + 'Keep Current Image' + '</option>').trigger("change");
-
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", 'Keep Current Image', 'testImage');
             });
 
             // Execute Job
@@ -293,23 +276,7 @@ desired effect
             // testImage
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
-                _this.select2({
-                    width: "100%",
-                    ajax: {
-                        url: "{:url('ToolHandler/getTestImage')}",
-                        dataType: 'json',
-                        delay: 250,
-                        data: function (params) {
-                            return {q: params.term};
-                        },
-                        processResults: function (data) {
-                            return {results: data};
-                        },
-                        cache: false
-                    },
-                    placeholder: 'Please Select',
-                    allowClear: true
-                });
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'testImage');
 
             });
             // OS Activation
@@ -350,46 +317,14 @@ desired effect
             // testImage
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
-                _this.select2({
-                    width: "100%",
-                    ajax: {
-                        url: "{:url('ToolHandler/getTestImage')}",
-                        dataType: 'json',
-                        delay: 250,
-                        data: function (params) {
-                            return {q: params.term};
-                        },
-                        processResults: function (data) {
-                            return {results: data};
-                        },
-                        cache: false
-                    },
-                    placeholder: 'Please Select',
-                    allowClear: true
-                });
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'testImage');
 
             });
         } else if (Treboot === selection) {
             // testImage
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
-                _this.select2({
-                    width: "100%",
-                    ajax: {
-                        url: "{:url('ToolHandler/getTestImage')}",
-                        dataType: 'json',
-                        delay: 250,
-                        data: function (params) {
-                            return {q: params.term};
-                        },
-                        processResults: function (data) {
-                            return {results: data};
-                        },
-                        cache: false
-                    },
-                    placeholder: 'Please Select',
-                    allowClear: true
-                });
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'testImage');
 
             });
             // jquery spinner init
@@ -417,23 +352,7 @@ desired effect
         // testImage
         obj.find('select[name="TestImage"]').each(function () {
             var _this = $(this);
-            _this.select2({
-                width: "100%",
-                ajax: {
-                    url: "{:url('ToolHandler/getTestImage')}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {q: params.term};
-                    },
-                    processResults: function (data) {
-                        return {results: data};
-                    },
-                    cache: false
-                },
-                placeholder: 'Please Select',
-                allowClear: true
-            }).html('<option value="' + item.Test_Image + '">' + item.Test_Image + '</option>').trigger("change");
+            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
 
         });
 
@@ -468,23 +387,7 @@ desired effect
         // testImage
         obj.find('select[name="TestImage"]').each(function () {
             var _this = $(this);
-            _this.select2({
-                width: "100%",
-                ajax: {
-                    url: "{:url('ToolHandler/getTestImage')}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {q: params.term};
-                    },
-                    processResults: function (data) {
-                        return {results: data};
-                    },
-                    cache: false
-                },
-                placeholder: 'Please Select',
-                allowClear: true
-            }).html('<option value="' + item.Test_Image + '">' + item.Test_Image + '</option>').trigger("change");
+            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
 
         });
 
@@ -552,24 +455,7 @@ desired effect
         // testImage
         obj.find('select[name="TestImage"]').each(function () {
             var _this = $(this);
-            _this.select2({
-                width: "100%",
-                ajax: {
-                    url: "{:url('ToolHandler/getTestImage')}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {q: params.term};
-                    },
-                    processResults: function (data) {
-                        return {results: data};
-                    },
-                    cache: false
-                },
-                placeholder: 'Please Select',
-                allowClear: true
-            }).html('<option value="' + item.Test_Image + '">' + item.Test_Image + '</option>').trigger("change");
-
+            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
         });
 
     }
@@ -578,23 +464,7 @@ desired effect
         // testImage
         obj.find('select[name="TestImage"]').each(function () {
             var _this = $(this);
-            _this.select2({
-                width: "100%",
-                ajax: {
-                    url: "{:url('ToolHandler/getTestImage')}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {q: params.term};
-                    },
-                    processResults: function (data) {
-                        return {results: data};
-                    },
-                    cache: false
-                },
-                placeholder: 'Please Select',
-                allowClear: true
-            }).html('<option value="' + item.Test_Image + '">' + item.Test_Image + '</option>').trigger("change");
+            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
 
         });
 

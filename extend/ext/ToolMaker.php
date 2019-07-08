@@ -319,7 +319,7 @@ class ToolMaker {
             '        <div class="form-group">'.
             '            <label class="col-sm-1 control-label">Bios</label>'.
             '            <div class="col-sm-4">'.
-            '                <select class="form-control select2" name="Bios" id="bios"></select>'.
+            '                <select class="form-control select2" name="bios" id="bios"></select>'.
             '            </div>'.
             '            <label class="col-sm-1 control-label">TD Config</label>'.
             '            <div class="col-sm-4">'.
