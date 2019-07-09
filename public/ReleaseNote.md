@@ -34,3 +34,9 @@
 `2019-06-26`
 + **[Add]** Revert function to restart testpc session
 + **[Add]** send result mail only once time
+
+## ATS 1.4.0.0
+`2019-07-09`
++ **[Add]** TAndD function
++ **[Add]** task table can be adjusted
++ **[Update]** baseline mail css style
