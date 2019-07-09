@@ -326,6 +326,17 @@ class ToolMaker {
             '                <select class="form-control select2" name="tdConfig" id="tdConfig"></select>'.
             '            </div>'.
             '        </div>'.
+            '        <div class="form-group">'.
+            '            <label class="col-sm-1 control-label">Type</label>'.
+            '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'.
+            '                <label style="margin-right: 19px">'.
+            '                    <input type="radio" name="Type_'. $index .'" class="minimal" value="Auto" checked/> Auto'.
+            '                </label>'.
+            '                <label style="margin-right: 19px">'.
+            '                    <input type="radio" name="Type_'. $index .'" class="minimal" value="NotAuto"/> NotAuto'.
+            '                </label>'.
+            '            </div>'.
+            '        </div>'.
             '        <hr>'.
             '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>'.
             '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>'.

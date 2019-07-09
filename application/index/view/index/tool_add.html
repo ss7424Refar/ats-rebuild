@@ -75,7 +75,7 @@ desired effect
                                         <option>Recovery</option>
                                         <option>C-Test</option>
                                         <option>Treboot</option>
-                                        <option>TAndD</option>
+                                        <option>TandD</option>
                                     </select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
@@ -131,6 +131,7 @@ desired effect
 
 <script>
     $(function () {
+        urlLink = "{:url('ToolHandler/getFileName')}";
 
         // selection for toolName
         $('select[name="selection"]').select2({
@@ -146,12 +147,12 @@ desired effect
             }
 
         }).on('click', '.addButton', function () {
-            addToolByButton(2, $(this));
+            addToolByButton(2, $(this), urlLink);
 
         });
 
         $('#addTool').click(function () {
-            addToolByButton(1);
+            addToolByButton(1, null, urlLink);
         });
 
 
@@ -172,7 +173,7 @@ desired effect
                     success : function (result) {
                         if ("done" === result) {
                             toastr.success("Add Tool Steps Success");
-                            // setTimeout("window.location.href=\"TaskManager\";", 500);
+                            setTimeout("window.location.href=\"TaskManager\";", 500);
                         }
 
                     },
@@ -186,161 +187,6 @@ desired effect
         })
         
     });
-
-    function addToolByButton(type, obj) {
-        var selection, toolId;
-        selection= $('select[name="selection"]').select2('val');
-        var collapseId = Number($('#forCollapse').text()); // 初始值为0
-        $.ajax({
-            type : "post",
-            url: "{:url('ToolHandler/getTool')}",
-            data: {
-                selection : selection,
-                collapseId : collapseId
-            },
-            success : function (result) {
-                if ('none' === $('#content').css('display')){
-                    $('#content').css('display', 'block');
-                }
-                if (1 === type) {
-                    $('#box_body').append('<div>' + result +'</div>');
-                    lastDiv = $('#box_body').children('div:last');
-                    addThenInit(selection, lastDiv);
-
-                } else if (2 === type) {
-                    lastDiv = obj.parent().parent().parent().parent();
-                    lastDiv.after('<div>' + result +'</div>');
-                    addThenInit(selection, lastDiv.next());
-
-                }
-            },
-            error : function(){
-                toastr.error("Add Fail, Try Again");
-            },
-            complete: function () {
-                $('#forCollapse').text(collapseId + 1);
-            }
-        });
-    }
-
-    function addThenInit(selection, obj) {
-        if (JumpStart === selection) {
-            // testImage
-            obj.find('select[name="TestImage"]').each(function () {
-                var _this = $(this);
-                select2Init(_this, "{:url('ToolHandler/getFileName')}", 'Keep Current Image', 'testImage');
-
-            });
-
-            // Execute Job
-            obj.find('.select').each(function () {
-                $(this).select2();
-            });
-            // OS Activation & BaseLine Image
-            obj.find('input[type="radio"].minimal').each(function () {
-                $(this).iCheck(
-                    {radioClass: 'iradio_minimal-blue'}
-                );
-            });
-
-
-        } else if (Recovery === selection) {
-            // testImage
-            obj.find('select[name="TestImage"]').each(function () {
-                var _this = $(this);
-                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'testImage');
-
-            });
-            // OS Activation
-            obj.find('input[type="radio"].minimal').each(function () {
-                $(this).iCheck(
-                    {radioClass: 'iradio_minimal-blue'}
-                );
-            });
-
-            // count
-            obj.find('[data-trigger="spinner"]').spinner();
-
-
-        } else if (C_Test === selection) {
-            // week
-            obj.find('#week').select2({
-                width: "100%"
-            });
-
-            // jquery spinner init
-            obj.find('[data-trigger="spinner"]').spinner();
-
-            //datetimepicker
-            obj.find('.clockpicker').clockpicker({
-                default:'now'
-            });
-
-            // End After
-            obj.find('input[type="radio"].minimal').each(function () {
-                $(this).iCheck(
-                    {radioClass: 'iradio_minimal-blue'}
-                ).on('ifChecked', function () {
-                    _father = $(this).parent().parent().parent().parent();
-                    _father.find('.col-sm-4').children('div').css('display', 'none');
-                    _father.find('#' + $(this).val()).css('display', 'block');
-                });
-            });
-
-            // testImage
-            obj.find('select[name="TestImage"]').each(function () {
-                var _this = $(this);
-                select2Init(_this, "{:url('ToolHandler/getFileName')}", 'Keep Current Image', 'testImage');
-            });
-
-        } else if (Treboot === selection) {
-            // testImage
-            obj.find('select[name="TestImage"]').each(function () {
-                var _this = $(this);
-                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'testImage');
-
-            });
-
-            // jquery spinner init
-            obj.find('[data-trigger="spinner"]').spinner();
-
-            // configure
-            obj.find('input[type="checkbox"].flat').each(function () {
-                $(this).iCheck(
-                    {checkboxClass: 'icheckbox_flat-yellow'}
-                ).on('ifChecked', function () {
-                    _father = $(this).parent().parent().parent();
-                    _father.find('input[type="text"]').removeAttr("disabled").val(300);
-
-                }).on('ifUnchecked', function () {
-                    _father = $(this).parent().parent().parent();
-                    _father.find('input[type="text"]').attr("disabled","disabled").val(0);
-                });
-            });
-
-        } else if (TAndD === selection) {
-            // testImage
-            obj.find('select[name="TestImage"]').each(function () {
-                var _this = $(this);
-                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'testImage');
-            });
-            obj.find('select[name="tdImage"]').each(function () {
-                var _this = $(this);
-                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'tdImage');
-
-            });
-            obj.find('select[name="bios"]').each(function () {
-                var _this = $(this);
-                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'bios');
-
-            });
-            obj.find('select[name="tdConfig"]').each(function () {
-                var _this = $(this);
-                select2Init(_this, "{:url('ToolHandler/getFileName')}", '', 'tdConfig');
-            });
-
-        }
-    }
 
 </script>
 

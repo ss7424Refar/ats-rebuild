@@ -31,6 +31,10 @@ class ToolHandler extends Common {
         return '';
     }
 
+    /**
+     * @return string
+     * 这个接口应该是要废弃了, extend里面的toolMaker也是一样不会用到了
+     */
     public function getTool(){
         $selection = $this->request->param('selection');// 需要继承控制器
         $index = $this->request->param('collapseId');

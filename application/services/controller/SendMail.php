@@ -25,9 +25,12 @@ class SendMail extends Controller {
         $this->today = date("Y-m-d");
     }
 
-    /** baseline function
+    /**
      * http://localhost/ats/services/SendMail/sendBaseLine?taskId=81&steps=2
      * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function sendBaseLine() {
         $taskId = $this->request->param('taskId');
@@ -40,32 +43,20 @@ class SendMail extends Controller {
         $testImage = json_decode($info[0]['element_json']);
         $testImage = $testImage->Test_Image;
 
-        $mailTitle = '[ATS][' . $this->today . ']['. $info[0]['tool_name'] .']You Need to run the baseline image';
+        $mailTitle = '[ATS-'. $taskId .'][' . $this->today . ']['. $info[0]['tool_name'] .']You Need to run the baseline image';
 
         $content = '<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/' .
             'office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">' .
             '   <head>' .
             '       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="Generator" >' .
-            '		<style type="text/css">' .
-            '			p {margin: 5px;font-size: 13px;}' .
-            '			th {' .
-            '				font-size: 12px;' .
-            '			}' .
-            '		    table tr td {' .
-            '				align:center;' .
-            '				border: thin dotted #96B97D;' .
-            '				font-size:12px;' .
-            '				text-align: center;' .
-            '			}' .
-            '			th {padding: 6px;}' .
-            '		</style>' .
+            $this->getCSSStyle().
             '	</head>' .
             '	<body>' .
             '		<p>Dear ' . $info[0]['tester'] . ',</p>' .
             '		<p>Please click OK button to start running baseline image on the target machine on the test shelf as the OEM image test result doesn\'t satisfy the target metric.</p>' .
             '		<p style="font-size:12px;color:red"><i>The Jumpstart task as below.</i></p>' .
-            '	<table>' .
-            '		<tr bgcolor="##E5EECC">' .
+            '	<table id="customers">' .
+            '		<tr>' .
             '			<th>Task ID</th><th>Machine ID</th><th>Test Machine</th><th>Assigned Task</th><th>Test Image</th>' .
             '			<th>Test Result</th><th>Start Date</th><th>Finish Date</th>' .
             '		</tr>' .
@@ -77,7 +68,8 @@ class SendMail extends Controller {
             '			<td>'. $testImage .'</td>' .
             '			<td>' . $info[0]['status'] . '</td>' .
             '			<td>' . $info[0]['task_start_time'] . '</td>' .
-            '			<td>' . $info[0]['task_end_time'] . '</td>' .
+//            '			<td>' . $info[0]['task_end_time'] . '</td>' .
+            '			<td>-</td>' .
             '		</tr>' .
             '	</table>'.
             '</body>' .
@@ -88,7 +80,7 @@ class SendMail extends Controller {
         return MailerUtil::send($emailTo, config('mail_cc_baseline'), $mailTitle, $content);
     }
 
-    /**
+    /**@throws
      * send steps result
      * http://localhost/ats/services/SendMail/sendStepsResult?taskId=81&steps=2 (验证用)
      * @param $taskId
@@ -104,7 +96,7 @@ class SendMail extends Controller {
         // 过期的邮件还是单独发
         if (EXPIRED == $info[0]['status']) {
 
-            $mailTitle = '[ATS][' . $this->today  . ']['. $info[0]['tool_name'] .']Test result is '. $info[0]['status'];
+            $mailTitle = '[ATS-'. $taskId .'][' . $this->today  . ']['. $info[0]['tool_name'] .']Test result is '. $info[0]['status'];
 
             $notice = '<p style="margin-top: 5px; font-size:12px;color:red" >This step may run over times updated to expired &nbsp;&nbsp;</p>';
 
@@ -112,30 +104,7 @@ class SendMail extends Controller {
                 'office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">' .
                 '   <head>' .
                 '       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="Generator" >' .
-                '		<style type="text/css">' .
-                '	        p {'.
-                '		        font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;'.
-                '		        font-size:0.75em;'.
-                '               margin: 8px 0px 2px 0px'.
-                '           }'.
-                '	        #customers{'.
-                '		        font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;'.
-                '		        border-collapse:collapse;'.
-                '           }'.
-                '	        #customers td, #customers th{'.
-                '		        font-size:0.75em;'.
-                '		        border:1px solid #D4D4D4;'.
-                '		        padding:3px 7px 2px 7px;'.
-                '	            }'.
-                '	        #customers th {'.
-                '		        font-size:0.75em;'.
-                '		        text-align:left;'.
-                '		        padding-top:5px;'.
-                '		        padding-bottom:4px;'.
-                '		        background-color:#555555;'.
-                '		        color:#ffffff;'.
-                '	        }'.
-                '		</style>' .
+                $this->getCSSStyle().
                 '	</head>' .
                 '	<body>' .
                 '		<p>Dear ' . $info[0]['tester'] . ',</p>' .
@@ -154,7 +123,8 @@ class SendMail extends Controller {
                 '			<td>' . $info[0]['tool_name'] . '</td>' .
                 '			<td>' . $info[0]['status']  . '</td>' .
                 '			<td>' . $info[0]['tool_start_time'] . '</td>' .
-                '			<td>' . $info[0]['tool_end_time'] . '</td>' .
+//                '			<td>' . $info[0]['tool_end_time'] . '</td>' .
+                '			<td>-</td>' .
                 '		</tr>' .
                 '	</table></body>' .
                 $notice.
@@ -208,35 +178,8 @@ class SendMail extends Controller {
                 'office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">' .
                 '   <head>' .
                 '       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="Generator" >' .
-                '		<style type="text/css">' .
-                '	        p {'.
-                '		        font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;'.
-                '		        font-size:0.75em;'.
-                '               margin: 8px 0px 2px 0px'.
-                '           }'.
-                '	        #customers{'.
-                '		        font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;'.
-//                '		        width:60%;'.
-                '		        border-collapse:collapse;'.
-                '           }'.
-                '	        #customers td, #customers th{'.
-                '		        font-size:0.75em;'.
-                '		        border:1px solid #D4D4D4;'.
-                '		        padding:3px 7px 2px 7px;'.
-                '	            }'.
-                '	        #customers th {'.
-                '		        font-size:0.75em;'.
-                '		        text-align:left;'.
-                '		        padding-top:5px;'.
-                '		        padding-bottom:4px;'.
-                '		        background-color:#555555;'.
-                '		        color:#ffffff;'.
-                '	        }'.
-                '	        #customers tr.alt td {'.
-                '		        color:#000000;'.
-                '		        background-color:#F6F4F0;'.
-                '	        }'.
-                '		</style>' .
+                // 获取通用的css
+                $this->getCSSStyle().
                 '	</head>' .
                 '	<body>' .
                 '		<p>Dear ' . $info[0]['tester'] . ',</p>' .
@@ -253,6 +196,13 @@ class SendMail extends Controller {
         }
     }
 
+    /**
+     * @param $taskId
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     private function getUserAddress($taskId) {
         $testerRes = Db::table('ats_task_basic')->where('task_id', $taskId)->field('tester')->select();
 
@@ -261,6 +211,14 @@ class SendMail extends Controller {
         return $emailRes[0]['email'];
     }
 
+    /**
+     * @param $taskId
+     * @param $steps
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     private function getTaskStepsInfo($taskId, $steps) {
         // 排除basic中的status
         $subsql = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->where('steps', $steps)->buildSql();
@@ -268,5 +226,37 @@ class SendMail extends Controller {
         $res = Db::table($subQuery.' a')->join([$subsql=> 'b'], 'a.task_id = b.task_id')->select();
 
         return $res;
+    }
+
+    private function getCSSStyle() {
+        return
+            '<style type="text/css">' .
+            '	  p {'.
+            '        font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;'.
+            '        font-size:0.75em;'.
+            '        margin: 8px 0px 2px 0px'.
+            '     }'.
+            '	  #customers{'.
+            '        font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;'.
+            '        border-collapse:collapse;'.
+            '     }'.
+            '	  #customers td, #customers th{'.
+            '        font-size:0.75em;'.
+            '        border:1px solid #D4D4D4;'.
+            '        padding:3px 7px 2px 7px;'.
+            '	  }'.
+            '	  #customers th {'.
+            '        font-size:0.75em;'.
+            '        text-align:left;'.
+            '        padding-top:5px;'.
+            '        padding-bottom:4px;'.
+            '        background-color:#555555;'.
+            '        color:#ffffff;'.
+            '	   }'.
+            '	   #customers tr.alt td {'.
+            '         color:#000000;'.
+            '         background-color:#F6F4F0;'.
+            '	   }'.
+            '</style>' ;
     }
 }

@@ -73,9 +73,11 @@ function formToJson() {
             var item ={
                 Tool_Type:toolType,
                 Test_Image:_father.find("#TestImage").select2('val'),
-                Td_Image:_father.find("#tdImage").select2('val'),
-                Td_Bios:_father.find("#bios").select2('val'),
-                TD_Config:_father.find("#tdConfig").select2('val')
+                TD_Image:_father.find("#tdImage").select2('val'),
+                TD_Bios:_father.find("#bios").select2('val'),
+                TD_Config:_father.find("#tdConfig").select2('val'),
+                TD_Type:_father.find("input[name^='Type']:checked").val()
+
             };
             obj.push(item);
         }
@@ -172,10 +174,134 @@ function select2Init(obj, url, initData, dataType) {
 
 }
 
-function setJumpStart(i) {
+function addThenInit(selection, obj, remoteUrl) {
+    if (JumpStart === selection) {
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, 'Keep Current Image', 'testImage');
+
+        });
+
+        // Execute Job
+        obj.find('.select').each(function () {
+            $(this).select2();
+        });
+        // OS Activation & BaseLine Image
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            );
+        });
+    } else if (Recovery === selection) {
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
+
+        });
+        // OS Activation
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            );
+        });
+
+        // count
+        obj.find('[data-trigger="spinner"]').spinner();
+
+
+    } else if (C_Test === selection) {
+        // week
+        obj.find('#week').select2({
+            width: "100%"
+        });
+
+        // jquery spinner init
+        obj.find('[data-trigger="spinner"]').spinner();
+
+        //datetimepicker
+        obj.find('.clockpicker').clockpicker({
+            default:'now'
+        });
+
+        // End After
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            ).on('ifChecked', function () {
+                _father = $(this).parent().parent().parent().parent();
+                _father.find('.col-sm-4').children('div').css('display', 'none');
+                _father.find('#' + $(this).val()).css('display', 'block');
+            });
+        });
+
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, 'Keep Current Image', 'testImage');
+        });
+
+    } else if (Treboot === selection) {
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
+
+        });
+
+        // jquery spinner init
+        obj.find('[data-trigger="spinner"]').spinner();
+
+        // configure
+        obj.find('input[type="checkbox"].flat').each(function () {
+            $(this).iCheck(
+                {checkboxClass: 'icheckbox_flat-yellow'}
+            ).on('ifChecked', function () {
+                _father = $(this).parent().parent().parent();
+                _father.find('input[type="text"]').removeAttr("disabled").val(300);
+
+            }).on('ifUnchecked', function () {
+                _father = $(this).parent().parent().parent();
+                _father.find('input[type="text"]').attr("disabled","disabled").val(0);
+            });
+        });
+
+    } else if (TAndD === selection) {
+        // testImage
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
+        });
+        obj.find('select[name="tdImage"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'tdImage');
+
+        });
+        obj.find('select[name="bios"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'bios');
+
+        });
+        obj.find('select[name="tdConfig"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'tdConfig');
+        });
+
+        // DMI radio
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            );
+        });
+    }
+}
+
+function getJumpStart(i, status) {
+
     var template = '';
 
-    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>JumpStart</b></button>' +
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>' + JumpStart +'</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
@@ -197,7 +323,7 @@ function setJumpStart(i) {
         '            <label class="col-sm-1 control-label">OS Activation</label>'+
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
         '                <label style="margin-right: 19px">'+
-        '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="YES"/> YES'+
+        '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="YES" '+ status +'/> YES'+
         '                </label>'+
         '                <label style="margin-right: 19px">'+
         '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="NO"/> NO'+
@@ -206,7 +332,7 @@ function setJumpStart(i) {
         '            <label class="col-sm-1 control-label">BaseLine Image</label>'+
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
         '                <label style="margin-right: 19px">'+
-        '                    <input type="radio" name="BaseLine Image_'+ i +'" class="minimal" value="YES"/> YES'+
+        '                    <input type="radio" name="BaseLine Image_'+ i +'" class="minimal" value="YES" '+ status +'/> YES'+
         '                </label>'+
         '                <label style="margin-right: 19px">'+
         '                    <input type="radio" name="BaseLine Image_'+ i +'" class="minimal" value="NO"/> NO'+
@@ -221,10 +347,10 @@ function setJumpStart(i) {
     return template;
 }
 
-function setRecovery(i) {
+function getRecovery(i, status) {
     var template = '';
 
-    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>Recovery</b></button>' +
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>'+ Recovery +'</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
@@ -238,7 +364,7 @@ function setRecovery(i) {
         '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="YES"/> YES'+
         '                </label>'+
         '                <label style="margin-right: 19px">'+
-        '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="NO"/> NO'+
+        '                    <input type="radio" name="OS Activation_'+ i +'" class="minimal" value="NO" '+ status +'/> NO'+
         '                </label>'+
         '            </div>'+
         '        </div>'+
@@ -264,16 +390,16 @@ function setRecovery(i) {
 
 }
 
-function setCTest(i) {
+function getCTest(i, status) {
     var template = '';
 
-    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>C-Test</b></button>' +
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>'+ C_Test +'</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
         '            <label class="col-sm-1 control-label">End After</label>'+
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
-        '                <label style="margin-right: 19px"><input type="radio" name="End After_'+ i +'" class="minimal" value="Count" checked/> Count</label>'+
+        '                <label style="margin-right: 19px"><input type="radio" name="End After_'+ i +'" class="minimal" value="Count" '+ status +'/> Count</label>'+
         '                <label style="margin-right: 19px"><input type="radio" name="End After_'+ i +'" class="minimal" value="Terminus" /> Terminus</label>'+
         '                <label style="margin-right: 19px"><input type="radio" name="End After_'+ i +'" class="minimal" value="Interval" /> Interval</label>'+
         '            </div>'+
@@ -360,10 +486,10 @@ function setCTest(i) {
     return template;
 }
 
-function setTreboot(i) {
+function getTreboot(i, status) {
     var template = '';
 
-    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>Treboot</b></button>' +
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>'+ Treboot +'</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
@@ -379,7 +505,7 @@ function setTreboot(i) {
         '	                     <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
         '		                 <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
         '                    </div>'+
-        '                    <label class="input-group-addon"><input type="checkbox" name="reboot_'+ i +'" class="flat"/></label>'+
+        '                    <label class="input-group-addon"><input type="checkbox" name="reboot_'+ i +'" class="flat" ' + status + '/></label>'+
         '                </div>'+
         '            </div>'+
         '        </div>'+
@@ -392,7 +518,7 @@ function setTreboot(i) {
         '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
         '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
         '                     </div>'+
-        '                     <label class="input-group-addon"><input type="checkbox" name="powerOff_'+ i +'" class="flat"/></label>'+
+        '                     <label class="input-group-addon"><input type="checkbox" name="powerOff_'+ i +'" class="flat" '+ status +'/></label>'+
         '                </div>'+
         '            </div>'+
         '            <label class="col-sm-1 control-label">Standby</label>'+
@@ -403,7 +529,7 @@ function setTreboot(i) {
         '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
         '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
         '                     </div>'+
-        '                     <label class="input-group-addon"><input type="checkbox" name="standBy_'+ i +'" class="flat"/></label>'+
+        '                     <label class="input-group-addon"><input type="checkbox" name="standBy_'+ i +'" class="flat" '+ status +'/></label>'+
         '                </div>'+
         '            </div>'+
         '        </div>'+
@@ -416,7 +542,7 @@ function setTreboot(i) {
         '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
         '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
         '                     </div>'+
-        '                     <label class="input-group-addon"><input type="checkbox" name="Hibernation_'+ i +'" class="flat"/></label>'+
+        '                     <label class="input-group-addon"><input type="checkbox" name="Hibernation_'+ i +'" class="flat" '+ status +'/></label>'+
         '                </div>'+
         '            </div>'+
         '            <label class="col-sm-1 control-label">Hybrid Shutdown</label>'+
@@ -427,7 +553,7 @@ function setTreboot(i) {
         '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
         '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
         '                     </div>'+
-        '                     <label class="input-group-addon"><input type="checkbox" name="hybrid_'+ i +'" class="flat"/></label>'+
+        '                     <label class="input-group-addon"><input type="checkbox" name="hybrid_'+ i +'" class="flat" '+ status +'/></label>'+
         '                </div>'+
         '            </div>'+
         '        </div>'+
@@ -461,4 +587,94 @@ function setTreboot(i) {
 
     return template;
 
+}
+
+function getTAndD(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>'+ TAndD +'</b></button>' +
+        '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
+        '    <div class="panel-body form-horizontal">'+
+        '        <div class="form-group">'+
+        '            <label class="col-sm-1 control-label">Test Image</label>'+
+        '            <div class="col-sm-4">'+
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'+
+        '            </div>'+
+        '            <label class="col-sm-1 control-label">TD Image</label>'+
+        '            <div class="col-sm-4">'+
+        '                <select class="form-control select2" name="tdImage" id="tdImage"></select>'+
+        '            </div>'+
+        '        </div>'+
+        '        <div class="form-group">'+
+        '            <label class="col-sm-1 control-label">Bios</label>'+
+        '            <div class="col-sm-4">'+
+        '                <select class="form-control select2" name="bios" id="bios"></select>'+
+        '            </div>'+
+        '            <label class="col-sm-1 control-label">TD Config</label>'+
+        '            <div class="col-sm-4">'+
+        '                <select class="form-control select2" name="tdConfig" id="tdConfig"></select>'+
+        '            </div>'+
+        '        </div>'+
+        '        <div class="form-group">'+
+        '            <label class="col-sm-1 control-label">Type</label>'+
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="Type_'+ i +'" class="minimal" value="Auto" '+ status +'/> Auto'+
+        '                </label>'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="Type_'+ i +'" class="minimal" value="NotAuto"/> NotAuto'+
+        '                </label>'+
+        '            </div>'+
+        '        </div>'+
+        '        <hr>'+
+        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>'+
+        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>'+
+        '    </div>'+
+        '</div>';
+
+    return template;
+}
+
+// 1代表在最后添加, 2代表在中间添加
+function addToolByButton(type, obj, urlLink) {
+    var selection, toolId;
+    selection = $('select[name="selection"]').select2('val');
+    var collapseId = $('#forCollapse').val(); // 初始值为0
+
+    if ('' === collapseId) {
+        collapseId = 0;
+    }
+    result = '';
+    if (JumpStart === selection) {
+        result = getJumpStart(collapseId, 'checked');
+
+    } else if (Recovery === selection) {
+        result = getRecovery(collapseId, 'checked');
+
+    } else if (C_Test === selection) {
+        result = getCTest(collapseId, 'checked');
+
+    } else if (Treboot === selection) {
+        result = getTreboot(collapseId, 'checked');
+
+    } else if (TAndD === selection) {
+        result = getTAndD(collapseId, 'checked');
+    }
+
+    if ('' !== result) {
+        if ('none' === $('#content').css('display')){
+            $('#content').css('display', 'block');
+        }
+        if (1 === type) {
+            $('#box_body').append('<div>' + result +'</div>');
+            lastDiv = $('#box_body').children('div:last');
+            addThenInit(selection, lastDiv, urlLink);
+
+        } else if (2 === type) {
+            lastDiv = obj.parent().parent().parent().parent();
+            lastDiv.after('<div>' + result +'</div>');
+            addThenInit(selection, lastDiv.next(), urlLink);
+        }
+        $('#forCollapse').val(Number(collapseId) + 1);
+    }
 }

@@ -19,7 +19,7 @@ define('JUMP_START', 'JumpStart');
 define('RECOVERY', 'Recovery');
 define('C_TEST', 'C-Test');
 define('TREBOOT', 'Treboot');
-define('TAndD', 'TAndD');
+define('TAndD', 'TandD'); // Qiulin说要web那里小写, 我觉得TAndD更帅
 
 /*
  * ATS file path
