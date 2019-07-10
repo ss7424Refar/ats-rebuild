@@ -324,7 +324,7 @@ return [
     // | TANDD path
     // +----------------------------------------------------------------------
     'ats_td_image'  => '/opt/hello/TandD/Images/',
-    'ats_td_bios' => '/opt/hello/Bios/',
+    'ats_td_bios' => '/opt/hello/BIOS/',
     'ats_td_config' => '/opt/hello/TandD/TDConfig/',
 
     'ats_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
