@@ -821,11 +821,17 @@
                 formatter:function(value){
                     if (null !== value) {
                         if (Pass === value || Fail === value) {
-                            return Finish;
+                            return  '<span class="label label-success">' + Finish + '</span>';
+                        }else if (Ongoing === value) {
+                            return  '<span class="label label-warning">' + Ongoing + '</span>';
+                        }else if (Pending === value) {
+                            return  '<span class="label label-primary">' + Pending + '</span>';
+                        }else if (Expired === value) {
+                            return  '<span class="label label-default">' + Expired + '</span>';
                         }
-                        return value;
+                        // return value;
                     }
-                    return "N/A";
+                    return  '<span class="label label-danger">N/A</span>';
                 }
             },
             {
@@ -848,7 +854,7 @@
                         if (null == value) {
                             return 'N/A';
                         } else {
-                            return '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: ' + value + '%">' + value + '%</div>';
+                            return '<div class="progress" style="margin-right: 10px"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: ' + value + '%">' + value + '%</div>';
                         }
 
                     }
@@ -872,7 +878,7 @@
                                 result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete tool' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
                             }
                         } else if (Ongoing === row['status']) {
-                            result += "<a class='btn btn-xs bg-yellow' href='#' " + " onclick=\"return Reverse(\'" + id + "\')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='revert task' style='margin: 3px'><span class='fa fa-reply-all'></span></a>";
+                            result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return Reverse(\'" + id + "\')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='revert task' style='margin: 3px'><span class='fa fa-reply-all'></span></a>";
                         } else {
                             // result += "<a class='btn btn-xs bg-yellow' href='#' " + "data-toggle=\"tooltip\" data-placement=\"bottom\" title='ban' style='margin: 3px'><span class='glyphicon glyphicon-ban-circle'></span></a>";
                             result += "-";
@@ -887,16 +893,16 @@
             onExpandRow: function (index, row, $detail) {
                 initSubTable(index, row, $detail);
             },
-            rowStyle: function(row, index){
-                if(Fail === row.status || Pass === row.status){
-                    return {classes: 'success'};
-                }else if(Pending === row.status){
-                    return {classes: 'info'};
-                }else if(Ongoing === row.status){
-                    return {classes: 'warning'};
-                }
-                return {classes: 'active'};
-            },
+            // rowStyle: function(row, index){
+            //     if(Fail === row.status || Pass === row.status){
+            //         return {classes: 'success'};
+            //     }else if(Pending === row.status){
+            //         return {classes: 'info'};
+            //     }else if(Ongoing === row.status){
+            //         return {classes: 'warning'};
+            //     }
+            //     return {classes: 'active'};
+            // },
 
             formatLoadingMessage: function () {
                 return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
