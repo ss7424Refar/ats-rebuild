@@ -42,7 +42,7 @@ class TaskManager extends Common{
             }
 
         }
-        echo json_encode($jsonResult);
+        echo json_encode(array_reverse($jsonResult)); // 需要将最后一次添加的信息显示在最前面
 
         fclose($file);
 
