@@ -16,8 +16,9 @@ class PushMan extends Server
 {
     protected $socket = 'websocket://0.0.0.0:2345';
     protected $processes = 1;
-    private $infoMsg = array();
 
+    protected $infoMsg = array(); // 推送给前台的数组
+    protected $ipPool = array(); // 用来存放ip
     /**
      * 收到信息
      * @param $connection
@@ -34,7 +35,15 @@ class PushMan extends Server
      */
     public function onConnect($connection)
     {
-        Log::record('connection id =====> '. $connection->id);
+        $ip = $connection->getRemoteIp();
+        Log::record('new connection from ip '. $ip);
+
+        if (array_key_exists($ip, $this->ipPool)) {
+            $this->ipPool[$ip] = $this->ipPool[$ip] + 1;
+        } else {
+            $this->ipPool[$ip] = 1;
+        }
+
     }
 
     /**
@@ -43,7 +52,19 @@ class PushMan extends Server
      */
     public function onClose($connection)
     {
-        Log::record('connection close id =====> '. $connection->id);
+        $ip = $connection->getRemoteIp();
+        Log::record('disconnect connection from ip '. $ip);
+
+        if (array_key_exists($ip, $this->ipPool)) {
+            $res = $this->ipPool[$ip] - 1;
+            if (0 == $res) {
+                // 移除这个ip
+                unset($this->ipPool[$ip]);
+            } else {
+                $this->ipPool[$ip] = $res;
+            }
+        }
+
     }
 
     /**
@@ -66,10 +87,15 @@ class PushMan extends Server
         Timer::add(1, function()use($worker)
         {
             Log::record('sending clients counter');
+
             $clients = count($worker->connections);
+
+            $infoMsg['clients'] = $clients;
+            $infoMsg['ipCounts'] = count($this->ipPool);
+
             // 遍历当前进程所有的客户端连接
             foreach($worker->connections as $connection) {
-                $connection->send($clients);
+                $connection->send(json_encode($infoMsg));
             }
         });
     }

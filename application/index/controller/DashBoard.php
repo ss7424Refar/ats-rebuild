@@ -57,6 +57,7 @@ class DashBoard extends Common
 
     /** machine chart
      * @return string
+     * 不是很想改, 凭什么领导说改就改呢? 用户没有按照要求输入名字, 难道是程序的错误?
      */
     public function machineChart()
     {
@@ -145,7 +146,7 @@ class DashBoard extends Common
         }
         if (null != $ODMSerial) {
             $optionResult['seriesData'][] = $ODMSerial;
-            $optionResult['seriesName'][] = 'ODM';
+            $optionResult['seriesName'][] = 'N/A';
         }
 
         return json_encode($optionResult);

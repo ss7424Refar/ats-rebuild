@@ -53,9 +53,10 @@
             ws.onmessage = function (evt) {
                 var response = evt.data;
                 if (null != response) {
-                    // 先测试
-                    console.log(response);
-                    $('#counter').html(response);
+                    response = JSON.parse(response);
+                    // 链接的浏览器个数
+                    console.log(response.clients);
+                    $('#counter').html(response.ipCounts);
                 }
             };
         } else {
