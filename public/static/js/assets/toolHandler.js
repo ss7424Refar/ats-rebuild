@@ -20,7 +20,8 @@ function formToJson() {
                 Tool_Type:toolType,
                 Test_Image:_father.find("#TestImage").select2('val'),
                 OS_Activation:_father.find("input[name^='OS Activation']:checked").val(),
-                Count:_father.find('#count').val()
+                Count:_father.find('#count').val(),
+                OOBE:_father.find("input[name^='OOBE']:checked").val()
             };
             obj.push(item);
         } else if (C_Test === toolType) {
@@ -200,7 +201,7 @@ function addThenInit(selection, obj, remoteUrl) {
             select2Init(_this, remoteUrl, '', 'testImage');
 
         });
-        // OS Activation
+        // OS Activation and OOBE
         obj.find('input[type="radio"].minimal').each(function () {
             $(this).iCheck(
                 {radioClass: 'iradio_minimal-blue'}
@@ -378,6 +379,15 @@ function getRecovery(i, status) {
         '		                 <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
         '                    </div>'+
         '                </div>'+
+        '            </div>'+
+        '            <label class="col-sm-1 control-label">OOBE</label>'+
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="OOBE_'+ i +'" class="minimal" value="YES"/> YES'+
+        '                </label>'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="OOBE_'+ i +'" class="minimal" value="NO" '+ status +'/> NO'+
+        '                </label>'+
         '            </div>'+
         '        </div>'+
         '        <hr>'+

@@ -264,14 +264,23 @@ desired effect
 
         });
 
-        // OS Activation
         obj.find('input[type="radio"].minimal').each(function () {
             $(this).iCheck(
                 {radioClass: 'iradio_minimal-blue'}
             );
+            var nameV = $(this).attr('name');
+            // OS Activation
+            if (nameV.indexOf('OS Activation') >= 0) {
+                if (item.OS_Activation === $(this).val()) {
+                    $(this).iCheck('check');
+                }
+            }
 
-            if (item.OS_Activation === $(this).val()) {
-                $(this).iCheck('check');
+            // OOBE
+            if (nameV.indexOf('OOBE') >= 0) {
+                if (item.OOBE === $(this).val()) {
+                    $(this).iCheck('check');
+                }
             }
         });
 
