@@ -380,7 +380,7 @@ function getRecovery(i, status) {
         '                    </div>'+
         '                </div>'+
         '            </div>'+
-        '            <label class="col-sm-1 control-label">OOBE</label>'+
+        '            <label class="col-sm-1 control-label">Manual OOBE</label>'+
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
         '                <label style="margin-right: 19px">'+
         '                    <input type="radio" name="OOBE_'+ i +'" class="minimal" value="YES"/> YES'+
