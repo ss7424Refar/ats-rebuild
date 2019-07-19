@@ -60,6 +60,7 @@ class PushMan extends Server
             if (0 == $res) {
                 // 移除这个ip
                 unset($this->ipPool[$ip]);
+                Log::record('remove connection from ip '. $ip);
             } else {
                 $this->ipPool[$ip] = $res;
             }
@@ -86,16 +87,17 @@ class PushMan extends Server
     {
         Timer::add(1, function()use($worker)
         {
-            Log::record('sending clients counter');
-
             $clients = count($worker->connections);
 
             $infoMsg['clients'] = $clients;
             $infoMsg['ipCounts'] = count($this->ipPool);
+            $infoMsg['ipDetail'] = json_encode($this->ipPool);
 
             // 遍历当前进程所有的客户端连接
             foreach($worker->connections as $connection) {
-                $connection->send(json_encode($infoMsg));
+                $msg = json_encode($infoMsg);
+                Log::record('sending push data '. $msg);
+                $connection->send($msg);
             }
         });
     }
