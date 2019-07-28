@@ -109,6 +109,11 @@ class MachineSever extends Controller {
 
         //6.循环刚取出来的数组，将数据逐一添加到excel表格。
         for($i=0; $i<count($list); $i++){
+
+            $list[$i]['model_status'] = $this->statusArray[$list[$i]['model_status']];
+            $list[$i]['department'] = $this->departArray[$list[$i]['department']];
+            $list[$i]['section_manager'] = $this->sectionArray[$list[$i]['section_manager']];
+
             for ($j=0;$j<count($letter);$j++) {
                 if (0 == $j) {
                     $objPHPExcel->getActiveSheet()->setCellValue($letter[$j].($i+2), $i+1); //No
