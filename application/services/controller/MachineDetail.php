@@ -56,7 +56,7 @@ class MachineDetail extends Controller {
 
         $list = Db::table('itd.d_main_engine')->where('user_name','in',$user)->order('MODEL_NAME')->select();
 
-        dump($list);
+//        dump($list);
         //3.实例化PHPExcel类
         $objPHPExcel = new PHPExcel();
         //4.激活当前的sheet表
