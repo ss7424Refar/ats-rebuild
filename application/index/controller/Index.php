@@ -55,6 +55,10 @@ class Index extends Common
 
     }
 
+    public function Itd(){
+        $this->redirect('/itd-spa/'); //ngnix同一个工程下的文件夹
+    }
+
     public function Document(){
         // 获取URL访问的ROOT地址
         $rootPath = $this->request->root(true);

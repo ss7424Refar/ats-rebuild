@@ -87,6 +87,12 @@ class PushMan extends Server
     {
         Timer::add(1, function()use($worker)
         {
+            // 先这样子, 感觉应该是客户端发心跳判断连接数, 而用ip判断感觉会出现存入的数组清空不掉的情况
+//            if('30' == date("i", time())) {
+//              unset($this->infoMsg);
+//              unset($this->ipPool);
+//            }
+
             $clients = count($worker->connections);
 
             $infoMsg['clients'] = $clients;

@@ -31,4 +31,7 @@ class UnitTest extends Controller
         dump($findName);
         dump($newFileName);
     }
+    public function Test2() {
+        echo date("i", time());
+    }
 }
