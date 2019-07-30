@@ -165,7 +165,9 @@ class MachineSever extends Controller {
             if (!empty($formData->location)) {
                 $map['location'] = $formData->location;
             }
-            $map['model_status'] = $formData->status;
+            if (null != $formData->status) {
+                $map['model_status'] = $formData->status;
+            }
             if (!empty($formData->depart)) {
                 $map['department'] = $formData->depart;
             }
