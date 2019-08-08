@@ -64,6 +64,7 @@ desired effect
                                         <option>C-Test</option>
                                         <option>Treboot</option>
                                         <option>TandD</option>
+                                        <option>Others</option>
                                     </select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
@@ -171,6 +172,11 @@ desired effect
                             $('#box_body').append('<div>' + getTAndD(i, '') + '</div>');
                             lastDiv = $('#box_body').children('div:last');
                             setTAndDData(lastDiv, item);
+                        }
+                        if (Others === item.Tool_Type) {
+                            $('#box_body').append('<div>' + getOthers(i, '') + '</div>');
+                            lastDiv = $('#box_body').children('div:last');
+                            setOthersData(lastDiv, item);
                         }
                     })
 
@@ -422,6 +428,12 @@ desired effect
             if (item.TD_Type === $(this).val()) {
                 $(this).iCheck('check');
             }
+        });
+    }
+
+    function setOthersData(obj, item) {
+        obj.find('#otherTool').each(function () {
+            $(this).select2().val(item.Tool_Name).trigger("change");;
         });
     }
 </script>

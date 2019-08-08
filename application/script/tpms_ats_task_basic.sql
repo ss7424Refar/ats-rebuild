@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `ats_task_basic`;
 CREATE TABLE `ats_task_basic` (
   `task_id` bigint(10) NOT NULL AUTO_INCREMENT,
   `machine_id` int(7) DEFAULT NULL,
-  `machine_name` varchar(30) DEFAULT NULL,
+  `machine_name` varchar(50) DEFAULT NULL,
   `category` varchar(10) DEFAULT NULL,
   `lan_ip` varchar(16) DEFAULT NULL,
   `shelf_switch` varchar(6) DEFAULT NULL,
