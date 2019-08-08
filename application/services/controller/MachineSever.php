@@ -142,6 +142,31 @@ class MachineSever extends Controller {
         $objWriter->save('php://output');
     }
 
+    public function loginCheck() {
+        $user = $this->request->param('user');
+        $password = $this->request->param('password');
+
+        // 确认用户是否存在
+        $info1 = Db::table('itd.m_user')->where('USER_ID', $user)->select();
+        if (empty($info1)) {
+            // 代表用户不存在
+            $tmp['code'] = '101';
+            $tmp['data'] = null;
+            return json($tmp);
+        } else {
+            $info2 = Db::table('itd.m_user')->where('USER_ID', $user)->where('password', $password)->field('user_name')->select();
+            if (empty($info2)) {
+                $tmp['code'] = '201';
+                $tmp['data'] = null;
+                return json($tmp);// 代表password不对
+            } else {
+                $tmp['code'] = '301';
+                $tmp['data'] = $info2[0]['user_name'];
+                return json($tmp);
+            }
+        }
+    }
+
     private function getSearchCondition($formData) {
         $map = array(); // 查询条件
 
