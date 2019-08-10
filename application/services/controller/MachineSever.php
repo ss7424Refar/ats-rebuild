@@ -12,6 +12,7 @@ use think\Controller;
 use think\Db;
 use PHPExcel; // 导出
 use PHPExcel_Style_Fill;
+use ext\MailerUtil;
 
 header('Access-Control-Allow-Origin:*');
 // 响应类型
@@ -34,6 +35,7 @@ class MachineSever extends Controller {
         $pageSize = $this->request->param('limit');
         $offset = $this->request->param('offset');
 
+        $userId = $this->request->param('userId');
         $formData = $this->request->param('formData');
 
         $map = $this->getSearchCondition($formData);
@@ -45,6 +47,14 @@ class MachineSever extends Controller {
 
         $res = Db::table('itd.d_main_engine')->where($map)->order('instore_date desc')->limit($offset, $pageSize)->select();
         for ($i = 0; $i < count($res); $i++) {
+
+            // 判断是否要有取消申请
+            if (1 == $res[$i]['model_status'] && $userId == $res[$i]['user_id'] ) {
+                $res[$i]['op'] = 'apply';
+            } else {
+                $res[$i]['op'] = 'no_apply';
+            }
+
             $res[$i]['model_status'] = $this->statusArray[$res[$i]['model_status']];
             $res[$i]['department'] = $this->departArray[$res[$i]['department']];
             $res[$i]['section_manager'] = $this->sectionArray[$res[$i]['section_manager']];
@@ -167,6 +177,77 @@ class MachineSever extends Controller {
         }
     }
 
+    public function apply() {
+        $userId = $this->request->param('userId');
+        $user = Db::table('itd.m_user')->where('USER_ID', $userId)->field('user_name')->find();
+
+        $user = $user['user_name'];
+
+        $selection = $this->request->param('selection'); $selection = json_decode($selection); // 转为数组
+
+        $sectionArray = array();
+
+        for ($i = 0; $i < count($selection); $i++) {
+
+            $fixed_no = $selection[$i]->fixed_no;
+
+            $query = Db::table('itd.d_main_engine')->where('fixed_no', $fixed_no)
+                        ->where('model_status', 0)->where('user_id', null)->select();
+            if (!empty($query)) {
+                // 更新状态
+                Db::table('itd.d_main_engine')->where('fixed_no', $fixed_no)
+                    ->where('model_status', 0)->where('user_id', null)
+                    ->update([
+                        'user_name'    => $user,
+                        'user_id'      => $userId,
+                        'model_status' => '1'
+                    ]);
+
+                // 取得课
+                if (!in_array($query[0]['section_manager'], $sectionArray)) {
+                    array_push($sectionArray, $query[0]['section_manager']);
+                }
+
+            }
+        }
+
+        // 发送邮件
+        if (!empty($sectionArray)) {
+            for ($i = 0; $i < count($sectionArray); $i++) {
+                $res = Db::query('select a.mail from itd.m_user a, itd.r_role_user b 
+                                        where a.id = b.tech_id and b.role_id = 5 and a.section = ?', [$sectionArray[$i]]);
+
+                // 转成一维数组
+                $tos = array();
+                for ($j = 0; $j < count($res); $j++) {
+                    array_push($tos, $res[$j]['mail']);
+                }
+
+//                echo $this->getMailTemplate($user); // 需要填写subject
+//                MailerUtil::send($tos, null, 'hhhh', $this->getMailTemplate($user));
+                echo 'done';
+            }
+
+        }
+    }
+
+    public function cancel() {
+        $fixed_no = $this->request->param('no');
+        $userId = $this->request->param('userId');
+
+        $res = Db::table('itd.d_main_engine')->where('fixed_no', $fixed_no)
+            ->where('model_status', 1)->where('user_id', $userId)
+            ->update([
+                'user_name'    => null,
+                'user_id'      => null,
+                'model_status' => '0'
+            ]);
+        if ($res > 0) {
+            return 'done'; // 如果更新了则返回done
+        }
+        return 'no';
+    }
+
     private function getSearchCondition($formData) {
         $map = array(); // 查询条件
 
@@ -202,5 +283,22 @@ class MachineSever extends Controller {
         }
 
         return $map;
+    }
+
+    private function getMailTemplate($user) {
+
+        return
+            '<div class="mail_box">'.
+                '<pre style="font-family:Times New Roman; font-size:15px;">' .
+                    'subject'.
+                    '<p>'. 'From:'. $user . '<p>'.
+                     '<p></p><p></p>'.
+
+                    '<p><span>Please check it and judge if you approve or not. Please check in <a href="aaa/itd/">Sample PC Managerment System</a> for details.</span><p>'.
+
+                    '<p>Thanks&BestRegards!</p>'.
+
+                '</pre>'.
+            '</div>';
     }
 }
