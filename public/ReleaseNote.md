@@ -40,3 +40,7 @@
 + **[Add]** TAndD function
 + **[Add]** task table can be adjusted
 + **[Update]** baseline mail css style
+
+## ATS 1.4.0.1
+`2019-08-13`
++ **[Add]** FastBoot function

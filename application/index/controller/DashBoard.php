@@ -27,7 +27,7 @@ class DashBoard extends Common
         parent::_initialize();
 
         $this->statusArray = [PENDING, ONGOING, FAIL, PASS, EXPIRED];
-        $this->toolArray = [JUMP_START, RECOVERY, C_TEST, TREBOOT, TAndD];
+        $this->toolArray = [JUMP_START, RECOVERY, C_TEST, TREBOOT, TAndD, Others];
 
         $this->weekStart = ChartUtil::getWeekStart();
         $this->weekEnd = ChartUtil::getWeekEnd();
