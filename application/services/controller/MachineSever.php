@@ -179,9 +179,10 @@ class MachineSever extends Controller {
 
     public function apply() {
         $userId = $this->request->param('userId');
-        $user = Db::table('itd.m_user')->where('USER_ID', $userId)->field('user_name')->find();
+        $who = Db::table('itd.m_user')->where('USER_ID', $userId)->field('user_name, mail')->find();
 
-        $user = $user['user_name'];
+        $user = $who['user_name'];
+        $from = $who['mail'];
 
         $selection = $this->request->param('selection'); $selection = json_decode($selection); // 转为数组
 
@@ -224,10 +225,9 @@ class MachineSever extends Controller {
                     array_push($tos, $res[$j]['mail']);
                 }
 
-                $subject = 'Workflow:现有样机需借出审批('.date('Y-m-d h:i:s', time()). ' '. $user. ')';
+                $subject = 'Workflow:现有样机需借出审批('.date('Y-m-d H:i:s', time()). ' '. $user. ')';
 //                echo $this->getMailTemplate($user, $subject); // 需要填写subject
-                MailerUtil::send($tos, null, $subject, $this->getMailTemplate($user));
-
+                MailerUtil::send2($from, $tos, null, $subject, $this->getMailTemplate($user, $subject));
             }
             echo 'done';
         }
@@ -293,13 +293,13 @@ class MachineSever extends Controller {
         return
             '<html charset="utf-8">'.
                 '<div class="mail_box">'.
-                    '<pre style="font-size:15px;">' .
+                    '<pre style="font-family: Time New Roman; font-size:15px;">' .
                         '<p></p><p></p>'.
                         '<p>'.$subject.'<p>'.
                         '<p>'. 'From:'. $user . '<p>'.
                          '<p></p><p></p>'.
 
-                        '<p><span>Please check it and judge if you approve or not. Please check in <a href="aaa/itd/">Sample PC Managerment System</a> for details.</span><p>'.
+                        '<p><span>Please check it and judge if you approve or not. Please check in <a href="http://172.30.52.45/itd/">Sample PC Managerment System</a> for details.</span><p>'.
 
                         '<p>Thanks&BestRegards!</p>'.
 
