@@ -200,7 +200,8 @@ class MachineSever extends Controller {
                     ->update([
                         'user_name'    => $user,
                         'user_id'      => $userId,
-                        'model_status' => '1'
+                        'model_status' => '1',
+                        'start_date' => Db::raw('now()')
                     ]);
 
                 // 取得课
@@ -223,11 +224,12 @@ class MachineSever extends Controller {
                     array_push($tos, $res[$j]['mail']);
                 }
 
-//                echo $this->getMailTemplate($user); // 需要填写subject
-//                MailerUtil::send($tos, null, 'hhhh', $this->getMailTemplate($user));
-                echo 'done';
-            }
+                $subject = 'Workflow:现有样机需借出审批('.date('Y-m-d h:i:s', time()). ' '. $user. ')';
+//                echo $this->getMailTemplate($user, $subject); // 需要填写subject
+                MailerUtil::send($tos, null, $subject, $this->getMailTemplate($user));
 
+            }
+            echo 'done';
         }
     }
 
@@ -240,7 +242,8 @@ class MachineSever extends Controller {
             ->update([
                 'user_name'    => null,
                 'user_id'      => null,
-                'model_status' => '0'
+                'model_status' => '0',
+                'start_date' => null
             ]);
         if ($res > 0) {
             return 'done'; // 如果更新了则返回done
@@ -285,20 +288,23 @@ class MachineSever extends Controller {
         return $map;
     }
 
-    private function getMailTemplate($user) {
+    private function getMailTemplate($user, $subject) {
 
         return
-            '<div class="mail_box">'.
-                '<pre style="font-family:Times New Roman; font-size:15px;">' .
-                    'subject'.
-                    '<p>'. 'From:'. $user . '<p>'.
-                     '<p></p><p></p>'.
+            '<html charset="utf-8">'.
+                '<div class="mail_box">'.
+                    '<pre style="font-size:15px;">' .
+                        '<p></p><p></p>'.
+                        '<p>'.$subject.'<p>'.
+                        '<p>'. 'From:'. $user . '<p>'.
+                         '<p></p><p></p>'.
 
-                    '<p><span>Please check it and judge if you approve or not. Please check in <a href="aaa/itd/">Sample PC Managerment System</a> for details.</span><p>'.
+                        '<p><span>Please check it and judge if you approve or not. Please check in <a href="aaa/itd/">Sample PC Managerment System</a> for details.</span><p>'.
 
-                    '<p>Thanks&BestRegards!</p>'.
+                        '<p>Thanks&BestRegards!</p>'.
 
-                '</pre>'.
-            '</div>';
+                    '</pre>'.
+                '</div>'.
+            '</html>';
     }
 }
