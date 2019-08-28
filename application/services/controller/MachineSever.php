@@ -18,7 +18,7 @@ header('Access-Control-Allow-Origin:*');
 // 响应类型
 header('Access-Control-Allow-Methods:*');
 // 响应头设置
-header('Access-Control-Allow-Headers:x-requested-with,content-type'); // 这个要设置否则bs-table无法加载
+header('Access-Control-Allow-Headers:x-requested-with,content-type,multipart/form-data'); // 这个要设置否则bs-table无法加载
 
 /*
  * interface for ats
@@ -249,6 +249,15 @@ class MachineSever extends Controller {
             return 'done'; // 如果更新了则返回done
         }
         return 'no';
+    }
+
+    public function input() {
+        $excel = request()->file('formData1')->getInfo();
+//        $objPHPExcel = \PHPExcel_IOFactory::load($excel['tmp_name']);//读取上传的文件
+//        $arrExcel = $objPHPExcel->getSheet(0)->toArray();//获取其中的数据
+
+        dump($excel);
+
     }
 
     private function getSearchCondition($formData) {
