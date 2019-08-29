@@ -252,11 +252,30 @@ class MachineSever extends Controller {
     }
 
     public function input() {
-        $excel = request()->file('formData1')->getInfo();
-//        $objPHPExcel = \PHPExcel_IOFactory::load($excel['tmp_name']);//读取上传的文件
-//        $arrExcel = $objPHPExcel->getSheet(0)->toArray();//获取其中的数据
+        $excel = request()->file('excel')->getInfo();
+        $objPHPExcel = \PHPExcel_IOFactory::load($excel['tmp_name']);//读取上传的文件
+        $arrExcel = $objPHPExcel->getSheet(0)->toArray();//获取其中的数据
 
-        dump($excel);
+        if (count($arrExcel) <= 2) {
+            return json(array('code'=>401, 'msg'=>'你需要填写至少一行的样机项目'));
+        }
+        // 先判断fix_no是否有重复
+        $isDuplicate = false;
+        $duplicateArray = array();
+        for ($i = 2; $i < count($arrExcel); $i++) {
+            $fixed_no = $arrExcel[$i][0];
+            $model_name = $arrExcel[$i][1];
+            $res = Db::table('itd.d_main_engine')->where('fixed_no', $fixed_no)->find();
+
+            if (null != $res) {
+                $isDuplicate = true;
+                array_push($duplicateArray, array('id'=>$fixed_no, 'name'=>$model_name));
+            }
+        }
+
+        if ($isDuplicate) {
+            return json(array('code'=>301, 'msg'=>'重复数据如下, 你需要重新填写', 'data'=>$duplicateArray));
+        }
 
     }
 
