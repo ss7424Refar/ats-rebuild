@@ -13,6 +13,7 @@ use think\Db;
 use PHPExcel; // 导出
 use PHPExcel_Style_Fill;
 use ext\MailerUtil;
+use think\Exception;
 
 header('Access-Control-Allow-Origin:*');
 // 响应类型
@@ -77,7 +78,7 @@ class MachineSever extends Controller {
         $header= ['No', '资产编号', '资产名称', 'CPU', '硬盘', '内存', '部门', '课', '状态', '用户名']; //表头,名称可自定义
         $field = array('fixed_no', 'MODEL_NAME', 'CPU', 'HDD', 'MEMORY', 'department', 'section_manager', 'model_status', 'user_name');
 
-        ini_set('memory_limit','200M');
+        ini_set('memory_limit','500M');
         // php 当数据大起来的时候，Db::table的select()会报错..其实是内存不足的原因. 所以暂时导出几个关键的字段.
         $list = Db::table('itd.d_main_engine')->where($map)->
                     field(implode(',', $field))
@@ -252,6 +253,7 @@ class MachineSever extends Controller {
     }
 
     public function input() {
+        // 貌似xlsx保存之后兼容性不好, 所以选择2003-xls格式
         $excel = request()->file('excel')->getInfo();
         $objPHPExcel = \PHPExcel_IOFactory::load($excel['tmp_name']);//读取上传的文件
         $arrExcel = $objPHPExcel->getSheet(0)->toArray();//获取其中的数据
@@ -274,9 +276,55 @@ class MachineSever extends Controller {
         }
 
         if ($isDuplicate) {
-            return json(array('code'=>301, 'msg'=>'重复数据如下, 你需要重新填写', 'data'=>$duplicateArray));
+            return json(array('code'=>301, 'msg'=>'重复数据如下, 你需要重新填写', 'detail'=>$duplicateArray));
         }
 
+        // 判断是否有出错的数据
+        $hasError = false;  $errorArray = array();
+        for ($i = 2; $i < count($arrExcel); $i++) {
+            // 定义键名
+            $key = array('fixed_no', 'MODEL_NAME', 'SERIAL_NO', 'type', 'department', 'section_manager', 'user_name',
+                    'model_status', 'start_date', 'predict_date', 'invoice_no', 'serial_number', 'CPU', 'screen_size', 'MEMORY',
+                    'HDD', 'cd_rom', 'location', 'remark');
+
+            $data = array();
+            for ($j = 0; $j < count($arrExcel[$i]); $j++) {
+                $data[$key[$j]] = $arrExcel[$i][$j];
+            }
+
+            // 时间转换
+            $data['start_date'] = date('Y-m-d H:i:s', strtotime($data['start_date']));
+            $data['predict_date'] = date('Y-m-d H:i:s', strtotime($data['predict_date']));
+            // 课转换
+            $keyS = array_search($data['section_manager'], $this->sectionArray);
+            if ($keyS) {
+                $data['section_manager'] = $keyS;
+            }
+            // 部门转换
+            $keyD = array_search($data['department'], $this->departArray);
+            if ($keyD) {
+                $data['department'] = $keyD;
+            }
+
+            // 状态转换
+            $keySt = array_search($data['model_status'], $this->statusArray);
+            $data['model_status'] = $keySt; // 不是很需要转换, 0为假; 1以后为真
+            try{
+                Db::table('itd.d_main_engine')->insert($data);
+            }catch (Exception $e){
+                $msg = $e->getMessage();
+                array_push($errorArray, array('data'=>$data, 'msg'=>$msg));
+            }
+        }
+
+        if (empty($errorArray)) {
+            return json(array('code'=>201, 'msg'=>'插入数据成功!', 'detail'=>''));
+        } else {
+            if (count($errorArray) < (count($arrExcel) - 2)) {
+                return json(array('code'=>101, 'msg'=>'部分数据插入失败! 请确认', 'detail'=>$errorArray));
+            }
+            return json(array('code'=>101, 'msg'=>'全部数据插入失败! 请确认', 'detail'=>$errorArray));
+        }
     }
 
     private function getSearchCondition($formData) {
@@ -294,7 +342,7 @@ class MachineSever extends Controller {
                 $map['SERIAL_NO'] = $formData->serial;
             }
             if (!empty($formData->type)) {
-                $map['type'] = $formData->type;
+                $map['type'] = ['like', '%' . $formData->type . '%'];
             }
             if (!empty($formData->user)) {
                 $map['user_name'] = $formData->user;
