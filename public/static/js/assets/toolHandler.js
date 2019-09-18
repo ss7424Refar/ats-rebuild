@@ -81,7 +81,7 @@ function formToJson() {
 
             };
             obj.push(item);
-        } else if (Others === toolType) {
+        } else if (FastBoot === toolType) {
             var item ={
                 Tool_Type:toolType,
                 Tool_Name:_father.find("#otherTool").select2('val')
@@ -301,7 +301,7 @@ function addThenInit(selection, obj, remoteUrl) {
                 {radioClass: 'iradio_minimal-blue'}
             );
         });
-    } else if (Others === selection) {
+    } else if (FastBoot === selection) {
         obj.find('select[name="otherTool"]').each(function () {
             $(this).select2();
         });
@@ -655,16 +655,16 @@ function getTAndD(i, status) {
     return template;
 }
 
-function getOthers(i, status) {
+function getFastBoot(i, status) {
     var template = '';
 
-    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>'+ Others +'</b></button>' +
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>'+ FastBoot +'</b></button>' +
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
         '            <label class="col-sm-1 control-label">Tool</label>'+
         '            <div class="col-sm-4">'+
-        '                <select class="form-control select2" name="otherTool" id="otherTool">' +
+        '                <select class="form-control select2" name="otherTool" id="otherTool">' +    // 这里就懒得改了
         '                     <option>FastBoot</option>' +
         '                </select>'+
         '            </div>'+
@@ -702,8 +702,8 @@ function addToolByButton(type, obj, urlLink) {
 
     } else if (TAndD === selection) {
         result = getTAndD(collapseId, 'checked');
-    } else if (Others === selection) {
-        result = getOthers(collapseId, null);
+    } else if (FastBoot === selection) {
+        result = getFastBoot(collapseId, null);
     }
 
     if ('' !== result) {

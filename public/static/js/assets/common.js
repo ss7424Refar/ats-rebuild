@@ -13,7 +13,7 @@ const Recovery = 'Recovery';
 const C_Test = 'C-Test';
 const Treboot = 'Treboot';
 const TAndD = 'TandD';
-const Others = 'Others';
+const FastBoot = 'FastBoot';
 
 // times
 const Hour = 'hour';

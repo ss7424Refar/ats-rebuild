@@ -20,7 +20,7 @@ define('RECOVERY', 'Recovery');
 define('C_TEST', 'C-Test');
 define('TREBOOT', 'Treboot');
 define('TAndD', 'TandD'); // Qiulin说要web那里小写, 我觉得TAndD更帅
-define('Others', 'Others');
+define('FastBoot', 'FastBoot');
 
 /*
  * ATS file path

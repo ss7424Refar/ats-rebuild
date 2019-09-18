@@ -44,3 +44,7 @@
 ## ATS 1.4.0.1
 `2019-08-13`
 + **[Add]** FastBoot function
+
+## ATS 1.4.0.2
+`2019-09-18`
++ **[Add]** rename others to FastBoot

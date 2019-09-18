@@ -64,7 +64,7 @@ desired effect
                                         <option>C-Test</option>
                                         <option>Treboot</option>
                                         <option>TandD</option>
-                                        <option>Others</option>
+                                        <option>FastBoot</option>
                                     </select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
@@ -173,10 +173,10 @@ desired effect
                             lastDiv = $('#box_body').children('div:last');
                             setTAndDData(lastDiv, item);
                         }
-                        if (Others === item.Tool_Type) {
-                            $('#box_body').append('<div>' + getOthers(i, '') + '</div>');
+                        if (FastBoot === item.Tool_Type) {
+                            $('#box_body').append('<div>' + getFastBoot(i, '') + '</div>');
                             lastDiv = $('#box_body').children('div:last');
-                            setOthersData(lastDiv, item);
+                            setFastBootData(lastDiv, item);
                         }
                     })
 
@@ -431,7 +431,7 @@ desired effect
         });
     }
 
-    function setOthersData(obj, item) {
+    function setFastBootData(obj, item) {
         obj.find('#otherTool').each(function () {
             $(this).select2().val(item.Tool_Name).trigger("change");;
         });
