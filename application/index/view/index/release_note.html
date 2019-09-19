@@ -26,8 +26,8 @@
 
                 <div class="col-md-2">
                     <ul class="list-group">
-                        <button type="button" class="list-group-item">About Web UI</button>
-                        <button type="button" class="list-group-item">About WinPE</button>
+                        <button type="button" class="list-group-item" onclick="getReleaseNotes('ui')">About Web UI</button>
+                        <button type="button" class="list-group-item" onclick="getReleaseNotes('pe')">About WinPE</button>
                     </ul>
                 </div>
                 <div class="col-md-10" id="note">
@@ -49,23 +49,26 @@
 
 <script>
     $(function () {
-
         mouseEffect();
-        var converter = new showdown.Converter();
-        $.ajax({
-           type : "post",
-           url: "{:url('ReleaseNote/getReleaseNotes')}",
-
-           success : function (result) {
-               var html = converter.makeHtml(result);
-               document.getElementById("note").innerHTML = html;
-           },
-           error : function(){
-               toast.error('get release note fail');
-           }
-        })
+        getReleaseNotes('ui');
 
     });
+
+    function getReleaseNotes(item) {
+        var converter = new showdown.Converter();
+        $.ajax({
+            type : "post",
+            url: "{:url('ReleaseNote/getReleaseNotes')}",
+            data: {item: item},
+            success : function (result) {
+                var html = converter.makeHtml(result);
+                document.getElementById("note").innerHTML = html;
+            },
+            error : function(){
+                toast.error('get release note fail');
+            }
+        })
+    }
 
 </script>
 
