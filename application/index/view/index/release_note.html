@@ -21,14 +21,19 @@
 
         <!-- Main content -->
         <section class="content">
-            <!--<div class="jumbotron">-->
-                <!--<h1>ReleaseNote</h1>-->
-                <!--<p>...</p>-->
-                <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
-            <!--</div>-->
+
             <div class="row">
-                <div class="col-md-12" id="note">
+
+                <div class="col-md-2">
+                    <ul class="list-group">
+                        <button type="button" class="list-group-item">About Web UI</button>
+                        <button type="button" class="list-group-item">About WinPE</button>
+                    </ul>
                 </div>
+                <div class="col-md-10" id="note">
+                </div>
+
+                <div class="col-md-1"></div>
             </div>
         </section>
     </div>
@@ -45,8 +50,9 @@
 <script>
     $(function () {
 
+        mouseEffect();
         var converter = new showdown.Converter();
-       $.ajax({
+        $.ajax({
            type : "post",
            url: "{:url('ReleaseNote/getReleaseNotes')}",
 
@@ -57,7 +63,7 @@
            error : function(){
                toast.error('get release note fail');
            }
-       })
+        })
 
     });
 

@@ -18,12 +18,18 @@ use think\Exception;
 
 class WatchExpired {
     /*
+     * @throws
      * set expired
      */
     public function dog()
     {
         // select the data expired
-        $result = Db::query('select * from ats_task_tool_steps  where TIMESTAMPDIFF(hour, tool_start_time, now()) >= 72 and status = ? ', [ONGOING]);
+        // 工具过期时间要超过3天, 但除Treboot要超过7天
+        $result = Db::query('select * from ats_task_tool_steps  
+                                  where status = ? 
+                                  and ((TIMESTAMPDIFF(DAY, tool_start_time, now()) >= 3 and tool_name <> ?) 
+                                  or (TIMESTAMPDIFF(DAY, tool_start_time, now()) >= 7 and tool_name = ?))'
+                                    , [ONGOING, TREBOOT, TREBOOT]);
 
         for ($i = 0; $i < count($result); $i++) {
             $taskId = $result[$i]['task_id'];

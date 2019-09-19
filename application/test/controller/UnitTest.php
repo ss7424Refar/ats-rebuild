@@ -32,6 +32,11 @@ class UnitTest extends Controller
         dump($newFileName);
     }
     public function Test2() {
-        echo date("i", time());
+        $result = Db::query('select * from ats_task_tool_steps  
+                                  where status = ? 
+                                  and ((TIMESTAMPDIFF(DAY, tool_start_time, now()) >= 3 and tool_name <> ?) 
+                                  or (TIMESTAMPDIFF(DAY, tool_start_time, now()) >= 7 and tool_name = ?))'
+            , [ONGOING, TREBOOT, TREBOOT]);
+        dump($result);
     }
 }
