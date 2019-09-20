@@ -47,4 +47,9 @@
 
 ## ATS 1.4.0.2
 `2019-09-18`
-+ **[Add]** rename others to FastBoot
++ **[Update]** rename others to FastBoot
+
+## ATS 1.4.0.3
+`2019-09-20`
++ **[Add]** ATS Tool releaseNote
++ **[Update]** detect tool expired limit is 3DAYS except Treboot is 7DAYS
