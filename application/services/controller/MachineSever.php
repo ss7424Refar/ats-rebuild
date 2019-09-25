@@ -359,6 +359,9 @@ class MachineSever extends Controller {
             if (!empty($formData->section)) {
                 $map['section_manager'] = $formData->section;
             }
+            if (!empty($formData->cpu)) {
+                $map['cpu'] = ['like', '%' . $formData->cpu . '%'];
+            }
         }
 
         return $map;
