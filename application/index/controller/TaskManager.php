@@ -282,6 +282,10 @@ class TaskManager extends Common{
                         $jsonElement->Execute_Job = 1;
                     } elseif ('Fast Startup' == $jsonElement->Execute_Job){
                         $jsonElement->Execute_Job = 2;
+                    } elseif ('Microsoft Edge' == $jsonElement->Execute_Job){
+                        $jsonElement->Execute_Job = 3;
+                    } elseif ('Standby' == $jsonElement->Execute_Job){
+                        $jsonElement->Execute_Job = 4;
                     } elseif ('BatteryLife' == $jsonElement->Execute_Job){
                         $jsonElement->Execute_Job = 5;
                     } elseif('Fast Startup,Standby,Microsoft Edge,BatteryLife,DataGrab' == $jsonElement->Execute_Job) {

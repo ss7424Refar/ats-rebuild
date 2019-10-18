@@ -327,6 +327,8 @@ function getJumpStart(i, status) {
         '                    <option>Fast Startup</option>'+
         '                    <option>BatteryLife</option>'+
         '                    <option>Fast Startup,Standby,Microsoft Edge,BatteryLife,DataGrab</option>'+
+        '                    <option>Microsoft Edge</option>'+
+        '                    <option>Standby</option>'+
         '                </select>'+
         '            </div>'+
         '        </div>'+
