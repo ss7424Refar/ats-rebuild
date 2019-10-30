@@ -27,6 +27,14 @@ class ToolHandler extends Common {
             return $this->getSearchFile(config('ats_td_bios'), $query);
         } elseif ('tdConfig' == $type) {
             return $this->getSearchFile(config('ats_td_config'), $query);
+        } elseif ('bios1' == $type) {
+            return $this->getSearchFile(config('ats_bios_update'), $query);
+        } elseif ('bios2' == $type) {
+            $res = json_decode($this->getSearchFile(config('ats_bios_update'), $query));
+            // 需要增加none
+            $none = array("id"=>"none", "text"=>"none");
+            array_unshift($res, $none);
+            return json_encode($res);
         }
         return '';
     }

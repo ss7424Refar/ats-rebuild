@@ -65,6 +65,7 @@ desired effect
                                         <option>Treboot</option>
                                         <option>TandD</option>
                                         <option>FastBoot</option>
+                                        <option>BIOSUpdate</option>
                                     </select>
                                 </div>
                                 <input type="text" id="forCollapse" hidden>
@@ -177,6 +178,11 @@ desired effect
                             $('#box_body').append('<div>' + getFastBoot(i, '') + '</div>');
                             lastDiv = $('#box_body').children('div:last');
                             setFastBootData(lastDiv, item);
+                        }
+                        if (BIOSUpdate === item.Tool_Type) {
+                            $('#box_body').append('<div>' + getBIOSUpdate(i, '') + '</div>');
+                            lastDiv = $('#box_body').children('div:last');
+                            setBIOSUpdateData(lastDiv, item);
                         }
                     })
 
@@ -434,6 +440,31 @@ desired effect
     function setFastBootData(obj, item) {
         obj.find('#otherTool').each(function () {
             $(this).select2().val(item.Tool_Name).trigger("change");;
+        });
+    }
+
+    function setBIOSUpdateData(obj, item) {
+        obj.find('[data-trigger="spinner"]').spinner();
+
+        obj.find('select[name="BIOS1"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.BIOS1, 'bios1');
+
+        });
+        obj.find('select[name="BIOS2"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.BIOS2, 'bios2');
+
+        });
+        obj.find('#Count').find('input').val(item.Count);
+
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            );
+            if (item.SecureBoot === $(this).val()) {
+                $(this).iCheck('check');
+            }
         });
     }
 </script>

@@ -14,6 +14,7 @@ const C_Test = 'C-Test';
 const Treboot = 'Treboot';
 const TAndD = 'TandD';
 const FastBoot = 'FastBoot';
+const BIOSUpdate = 'BIOSUpdate';
 
 // times
 const Hour = 'hour';

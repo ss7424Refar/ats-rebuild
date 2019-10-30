@@ -14,7 +14,7 @@
 + **[Add]** 支持同时运行20台机型
 
 ## `2019-06-20`
-+ **[Add]** 支持同一台机器，跨镜象恢复
++ **[Add]** 支持同一台机器，跨镜像恢复
 + **[Update]** winPE上的SKU->CPU, submit按钮至灰
 + **[Update]** LOG文件命名`TestMachine + ID号` 
 
@@ -32,3 +32,5 @@
 + **[Fix]** Optane硬盘机器恢复完后无法Enable Optane
 + **[Fix]** Whiskeylake机器恢复不成功
  
+## `2019-10-30`
++ **[Add]** BIOS Update 功能

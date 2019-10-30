@@ -1,22 +1,16 @@
 ## ATS 1.0.0.0
 `2018-08-15`
-
 + **[Add]** JumpStart Performance Test
-
-
 
 ## ATS 1.2.0.0
 `2018-09-10`
-
 + **[Add]** JumpStart Performance Test (OS Active)
 + **[Add]** Image Recovery
-
 
 ## ATS 1.3.0.0
 `2019-03-31`
 + **[Add]** C-Test Performance
 + **[Add]** Treboot Performance
-
 
 ## ATS 1.3.0.1
 `2019-06-09`
@@ -53,3 +47,7 @@
 `2019-09-20`
 + **[Add]** ATS Tool releaseNote
 + **[Update]** detect tool expired limit is 3DAYS except Treboot is 7DAYS
+
+## ATS 1.4.0.4
+`2019-10-30`
++ **[Add]** BIOSUpdate function

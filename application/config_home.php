@@ -325,6 +325,7 @@ return [
     'ats_td_image'  => '/opt/',
     'ats_td_bios' => '/home/',
     'ats_td_config' => '/tmp/',
+    'ats_bios_update' => '/home/',
 
     'ats_sign_out_url'    =>  'http://localhost/tpms/index.php',
 

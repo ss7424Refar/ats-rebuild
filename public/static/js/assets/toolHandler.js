@@ -87,6 +87,15 @@ function formToJson() {
                 Tool_Name:_father.find("#otherTool").select2('val')
             };
             obj.push(item);
+        } else if (BIOSUpdate === toolType) {
+            var item ={
+                Tool_Type:toolType,
+                BIOS1:_father.find("#BIOS1").select2('val'),
+                BIOS2:_father.find("#BIOS2").select2('val'),
+                Count:_father.find('#Count').find('input').val(),
+                SecureBoot:_father.find("input[name^='SecureBoot']:checked").val()
+            };
+            obj.push(item);
         }
 
     });
@@ -305,6 +314,22 @@ function addThenInit(selection, obj, remoteUrl) {
         obj.find('select[name="otherTool"]').each(function () {
             $(this).select2();
         });
+    } else if (BIOSUpdate === selection) {
+        obj.find('select[name="BIOS1"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'bios1');
+        });
+        obj.find('select[name="BIOS2"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, 'none', 'bios2');
+        });
+        obj.find('[data-trigger="spinner"]').spinner();
+        obj.find('input[type="radio"].minimal').each(function () {
+            $(this).iCheck(
+                {radioClass: 'iradio_minimal-blue'}
+            );
+        });
+
     }
 }
 
@@ -680,6 +705,54 @@ function getFastBoot(i, status) {
     return template;
 }
 
+function getBIOSUpdate(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i +'">' + '<b>'+ BIOSUpdate +'</b></button>' +
+        '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
+        '    <div class="panel-body form-horizontal">'+
+        '        <div class="form-group">'+
+        '            <label class="col-sm-1 control-label">BIOS1</label>'+
+        '            <div class="col-sm-4">'+
+        '                <select class="form-control select2" name="BIOS1" id="BIOS1"></select>'+
+        '            </div>'+
+        '            <label class="col-sm-1 control-label">BIOS2</label>'+
+        '            <div class="col-sm-4">'+
+        '                <select class="form-control select2" name="BIOS2" id="BIOS2"></select>'+
+        '            </div>'+
+        '        </div>'+
+        '        <div class="form-group">'+
+        '            <label class="col-sm-1 control-label">Count</label>'+
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
+        '                <div id="Count">'+
+        '                    <div class="input-group spinner col-sm-2" data-trigger="spinner">'+
+        '                        <input type="text" class="form-control text-center" value="1" data-max="1000" data-min="1" data-step="1" data-rule="quantity">'+
+        '                        <div class="input-group-addon">'+
+        '	                         <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>'+
+        '		                     <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
+        '                        </div>'+
+        '                    </div>'+
+        '                </div>'+
+        '            </div>'+
+        '            <label class="col-sm-1 control-label">SecureBoot</label>'+
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="SecureBoot_'+ i +'" class="minimal" value="YES" '+ status +'/> YES'+
+        '                </label>'+
+        '                <label style="margin-right: 19px">'+
+        '                    <input type="radio" name="SecureBoot_'+ i +'" class="minimal" value="NO"/> NO'+
+        '                </label>'+
+        '            </div>'+
+        '        </div>'+
+        '        <hr>'+
+        '        <div class="col-md-6"><button type="button" class="btn bg-purple addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Add</button></div>'+
+        '        <div class="col-md-6"><button type="button" class="btn bg-olive delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>'+
+        '    </div>'+
+        '</div>';
+
+    return template;
+}
+
 // 1代表在最后添加, 2代表在中间添加
 function addToolByButton(type, obj, urlLink) {
     var selection, toolId;
@@ -704,8 +777,13 @@ function addToolByButton(type, obj, urlLink) {
 
     } else if (TAndD === selection) {
         result = getTAndD(collapseId, 'checked');
+
     } else if (FastBoot === selection) {
         result = getFastBoot(collapseId, null);
+
+    } else if (BIOSUpdate === selection) {
+        result = getBIOSUpdate(collapseId, 'checked');
+
     }
 
     if ('' !== result) {
