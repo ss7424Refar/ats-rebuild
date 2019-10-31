@@ -321,7 +321,7 @@ function addThenInit(selection, obj, remoteUrl) {
         });
         obj.find('select[name="BIOS2"]').each(function () {
             var _this = $(this);
-            select2Init(_this, remoteUrl, 'none', 'bios2');
+            select2Init(_this, remoteUrl, 'NONE', 'bios2');
         });
         obj.find('[data-trigger="spinner"]').spinner();
         obj.find('input[type="radio"].minimal').each(function () {
@@ -734,7 +734,7 @@ function getBIOSUpdate(i, status) {
         '                    </div>'+
         '                </div>'+
         '            </div>'+
-        '            <label class="col-sm-1 control-label">SecureBoot</label>'+
+        '            <label class="col-sm-1 control-label">Enable SecureBoot</label>'+
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">'+
         '                <label style="margin-right: 19px">'+
         '                    <input type="radio" name="SecureBoot_'+ i +'" class="minimal" value="YES" '+ status +'/> YES'+

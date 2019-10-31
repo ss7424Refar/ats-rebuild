@@ -32,7 +32,7 @@ class ToolHandler extends Common {
         } elseif ('bios2' == $type) {
             $res = json_decode($this->getSearchFile(config('ats_bios_update'), $query));
             // 需要增加none
-            $none = array("id"=>"none", "text"=>"none");
+            $none = array("id"=>"NONE", "text"=>"NONE");
             array_unshift($res, $none);
             return json_encode($res);
         }
