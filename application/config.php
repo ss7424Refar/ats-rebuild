@@ -326,7 +326,7 @@ return [
     'ats_td_image'  => '/opt/hello/TandD/Images/',
     'ats_td_bios' => '/opt/hello/BIOS/',
     'ats_td_config' => '/opt/hello/TandD/TDConfig/',
-    'ats_bios_update' => '/opt/hello/BIOS',
+    'ats_bios_update' => '/opt/hello/BIOS/',
 
     'ats_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
 

@@ -29,6 +29,7 @@ class Index extends Common
         $this->assign('dashBoard','active');
         $this->assign('taskManager','');
         $this->assign('portCheck','');
+        $this->assign('bios','');
         return $this->fetch();
 
     }
@@ -38,6 +39,17 @@ class Index extends Common
         $this->assign('taskManager','active');
         $this->assign('dashBoard','');
         $this->assign('portCheck','');
+        $this->assign('bios','');
+        return $this->fetch();
+
+    }
+
+    public function Bios(){
+        // 导航栏的样式
+        $this->assign('taskManager','');
+        $this->assign('dashBoard','');
+        $this->assign('portCheck','');
+        $this->assign('bios','active');
         return $this->fetch();
 
     }
@@ -47,6 +59,7 @@ class Index extends Common
         $this->assign('portCheck','active');
         $this->assign('taskManager','');
         $this->assign('dashBoard','');
+        $this->assign('bios','');
 
         // web socket url
         $this->assign('webSocketUrl',config('workman_web_socket'));
@@ -70,6 +83,7 @@ class Index extends Common
         $this->assign('portCheck','');
         $this->assign('taskManager','');
         $this->assign('dashBoard','');
+        $this->assign('bios','');
 
         return $this->fetch();
     }
@@ -86,6 +100,7 @@ class Index extends Common
         $this->assign('taskManager','active');
         $this->assign('dashBoard','');
         $this->assign('portCheck','');
+        $this->assign('bios','');
 
         // 模板变量赋值
         $this->assign('taskId',$taskId);
@@ -107,6 +122,7 @@ class Index extends Common
         $this->assign('taskManager','active');
         $this->assign('dashBoard','');
         $this->assign('portCheck','');
+        $this->assign('bios','');
 
         // 模板变量赋值
         $this->assign('taskId', $taskId);

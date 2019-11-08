@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+<head>
+    {include file="render/render_css" /}
+    {include file="render/theme_css" /}
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-table@1.15.5/bootstrap-table.min.css">
+</head>
+<body class="{$Think.const.THEME}">
+<div class="wrapper">
+    {include file="common/header" /}
+    <!-- Left side column. contains the logo and sidebar -->
+    {// include file="common/sidebar" /}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Bios
+                <small>Manager</small>
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="box box-solid">
+                                <div id="toolbar">
+                                    <div class="form-inline" role="form">
+                                        <a id="ok" class="btn btn-sm btn-primary">
+                                            <form action="" id="formD"
+                                                   style="position:absolute;opacity:0;top:0;left:0;
+                                                        width:59px;height:100%;cursor:pointer;">
+                                                <input type="file"  accept=".zip"
+                                                       style="position:absolute;opacity:0;top:0;left:0;
+                                                            width:100%;height:100%;cursor:pointer;" id="upload"/>
+                                            </form>
+                                            Upload
+                                        </a>
+                                        <button id="expand" type="submit" class="btn btn-sm btn-primary">ExpandAll</button>
+                                        <button id="collapse" type="submit" class="btn btn-sm btn-primary">CollapseAll</button>
+                                    </div>
+                                </div>
+                                <table id="table" data-toolbar="#toolbar"
+                                       data-search="true" style="margin-top: 10px">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    {include file="common/footer" /}
+
+</div>
+<!-- ./wrapper -->
+
+{include file="render/render_js" /}
+<!-- Latest compiled and minified JavaScript -->
+<script src="__PUBLIC_JS__/bootstrap-table@1.15.5/bootstrap-table.min.js"></script>
+<!-- Latest compiled and minified Locales -->
+<script src="__PUBLIC_JS__/bootstrap-table@1.15.5/locale/bootstrap-table-en-US.min.js"></script>
+
+<script>
+    var $table = $('#table')
+
+    function deleteMe(it) {
+        $.ajax({
+            url: "{:url('Bios/delete')}",
+            type: 'post',
+            data: {"file" : it},
+            success: function (res) {
+                if (res.code == 200) {
+                    toastr.success(res.msg);
+                } else {
+                    toastr.error(res.msg);
+                }
+            },
+            error: function (res) {
+                toastr.error('Delete Fail');
+            },
+            complete: function () {
+                setTimeout(function () {
+                    $table.bootstrapTable('selectPage', 1)
+                }, 1000);
+            }
+        });
+
+    }
+
+    $(function() {
+        $table.bootstrapTable({
+            url: "{:url('Bios/getNodeFile')}",
+            pagination: true,
+            search: true,
+            detailView: true,
+            sidePagination: "server",
+            cache: false,
+            pageNumber:1,
+            pageSize: 10,
+            pageList: [10, 25, 50],
+            columns: [
+                {
+                    field: "check",
+                    checkbox: true
+                },
+                {
+                    field: 'file',
+                    title: 'File Name',
+                    formatter: function (value, row) {
+                        if (row.isDir) {
+                            return '<i class="fa fa-folder fa-2x" style="color: #FFD659;"></i> ' + value
+                        }
+                        return '<i class="fa fa-file-text-o fa-2x"></i> ' + value
+                    }
+                },
+                {
+                    field: 'size',
+                    title: 'Size (KB)'
+                },
+                {
+                    field: 'time',
+                    title: 'Modify Time'
+                },
+                {
+                    field: '-',
+                    title: 'Action',
+                    formatter: function (value, row) {
+                        return  "<a class='btn btn-sm btn-danger' href='#' " + " onclick=\"deleteMe(\'" + row.file + "\')\" style='margin: 3px'>Delete</a>";
+                    }
+                }
+            ],
+            onExpandRow: function (index, row, $detail) {
+                if (row.isDir) {
+                    initSubTable(index, row, $detail);
+                }
+            },
+            onPostBody: function (index, row, $detail) {
+                $table.bootstrapTable('expandAllRows')
+            }
+        })
+
+        function initSubTable(index, row, $detail) {
+            var file = row.file;
+            var cur_table = $detail.html('<table></table>').find('table');
+            $(cur_table).bootstrapTable({
+                url: "{:url('Bios/getSubFileInfoByName')}",
+                method: 'get',
+                queryParamsType : "limit",
+                queryParams: function (params) {
+                    var temp = {
+                        file: file,
+                        offset : params.offset,
+                        limit : params.limit
+                    };
+                    return temp;
+                },
+                cache: false,
+                sidePagination: "server",
+                pageNumber:1,                  //初始化加载第一页，默认第一页
+                pageSize: 10,                  //每页的记录行数（*）
+                pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+                columns: [
+                    {
+                        field: "-",
+                        title: '-',
+                        formatter: function (value, row) {
+                            return '-'
+                        }
+                    },
+                    {
+                        field: 'file',
+                        title: 'Sub File Name',
+                        formatter: function (value, row) {
+                            if (row.isDir) {
+                                return '<i class="fa fa-folder fa-2x" style="color: #FFD659;"></i> ' + value
+                            }
+                            return '<i class="fa fa-file-text-o fa-2x"></i> ' + value
+                        }
+                    },
+                    {
+                        field: 'size',
+                        title: 'Size (KB)'
+                    },
+                    {
+                        field: 'time',
+                        title: 'Modify Time'
+                    }
+                ],
+                formatLoadingMessage: function () {
+                    return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+                },
+                onLoadError: function () {
+                    toastr.error("Table LoadError!");
+                },
+                formatNoMatches: function () {  //没有匹配的结果
+                    return '<i class="text-danger">No data found</i>';
+                }
+            });
+        }
+
+        $('#expand').click(function () {
+            $table.bootstrapTable('expandAllRows')
+        });
+        $('#collapse').click(function () {
+            $table.bootstrapTable('collapseAllRows')
+        });
+
+        $('#upload').change(function () {
+            var file = $("#upload")[0].files[0]
+            if (file.type != 'application/zip') {
+                toastr.error('Please Upload Zip File');
+                return false;
+            }
+            if(((file.size).toFixed(2))>=(6*1024*1024)){
+                toastr.error('File Size Over 6MB');
+                return false;
+            }
+            var formData = new FormData();
+            formData.append("file", file);
+            $.ajax({
+                url: "{:url('Bios/upload')}",
+                type: 'post',
+                processData: false,  // 将数据转换成对象
+                contentType: false,  // 不设置数据类型
+                data: formData,
+                success: function (res) {
+                    if (res.code == 200) {
+                        toastr.success(res.msg);
+                    } else {
+                        toastr.error(res.msg);
+                    }
+                },
+                error: function (res) {
+                    toastr.error('Upload Fail');
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $table.bootstrapTable('selectPage', 1)
+                    }, 1000);
+                }
+            });
+        });
+
+
+    })
+
+</script>
+
+</body>
+</html>

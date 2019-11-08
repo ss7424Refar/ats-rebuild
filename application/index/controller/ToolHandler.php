@@ -159,7 +159,6 @@ class ToolHandler extends Common {
     private function getSearchFile($path, $query) {
         $handler = opendir($path);
 
-        $i = 1;
         $jsonResult = array();
 
         while (($filename = readdir($handler)) !== false) {
@@ -167,12 +166,10 @@ class ToolHandler extends Common {
             if ($filename != "." && $filename != "..") {
                 if (empty(trim($query))) {
                     $tmpArray = array('id' => $filename, 'text' => $filename);
-                    $i = $i + 1;
                     array_push($jsonResult, $tmpArray);
                 } else {
                     if (stristr($filename, $query) !== false) {
                         $tmpArray = array('id' => $filename, 'text' => $filename);
-                        $i = $i + 1;
                         array_push($jsonResult, $tmpArray);
                     }
                 }

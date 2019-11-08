@@ -81,6 +81,7 @@ class Admin extends Common
         $this->assign('portCheck','');
         $this->assign('taskManager','');
         $this->assign('dashBoard','');
+        $this->assign('bios','');
 
         return $this->fetch();
 
