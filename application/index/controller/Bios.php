@@ -32,7 +32,7 @@ class Bios extends Common
 
     public function upload() {
         $file = request()->file('file')->getInfo();
-//        dump($file);
+        ini_set('memory_limit','500M');
 
         $filename = config('ats_bios_update').$file['name'];
 
@@ -50,7 +50,7 @@ class Bios extends Common
 
             // 直接调用命令行unzip
             // -d 解压到bios目录, -o覆盖不询问用户, -q不返回任何信息
-            $cmd = 'sudo unzip -oq ' . $filename. ' -d '. $extraFolder .' 2>&1';
+            $cmd = 'unzip -oq ' . $filename. ' -d '. $extraFolder .' 2>&1';
             exec($cmd, $out, $return_val);
             Log::record('unzip -oq '. $filename. ' [Info] '. json_encode($out));
 
