@@ -32,9 +32,9 @@ class Bios extends Common
 
     public function upload() {
         $file = request()->file('file')->getInfo();
-        ini_set('memory_limit','500M');
 
-        $filename = config('ats_bios_update').$file['name'];
+        // 本地临时目录
+        $filename = config('ats_bios_temp_update').$file['name'];
 
         // 上传 / 解压
         if (move_uploaded_file($file["tmp_name"], $filename)) {
@@ -42,7 +42,7 @@ class Bios extends Common
             // 改权限
             chmod($filename, 0777);
             //获取解压后的目录名
-            $extraFolder = config('ats_bios_update'). substr($file['name'], 0, strlen($file['name']) - 4);
+            $extraFolder = config('ats_bios_temp_update'). substr($file['name'], 0, strlen($file['name']) - 4);
 
             if (!file_exists($extraFolder)) {
                 mkdir($extraFolder, 0777);
@@ -52,7 +52,7 @@ class Bios extends Common
             // -d 解压到bios目录, -o覆盖不询问用户, -q不返回任何信息
             $cmd = 'unzip -oq ' . $filename. ' -d '. $extraFolder .' 2>&1';
             exec($cmd, $out, $return_val);
-            Log::record('unzip -oq '. $filename. ' [Info] '. json_encode($out));
+            Log::record('[unzip -oq] '. $filename. ' [Info] '. json_encode($out));
 
             if (0 != $return_val) {
                 return json(array('code'=>500, 'msg'=>'Unzip File Fail'));
@@ -61,8 +61,10 @@ class Bios extends Common
             // 删除zip包
             unlink($filename);
             return json(array('code'=>200, 'msg'=>'Upload Success'));
-        }
 
+            // 后面其实还有复制到ats服务器的代码, 但是从43到31网络好像会变的很卡
+            // 代码响应会出现等待的情况, 所以选择启用workman从sync同步文件夹到31的方式
+        }
     }
 
     public function delete() {
@@ -70,10 +72,10 @@ class Bios extends Common
 
         $path = config('ats_bios_update'). $file;
 
-        $cmd = 'rm -r ' . $path;
+        $cmd = 'rm -rf ' . $path .' 2>&1';
         exec($cmd, $out, $return_val);
 
-        Log::record('rm -r '. $path. ' [Info] '. json_encode($out));
+        Log::record('[rm -rf] '. $cmd. ' [Info] '. json_encode($out));
 
         if (0 != $return_val) {
             return json(array('code'=>500, 'msg'=>'Delete Fail'));

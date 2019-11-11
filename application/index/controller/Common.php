@@ -48,9 +48,10 @@ class Common extends Controller{
             ->join('roles t2','t1.role_id = t2.id')->field('t1.login, t1.email, t2.description ')->select();
 
         if ('admin' == $result[0]['description'] || 'leader' == $result[0]['description'] || 'group leader' == $result[0]['description'] || 'manager' == $result[0]['description']){
-            $this->assign('hasRight', true); // 给模板用
             $this->hasRight = true;
         }
+        $this->assign('hasRight', $this->hasRight); // 给模板用
+
         // 给header.html中的变量赋值, index继承了common, index里面有fetch方法
         $this->assign([
             'description'=>$result[0]['description'], // 查看权限用的，不要删除

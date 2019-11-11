@@ -87,16 +87,6 @@ class Worker extends Server
 
             });
         }
-        // 检测ftp上的关于测试机文件是否修改，如果修改了则download。
-//        else if($worker->id === 1) {
-//            Timer::add(5, function()use($worker){
-//                Log::record('ftp dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
-//                $watcher = controller('push/WatchFTP');
-//                $watcher->dog();
-//            });
-//
-//        }
-
         else if($worker->id === 1) {
             Timer::add(3600, function()use($worker){
                 Log::record('cifs dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
@@ -106,5 +96,13 @@ class Worker extends Server
 
         }
 
+        else if($worker->id === 2) {
+            Timer::add(60, function()use($worker){
+                Log::record('sync dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
+                $watcher = controller('push/SyncFile');
+                $watcher->dog();
+            });
+
+        }
     }
 }

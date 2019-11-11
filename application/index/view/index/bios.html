@@ -29,6 +29,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="row">
                 <div class="col-md-12">
                     <div class="box">
+                        <div class="box-header  with-border" style="padding-top: 20px">
+                            <div class="alert alert-info alert-dismissible">
+                                <i class="icon fa fa-info fa-1.5x"></i>
+                                <i style="color: yellow">BIOS zip package will sync from tpms server to ats server in 60s when you upload success.</i>
+                            </div>
+                        </div>
                         <div class="box-body">
                             <div class="box box-solid">
                                 <div id="toolbar">
@@ -61,7 +67,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                 </div>
                                 <table id="table" data-toolbar="#toolbar"
-                                       data-search="true" style="margin-top: 10px">
+                                       data-search="true"
+                                       style="margin-top: 10px">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="file" data-formatter="fileFormatter">File Name</th>
+                                            <th data-field="size">Size (KB)</th>
+                                            <th data-field="time">Modify Time</th>
+                                            {if condition="($hasRight)"}
+                                            <th data-field="-" data-formatter="actionFormatter">Action</th>
+                                            {/if}
+                                        </tr>
+                                    </thead>
+
                                 </table>
                             </div>
                         </div>
@@ -107,7 +125,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             complete: function () {
                 setTimeout(function () {
                     $table.bootstrapTable('selectPage', 1)
-                }, 1000);
+                }, 2000);
             }
         });
 
@@ -117,51 +135,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $('#pro0').css('display', 'none');
         $('#pro').css('width', '0%').html('0%');
     }
+
+    function fileFormatter(value, row) {
+        if (row.isDir) {
+            return '<i class="fa fa-folder fa-2x" style="color: #FFD659;"></i> ' + value
+        }
+        return '<i class="fa fa-file-text-o fa-1.5x"></i> ' + value
+    }
+
+    function actionFormatter(value, row) {
+        return  "<a class='btn btn-sm btn-danger' href='#' " + " onclick=\"deleteMe(\'" + row.file + "\')\" style='margin: 3px'>Delete</a>";
+    }
     $(function() {
         $table.bootstrapTable({
             url: "{:url('Bios/getNodeFile')}",
             pagination: true,
-            search: true,
+            showRefresh: true,
             detailView: true,
             sidePagination: "server",
             cache: false,
             pageNumber:1,
             pageSize: 10,
             pageList: [10, 25, 50],
-            columns: [
-                {
-                    field: 'file',
-                    title: 'File Name',
-                    formatter: function (value, row) {
-                        if (row.isDir) {
-                            return '<i class="fa fa-folder fa-2x" style="color: #FFD659;"></i> ' + value
-                        }
-                        return '<i class="fa fa-file-text-o fa-2x"></i> ' + value
-                    }
-                },
-                {
-                    field: 'size',
-                    title: 'Size (KB)'
-                },
-                {
-                    field: 'time',
-                    title: 'Modify Time'
-                },
-                {
-                    field: '-',
-                    title: 'Action',
-                    formatter: function (value, row) {
-                        return  "<a class='btn btn-sm btn-danger' href='#' " + " onclick=\"deleteMe(\'" + row.file + "\')\" style='margin: 3px'>Delete</a>";
-                    }
-                }
-            ],
             onExpandRow: function (index, row, $detail) {
                 if (row.isDir) {
                     initSubTable(index, row, $detail);
                 }
             },
             onPostBody: function (index, row, $detail) {
-                $table.bootstrapTable('expandAllRows')
+                // $table.bootstrapTable('expandAllRows')
             }
         })
 
@@ -200,7 +202,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             if (row.isDir) {
                                 return '<i class="fa fa-folder fa-2x" style="color: #FFD659;"></i> ' + value
                             }
-                            return '<i class="fa fa-file-text-o fa-2x"></i> ' + value
+                            return '<i class="fa fa-file-text-o fa-1.5x"></i> ' + value
                         }
                     },
                     {
@@ -232,15 +234,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
 
         $('#upload').change(function () {
-            var file = $("#upload")[0].files[0]
-            if (file.type != 'application/zip') {
+            var file = $("#upload")[0].files[0];
+
+            var name = file.name;
+            var suffix = name.substr(name.lastIndexOf("."))
+            console.log(suffix);
+            if (suffix != '.zip') {
                 toastr.error('Please Upload Zip File');
                 return false;
             }
-            // if(((file.size).toFixed(2))>=(10*1024*1024)){
-            //     toastr.error('File Size Over 10MB');
-            //     return false;
-            // }
+            if(((file.size).toFixed(2))>=(15*1024*1024)){
+                toastr.error('File Size Over 15MB');
+                return false;
+            }
             var formData = new FormData();
             formData.append("file", file);
 
@@ -281,7 +287,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     setTimeout(function () {
                         $table.bootstrapTable('selectPage', 1)
                             resetPro()
-                    }, 1000);
+                    }, 2000);
                 }
             });
         });

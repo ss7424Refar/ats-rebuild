@@ -325,7 +325,12 @@ return [
     'ats_td_image'  => '/opt/',
     'ats_td_bios' => '/home/',
     'ats_td_config' => '/tmp/',
+
+    // +----------------------------------------------------------------------
+    // | BIOS path
+    // +----------------------------------------------------------------------
     'ats_bios_update' => '/opt/', // 需要有斜杠
+    'ats_bios_temp_update' => ROOT_PATH. 'public/resource/sync/',
 
     'ats_sign_out_url'    =>  'http://localhost/tpms/index.php',
 

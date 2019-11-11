@@ -51,3 +51,7 @@
 ## ATS 1.4.0.4
 `2019-10-30`
 + **[Add]** BIOSUpdate function
+
+## ATS 1.4.0.5
+`2019-11-11`
++ **[Add]** BIOS Package(*.zip) Sync function
