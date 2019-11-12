@@ -330,7 +330,7 @@ return [
     // +----------------------------------------------------------------------
     // | BIOS path
     // +----------------------------------------------------------------------
-    'ats_bios_update' => '/opt/BIOS/', // 需要有斜杠
+    'ats_bios_update' => '/opt/hello/BIOS/', // 需要有斜杠
     'ats_bios_temp_update' => ROOT_PATH. 'public/resource/sync/',
 
     'ats_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
