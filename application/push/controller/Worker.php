@@ -97,7 +97,7 @@ class Worker extends Server
         }
 
         else if($worker->id === 2) {
-            Timer::add(60, function()use($worker){
+            Timer::add(5, function()use($worker){
                 Log::record('sync dog is watching =====> '. date("Y-m-d H:i:s", time()).PHP_EOL);
                 $watcher = controller('push/SyncFile');
                 $watcher->dog();
