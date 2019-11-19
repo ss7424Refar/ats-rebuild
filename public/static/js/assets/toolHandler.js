@@ -58,6 +58,8 @@ function formToJson() {
                 obj.push(item);
             }
         } else if (Treboot === toolType) {
+            var cad = _father.find("input[name^='CheckAllDevices']:checked").val();
+            cad = cad === undefined ? 'NO' : cad;
             var item ={
                 Tool_Type:toolType,
                 Test_Image:_father.find("#TestImage").select2('val'),
@@ -67,7 +69,8 @@ function formToJson() {
                 Hibernation:_father.find('#hibernation').val(),
                 HybridShutdown:_father.find('#hybridShutdown').val(),
                 MinPowerUp:_father.find('#delay').val(),
-                SecDelay:_father.find('#timeOut').val()
+                SecDelay:_father.find('#timeOut').val(),
+                Verify:cad
             };
             obj.push(item);
         } else if (TAndD === toolType) {
@@ -624,6 +627,13 @@ function getTreboot(i, status) {
         '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>'+
         '                     </div>'+
         '                </div>'+
+        '            </div>'+
+        '        </div>'+
+        // 不用担心cad初始化会影响其他组件
+        '        <div class="form-group">'+
+        '            <label class="col-sm-1 control-label">Check All Devices(For Verify)</label>'+
+        '            <div class="col-sm-1" style="padding-top: 5px">'+
+        '                 <input type="checkbox" name="CheckAllDevices_'+ i +'" class="flat" value="YES" />'+
         '            </div>'+
         '        </div>'+
         '        <hr>'+

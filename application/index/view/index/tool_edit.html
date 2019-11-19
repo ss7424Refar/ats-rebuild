@@ -384,7 +384,12 @@ desired effect
 
             }
         });
-
+        // checkAllDevices
+        obj.find('input[name^="CheckAllDevices"]').each(function () {
+            if ('YES' === item.Verify) {
+                $(this).iCheck('check');
+            }
+        });
         // configure 重置
         obj.find('input[type="checkbox"].flat').each(function () {
             $(this).iCheck(

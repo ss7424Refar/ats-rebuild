@@ -1,11 +1,12 @@
 ## ATS(Web)
 
-### web界面
+## web界面
 
 ![layout1](public/static/img/readme/layout1.png)
-![layout2](public/static/img/readme/layout2.png)
-![layout3](public/static/img/readme/layout3.png)
-![layout4](public/static/img/readme/layout4.png)
+![layout2](public/static/img/readme/layout3.png)
+![layout3](public/static/img/readme/layout5.png)
+![layout4](public/static/img/readme/layout6.png)
+![layout5](public/static/img/readme/layout8.png)
 
 
 ## 运行环境
@@ -13,6 +14,7 @@
 + php5.4以上
 + nginx
 + mysql5.7以上
++ think php-5.0.24
 
 
 ## 更新记录
@@ -27,13 +29,13 @@
 
 1. 安装git / docker / docker-compose
 
-   + git
+   1. git
 
      ```
      https://www.linuxidc.com/Linux/2018-05/152610.htm
      ```
 
-   + docker / docker-compose
+   2. docker / docker-compose
 
      ```
      https://blog.csdn.net/diligent_lee/article/details/79098302
@@ -59,27 +61,28 @@
    cd /opt/docker-start/docker-compose-lnmp/html # 项目部署的内容
    git clone https://github.com/ss7424Refar/ats-rebuild
    chmod -R 757 ats-rebuild       # workman / runtime都需要开权限
+   mv ats-rebuild ats
    ```
 
 4. 访问
-   + 修改配置文件config_home.php
+   1. 修改配置文件config_home.php
 
      ```
      1. database - hostname => 'mysql'  # 容器名字
      2. ats_pe_image => '/home/'        # 随意的路径
      ```
 
-   + 浏览器打开以下链接
+   2. 浏览器打开以下链接
    ```
-   http://localhost:8083/ats-rebuild/index/login/check
+   http://localhost:8083/ats/index/login/check
    ```
-   + 开启workman/server.php
+   3. 开启workman/server.php
    ```
    click -> Adminstrator -> server start
    ```
 
 
-> ※ 以上port-check / sendMail 功能不可用
+> ※ 以上 `port-check / sendMail` 功能不可用
 
 ## 部署正式(lnmp)
    1. 搭建lnmp环境
@@ -115,8 +118,8 @@
    2. http://localhost/ats/services/MachineDetail/export?user=XXX,YYY
    ```
 2. Branch
-   + `no_dynamic` task的panel不能动态添加的
-   + `ftp_process`文件通过ftp的方式上传, 但并没有使用   
+   1. `no_dynamic` task的panel不能动态添加的
+   2. `ftp_process` 文件通过ftp的方式上传, 但并没有使用   
 
 3. 2019-06-10 提交
 
