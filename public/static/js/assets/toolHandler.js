@@ -87,7 +87,7 @@ function formToJson() {
         } else if (FastBoot === toolType) {
             var item ={
                 Tool_Type:toolType,
-                Tool_Name:_father.find("#otherTool").select2('val')
+                Test_Image:_father.find("#TestImage").select2('val')
             };
             obj.push(item);
         } else if (BIOSUpdate === toolType) {
@@ -314,8 +314,10 @@ function addThenInit(selection, obj, remoteUrl) {
             );
         });
     } else if (FastBoot === selection) {
-        obj.find('select[name="otherTool"]').each(function () {
-            $(this).select2();
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
+
         });
     } else if (BIOSUpdate === selection) {
         obj.find('select[name="BIOS1"]').each(function () {
@@ -699,11 +701,9 @@ function getFastBoot(i, status) {
         '<div id="collapse_' + i +'" class="panel-collapse collapse in">'+
         '    <div class="panel-body form-horizontal">'+
         '        <div class="form-group">'+
-        '            <label class="col-sm-1 control-label">Tool</label>'+
+        '            <label class="col-sm-1 control-label">Test Image</label>'+
         '            <div class="col-sm-4">'+
-        '                <select class="form-control select2" name="otherTool" id="otherTool">' +    // 这里就懒得改了
-        '                     <option>FastBoot</option>' +
-        '                </select>'+
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>'+
         '            </div>'+
         '        </div>'+
         '        <hr>'+

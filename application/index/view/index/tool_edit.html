@@ -443,8 +443,10 @@ desired effect
     }
 
     function setFastBootData(obj, item) {
-        obj.find('#otherTool').each(function () {
-            $(this).select2().val(item.Tool_Name).trigger("change");;
+        obj.find('select[name="TestImage"]').each(function () {
+            var _this = $(this);
+            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+
         });
     }
 
