@@ -3,10 +3,9 @@
 ## web界面
 
 ![layout1](public/static/img/readme/layout1.png)
-![layout2](public/static/img/readme/layout3.png)
-![layout3](public/static/img/readme/layout5.png)
-![layout4](public/static/img/readme/layout6.png)
-![layout5](public/static/img/readme/layout8.png)
+![layout2](public/static/img/readme/layout2.png)
+![layout3](public/static/img/readme/layout3.png)
+![layout4](public/static/img/readme/layout4.png)
 
 
 ## 运行环境
