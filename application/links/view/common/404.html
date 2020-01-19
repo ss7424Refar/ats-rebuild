@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {include file="render/render_css" /}
-    {include file="render/theme_css" /}
+  {include file="common/plugins" /}
 
 </head>
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
 <body class="{$Think.const.THEME}">
 <div class="wrapper">
-  {include file="common/header" /}
-  <!-- Left side column. contains the logo and sidebar -->
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -30,7 +27,7 @@
 
           <p>
             We could not find the page you were looking for.
-            Meanwhile, you may <a href="{:url('index/Index/DashBoard');}">return to dashboard</a>
+            Meanwhile, you may <a href="{:url('links/Jump/DashBoard');}">return to dashboard</a>
           </p>
 
         </div>
@@ -44,7 +41,5 @@
   {include file="common/footer" /}
 </div>
 <!-- ./wrapper -->
-
-{include file="render/render_js" /}
 </body>
 </html>

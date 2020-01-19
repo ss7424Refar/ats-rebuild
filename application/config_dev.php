@@ -327,6 +327,7 @@ return [
     'ats_td_config' => '/tmp/',
 
     'ats_sign_out_url'    =>  'http://192.168.100.43/tpms/index.php',
+    'links_sign_out_url'    =>  'http://192.168.100.43/tpms/index.php',
 
     // session是否开启tpms的session
     'session_debug'       => true,

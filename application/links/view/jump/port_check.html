@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+<head>
+    {include file="common/plugins" /}
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<!--<body class="hold-transition skin-blue sidebar-mini">-->
+<body class="hold-transition skin-purple layout-top-nav">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Port Status
+                <small>For Check</small>
+            </h1>
+            <!--            <ol class="breadcrumb">-->
+            <!--                <li><a href="atsIndex.php"><i class="fa fa-dashboard"></i> Home</a></li>-->
+            <!--                <li>Auto Tool</li>-->
+            <!--                <li class="active">Port Status</li>-->
+            <!--            </ol>-->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header  with-border" style="padding-top: 20px">
+                            <div class="alert bg-teal color-palette alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <!--                                <h4> Alert!</h4>-->
+                                <i class="icon fa fa-linux fa-1.5x" style="color: black"></i> You are checking Port Status. <i style="font-size: 12px;color: yellow">The Using Shelf Total <span id="ports">Counting</span> as below</i>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="box box-solid">
+
+                                <!--<div class="col-md-12">-->
+                                    <table class="table table-responsive">
+                                        <thead>
+                                        <tr>
+                                            <th>Machine</th>
+                                            <th>MachineId</th>
+                                            <th>LanIp</th>
+                                            <th>Shelf_SwitchId</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="content">
+                                        <tr><td colspan="5">
+                                                <span class="text-warning">
+                                                    <i><i class="fa fa-spinner fa-pulse" style="color: #0A8CC6"></i> Test data detecting, Please wait 5s ...</i>
+                                                </span>
+                                        </td></tr>
+                                        </tbody>
+                                    </table>
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    {include file="common/footer" /}
+
+</div>
+<!-- ./wrapper -->
+
+<script>
+    $(function () {
+
+        WebSocketInit();
+
+    });
+
+    function WebSocketInit()
+    {
+        if ("WebSocket" in window)
+        {
+
+            // 打开一个 web socket
+            var ws = new WebSocket("{$webSocketUrl}");
+
+            ws.onopen = function()
+            {
+                // Web Socket 已连接上，使用 send() 方法发送数据
+                ws.send("port_check");
+            };
+
+            ws.onmessage = function (evt)
+            {
+                // console.log(evt.data);
+                var response = evt.data;
+                if (null != response) {
+                    response = JSON.parse(response);
+                    console.log(response.message);
+                    // list
+                    // $('#list').append('<li><span class="text-info small"><i>' + response.message + '</i></span></li>');
+
+                    // table
+                    // console.log(response.result);
+                    var tableData = response.result;
+
+                    $('#content').empty();
+                    if (0 != tableData.length){
+                        $('#ports').html(tableData.length);
+                        for (var i = 0; i < tableData.length; i++) {
+                            $('#content').append('<tr></tr>');
+                            // $('#content tr:last').append('<td>' + tableData[i].id + '</td>');
+                            $('#content tr:last').append('<td>' + tableData[i].machine + '</td>');
+                            $('#content tr:last').append('<td>' + tableData[i].machineId + '</td>');
+                            $('#content tr:last').append('<td>' + tableData[i].LANIP + '</td>');
+                            $('#content tr:last').append('<td>' + tableData[i].ShelfId_SwitchId + '</td>');
+                            $('#content tr:last').append('<td><i class="fa fa-circle text-red"></i> inUse</td>');
+                        }
+                    }
+                    else {
+                        $('#content').append('<tr></tr>');
+                        $('#content tr:last').append('<td colspan="5"><span><i style="color: green"> The Shelf is not inUse... </i></span></td>');
+                    }
+
+                }
+
+            };
+
+            ws.onclose = function()
+            {
+                console.log('ws connect close..');
+                // 关闭 websocket
+                // setTimeout("toastr.success(\"ws connect close...\");", 80);
+            };
+        }
+
+        else
+        {
+            // 浏览器不支持 WebSocket
+            console.log('your browse not support WebSocket!');
+            // toastr.error("your browse not support WebSocket!");
+        }
+    }
+</script>
+
+</body>
+</html>

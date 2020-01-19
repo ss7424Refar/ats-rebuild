@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include file="common/plugins" /}
+
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/Ionicons/ionicons.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
+    <!--datetimepicker-->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.css">
+    <!--    bootstrap dataTables-->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_CSS__/bootstrap-table-develop/bootstrap-table.min.css">
+    <!--    bootstrap dataTables extensions-->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.css">
+
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/iCheck/all.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
+    <!--    bootstrapValidator-->
+    <link href="__PUBLIC_CSS__/bootstrapValidator/bootstrapValidator.min.css" rel="stylesheet">
+
+</head>
+
+<body class="hold-transition skin-purple layout-top-nav">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Task Manager
+                <small>For Auto Tool</small>
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-search-plus">&nbsp;Task Search</i>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="panel-body">
+                                <form class="form-horizontal" id="search_form">
+                                    <!--                        first line form-->
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">Task ID</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" id="search_taskId" placeholder="Task ID">
+                                        </div>
+                                        <label class="col-sm-1 control-label">Machine Id</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" id="search_machineId" placeholder="Machine Id">
+                                        </div>
+                                        <label class="col-sm-1 control-label">Machine Name</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control" id="search_machineName" placeholder="Machine Name">
+                                        </div>
+                                        <label class="col-sm-1 control-label">Tester</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" id="search_tester"></select>
+                                        </div>
+                                    </div>
+                                    <!--                        second line form-->
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">Create Date</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" readonly class="form_datetime form-control" id="search_createDate" name="search_createDate">
+                                        </div>
+                                        <label class="col-sm-1 control-label">Finish Date</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" readonly class="form_datetime form-control" id="search_finishDate" name="search_finishDate">
+                                        </div>
+                                        <label class="col-sm-1 control-label">Include Tool</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control selectOption" multiple="multiple" id="search_tool">
+                                                <!--<option value="JumpStart" selected="selected">JumpStart</option>-->
+                                                <option value="JumpStart">JumpStart</option>
+                                                <option value="Recovery">Recovery</option>
+                                                <option value="C-Test">C-Test</option>
+                                                <option value="Treboot">Treboot</option>
+                                                <option value="TandD">TandD</option>
+                                                <option value="FastBoot">FastBoot</option>
+                                                <option value="BIOSUpdate">BIOSUpdate</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-1 control-label">Task Status</label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control selectOption" id="search_status">
+                                                <option value="all" selected="selected">all</option>
+                                                <option value="pending">pending</option>
+                                                <option value="ongoing">ongoing</option>
+                                                <option value="finished">finished</option>
+                                                <option value="expired">expired</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary btn-sm col-md-offset-5" id="search_submit"><i class="fa fa-check-circle fa-fw"></i>&nbsp;Submit</button>
+                            <a href="TaskManager" class="btn btn-default btn-sm col-md-offset-1"><i class="fa fa-undo fa-fw"></i>&nbsp;Reset</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-body">
+                            <div id="toolbar" class="btn-toolbar" role="toolbar">
+                                <div class="btn-group" role="group" >
+                                    <!--                                    <button type="button" class="btn btn-primary btn-sm" id="task"><i class="fa fa-tasks"></i>&nbsp;Task</button>-->
+                                    <button type="button" class="btn btn-primary btn-sm" id="task"><i class="glyphicon glyphicon-th-list"></i>&nbsp;Task</button>
+                                </div>
+                                <!--真正的强者是要将美工变成统一色-->
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default btn-sm" id="addTask" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus fa-fw"></i>&nbsp;Add</button>
+                                    <button type="button" class="btn btn-default btn-sm" id="editTask" data-toggle="modal"><i class="fa fa-edit fa-fw"></i>&nbsp;Edit</button>
+                                    <button type="button" class="btn btn-default btn-sm" id="assignTask"><i class="fa fa-wrench fa-fw"></i>&nbsp;Assign</button>
+                                    <button type="button" class="btn btn-default btn-sm" id="deleteTask"><i class="fa fa-close fa-fw"></i>&nbsp;Delete</button>
+                                    <!--领导说改成copy,虽然代码是按照rerun来的.不要问, 问就是只能改.其实我觉得rerun高级点-->
+                                    <button type="button" class="btn btn-default btn-sm" id="rerunTask" data-toggle="modal" data-target="#rerunModal"><i class="fa fa-recycle fa-fw"></i>&nbsp;Copy</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default btn-sm" id="expand"><i class="fa fa-mouse-pointer fa-fw"></i>&nbsp;Expand</button>
+                                </div>
+                            </div>
+                            <table id="taskTable" class="" data-show-jumpto="true"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADD 模态框（Modal） -->
+            <div class="modal fade" id="addModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" >Add Task</h4>
+                        </div>
+                        <form class="form-horizontal form-group-sm" id="addForm" method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Test Machine</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="machine_name"></select>
+                                    </div>
+                                </div>
+                                <div style="display:none;" data-topic="inputDmiInfo">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Manuafacturer</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="dmi_manufacturer" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Product Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="dmi_product_name" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Serial Number</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="dmi_serial_number" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Part Number</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="dmi_part_number" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">OEM String</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="dmi_oem_string" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">SystemConfig</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="dmi_system_config">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">BIOS/EC</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="bios_ec" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">LANIP</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="lan_ip" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">ShelfID/SwitchID</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="shelf_switch" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm" id="sub">Submit</button>
+                                <!--<button type="reset" class="btn btn-primary btn-sm">reset</button>-->
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+            <!-- EDIT 模态框（Modal） -->
+            <div class="modal fade" id="editModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Edit Task</h4>
+                        </div>
+                        <form class="form-horizontal form-group-sm" id="editForm" method="post">
+                            <div class="modal-body" data-topic="editDmiInfo">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Task ID</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="task_id" readonly>
+                                    </div>
+                                </div>
+                                <!--用户希望Machine Id, machine_name可以更改-->
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Machine Id</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="machine_id">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Test Machine</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="machine_name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Manuafacturer</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_manufacturer" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Product Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_product_name" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Serial Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_serial_number" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Part Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_part_number" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">OEM String</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_oem_string" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">SystemConfig</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dmi_system_config">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">BIOS/EC</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="bios_ec" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">LANIP</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="lan_ip" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">ShelfID/SwitchID</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="shelf_switch" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm" id="sub2">Submit</button>
+                                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+
+            <!-- RERUN 模态框（Modal） -->
+            <div class="modal fade" id="rerunModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog"  style="width:800px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Rerun Task</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table id="rerunTable" class="" data-show-jumpto="true"></table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-sm" id="sub3">Submit</button>
+                            <!--<button type="reset" class="btn btn-primary btn-sm">reset</button>-->
+                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+            <!--        detail info-->
+            <div class="modal fade" id="detailInfo"  role="dialog">
+                <div class="modal-dialog" style="width:800px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Detail Info</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_1" data-toggle="tab">Machine Info</a></li>
+                                    <li><a href="#tab_2" data-toggle="tab">Tool Steps</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <form class="form-horizontal ">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Task ID</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Manuafacturer</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Product Name</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Serial Number</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Part Number</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">OEM String</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">System Config</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">BIOS/EC</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static"></p>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="tab_2">
+                                        <!--<table id="stepsTable" class="" data-show-jumpto="true"></table>-->
+                                    </div>
+                                </div>
+                                <!-- /.tab-content -->
+                            </div>
+                            <div id="stepsDetail"></div>
+                            <button type="button" class="btn btn-default col-md-offset-10" data-dismiss="modal">close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Main Footer -->
+    {include file="common/footer" /}
+
+</div>
+
+<!--    bootstrap dataTables-->
+<script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/locale/bootstrap-table-en-US.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_JS__/colResizable/colResizable-1.6.min.js"></script>
+<!--    bootstrap dataTables extensions-->
+<script src="__PUBLIC_JS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
+<script src="__PUBLIC_JS__/bootstrap-table-develop/extensions/resizable/bootstrap-table-resizable.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
+<!-- bootbox4.4 -->
+<script src="__PUBLIC_JS__/bootbox4.4/bootbox.min.js"></script>
+<!--datetimepicker-->
+<script src="__PUBLIC_JS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.js"></script>
+<!-- Select2 -->
+<script src="__PUBLIC_JS__/select2/select2.min.js"></script>
+<!--    bootstrapValidator-->
+<script src="__PUBLIC_JS__/bootstrapvalidator/bootstrapValidator.min.js"></script>
+
+<script>
+    // Include Tool & Task Status
+    $(".selectOption").select2({
+        width: "100%",
+        placeholder: ''
+    });
+
+    search_createDate = $('#search_createDate');
+    search_finishDate = $('#search_finishDate');
+
+    var today = getToday();
+    var thisMonth = moment().startOf('month').format('YYYY-MM-DD');
+    search_createDate.val(thisMonth);
+    search_finishDate.val(today);
+
+    testMachine = $("select[name='machine_name']");
+    inputDmiInfo = $('div[data-topic="inputDmiInfo"]');
+    editDmiInfo = $('div[data-topic="editDmiInfo"]');
+
+    stepsDetail = $('#stepsDetail');
+    taskTable = $('#taskTable');
+    rerunTable = $('#rerunTable');
+
+    addForm = $('#addForm');
+    editForm = $('#editForm');
+
+    tester = $('#search_tester');
+
+    $(function () {
+
+        eggPrinter();
+
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "bottom-left",
+            minView: "month", //选择日期后，不会再跳转去选择时分秒
+        });
+
+        searchSubmitInit();
+
+        // table
+        tableInit("{:url('TaskManager/taskPagination')}", queryParams);
+
+        //Tool Tips 为未来元素
+        $('#taskTable').on("mouseenter", "[data-toggle='tooltip']", function(){
+            $(this).tooltip('show');
+        }).on("mouseleave", "[data-toggle='tooltip']", function(){
+            $(this).tooltip('hide');
+        });
+
+        // select2
+        select2Init();
+
+        taskFormValidatorInit(addForm, 'add');
+
+        stepsTabInit();
+
+        // assign
+        assignButtonInit();
+
+        // delete
+        deleteTaskButtonInit();
+
+        $('#addModal').on('hide.bs.modal', function () {
+            resetAddTaskForm();
+        });
+
+        editTaskForm();
+
+        // collapse and expand rows
+        $('#expand').click(function () {
+            var expand1 = $('#expand');
+            if ('Expand' === expand1.text().trim()) {
+                taskTable.bootstrapTable('expandAllRows');
+                expand1.html('<i class="fa fa-mouse-pointer fa-fw"></i>&nbsp;Collapse');
+            } else {
+                taskTable.bootstrapTable('collapseAllRows');
+                expand1.html('<i class="fa fa-mouse-pointer fa-fw"></i>&nbsp;Expand');
+            }
+        });
+
+        $('#rerunTask').click(function () {
+            rerunTableInit();
+        });
+
+        rerunProcess();
+    });
+
+    function searchSubmitInit() {
+        // search function
+        $('#search_submit').click(function () {
+
+            var createTime = search_createDate.val();
+            var finishTime = search_finishDate.val();
+
+            var start = new Date(createTime.replace("-", "/").replace("-", "/"));
+            var end = new Date(finishTime.replace("-", "/").replace("-", "/"));
+
+            if (start > end) {
+                toastr.error('Create Date Great Than Finish Date');
+                return;
+            }
+            if (!timeDifference(start, end)) {
+                toastr.error('Finish Date And Create Date Time Difference Great Than Six Month');
+                return;
+            }
+
+            taskTable.bootstrapTable('destroy');
+            tableInit("{:url('TaskManager/taskSearchPagination')}", searchParams);
+
+        });
+    }
+
+    function stepsTabInit() {
+        // 当点击steps tab的时候
+        $('a[href="#tab_1"]').click(function () {
+            if ('block' === stepsDetail.css('display')){
+                stepsDetail.css('display', 'none');
+            }
+        });
+        $('a[href="#tab_2"]').click(function () {
+            // 找到tab_1的task_id
+            var taskId = $("#tab_1").find('p:eq(0)').html();
+            $('#stepsTable').bootstrapTable({
+                url: "{:url('TaskManager/stepsPagination')}?taskId=" + taskId,    //请求后台的URL（*）
+                method: 'post',                      //请求方式（*）
+                classes: 'table table-hover', // table 样式
+                iconSize: 'sm',
+                buttonsClass: 'success',
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                queryParamsType : "",                   //默认是limit，则para为params.limit, params.offset
+                queryParams: function (params) {
+                    var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        pageSize : params.pageSize,
+                        pageNumber : params.pageNumber
+                    };
+                    return temp;//传递参数（*
+                },
+                clickToSelect: false,               //点击行即可选中单选/复选框
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+                search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端
+                strictSearch: true,
+                showColumns: false,                  //是否显示所有的列
+                showRefresh: false,                  //是否显示刷新按钮
+                uniqueId: "task_id",                     //每一行的唯一标识，一般为主键列
+                showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    field: 'steps',
+                    title: 'Steps'
+                    // align:'center'
+                }, {
+                    field: 'tool_name',
+                    title: 'Tool Name'
+                },
+                    {
+                        field: 'status',
+                        title: 'Status',
+                        formatter:function(value, row, index){
+                            if (null !== value) {
+                                return value;
+                            }
+                            return "N/A";
+                        }
+                    },
+                    {
+                        field: 'tool_start_time',
+                        title: 'Start Time'
+                    },
+                    {
+                        field: 'tool_end_time',
+                        title: 'Finish Time'
+                    }
+                    // {
+                    //     field: 'result_path',
+                    //     title: 'Result Path',
+                    //     formatter: function(value, row, index){
+                    //         if(Fail === row.status){
+                    //             return '<a href='+ value +'><i class="fa fa-times fa-fw"></i>&nbsp;linkTo</a>';
+                    //         } else if(Pass === row.status){
+                    //             return '<a href='+ value +'><i class="fa fa-check fa-fw"></i>&nbsp;linkTo</a>';
+                    //         }
+                    //         return "N/A";
+                    //     }
+                    // }
+                ],
+                rowStyle: function(row, index){
+                    if(Fail === row.status){
+                        return {classes: 'danger'};
+                    }else if(Pass === row.status){
+                        return {classes: 'success'};
+                    }
+                    else if(Pending === row.status){
+                        return {classes: 'info'};
+                    }
+                    else if(Ongoing === row.status){
+                        return {classes: 'warning'};
+                    }
+                    return {classes: 'active'};
+                },
+
+                formatLoadingMessage: function () {
+                    return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+                },
+
+                onLoadError: function () {
+                    toastr.error("Table LoadError!");
+                },
+                formatNoMatches: function () {  //没有匹配的结果
+                    return '<i class="text-danger">No matching records found</i>';
+                }
+            }).on('click-row.bs.table', function(row, $element){
+                stepsDetail.addClass('well');
+
+                var item = JSON.parse($element['element_json']);
+
+                if (null !== item || undefined !== item) {
+                    var result = '';
+                    result += '<form class="form-horizontal ">';
+                    result += '<div class="form-group">';
+                    result += '    <label class="col-sm-3 control-label">Step</label>';
+                    result += '    <div class="col-sm-8">';
+                    result += '        <p class="form-control-static">' + $element['steps'] + '</p>';
+                    result += '    </div>';
+                    result += '</div>';
+                    for(var key in item){
+                        if ('Tool_Type' !== key) {
+                            result += '<div class="form-group">';
+                            result += '    <label class="col-sm-3 control-label">'+ key +'</label>';
+                            result += '    <div class="col-sm-8">';
+                            result += '        <p class="form-control-static">' + item[key] + '</p>';
+                            result += '    </div>';
+                            result += '</div>';
+                        }
+                    }
+                    result += '</form>';
+                    stepsDetail.html(result);
+                    if ('none' === stepsDetail.css('display')){
+                        stepsDetail.css('display', 'block');
+                    }
+                }
+            });
+
+        });
+    }
+
+    // 决定工具的操作
+    function checkTool(taskId, toolOp) {
+        if ('add' === toolOp) {
+            window.location.href='{:url("ToolAdd")}?taskId='+ taskId ;
+        } else if ('edit' === toolOp){
+            window.location.href='{:url("ToolEdit")}?taskId='+ taskId ;
+        } else if ('delete' === toolOp){
+
+            bootbox.confirm({
+                message: " Do You Want Delete Tool Steps?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('ToolHandler/deleteToolSteps')}",
+                            data: {taskId: taskId},
+                            success: function (result) {
+                                if ('fail' !== result) {
+                                    toastr.success("Delete Steps Success");
+                                    taskTable.bootstrapTable('selectPage', 1);
+                                }
+                            },
+                            error: function () {
+                                toastr.error("Delete Steps Fail");
+                                return false;
+                            }
+
+                        });
+                    }
+
+                }
+            });
+
+        }
+    }
+
+    function tableInit(resUrl, queryPs){
+        taskTable.bootstrapTable({
+            url: resUrl,    //请求后台的URL（*）
+            method: 'post',                      //请求方式（*）
+            classes: 'table table-responsive table-hover table-no-bordered', // table 样式 table-no-bordered
+            iconSize: 'sm',
+            buttonsClass: '',                   // table 按钮颜色设置
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            queryParamsType : "",                   //默认是limit，则para为params.limit, params.offset
+            queryParams: queryPs,
+            clickToSelect: false,               //点击行即可选中单选/复选框
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber:1,                       //初始化加载第一页，默认第一页
+            pageSize: 20,                       //每页的记录行数（*）
+            pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+            search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            // height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数决定表格高度
+            uniqueId: "task_id",                     //每一行的唯一标识，一般为主键列
+            showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: true,                   //是否显示父子表
+            columns: [{
+                field: "check",
+                checkbox: true,
+                formatter: function (value, row) {
+                    if (Pending !== row['status'])
+                        return {
+                            disabled : true,//设置是否可用
+                            checked : false//设置选中
+                        };
+                    return value;
+                }
+            }, {
+                field: 'task_id',
+                title: 'Task ID',
+                // width: '5%',
+                // sortable: true,
+                formatter:function(value, row){
+                    // var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['shelf_switch'] + "_" + row['task_id'];
+                    if(null !== row['result_path']){
+                        var path = row['result_path'];
+                        // console.log(path);
+                        return '<a href="'+ path +'">' + 'ATS_' + value + '</a> ';
+                    } else {
+                        return 'ATS_' + value;
+                    }
+                }
+            }, {
+                field: 'machine_name',
+                title: 'Test Machine',
+                formatter:function(value){
+                    return value;
+                }
+            }, {
+                field: 'machine_id',
+                title: 'Machine ID'
+            }, {
+                field: 'status',
+                title: 'Task Status',
+                formatter:function(value){
+                    if (null !== value) {
+                        if (Pass === value || Fail === value) {
+                            return  '<span class="label label-success">' + Finish + '</span>';
+                        }else if (Ongoing === value) {
+                            return  '<span class="label label-warning">' + Ongoing + '</span>';
+                        }else if (Pending === value) {
+                            return  '<span class="label label-primary">' + Pending + '</span>';
+                        }else if (Expired === value) {
+                            return  '<span class="label label-default">' + Expired + '</span>';
+                        }
+                        // return value;
+                    }
+                    return  '<span class="label label-danger">N/A</span>';
+                }
+            },
+            {
+                field: 'shelf_switch',
+                title: 'Location'
+            },
+                {
+                field: 'task_start_time',
+                title: 'Start Time'
+            }, {
+                field: 'task_end_time',
+                title: 'Finish Time'
+            },
+                {
+                    field: 'process',
+                    title: 'Process',
+                    // width: '10%',
+                    formatter: function (value) {
+
+                        if (null == value) {
+                            return 'N/A';
+                        } else {
+                            return '<div class="progress" style="margin-right: 10px"><div class="progress-bar progress-bar-striped active" role="progressbar" style="min-width: 2em; width: ' + value + '%">' + value + '%</div>';
+                        }
+
+                    }
+                },
+                {
+                    field: 'tester',
+                    title: 'Tester',
+                }, {
+                    field: 'Action',
+                    title: 'Action',
+                    formatter: function (value, row) {
+                        var id = row['task_id'];
+                        var sid = row['sid'];
+                        var result="";
+
+                        if (Pending === row['status']) {
+                            if (null === sid) {
+                                result += "<a class='btn btn-xs bg-aqua' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'add')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='add tool' style='margin: 3px'><span class='glyphicon glyphicon-plus'></span></a>";
+                            } else {
+                                result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit tool' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return checkTool(\'" + id + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete tool' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+                            }
+                        } else if (Ongoing === row['status']) {
+                            result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return Reverse(\'" + id + "\')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='revert task' style='margin: 3px'><span class='fa fa-reply-all'></span></a>";
+                        } else {
+                            // result += "<a class='btn btn-xs bg-yellow' href='#' " + "data-toggle=\"tooltip\" data-placement=\"bottom\" title='ban' style='margin: 3px'><span class='glyphicon glyphicon-ban-circle'></span></a>";
+                            result += "-";
+                        }
+
+                        return result;
+                    }
+                }
+            ],
+            resizable: true,
+            //注册加载子表的事件。
+            onExpandRow: function (index, row, $detail) {
+                initSubTable(index, row, $detail);
+            },
+            // rowStyle: function(row, index){
+            //     if(Fail === row.status || Pass === row.status){
+            //         return {classes: 'success'};
+            //     }else if(Pending === row.status){
+            //         return {classes: 'info'};
+            //     }else if(Ongoing === row.status){
+            //         return {classes: 'warning'};
+            //     }
+            //     return {classes: 'active'};
+            // },
+
+            formatLoadingMessage: function () {
+                return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+            },
+            onDblClickRow: function(row, $element){
+
+                var taskId=row['task_id'];
+
+                //init modal tab
+                $('.nav-tabs li').each(function () {
+                    $(this).removeClass('active');
+                });
+                // delete steps detail
+                if (stepsDetail.attr('class','well')) {
+                    stepsDetail.html('').removeClass('well');
+                }
+
+                $("a[href='#tab_1']").parent().addClass('active');
+                $("div[id*='#tab_']").each(function () {
+                    $(this).removeClass('active');
+                });
+                $('#tab_1').addClass('active');
+
+                $('#tab_2').html('<table id="stepsTable" class="" data-show-jumpto="true"></table>');
+                // get info
+                $.ajax({
+                    type: "post",
+                    url: "{:url('TaskManager/getTaskInfoById')}",
+                    data: {taskId: taskId},
+                    dataType: "json",
+                    success: function (result) {
+                        if(result){
+                            var i = 0;
+                            for(var key in result[0]){
+                                $("#tab_1").find('p:eq(' + i + ')').html(result[0][key]);
+                                i++;
+                            }
+                            $("#detailInfo").modal("toggle");
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Get Info Fail");
+                        return false;
+                    }
+                });
+
+            },
+            onLoadError: function () {
+                toastr.error("Table LoadError!");
+            },
+            formatNoMatches: function () {  //没有匹配的结果
+                return '<i class="text-danger">No matching records found</i>';
+            }
+        });
+
+    }
+
+    function queryParams(params) {
+        var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+            pageSize : params.pageSize,
+            pageNumber : params.pageNumber
+        };
+        return temp;//传递参数
+    }
+
+    function searchParams(params) {
+        var temp = {
+            pageSize : params.pageSize,
+            pageNumber : params.pageNumber,
+            taskId:$('#search_taskId').val(),
+            machineId:$('#search_machineId').val(),
+            machineName:$('#search_machineName').val(),
+            searchTester:$('#search_tester').val(),
+            createTime:search_createDate.val(),
+            finishTime:search_finishDate.val(),
+            tool:JSON.stringify($('#search_tool').val()),           // 获取多选框的值
+            status:$('#search_status').val()
+        };
+        return temp;//传递参数
+    }
+
+    function select2Init() {
+        testMachine.select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('TaskManager/readMachineInfo')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term // search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: false
+                },
+                placeholder: 'Please Select',
+                allowClear: true
+            }
+        );
+
+        testMachine.on("select2:select",function(){
+            addForm.data('bootstrapValidator').destroy();
+            taskFormValidatorInit(addForm, 'add');
+
+            $.ajax({
+                type: 'post',
+                url: "{:url('TaskManager/readTestPCDetail')}",
+                data: {machineId: testMachine.val()},
+                dataType: 'json',
+                success: function(result){
+                    inputDmiInfo.css('display', 'block');
+                    inputDmiInfo.find('input').each(function (i) {
+                        $(this).val(result[i]);
+                    });
+
+                },
+                error: function () {
+                    toastr.error("Machine Info Read Failed");
+                }
+            });
+        });
+        testMachine.on("change", function () {
+            inputDmiInfo.css('display', 'none').find('input').val('');
+            addForm.data('bootstrapValidator').destroy();
+            taskFormValidatorInit(addForm, 'add');
+        });
+
+        tester.select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('TaskManager/getUsers')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term // search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: false
+                },
+                placeholder: 'Please Select',
+                allowClear: true
+            }
+        );
+    }
+
+    function assignButtonInit(){
+        $('#assignTask').click( function () {
+            var ckArr = taskTable.bootstrapTable('getSelections');
+
+            if(ckArr.length === 0){
+                toastr.info("Please select at least one checkbox");
+                return false;
+            } else {
+                for (var i = 0; i < ckArr.length; i++) {
+                    if (null == ckArr[i].sid) {
+                        toastr.info("TaskId : " + ckArr[i].task_id + " Need Add Tool Steps");
+                        return false;
+                    }
+                }
+            }
+
+            $.ajax({
+                type: "post",
+                url: "{:url('TaskManager/assignTask')}",
+                data: {multiTask: JSON.stringify(ckArr)},
+                success: function (result) {
+                    if("done" === result){
+                        toastr.success("success assign to ATS");
+                        taskTable.bootstrapTable('selectPage', 1);
+                    } else {
+                        toastr.error("fail assign to ATS");
+                    }
+                },
+                error: function () {
+                    toastr.error("fail assign to ATS");
+                }
+            });
+
+        });
+    }
+
+    function deleteTaskButtonInit() {
+        $('#deleteTask').click(function () {
+            var ckArr = taskTable.bootstrapTable('getSelections');
+            if(ckArr.length === 0){
+                toastr.info("Please select at least one checkbox");
+                return false;
+            }
+            bootbox.confirm({
+                message: " Do You Want Delete ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('TaskManager/deleteTask')}",
+                            data: {multiTask: JSON.stringify(ckArr)},
+                            success: function (result2) {
+                                if ('success' === result2){
+                                    toastr.info('Delete Success!');
+                                    setTimeout('$(\'#taskTable\').bootstrapTable(\'selectPage\', 1);', 1500);
+                                }
+                            },
+                            error: function () {
+                                toastr.error("Delete Fail!");
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+    function taskFormValidatorInit(target, option){
+        var machine_name_check = {
+            message: 'the testMachine is not valid',
+            validators: {
+                notEmpty: {
+                    message: 'The testMachine is required and can\'t be empty'
+                }
+            }
+        };
+
+        if ('edit' === option) {
+            machine_name_check = {
+                message: 'the testMachine is not valid',
+                validators: {
+                    notEmpty: {
+                        message: 'The testMachine is required and can\'t be empty'
+                    },
+                    stringLength: {
+                        min: 5,
+                        max: 50,
+                        message: 'The machine name must be more than 5 and less than 50 characters long'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9_~! ()@#$%^&*-/,]+$/,
+                        message: 'The machine name can only consist of special character like ~! ()@#$%^&*-/, , number, en.'
+                    }
+                }
+            }
+        }
+
+        target.bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                machine_id: {
+                    message: 'machine id is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'machine id is required and can\'t be empty'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 7,
+                            message: 'The product name must be more than 5 and less than 7 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: 'The product name can only consist of number.'
+                        }
+
+                    }
+                },
+                machine_name: machine_name_check,
+                dmi_manufacturer: {
+                    message: 'the Manuafacturer is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'The Manuafacturer is required and can\'t be empty'
+                        },
+                        stringLength: {
+                            min: 3,
+                            max: 50,
+                            message: 'The Manuafacturer must be more than 3 and less than 50 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
+                            message: 'The Manuafacturer can only consist of special character like ~!@#$%^&*-/, , number, en.'
+                        }
+
+                    }
+                },
+                dmi_product_name: {
+                    message: 'the Product Name is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'The product name is required and can\'t be empty'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 30,
+                            message: 'The product name must be more than 5 and less than 30 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
+                            message: 'The product name can only consist of special character like ~!@#$%^&*-/, , number, en.'
+                        }
+
+                    }
+                },
+                dmi_serial_number: {
+                    message: 'the sn is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'The sn is required and can\'t be empty'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 20,
+                            message: 'The sn must be more than 5 and less than 20 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
+                            message: 'The sn can only consist of special character like ~!@#$%^&*-/, , number, en.'
+                        }
+
+                    }
+                },
+                dmi_part_number: {
+                    message: 'the pn is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'The pn is required and can\'t be empty'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 30,
+                            message: 'The pn must be more than 5 and less than 30 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
+                            message: 'The pn can only consist of special character like ~!@#$%^&*-/, , number, en.'
+                        }
+
+                    }
+                },
+                dmi_oem_string: {
+                    // enabled: false,
+                    message: 'the oem is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'The oem is required and can\'t be empty'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 100,
+                            message: 'The oem must be more than 5 and less than 100 characters long'
+                        },
+                        regexp: {
+                            // regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
+                            message: 'The oem can only consist of special character like ~!@#$%^&*-/, , number, en.'
+                        }
+
+                    }
+                },
+                dmi_system_config: {
+                    // enabled: false,
+                    message: 'the sytsem config is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'The sytsem config is required and can\'t be empty'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 20,
+                            message: 'The sytsem config must be more than 1 and less than 20 characters long'
+                        },
+                        regexp: {
+                            // regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
+                            regexp: /^[a-zA-Z0-9_~! @#$%^&*-/,]+$/,
+                            message: 'The sytsem config can only consist of special character like ~!@#$%^&*-/, , number, en.'
+                        }
+
+                    }
+                }
+            }
+
+        }).on('success.form.bv', function (e) {
+            // Prevent form submission
+            e.preventDefault();
+            if ('add' === option) {
+                // 前台machineId和name实际传反了。但是没有办法。
+                var formSerialize = addForm.serialize() + '&machine_id=' + testMachine.select2('data')[0].text;
+
+                // Use Ajax to submit form data
+                $.ajax({
+                    type : "post",
+                    url: "{:url('TaskManager/addTask')}",
+                    data: {
+                        formSerialize:formSerialize
+                    },
+                    beforeSend : function(){
+                        $('#sub').attr('disabled', 'true');
+                    },
+                    success : function (result) {
+                        if (result === "success") {
+                            toastr.success('Add Success!');
+
+                        }
+                    },
+                    error : function(xhr,status,error){
+                        toastr.error('Add Fail! Try Again ');
+                    },
+                    complete : function () {
+                        setTimeout("window.location.href=\"TaskManager\"",1200);
+                    }
+                });
+            }else if ('edit' === option) {
+                // 前台machineId和name实际传反了。但是没有办法。
+                var formSerialize = editForm.serialize();
+
+                // Use Ajax to submit form data
+                $.ajax({
+                    type : "post",
+                    url: "{:url('TaskManager/editTask')}",
+                    data: {
+                        formSerialize:formSerialize
+                    },
+                    beforeSend : function(){
+                        $('#sub2').attr('disabled', 'true');
+                    },
+                    success : function (result) {
+                        if (result === "success") {
+                            toastr.success('Update Success!');
+
+                        }
+                    },
+                    error : function(xhr,status,error){
+                        toastr.error('Update Fail! Try Again ');
+                    },
+                    complete : function () {
+                        setTimeout("window.location.href=\"TaskManager\"",1200);
+                    }
+                });
+            }
+        });
+
+    }
+
+    function resetAddTaskForm() {
+        testMachine.val(null).trigger("change");
+        addForm.data('bootstrapValidator').destroy();
+        taskFormValidatorInit(addForm, 'add');
+    }
+
+    function resetEditTaskForm() {
+        editForm.data('bootstrapValidator').destroy();
+        taskFormValidatorInit(editForm, 'edit');
+    }
+
+    function editTaskForm() {
+        $('#editTask').click(function () {
+            var ckArr = taskTable.bootstrapTable('getSelections');
+            if(ckArr.length === 0){
+                toastr.info("Please select at least one checkbox");
+                return false;
+            }
+            if(ckArr.length !== 1){
+                toastr.info("Please select only one checkbox");
+                return false;
+            }
+
+            $.ajax({
+                type: "post",
+                url: "{:url('TaskManager/getUpdateTaskInfoById')}",
+                data: {taskId: ckArr[0].task_id},
+                dataType: "json",
+                success: function (result) {
+                    if(result){
+                        resetEditTaskForm();
+                        var i = 0;
+                        for(var key in result[0]){
+                            editDmiInfo.find('input:eq(' + i + ')').val(result[0][key]);
+                            i++;
+                        }
+                        $("#editModal").modal("show");
+                    }
+                },
+                error: function () {
+                    toastr.error("Get Update Info Fail");
+                    return false;
+                }
+            });
+        });
+
+        taskFormValidatorInit(editForm, 'edit');
+    }
+    
+    function initSubTable(index, row, $detail) {
+        var parentId = row.task_id;
+        var cur_table = $detail.html('<table></table>').find('table');
+        $(cur_table).bootstrapTable({
+            url: "{:url('TaskManager/getSubTaskInfoById')}",
+            method: 'get',
+            queryParamsType : "",
+            queryParams: function (params) {
+                var temp = {
+                    taskId: parentId,
+                    pageSize : params.pageSize,
+                    pageNumber : params.pageNumber
+                };
+                return temp;
+            },
+            // ajaxOptions: { taskId: parentId },
+            uniqueId: "task_id",
+            striped: true, //是否显示行间隔色
+            cache: false,
+            pagination: true,//显示分页
+            sidePagination: "server",
+            pageNumber:1,                  //初始化加载第一页，默认第一页
+            pageSize: 10,                  //每页的记录行数（*）
+            pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+            columns: [{
+                field: 'tool_name',
+                title: 'tool name'
+            },
+            {
+                field: 'status',
+                title: 'status'
+            },
+            {
+                field: 'element_json',
+                title: 'desc'
+            }],
+            formatLoadingMessage: function () {
+                return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+            },
+            onLoadError: function () {
+                toastr.error("Table LoadError!");
+            },
+            formatNoMatches: function () {  //没有匹配的结果
+                return '<i class="text-danger">No matching records found</i>';
+            }
+        });
+    }
+
+    function rerunTableInit() {
+        rerunTable.bootstrapTable({
+            url: "{:url('TaskManager/taskPagination')}",
+            method: 'post',
+            queryParamsType : "",
+            queryParams: function (params) {
+                var temp = {
+                    pageSize : params.pageSize,
+                    pageNumber : params.pageNumber
+                };
+                return temp;
+            },
+            // ajaxOptions: { taskId: parentId },
+            uniqueId: "task_id",
+            striped: true, //是否显示行间隔色
+            cache: false,
+            pagination: true,//显示分页
+            sidePagination: "server",
+            pageNumber:1,                  //初始化加载第一页，默认第一页
+            pageSize: 10,                  //每页的记录行数（*）
+            pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+            columns: [{
+                field: "check",
+                checkbox: true,
+            }, {
+                field: 'task_id',
+                title: 'Task ID'
+            }, {
+                field: 'machine_name',
+                title: 'Test Machine',
+            }, {
+                field: 'machine_id',
+                title: 'Machine ID'
+            }, {
+                field: 'status',
+                title: 'Task Status',
+                formatter:function(value){
+                    if (null !== value) {
+                        if (Pass === value || Fail === value) {
+                            return Finish;
+                        }
+                        return value;
+                    }
+                    return "N/A";
+                }
+            },
+            {
+                field: 'shelf_switch',
+                title: 'Location'
+            }],
+            formatLoadingMessage: function () {
+                return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+            },
+            onLoadError: function () {
+                toastr.error("Table LoadError!");
+            },
+            formatNoMatches: function () {  //没有匹配的结果
+                return '<i class="text-danger">No matching records found</i>';
+            }
+        })
+    }
+
+    function rerunProcess() {
+        $('#sub3').click(function () {
+            var ckArr = rerunTable.bootstrapTable('getSelections');
+            $.ajax({
+                type: "post",
+                url: "{:url('TaskManager/rerunTask')}",
+                data: {multiTask: JSON.stringify(ckArr)},
+                beforeSend : function(){
+                    $('#sub3').attr('disabled', 'true');
+                },
+                success: function (result) {
+                    if("success" === result){
+                        toastr.success("success rerun task");
+                        taskTable.bootstrapTable('selectPage', 1);
+                    } else {
+                        toastr.error("fail rerun task");
+                    }
+                },
+                error: function () {
+                    toastr.error("fail rerun task");
+                },
+                complete : function () {
+                    setTimeout("window.location.href=\"TaskManager\"",1200);
+                }
+            });
+
+        })
+    }
+
+    function Reverse(id) {
+        bootbox.confirm({
+            message: " Do You Want Reverse This Task? (if reversed please restart testPC)",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('TaskManager/reverseTask')}",
+                        data: {taskId: id},
+                        success: function (result) {
+                            if ('fail' !== result) {
+                                toastr.success("Revert Task Success" + "<br>" + "Please restart ATS session");
+                                taskTable.bootstrapTable('selectPage', 1);
+                            } else {
+                                toastr.error("Revert Task Fail");
+                            }
+                        },
+                        error: function () {
+                            toastr.error("Revert Task Fail");
+                            return false;
+                        }
+
+                    });
+                }
+
+            }
+        });
+
+    }
+</script>
+</body>
+</html>

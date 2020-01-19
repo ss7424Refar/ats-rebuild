@@ -334,6 +334,7 @@ return [
     'ats_bios_temp_update' => ROOT_PATH. 'public/resource/sync/',
 
     'ats_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
+    'links_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
 
     // session是否开启tpms的session
     'session_debug'       => false,
