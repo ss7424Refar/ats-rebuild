@@ -70,6 +70,8 @@ desired effect
                                         <option>FastBoot</option>
                                         <option>BIOSUpdate</option>
                                         <option>TandD</option>
+                                        <option>MT</option>
+                                        <option>HCITest</option>
                                     </select>
                                     </div>
                                     <input type="text" id="forCollapse" hidden>
@@ -183,6 +185,16 @@ desired effect
                                 $('#box_body').append('<div>' + getBIOSUpdate(i, '') + '</div>');
                                 lastDiv = $('#box_body').children('div:last');
                                 setBIOSUpdateData(lastDiv, item);
+                            }
+                            if (MT === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getMT(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setMTData(lastDiv, item);
+                            }
+                            if (HCITest === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getHCITest(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setHCITestData(lastDiv, item);
                             }
                         })
 
@@ -472,6 +484,18 @@ desired effect
                 if (item.SecureBoot === $(this).val()) {
                     $(this).iCheck('check');
                 }
+            });
+        }
+        function setMTData(obj, item) {
+            obj.find('[data-trigger="spinner"]').spinner();
+            obj.find('#Count').find('input').val(item.Count);
+        }
+
+        function setHCITestData(obj, item) {
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+
             });
         }
     </script>
