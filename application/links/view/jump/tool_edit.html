@@ -4,6 +4,7 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
+
 <head>
     {include file="common/plugins" /}
     <!-- Select2 -->
@@ -15,6 +16,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="__PUBLIC_CSS__/jquery.spinner/bootstrap-spinner.min.css">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/iCheck/all.css">
+    <style>
+        .addButton,
+        .delete,
+        #addTool {
+            width: 92px !important;
+            background: #068de7;
+            color: #fff;
+        }
+    </style>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -37,21 +47,22 @@ desired effect
 |---------------------------------------------------------|
 -->
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
+
 <body class="hold-transition skin-purple layout-top-nav">
-<div class="wrapper">
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <section class="content">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Selection</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <select class="form-control" style="width: 100%;" name="selection">
+    <div class="wrapper">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Selection</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select class="form-control" style="width: 100%;" name="selection">
                                         <option>JumpStart</option>
                                         <option>Recovery</option>
                                         <option>C-Test</option>
@@ -60,411 +71,411 @@ desired effect
                                         <option>BIOSUpdate</option>
                                         <option>TandD</option>
                                     </select>
+                                    </div>
+                                    <input type="text" id="forCollapse" hidden>
+                                    <!--从taskManager页面传递过来的taskId & ip-->
+                                    <input type="text" id="taskId" hidden value="{$taskId}">
+                                    <input type="text" id="ip" hidden value="{$ipCheck}">
+                                    <div class="col-md-5">
+                                        <button type="button" class="btn" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add  </button>
+                                    </div>
                                 </div>
-                                <input type="text" id="forCollapse" hidden>
-                                <!--从taskManager页面传递过来的taskId & ip-->
-                                <input type="text" id="taskId" hidden value="{$taskId}">
-                                <input type="text" id="ip" hidden value="{$ipCheck}">
-                                <div class="col-md-5">
-                                    <button type="button" class="btn btn-success" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add Tool </button>
-                                </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--<select class="selectpicker" data-live-search="true" data-size="5"></select>-->
+                <!--<select class="selectpicker" data-live-search="true" data-size="5"></select>-->
 
-            <div class="box box-default panel-group" id="content" style="display: none">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Edit</h3>
-                </div>
-                <form  id="toolForm">
-                    <div class="box-body" id="box_body"></div>
-                    <div class="box-footer">
-                        <button type="button" class="btn btn-primary pull-right" id="sub"><i class="fa fa-hand-o-right fa-fw"></i> Submit</button>
+                <div class="box box-default panel-group" id="content" style="display: none">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Edit</h3>
                     </div>
-                </form>
-            </div>
-        </section>
+                    <form id="toolForm">
+                        <div class="box-body" id="box_body"></div>
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-primary pull-right" id="sub"><i class="fa fa-hand-o-right fa-fw"></i> Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+        <!-- /.content-wrapper -->
+        {include file="common/footer" /}
+
     </div>
-    <!-- /.content-wrapper -->
-    {include file="common/footer" /}
+    <!-- ./wrapper -->
+    <!-- Select2 -->
+    <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
+    <!--<script src="__PUBLIC_JS__/bootstrap-select/js/bootstrap-select.min.js"></script>-->
+    <script src="__PUBLIC_JS__/clockpicker-gh-pages/bootstrap-clockpicker.min.js"></script>
+    <!--jquery.spinner-->
+    <script src="__PUBLIC_JS__/jquery.spinner/jquery.spinner.min.js"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
+    <!--selfJs-->
+    <script src="__PUBLIC_JS__/assets/toolHandler.js"></script>
+    <script>
+        $(function() {
+            urlLink = "{:url('ToolHandler/getFileName')}";
 
-</div>
-<!-- ./wrapper -->
-<!-- Select2 -->
-<script src="__PUBLIC_JS__/select2/select2.min.js"></script>
-<!--<script src="__PUBLIC_JS__/bootstrap-select/js/bootstrap-select.min.js"></script>-->
-<script src="__PUBLIC_JS__/clockpicker-gh-pages/bootstrap-clockpicker.min.js"></script>
-<!--jquery.spinner-->
-<script src="__PUBLIC_JS__/jquery.spinner/jquery.spinner.min.js"></script>
-<!-- iCheck 1.0.1 -->
-<script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
-<!--selfJs-->
-<script src="__PUBLIC_JS__/assets/toolHandler.js"></script>
-<script>
-    $(function () {
-        urlLink = "{:url('ToolHandler/getFileName')}";
-
-        // selection for toolName
-        $('select[name="selection"]').select2({
+            // selection for toolName
+            $('select[name="selection"]').select2({
                 width: "100%"
-            }
-        );
+            });
 
-        $('#content').on('click', '.delete', function () {
-            $(this).parent().parent().parent().parent().remove();
-            var buttonCount = $('.delete').length;
-            if (0 === buttonCount) {
-                $('#content').css('display', 'none');
-            }
-
-        }).on('click', '.addButton', function () {
-            addToolByButton(2, $(this), urlLink);
-
-        });
-
-        $.ajax({
-            type : "post",
-            url: "{:url('ToolHandler/setTool')}",
-            data: {
-                taskId: $('#taskId').val()
-            },
-            success : function (result) {
-                console.log(result);
-                if (null !== result || undefined !== result) {
-                    $('#content').css('display', 'block');
-                    result = JSON.parse(result);
-                    $('#forCollapse').val(result.length + 1);
-                    $.each(result, function (i, item) {
-                        if (JumpStart === item.Tool_Type) {
-                            $('#box_body').append('<div>' + getJumpStart(i, '') + '</div>');
-                            lastDiv = $('#box_body').children('div:last');
-                            setJumpStartData(lastDiv, item);
-                        }
-                        if (Recovery === item.Tool_Type) {
-                            $('#box_body').append('<div>' + getRecovery(i, '') + '</div>');
-                            lastDiv = $('#box_body').children('div:last');
-                            setRecoveryData(lastDiv, item);
-                        }
-                        if (C_Test === item.Tool_Type) {
-                            $('#box_body').append('<div>' + getCTest(i, '') + '</div>');
-                            lastDiv = $('#box_body').children('div:last');
-                            setCTestData(lastDiv, item);
-                        }
-                        if (Treboot === item.Tool_Type) {
-                            $('#box_body').append('<div>' + getTreboot(i, '') + '</div>');
-                            lastDiv = $('#box_body').children('div:last');
-                            setTrebootData(lastDiv, item);
-                        }
-                        if (TAndD === item.Tool_Type) {
-                            $('#box_body').append('<div>' + getTAndD(i, '') + '</div>');
-                            lastDiv = $('#box_body').children('div:last');
-                            setTAndDData(lastDiv, item);
-                        }
-                        if (FastBoot === item.Tool_Type) {
-                            $('#box_body').append('<div>' + getFastBoot(i, '') + '</div>');
-                            lastDiv = $('#box_body').children('div:last');
-                            setFastBootData(lastDiv, item);
-                        }
-                        if (BIOSUpdate === item.Tool_Type) {
-                            $('#box_body').append('<div>' + getBIOSUpdate(i, '') + '</div>');
-                            lastDiv = $('#box_body').children('div:last');
-                            setBIOSUpdateData(lastDiv, item);
-                        }
-                    })
-
+            $('#content').on('click', '.delete', function() {
+                $(this).parent().parent().parent().parent().remove();
+                var buttonCount = $('.delete').length;
+                if (0 === buttonCount) {
+                    $('#content').css('display', 'none');
                 }
 
-            },
-            error : function(){
-                toastr.error("Get Data Fail, Try Again");
-                setTimeout("window.location.href=\"TaskManager\";",1500);
-            }
+            }).on('click', '.addButton', function() {
+                addToolByButton(2, $(this), urlLink);
 
-        });
+            });
 
-        $('#addTool').click(function () {
-            addToolByButton(1, null, urlLink);
-        });
+            $.ajax({
+                type: "post",
+                url: "{:url('ToolHandler/setTool')}",
+                data: {
+                    taskId: $('#taskId').val()
+                },
+                success: function(result) {
+                    console.log(result);
+                    if (null !== result || undefined !== result) {
+                        $('#content').css('display', 'block');
+                        result = JSON.parse(result);
+                        $('#forCollapse').val(result.length + 1);
+                        $.each(result, function(i, item) {
+                            if (JumpStart === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getJumpStart(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setJumpStartData(lastDiv, item);
+                            }
+                            if (Recovery === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getRecovery(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setRecoveryData(lastDiv, item);
+                            }
+                            if (C_Test === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getCTest(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setCTestData(lastDiv, item);
+                            }
+                            if (Treboot === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getTreboot(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setTrebootData(lastDiv, item);
+                            }
+                            if (TAndD === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getTAndD(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setTAndDData(lastDiv, item);
+                            }
+                            if (FastBoot === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getFastBoot(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setFastBootData(lastDiv, item);
+                            }
+                            if (BIOSUpdate === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getBIOSUpdate(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setBIOSUpdateData(lastDiv, item);
+                            }
+                        })
 
-        // submit
-        $('#sub').click(function () {
-            if (!validateFormData()) {
-                data = formToJson();
-                $.ajax({
-                    type : "post",
-                    url: "{:url('ToolHandler/updateToolSteps')}",
-                    data: {
-                        taskId: $('#taskId').val(),
-                        formObj : data
-                    },
-                    beforeSend : function(){
-                        $('#sub').attr('disabled', 'true');
-                    },
-                    success : function (result) {
-                        if ("done" === result) {
-                            toastr.success("Update Tool Steps Success");
-                            setTimeout("window.location.href=\"TaskManager\";",1500);
-                        }
-
-                    },
-                    error : function(){
-                        toastr.error("Submit Fail, Try Again");
-                        $('#sub').attr('disabled', 'true');
                     }
 
-                })
-            }
-        });
-
-
-    });
-
-    function setJumpStartData(obj, item) {
-        // testImage
-        obj.find('select[name="TestImage"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
-
-        });
-
-        // Execute Job
-        obj.find('.select').each(function () {
-            $(this).select2().val(item.Execute_Job).trigger("change");;
-        });
-        // iCheck
-        obj.find('input[type="radio"].minimal').each(function () {
-            $(this).iCheck(
-                {radioClass: 'iradio_minimal-blue'}
-            );
-            // OS Activation
-            var nameV = $(this).attr('name');
-            if (nameV.indexOf('OS Activation') >= 0) {
-                if (item.OS_Activation === $(this).val()) {
-                    $(this).iCheck('check');
+                },
+                error: function() {
+                    toastr.error("Get Data Fail, Try Again");
+                    setTimeout("window.location.href=\"TaskManager\";", 1500);
                 }
-            }
-
-            // BaseLine_Image
-            if (nameV.indexOf('BaseLine Image') >= 0) {
-                if (item.BaseLine_Image === $(this).val()) {
-                    $(this).iCheck('check');
-                }
-            }
-        });
-
-    }
-
-    function setRecoveryData(obj, item) {
-        // testImage
-        obj.find('select[name="TestImage"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
-
-        });
-
-        obj.find('input[type="radio"].minimal').each(function () {
-            $(this).iCheck(
-                {radioClass: 'iradio_minimal-blue'}
-            );
-            var nameV = $(this).attr('name');
-            // OS Activation
-            if (nameV.indexOf('OS Activation') >= 0) {
-                if (item.OS_Activation === $(this).val()) {
-                    $(this).iCheck('check');
-                }
-            }
-
-            // OOBE
-            if (nameV.indexOf('OOBE') >= 0) {
-                if (item.OOBE === $(this).val()) {
-                    $(this).iCheck('check');
-                }
-            }
-        });
-
-        // count
-        obj.find('[data-trigger="spinner"]').spinner();
-        obj.find('#count').val(item.Count);
-
-    }
-
-    function setCTestData(obj, item) {
-
-        // week
-        obj.find('#week').select2({
-            width: "100%"
-        });
-
-        // jquery spinner init
-        obj.find('[data-trigger="spinner"]').spinner();
-
-        //datetimepicker
-        obj.find('.clockpicker').clockpicker({
-            default:'now'
-        });
-
-        // End After
-        obj.find('input[type="radio"].minimal').each(function () {
-            $(this).iCheck(
-                {radioClass: 'iradio_minimal-blue'}
-            ).on('ifChecked', function () {
-                _father = $(this).parent().parent().parent().parent();
-                _father.find('.col-sm-4').children('div').css('display', 'none');
-                _father.find('#' + $(this).val()).css('display', 'block');
 
             });
 
+            $('#addTool').click(function() {
+                addToolByButton(1, null, urlLink);
+            });
+
+            // submit
+            $('#sub').click(function() {
+                if (!validateFormData()) {
+                    data = formToJson();
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('ToolHandler/updateToolSteps')}",
+                        data: {
+                            taskId: $('#taskId').val(),
+                            formObj: data
+                        },
+                        beforeSend: function() {
+                            $('#sub').attr('disabled', 'true');
+                        },
+                        success: function(result) {
+                            if ("done" === result) {
+                                toastr.success("Update Tool Steps Success");
+                                setTimeout("window.location.href=\"TaskManager\";", 1500);
+                            }
+
+                        },
+                        error: function() {
+                            toastr.error("Submit Fail, Try Again");
+                            $('#sub').attr('disabled', 'true');
+                        }
+
+                    })
+                }
+            });
+
+
         });
 
-        if ('Count' === item.End_After) {
-            obj.find('input[value="Count"]').iCheck('check');
-            obj.find('#Count').find('input').val(item.Count);
+        function setJumpStartData(obj, item) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
 
-        } else if ('Terminus' === item.End_After) {
-            obj.find('input[value="Terminus"]').iCheck('check');
-            obj.find('#Terminus').find('#Week').html('<option value="' + item.Week + '">' + item.Week + '</option>').trigger("change");
-            obj.find('#Terminus').find('input').val(item.Time);
+            });
 
-        } else if ('Interval' === item.End_After) {
-            obj.find('input[value="Interval"]').iCheck('check');
-            obj.find('#Interval').find('input:eq(0)').val(item.Day);
-            obj.find('#Interval').find('input:eq(1)').val(item.Hour);
-            obj.find('#Interval').find('input:eq(2)').val(item.Min);
+            // Execute Job
+            obj.find('.select').each(function() {
+                $(this).select2().val(item.Execute_Job).trigger("change");;
+            });
+            // iCheck
+            obj.find('input[type="radio"].minimal').each(function() {
+                $(this).iCheck({
+                    radioClass: 'iradio_minimal-blue'
+                });
+                // OS Activation
+                var nameV = $(this).attr('name');
+                if (nameV.indexOf('OS Activation') >= 0) {
+                    if (item.OS_Activation === $(this).val()) {
+                        $(this).iCheck('check');
+                    }
+                }
+
+                // BaseLine_Image
+                if (nameV.indexOf('BaseLine Image') >= 0) {
+                    if (item.BaseLine_Image === $(this).val()) {
+                        $(this).iCheck('check');
+                    }
+                }
+            });
+
         }
 
-        // testImage
-        obj.find('select[name="TestImage"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
-        });
+        function setRecoveryData(obj, item) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
 
-    }
+            });
 
-    function setTrebootData(obj, item) {
-        // testImage
-        obj.find('select[name="TestImage"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
-
-        });
-
-        // jquery spinner init
-        obj.find('[data-trigger="spinner"]').spinner();
-
-        obj.find('#reboot').val(item.Reboot);
-        obj.find('#powerOff').val(item.PowerOff);
-        obj.find('#standBy').val(item.Suspend);
-        obj.find('#hibernation').val(item.Hibernation);
-        obj.find('#hybridShutdown').val(item.HybridShutdown);
-        obj.find('#timeOut').val(item.SecDelay);
-        obj.find('#delay').val(item.MinPowerUp);
-
-        // set check
-        obj.find('input[type="text"]').each(function () {
-            if ($(this).val() > 0) {
-                $(this).parent().find('.flat').iCheck('check'); // 无需担心delay和timeOut。因为它们的parent下没有flat
-            } else {
-                if ('timeOut' !== $(this).attr('id') || 'delay' !== $(this).attr('id') ) {
-                    $(this).attr("disabled","disabled");
+            obj.find('input[type="radio"].minimal').each(function() {
+                $(this).iCheck({
+                    radioClass: 'iradio_minimal-blue'
+                });
+                var nameV = $(this).attr('name');
+                // OS Activation
+                if (nameV.indexOf('OS Activation') >= 0) {
+                    if (item.OS_Activation === $(this).val()) {
+                        $(this).iCheck('check');
+                    }
                 }
 
-            }
-        });
-        // checkAllDevices
-        obj.find('input[name^="CheckAllDevices"]').each(function () {
-            if ('YES' === item.Verify) {
-                $(this).iCheck('check');
-            }
-        });
-        // configure 重置
-        obj.find('input[type="checkbox"].flat').each(function () {
-            $(this).iCheck(
-                {checkboxClass: 'icheckbox_flat-yellow'}
-            ).on('ifChecked', function () {
-                _father = $(this).parent().parent().parent();
-                _father.find('input[type="text"]').removeAttr("disabled").val(300);
-
-            }).on('ifUnchecked', function () {
-                _father = $(this).parent().parent().parent();
-                _father.find('input[type="text"]').attr("disabled","disabled").val(0);
+                // OOBE
+                if (nameV.indexOf('OOBE') >= 0) {
+                    if (item.OOBE === $(this).val()) {
+                        $(this).iCheck('check');
+                    }
+                }
             });
-        });
-    }
 
-    function setTAndDData(obj, item) {
-        // testImage
-        obj.find('select[name="TestImage"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+            // count
+            obj.find('[data-trigger="spinner"]').spinner();
+            obj.find('#count').val(item.Count);
 
-        });
+        }
 
-        obj.find('select[name="tdImage"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.TD_Image, 'tdImage');
+        function setCTestData(obj, item) {
 
-        });
+            // week
+            obj.find('#week').select2({
+                width: "100%"
+            });
 
-        obj.find('select[name="bios"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.TD_Bios, 'bios');
+            // jquery spinner init
+            obj.find('[data-trigger="spinner"]').spinner();
 
-        });
+            //datetimepicker
+            obj.find('.clockpicker').clockpicker({
+                default: 'now'
+            });
 
-        obj.find('select[name="tdConfig"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.TD_Config, 'tdConfig');
+            // End After
+            obj.find('input[type="radio"].minimal').each(function() {
+                $(this).iCheck({
+                    radioClass: 'iradio_minimal-blue'
+                }).on('ifChecked', function() {
+                    _father = $(this).parent().parent().parent().parent();
+                    _father.find('.col-sm-4').children('div').css('display', 'none');
+                    _father.find('#' + $(this).val()).css('display', 'block');
 
-        });
+                });
 
-        obj.find('input[type="radio"].minimal').each(function () {
-            $(this).iCheck(
-                {radioClass: 'iradio_minimal-blue'}
-            );
+            });
 
-            if (item.TD_Type === $(this).val()) {
-                $(this).iCheck('check');
+            if ('Count' === item.End_After) {
+                obj.find('input[value="Count"]').iCheck('check');
+                obj.find('#Count').find('input').val(item.Count);
+
+            } else if ('Terminus' === item.End_After) {
+                obj.find('input[value="Terminus"]').iCheck('check');
+                obj.find('#Terminus').find('#Week').html('<option value="' + item.Week + '">' + item.Week + '</option>').trigger("change");
+                obj.find('#Terminus').find('input').val(item.Time);
+
+            } else if ('Interval' === item.End_After) {
+                obj.find('input[value="Interval"]').iCheck('check');
+                obj.find('#Interval').find('input:eq(0)').val(item.Day);
+                obj.find('#Interval').find('input:eq(1)').val(item.Hour);
+                obj.find('#Interval').find('input:eq(2)').val(item.Min);
             }
-        });
-    }
 
-    function setFastBootData(obj, item) {
-        obj.find('select[name="TestImage"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+            // testImage
+            obj.find('select[name="TestImage"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+            });
 
-        });
-    }
+        }
 
-    function setBIOSUpdateData(obj, item) {
-        obj.find('[data-trigger="spinner"]').spinner();
+        function setTrebootData(obj, item) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
 
-        obj.find('select[name="BIOS1"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.BIOS1, 'bios1');
+            });
 
-        });
-        obj.find('select[name="BIOS2"]').each(function () {
-            var _this = $(this);
-            select2Init(_this, "{:url('ToolHandler/getFileName')}", item.BIOS2, 'bios2');
+            // jquery spinner init
+            obj.find('[data-trigger="spinner"]').spinner();
 
-        });
-        obj.find('#Count').find('input').val(item.Count);
+            obj.find('#reboot').val(item.Reboot);
+            obj.find('#powerOff').val(item.PowerOff);
+            obj.find('#standBy').val(item.Suspend);
+            obj.find('#hibernation').val(item.Hibernation);
+            obj.find('#hybridShutdown').val(item.HybridShutdown);
+            obj.find('#timeOut').val(item.SecDelay);
+            obj.find('#delay').val(item.MinPowerUp);
 
-        obj.find('input[type="radio"].minimal').each(function () {
-            $(this).iCheck(
-                {radioClass: 'iradio_minimal-blue'}
-            );
-            if (item.SecureBoot === $(this).val()) {
-                $(this).iCheck('check');
-            }
-        });
-    }
-</script>
+            // set check
+            obj.find('input[type="text"]').each(function() {
+                if ($(this).val() > 0) {
+                    $(this).parent().find('.flat').iCheck('check'); // 无需担心delay和timeOut。因为它们的parent下没有flat
+                } else {
+                    if ('timeOut' !== $(this).attr('id') || 'delay' !== $(this).attr('id')) {
+                        $(this).attr("disabled", "disabled");
+                    }
+
+                }
+            });
+            // checkAllDevices
+            obj.find('input[name^="CheckAllDevices"]').each(function() {
+                if ('YES' === item.Verify) {
+                    $(this).iCheck('check');
+                }
+            });
+            // configure 重置
+            obj.find('input[type="checkbox"].flat').each(function() {
+                $(this).iCheck({
+                    checkboxClass: 'icheckbox_flat-yellow'
+                }).on('ifChecked', function() {
+                    _father = $(this).parent().parent().parent();
+                    _father.find('input[type="text"]').removeAttr("disabled").val(300);
+
+                }).on('ifUnchecked', function() {
+                    _father = $(this).parent().parent().parent();
+                    _father.find('input[type="text"]').attr("disabled", "disabled").val(0);
+                });
+            });
+        }
+
+        function setTAndDData(obj, item) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+
+            });
+
+            obj.find('select[name="tdImage"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.TD_Image, 'tdImage');
+
+            });
+
+            obj.find('select[name="bios"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.TD_Bios, 'bios');
+
+            });
+
+            obj.find('select[name="tdConfig"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.TD_Config, 'tdConfig');
+
+            });
+
+            obj.find('input[type="radio"].minimal').each(function() {
+                $(this).iCheck({
+                    radioClass: 'iradio_minimal-blue'
+                });
+
+                if (item.TD_Type === $(this).val()) {
+                    $(this).iCheck('check');
+                }
+            });
+        }
+
+        function setFastBootData(obj, item) {
+            obj.find('select[name="TestImage"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+
+            });
+        }
+
+        function setBIOSUpdateData(obj, item) {
+            obj.find('[data-trigger="spinner"]').spinner();
+
+            obj.find('select[name="BIOS1"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.BIOS1, 'bios1');
+
+            });
+            obj.find('select[name="BIOS2"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.BIOS2, 'bios2');
+
+            });
+            obj.find('#Count').find('input').val(item.Count);
+
+            obj.find('input[type="radio"].minimal').each(function() {
+                $(this).iCheck({
+                    radioClass: 'iradio_minimal-blue'
+                });
+                if (item.SecureBoot === $(this).val()) {
+                    $(this).iCheck('check');
+                }
+            });
+        }
+    </script>
 
 </body>
+
 </html>

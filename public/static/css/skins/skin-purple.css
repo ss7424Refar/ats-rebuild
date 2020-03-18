@@ -54,7 +54,16 @@
   background-color: #605ca8;
 }
 .skin-purple .content-header {
-  background: transparent;
+  /* background: transparent; */
+  height: 36px !important;
+  text-align: left;
+  line-height: 36px;
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  margin-top: 0;
+  padding:0px;
+  padding-left: 20px;
+  line-height: 30px;
 }
 .skin-purple .wrapper,
 .skin-purple .main-sidebar,

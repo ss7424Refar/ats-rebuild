@@ -1,71 +1,78 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     {include file="common/plugins" /}
 </head>
+
 <body class="hold-transition skin-purple layout-top-nav">
-<div class="wrapper">
+    <div class="wrapper">
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <section class="content-header">
-            <h1>
-                <i style="color: #00a157">Release Note</i>
-                <!--<small></small>-->
-            </h1>
-        </section>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    Release Note
+                    <!--<small></small>-->
+                </h1>
+            </section>
 
-        <!-- Main content -->
-        <section class="content">
+            <!-- Main content -->
+            <section class="content">
 
-            <div class="row">
+                <div class="row">
 
-                <div class="col-md-2">
-                    <ul class="list-group">
-                        <button type="button" class="list-group-item" onclick="getReleaseNotes('ui')">About Web UI</button>
-                        <button type="button" class="list-group-item" onclick="getReleaseNotes('pe')">About ATS Starter</button>
-                    </ul>
+                    <div class="col-md-2">
+                        <ul class="list-group">
+                            <button type="button" class="list-group-item" onclick="getReleaseNotes('ui')">About Web UI</button>
+                            <button type="button" class="list-group-item" onclick="getReleaseNotes('pe')">About ATS Starter</button>
+                            <button type="button" class="list-group-item" onclick="getDocumentation()">About Manual</button>
+                        </ul>
+                    </div>
+                    <div class="col-md-10" id="note">
+                    </div>
+
+                    <div class="col-md-1"></div>
                 </div>
-                <div class="col-md-10" id="note">
-                </div>
+            </section>
+        </div>
+        <!-- /.content-wrapper -->
 
-                <div class="col-md-1"></div>
-            </div>
-        </section>
+        <!-- Main Footer -->
+        {include file="common/footer" /}
+
     </div>
-    <!-- /.content-wrapper -->
+    <!-- ./wrapper -->
+    <script src="__PUBLIC_JS__/showdown/showdown.min.js"></script>
 
-    <!-- Main Footer -->
-    {include file="common/footer" /}
+    <script>
+        $(function() {
+            // mouseEffect();
+            getReleaseNotes('ui');
 
-</div>
-<!-- ./wrapper -->
-<script src="__PUBLIC_JS__/showdown/showdown.min.js"></script>
-
-<script>
-    $(function () {
-        mouseEffect();
-        getReleaseNotes('ui');
-
-    });
-
-    function getReleaseNotes(item) {
-        var converter = new showdown.Converter();
-        $.ajax({
-            type : "post",
-            url: "{:url('ReleaseNote/getReleaseNotes')}",
-            data: {item: item},
-            success : function (result) {
-                var html = converter.makeHtml(result);
-                document.getElementById("note").innerHTML = html;
-            },
-            error : function(){
-                toast.error('get release note fail');
-            }
-        })
-    }
-
-</script>
+        });
+        function getDocumentation() {
+          window.location.href='{:url("Jump/Document")}'
+        }
+        function getReleaseNotes(item) {
+            var converter = new showdown.Converter();
+            $.ajax({
+                type: "post",
+                url: "{:url('ReleaseNote/getReleaseNotes')}",
+                data: {
+                    item: item
+                },
+                success: function(result) {
+                    var html = converter.makeHtml(result);
+                    document.getElementById("note").innerHTML = html;
+                },
+                error: function() {
+                    toast.error('get release note fail');
+                }
+            })
+        }
+    </script>
 
 </body>
+
 </html>

@@ -4,6 +4,7 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
+
 <head>
     {include file="common/plugins" /}
 
@@ -22,6 +23,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!--<link rel="stylesheet" href="__PUBLIC_CSS__/jquery.shCircleLoader/jquery.shCircleLoader.css">-->
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/iCheck/all.css">
+
+    <style>
+        .addButton,
+        .delete,
+        #addTool {
+            width: 92px !important;
+            background: #068de7;
+            color: #fff;
+        }
+    </style>
 
 </head>
 <!--
@@ -45,24 +56,25 @@ desired effect
 |---------------------------------------------------------|
 -->
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
+
 <body class="hold-transition skin-purple layout-top-nav">
 
-<div class="wrapper">
+    <div class="wrapper">
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-      <section class="content">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <section class="content">
 
-          <div class="row">
-              <div class="col-xs-12">
-                  <div class="box box-default">
-                      <div class="box-header with-border">
-                          <h3 class="box-title">Selection</h3>
-                      </div>
-                      <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <select class="form-control" style="width: 100%;" name="selection">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Selection</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select class="form-control" style="width: 100%;" name="selection">
                                         <option>JumpStart</option>
                                         <option>Recovery</option>
                                         <option>C-Test</option>
@@ -71,115 +83,114 @@ desired effect
                                         <option>BIOSUpdate</option>
                                         <option>TandD</option>
                                     </select>
+                                    </div>
+                                    <input type="text" id="forCollapse" hidden>
+                                    <input type="text" id="knowTool" hidden>
+                                    <!--从taskManager页面传递过来的taskId-->
+                                    <input type="text" id="taskId" hidden value="{$taskId}">
+                                    <input type="text" id="ip" hidden value="{$ipCheck}">
+                                    <div class="col-md-5">
+                                        <button type="button" class="btn" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add</button>
+                                    </div>
                                 </div>
-                                <input type="text" id="forCollapse" hidden>
-                                <input type="text" id="knowTool" hidden>
-                                <!--从taskManager页面传递过来的taskId-->
-                                <input type="text" id="taskId" hidden value="{$taskId}">
-                                <input type="text" id="ip" hidden value="{$ipCheck}">
-                                <div class="col-md-5">
-                                    <button type="button" class="btn btn-success" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add Tool </button>
-                                </div>
+
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<select class="selectpicker" data-live-search="true" data-size="5"></select>-->
+                <div class="box box-default panel-group" id="content" style="display: none">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Add</h3>
+                    </div>
+                    <form id="toolForm">
+                        <div class="box-body" id="box_body"></div>
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-primary pull-right" id="sub"><i class="fa fa-hand-o-right fa-fw"></i> Submit</button>
+                        </div>
+                    </form>
+                </div>
 
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <!--<select class="selectpicker" data-live-search="true" data-size="5"></select>-->
-          <div class="box box-default panel-group" id="content" style="display: none">
-              <div class="box-header with-border">
-                  <h3 class="box-title">Add</h3>
-              </div>
-              <form  id="toolForm">
-                  <div class="box-body" id="box_body"></div>
-                  <div class="box-footer">
-                      <button type="button" class="btn btn-primary pull-right" id="sub"><i class="fa fa-hand-o-right fa-fw"></i> Submit</button>
-                  </div>
-              </form>
-          </div>
+            </section>
 
-      </section>
+        </div>
+        <!-- /.content-wrapper -->
+        {include file="common/footer" /}
 
-  </div>
-  <!-- /.content-wrapper -->
-    {include file="common/footer" /}
+    </div>
+    <!-- ./wrapper -->
 
-</div>
-<!-- ./wrapper -->
+    <!-- Select2 -->
+    <script src="__PUBLIC_JS__/select2/select2.min.js"></script>
+    <!-- bootstrap datepicker -->
+    <!--<script src="__PUBLIC_JS__/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>-->
+    <script src="__PUBLIC_JS__/clockpicker-gh-pages/bootstrap-clockpicker.min.js"></script>
+    <!--jquery.spinner-->
+    <script src="__PUBLIC_JS__/jquery.spinner/jquery.spinner.min.js"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
+    <!--selfJs-->
+    <script src="__PUBLIC_JS__/assets/toolHandler.js"></script>
 
-<!-- Select2 -->
-<script src="__PUBLIC_JS__/select2/select2.min.js"></script>
-<!-- bootstrap datepicker -->
-<!--<script src="__PUBLIC_JS__/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>-->
-<script src="__PUBLIC_JS__/clockpicker-gh-pages/bootstrap-clockpicker.min.js"></script>
-<!--jquery.spinner-->
-<script src="__PUBLIC_JS__/jquery.spinner/jquery.spinner.min.js"></script>
-<!-- iCheck 1.0.1 -->
-<script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
-<!--selfJs-->
-<script src="__PUBLIC_JS__/assets/toolHandler.js"></script>
+    <script>
+        $(function() {
+            urlLink = "{:url('ToolHandler/getFileName')}";
 
-<script>
-    $(function () {
-        urlLink = "{:url('ToolHandler/getFileName')}";
-
-        // selection for toolName
-        $('select[name="selection"]').select2({
+            // selection for toolName
+            $('select[name="selection"]').select2({
                 width: "100%"
-            }
-        );
+            });
 
-        $('#content').on('click', '.delete', function () {
-            $(this).parent().parent().parent().parent().remove();
-            var buttonCount = $('.delete').length;
-            if (0 === buttonCount) {
-                $('#content').css('display', 'none');
-            }
+            $('#content').on('click', '.delete', function() {
+                $(this).parent().parent().parent().parent().remove();
+                var buttonCount = $('.delete').length;
+                if (0 === buttonCount) {
+                    $('#content').css('display', 'none');
+                }
 
-        }).on('click', '.addButton', function () {
-            addToolByButton(2, $(this), urlLink);
+            }).on('click', '.addButton', function() {
+                addToolByButton(2, $(this), urlLink);
 
-        });
+            });
 
-        $('#addTool').click(function () {
-            addToolByButton(1, null, urlLink);
-        });
+            $('#addTool').click(function() {
+                addToolByButton(1, null, urlLink);
+            });
 
 
-        // submit
-        $('#sub').click(function () {
-            if (!validateFormData()) {
-                data = formToJson();
-                $.ajax({
-                    type : "post",
-                    url: "{:url('ToolHandler/insertAddTool')}",
-                    data: {
-                        taskId: $('#taskId').val(),
-                        formObj : data
-                    },
-                    beforeSend : function(){
-                        $('#sub').attr('disabled', 'true');
-                    },
-                    success : function (result) {
-                        if ("done" === result) {
-                            toastr.success("Add Tool Steps Success");
-                            setTimeout("window.location.href=\"TaskManager\";", 500);
+            // submit
+            $('#sub').click(function() {
+                if (!validateFormData()) {
+                    data = formToJson();
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('ToolHandler/insertAddTool')}",
+                        data: {
+                            taskId: $('#taskId').val(),
+                            formObj: data
+                        },
+                        beforeSend: function() {
+                            $('#sub').attr('disabled', 'true');
+                        },
+                        success: function(result) {
+                            if ("done" === result) {
+                                toastr.success("Add Tool Steps Success");
+                                setTimeout("window.location.href=\"TaskManager\";", 500);
+                            }
+
+                        },
+                        error: function() {
+                            toastr.error("Submit Fail, Try Again");
+                            $('#sub').attr('disabled', 'true');
                         }
 
-                    },
-                    error : function(){
-                        toastr.error("Submit Fail, Try Again");
-                        $('#sub').attr('disabled', 'true');
-                    }
+                    })
+                }
+            })
 
-                })
-            }
-        })
-        
-    });
-
-</script>
+        });
+    </script>
 
 </body>
+
 </html>
