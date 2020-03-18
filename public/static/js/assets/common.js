@@ -15,6 +15,11 @@ const Treboot = 'Treboot';
 const TAndD = 'TandD';
 const FastBoot = 'FastBoot';
 const BIOSUpdate = 'BIOSUpdate';
+const MT = 'MT';
+const HCITest = 'HCITest';
+
+// toolArray
+var toolArray = [JumpStart, Recovery, C_Test, Treboot, TAndD, FastBoot, BIOSUpdate, MT, HCITest];
 
 // times
 const Hour = 'hour';

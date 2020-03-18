@@ -99,6 +99,18 @@ function formToJson() {
                 SecureBoot: _father.find("input[name^='SecureBoot']:checked").val()
             };
             obj.push(item);
+        } else if (MT === toolType) {
+            var item = {
+                Tool_Type: toolType,
+                Count: _father.find('#Count').find('input').val(),
+            };
+            obj.push(item);
+        } else if (HCITest === toolType) {
+            var item = {
+                Tool_Type: toolType,
+                Test_Image: _father.find("#TestImage").select2('val')
+            };
+            obj.push(item);
         }
 
     });
@@ -322,7 +334,14 @@ function addThenInit(selection, obj, remoteUrl) {
         obj.find('input[type="radio"].minimal').each(function() {
             $(this).iCheck({ radioClass: 'iradio_minimal-blue' });
         });
+    } else if (MT === selection) {
+        obj.find('[data-trigger="spinner"]').spinner();
+    } else if (HCITest === selection) {
+        obj.find('select[name="TestImage"]').each(function() {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
 
+        });
     }
 }
 
@@ -751,6 +770,56 @@ function getBIOSUpdate(i, status) {
     return template;
 }
 
+function getMT(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + MT + '</b></button>' +
+        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
+        '    <div class="panel-body form-horizontal">' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Count</label>' +
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
+        '                <div id="Count">' +
+        '                    <div class="input-group spinner col-sm-2" data-trigger="spinner">' +
+        '                        <input type="text" class="form-control text-center" value="1" data-max="1000" data-min="1" data-step="1" data-rule="quantity">' +
+        '                        <div class="input-group-addon">' +
+        '	                         <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>' +
+        '		                     <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>' +
+        '                        </div>' +
+        '                    </div>' +
+        '                </div>' +
+        '            </div>' +
+        '        </div>' +
+        '        <hr>' +
+        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>' +
+        '</div>';
+
+    return template;
+}
+
+function getHCITest(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + HCITest + '</b></button>' +
+        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
+        '    <div class="panel-body form-horizontal">' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Test Image</label>' +
+        '            <div class="col-sm-4">' +
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>' +
+        '            </div>' +
+        '        </div>' +
+        '        <hr>' +
+        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>' +
+        '</div>';
+
+    return template;
+}
+
 // 1代表在最后添加, 2代表在中间添加
 function addToolByButton(type, obj, urlLink) {
     var selection, toolId;
@@ -781,7 +850,10 @@ function addToolByButton(type, obj, urlLink) {
 
     } else if (BIOSUpdate === selection) {
         result = getBIOSUpdate(collapseId, 'checked');
-
+    } else if (MT === selection) {
+        result = getMT(collapseId, null);
+    } else if (HCITest === selection) {
+        result = getHCITest(collapseId, null);
     }
 
     if ('' !== result) {

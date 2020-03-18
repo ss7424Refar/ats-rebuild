@@ -22,6 +22,8 @@ define('TREBOOT', 'Treboot');
 define('TAndD', 'TandD'); // Qiulin说要web那里小写, 我觉得TAndD更帅
 define('FastBoot', 'FastBoot');
 define('BIOSUpdate', 'BIOSUpdate');
+define('MT', 'MT');
+define('HCITest', 'HCITest');
 
 /*
  * ATS file path

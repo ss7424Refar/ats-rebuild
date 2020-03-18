@@ -55,3 +55,7 @@
 ## ATS 1.4.0.5
 `2019-11-11`
 + **[Add]** BIOS Package(*.zip) Sync function
+
+## ATS 1.4.0.6
+`2020-03-18`
++ **[Add]** MT/HCITest function
