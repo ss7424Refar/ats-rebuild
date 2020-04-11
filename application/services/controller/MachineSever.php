@@ -345,7 +345,7 @@ class MachineSever extends Controller {
                 $map['type'] = ['like', '%' . $formData->type . '%'];
             }
             if (!empty($formData->user)) {
-                $map['user_name'] = $formData->user;
+                $map['user_name'] = ['like', '%' . $formData->user . '%'];
             }
             if (!empty($formData->location)) {
                 $map['location'] = $formData->location;

@@ -19,7 +19,7 @@ return [
     // 应用Trace
     'app_trace'              => false,
     // 应用模式状态
-    'app_status'             => 'config_home',
+    'app_status'             => '',
     // 是否支持多模块
     'app_multi_module'       => true,
     // 入口自动绑定模块
@@ -255,7 +255,7 @@ return [
         // 服务器地址
         'hostname'    => '172.30.52.29',
         // 数据库名
-        'database'    => 'pcs',
+        'database'    => 'tpms',
         // 数据库用户名
         'username'    => 'root',
         // 数据库密码
@@ -333,13 +333,13 @@ return [
     'ats_bios_update' => '/opt/hello/BIOS/', // 需要有斜杠
     'ats_bios_temp_update' => ROOT_PATH. 'public/resource/sync/',
 
-    'ats_sign_out_url'    =>  'http://172.30.52.44/tpms/index.php',
-    'links_sign_out_url'    =>  'http://172.30.52.44/tpms/index.php',
+    'ats_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
+    'links_sign_out_url'    =>  'http://172.30.52.43/tpms/index.php',
 
     // session是否开启tpms的session
     'session_debug'       => false,
     // port check web socket
-    'workman_web_socket'  => 'ws://172.30.52.44:2346/',
+    'workman_web_socket'  => 'ws://172.30.52.43:2346/',
     // push man
-    'pushman_web_socket'  => 'ws://172.30.52.44:2345/'
+    'pushman_web_socket'  => 'ws://172.30.52.43:2345/'
 ];
