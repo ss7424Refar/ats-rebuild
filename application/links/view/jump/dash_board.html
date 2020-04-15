@@ -2,6 +2,8 @@
 <html>
 <head>
     {include file="common/plugins" /}
+    <!--datetimepicker-->
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.css">
 </head>
 <body class="hold-transition skin-purple layout-top-nav">
 <div class="wrapper">
@@ -120,9 +122,14 @@
                             </h3>
 
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+                                <div class="form-inline" role="form">
+                                    <div class="form-group">
+                                        <i>ByMonth: </i>
+                                        <input type="text" readonly class="form_datetime form-control" id="toolByMonth">
+                                    </div>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="box-body">
@@ -172,8 +179,14 @@
                             </h3>
 
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
+                                <div class="form-inline" role="form">
+                                    <div class="form-group">
+                                        <i>ByMonth: </i>
+                                        <input type="text" readonly class="form_datetime form-control" id="testerByMonth" style="width: 120px;">
+                                    </div>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
                                 <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
                             </div>
                         </div>
@@ -195,6 +208,8 @@
 <script src="__PUBLIC_JS__/echarts/echarts.min.js"></script>
 <!-- 引入 vintage 主题 -->
 <script src="__PUBLIC_JS__/echarts/themes/roma.js"></script>
+<!--datetimepicker-->
+<script src="__PUBLIC_JS__/bootstrap-datetimepicker-master/bootstrap-datetimepicker.min.js"></script>
 <script>
 
     $(function () {
@@ -218,7 +233,44 @@
             result_chart.resize();
             tester_chart.resize();
         });
+
+        byMonthInit();
     });
+
+    // 初始化月单位控件
+    function byMonthInit() {
+        $.ajax({
+            type : "post",
+            url: "{:url('DashBoard/getByMonth')}",
+            success: function (result) {
+                result = JSON.parse(result);
+                $(".form_datetime").datetimepicker({
+                    format: "yyyy-mm",
+                    autoclose: true,
+                    pickerPosition: "bottom-left",
+                    startView: "year",
+                    minView: "year", //选择日期后，不会再跳转去选择时分秒
+                    startDate: result.min,
+                    endDate: result.max
+                });
+
+                $('#toolByMonth').val(result.today);
+                $('#testerByMonth').val(result.today);
+            },
+            error: function () {
+                toastr.error('Get ByMonth Fail');
+            }
+
+        });
+
+        $('#toolByMonth').change(function(){
+            statusChartCreate(byMonth, $(this).val());
+        });
+
+        $('#testerByMonth').change(function(){
+            testerChartCreate(byMonth, $(this).val());
+        });
+    }
 
     function myTaskInit() {
         $.ajax({
@@ -354,18 +406,24 @@
         });
     }
 
-    function statusChartCreate(timers) {
-
+    function statusChartCreate(timers, month) {
+        if (byMonth === timers) {
+            $('#statusHeader').html(month);
+        }
         $('#statusHeader').html(getHeader(timers));
 
         status_chart.showLoading();
 
+        data = {
+            timer: timers,
+            month: month
+        };
+
+
         $.ajax({
             type: "post",
             url: "{:url('DashBoard/statusChart')}",
-            data: {
-                timer: timers
-            },
+            data: data,
             success: function (result) {
                 var series = [];
 
@@ -450,7 +508,6 @@
     }
 
     function resultChartCreate(timers) {
-
         $('#resultHeader').html(getHeader(timers));
 
         result_chart.showLoading();
@@ -545,17 +602,23 @@
         });
     }
 
-    function testerChartCreate(timers) {
+    function testerChartCreate(timers, month) {
 
+        if (byMonth === timers) {
+            $('#testerHeader').html(month);
+        }
         $('#testerHeader').html(getHeader(timers));
+
+        data = {
+            timer: timers,
+            month: month
+        };
 
         tester_chart.showLoading();
         $.ajax({
             type: "post",
             url: "{:url('DashBoard/testerChart')}",
-            data: {
-                timer: timers
-            },
+            data: data,
             success: function (result) {
                 if ("No Data" !== result) {
                     result = JSON.parse(result);

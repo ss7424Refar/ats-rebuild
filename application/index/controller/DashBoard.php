@@ -158,6 +158,7 @@ class DashBoard extends Common
     public function statusChart() {
 
         $timer = $this->request->param('timer');
+        $month = $this->request->param('month');
 
         $optionResult = array();
 
@@ -166,6 +167,7 @@ class DashBoard extends Common
         for ($i = 0; $i < count($this->statusArray); $i++) {
             $serialArray = array();
             $serialArray['status'] = $this->statusArray[$i];
+
             if (DAY == $timer) {
                 for ($j = 0; $j < count($this->toolArray); $j++) {
                     $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
@@ -215,6 +217,18 @@ class DashBoard extends Common
 
                     $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']);
 
+                    if (false == $isNotAllZero) {
+                        if (0 != $res[0]['total']) {
+                            $isNotAllZero = true;
+                        }
+                    }
+                }
+            } elseif (BYMONTH == $timer) {
+                for ($j = 0; $j < count($this->toolArray); $j++) {
+                    $res = Db::query('select count(*) as total from ats_task_tool_steps where status = ? and tool_name = ? '.
+                        ' AND DATE_FORMAT(tool_create_time, \'%Y-%m\' ) = ? ;', [$this->statusArray[$i], $this->toolArray[$j], $month]);
+
+                    $serialArray['toolData'][] = (0 == $res[0]['total'] ? '-' : $res[0]['total']); // ‘—’代表数据不存在，就不再绘制了
                     if (false == $isNotAllZero) {
                         if (0 != $res[0]['total']) {
                             $isNotAllZero = true;
@@ -323,6 +337,7 @@ class DashBoard extends Common
      */
     public function testerChart() {
         $timer = $this->request->param('timer');
+        $month = $this->request->param('month');
 
         $seriesData = array();
         $legendData = array();
@@ -343,6 +358,9 @@ class DashBoard extends Common
         } elseif (YEAR == $timer) {
             $res = Db::query('select tester, count(*) as total from ats_task_basic where '.
                 'YEAR(task_create_time)=YEAR(NOW()) group by tester;');
+        } elseif (BYMONTH == $timer) {
+            $res = Db::query('select tester, count(*) as total from ats_task_basic where '.
+                'DATE_FORMAT(task_create_time, \'%Y-%m\' ) = ? group by tester;', [$month]);
         }
         // create option
         for ($i = 0; $i < count($res); $i++) {
@@ -368,5 +386,14 @@ class DashBoard extends Common
         } else {
             return 'No Data';
         }
+    }
+
+    public function getByMonth() {
+        // task_start_time 会有null的情况
+        $res1 = Db::query('select DATE_FORMAT(task_create_time, \'%Y-%m\' )  as min from ats_task_basic order by task_create_time limit 1');
+
+        $res2 = Db::query('select DATE_FORMAT(task_create_time, \'%Y-%m\' )  as max from ats_task_basic order by task_create_time desc limit 1');
+
+        return json_encode(array('min' => $res1[0]['min'], 'max' => $res2[0]['max'], 'today' => date('yy-m')));
     }
 }

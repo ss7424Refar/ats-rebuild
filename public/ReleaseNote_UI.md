@@ -59,3 +59,7 @@
 ## ATS 1.4.0.6
 `2020-03-18`
 + **[Add]** MT/HCITest function
+
+## ATS 1.4.0.7
+`2020-04-15`
++ **[Add]** Tool/Testers chart byMonth selection

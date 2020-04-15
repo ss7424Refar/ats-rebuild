@@ -27,6 +27,7 @@ const Day = 'day';
 const Week = 'week';
 const Month = 'month';
 const Year = 'year';
+const byMonth = 'byMonth';
 
 // Execute Job
 const job1 = 'Fast Startup,Standby,Microsoft Edge,BatteryLife,DataGrab';
@@ -90,7 +91,6 @@ function getHeader(timers) {
     } else if (Year === timers) {
         return getThisYear();
     }
-
 }
 
 // |--------------task_manager.html-------------|

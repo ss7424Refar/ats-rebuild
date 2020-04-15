@@ -40,6 +40,7 @@ define('DAY', 'day');
 define('WEEK', 'week');
 define('MONTH', 'month');
 define('YEAR', 'year');
+define('BYMONTH', 'byMonth');
 
 /*
  * 测试结果
