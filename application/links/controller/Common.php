@@ -60,6 +60,12 @@ class Common extends Controller{
             || 'group leader' == $result[0]['description'] || 'manager' == $result[0]['description']){
             $this->hasRight = true;
         }
+        // 由于有个新系统上线改了角色名称, 所以要加个判断
+        if ('admin' == $result[0]['description'] || 'T-Manager' == $result[0]['description']
+            || 'T-Leader' == $result[0]['description']){
+            $this->hasRight = true;
+        }
+
 //        $this->assign('hasRight', $this->hasRight); // 给模板用
 
         // 给header.html中的变量赋值, index继承了common, index里面有fetch方法
