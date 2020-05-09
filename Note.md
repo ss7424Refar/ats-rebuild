@@ -87,6 +87,11 @@ SET SQL_SAFE_UPDATES=0;
   3. thinkphp5.1可以下载绑定多个workman, 但是考虑到可能有坑, 暂时不更新. 
   4. 长连接说是要客户端和服务端做心跳的, 但是正式环境没有发现问题, 暂时这样子..
   5. home配置启动workman命令要sudo, 可能www-data没有root权限. 正式环境去掉了sudo.   
+
+### 杀死指定端口进程的方法
+  ```
+    kill -9 `lsof -t -i:2344`
+  ```
       
 ---
 ## thinkphp5目录结构

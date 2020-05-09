@@ -205,6 +205,7 @@ class TaskManager extends Common{
 
         $form['machine_id'] = $form['machine_name'];
         $form['machine_name'] = $machine_name;
+        $form['tester'] = $this->loginUser;
 
         $atsTaskBasic = new AtsTaskBasic();
 

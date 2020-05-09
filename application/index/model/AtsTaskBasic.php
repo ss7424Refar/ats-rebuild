@@ -22,11 +22,11 @@ class AtsTaskBasic extends Model
     protected $updateTime = false;
     // 自动完成插入属性
     protected $insert = ['status' => PENDING, 'tester', 'category'];
-    // 自动写入tester
-    protected function setTesterAttr()
-    {
-        return Session::get('transToAts');
-    }
+//    // 自动写入tester
+//    protected function setTesterAttr()
+//    {
+//        return Session::get('transToAts');
+//    }
     // 貌似这个修改器只是针对新增
     // 判断category // 修改器方法的第二个参数会自动传入当前的所有数据数组。
     protected function setCategoryAttr($value, $data)
