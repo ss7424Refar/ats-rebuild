@@ -29,7 +29,8 @@ define('HCITest', 'HCITest');
  * ATS file path
  */
 
-define('ATS_RESULT_PATH', '\\\\172.30.52.28\\JSDataBK\\#Temp\\@ATS_Results\\');
+//define('ATS_RESULT_PATH', '\\\\172.30.52.28\\JSDataBK\\#Temp\\@ATS_Results\\');
+define('ATS_RESULT_PATH', 'http://172.30.52.44:8089/'); // 使用python开启了httpServer
 
 /*
  * timer type of chart

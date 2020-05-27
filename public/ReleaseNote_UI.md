@@ -63,3 +63,8 @@
 ## ATS 1.4.0.7
 `2020-04-15`
 + **[Add]** Tool/Testers chart byMonth selection
+
+## ATS 1.4.0.8
+`2020-05-27`
++ **[Add]** Recovery(Windows Update)
++ **[Add]** Report File HttpServer explorer

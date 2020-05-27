@@ -21,7 +21,8 @@ function formToJson() {
                 Test_Image: _father.find("#TestImage").select2('val'),
                 OS_Activation: _father.find("input[name^='OS Activation']:checked").val(),
                 Count: _father.find('#count').val(),
-                OOBE: _father.find("input[name^='OOBE']:checked").val()
+                OOBE: _father.find("input[name^='OOBE']:checked").val(),
+                WinUpdate: _father.find("input[name^='WinUpdate']:checked").val(),
             };
             obj.push(item);
         } else if (C_Test === toolType) {
@@ -229,7 +230,7 @@ function addThenInit(selection, obj, remoteUrl) {
             select2Init(_this, remoteUrl, '', 'testImage');
 
         });
-        // OS Activation and OOBE
+        // OS Activation and OOBE and Update
         obj.find('input[type="radio"].minimal').each(function() {
             $(this).iCheck({ radioClass: 'iradio_minimal-blue' });
         });
@@ -436,6 +437,17 @@ function getRecovery(i, status) {
         '                </label>' +
         '                <label style="margin-right: 19px">' +
         '                    <input type="radio" name="OOBE_' + i + '" class="minimal" value="NO" ' + status + '/> NO' +
+        '                </label>' +
+        '            </div>' +
+        '        </div>' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Windows Update</label>' +
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
+        '                <label style="margin-right: 19px">' +
+        '                    <input type="radio" name="WinUpdate_' + i + '" class="minimal" value="YES"/> YES' +
+        '                </label>' +
+        '                <label style="margin-right: 19px">' +
+        '                    <input type="radio" name="WinUpdate_' + i + '" class="minimal" value="NO" ' + status + '/> NO' +
         '                </label>' +
         '            </div>' +
         '        </div>' +

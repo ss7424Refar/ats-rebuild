@@ -298,8 +298,8 @@ return [
     // 配置swiftmailer邮件发送服务器
     'smtp_host'         => '172.30.52.43',
     'smtp_port'         => '25',
-    'mail_cc'           => '["wanliang.xu@dbh.dynabook.com", "lin.zhu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com"]',
-    'mail_cc_baseline'  => '["wanliang.xu@dbh.dynabook.com", "lin.zhu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com", "TIH_SWV@dbh.dynabook.com"]',
+    'mail_cc'           => '["wanliang.xu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com"]',
+    'mail_cc_baseline'  => '["wanliang.xu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com", "TIH_SWV@dbh.dynabook.com"]',
     'mail_from'         => 'ats_swv@dbh.dynabook.com',
     'cifs_notice'       => 'lin.zhu@dbh.dynabook.com',
 

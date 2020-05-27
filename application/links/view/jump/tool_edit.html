@@ -306,6 +306,13 @@ desired effect
                         $(this).iCheck('check');
                     }
                 }
+
+                // Update
+                if (nameV.indexOf('WinUpdate') >= 0) {
+                    if (item.WinUpdate === $(this).val()) {
+                        $(this).iCheck('check');
+                    }
+                }
             });
 
             // count
