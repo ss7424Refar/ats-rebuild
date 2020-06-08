@@ -121,6 +121,7 @@ function formToJson() {
 function validateFormData() {
     // select option required
     var isNG = false;
+    var isWin = false; // 保证windowUpdate的msg只出现一次
     var msg = '';
     // select option required
     $('#content').find('select').each(function(i) {
@@ -154,6 +155,21 @@ function validateFormData() {
             if (job1 == executeJob || job2 == executeJob) {
                 msg = msg + "Job Can't Select Battery For Ip = 40" + '<br>';
                 isNG = true;
+            }
+        }
+        // windowUpdate time 17:00~20:00 check
+        winUpVal = _father.find("input[name^='WinUpdate']:checked").val();
+        console.log(winUpVal)
+        if ('NO' !== winUpVal) {
+            if (!isWin) {
+                // 判断时间
+                var hh = new Date().getHours();
+                // console.log(hh);
+                if (Number(hh) < 17 || Number(hh) > 21) {
+                    msg = msg + "Window Update Time is 17:00~20:00" + '<br>';
+                    isNG = true;
+                    isWin = true;
+                }
             }
         }
     });
