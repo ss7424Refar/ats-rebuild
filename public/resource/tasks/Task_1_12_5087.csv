@@ -1,0 +1,50 @@
+{
+    "task_basic": [
+        {
+            "task_id": 5087,
+            "machine_id": 1607125,
+            "machine_name": "Altair TX CS1",
+            "category": "In_House",
+            "lan_ip": "192.168.1.109",
+            "shelf_switch": "1_12",
+            "dmi_manufacturer": "tiancai",
+            "dmi_product_name": "dynabook Tab S61\/NG",
+            "dmi_part_number": "PS68NNP-NXC",
+            "dmi_serial_number": "7G1217893",
+            "dmi_oem_string": "PRT10U-AAAA6,PCN3381CCZ01FA1F\/S3A-----X--",
+            "dmi_system_config": "2",
+            "bios_ec": "12",
+            "status": "pending",
+            "process": 0,
+            "task_create_time": "2020-05-27 15:04:34",
+            "task_start_time": null,
+            "task_end_time": null,
+            "tester": null,
+            "result_path": "http:\/\/172.30.52.44:8089\/Altair TX CS1_5087"
+        }
+    ],
+    "task_steps": [
+        {
+            "task_id": 5087,
+            "tool_name": "Recovery",
+            "status": "pending",
+            "steps": 1,
+            "element_json": "{\"Tool_Type\":\"Recovery\",\"Test_Image\":\".gnome\",\"OS_Activation\":\"NO\",\"Count\":\"1\",\"OOBE\":\"NO\",\"WinUpdate\":\"NO\"}",
+            "result_path": null,
+            "tool_create_time": "2020-05-27 15:23:55",
+            "tool_start_time": null,
+            "tool_end_time": null
+        },
+        {
+            "task_id": 5087,
+            "tool_name": "Recovery",
+            "status": "pending",
+            "steps": 2,
+            "element_json": "{\"Tool_Type\":\"Recovery\",\"Test_Image\":\"Desktop\",\"OS_Activation\":\"NO\",\"Count\":\"1\",\"OOBE\":\"NO\",\"WinUpdate\":\"YES\"}",
+            "result_path": null,
+            "tool_create_time": "2020-05-27 15:23:55",
+            "tool_start_time": null,
+            "tool_end_time": null
+        }
+    ]
+}

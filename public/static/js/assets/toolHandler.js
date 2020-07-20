@@ -157,16 +157,28 @@ function validateFormData() {
                 isNG = true;
             }
         }
-        // windowUpdate time 17:00~20:00 check
+        // windowUpdate time 16:30~23:30 check
         winUpVal = _father.find("input[name^='WinUpdate']:checked").val();
         console.log(winUpVal)
         if ('NO' !== winUpVal) {
             if (!isWin) {
-                // 判断时间
+                // 判断时间 (返回值是 0 （午夜） 到 23 （晚上 11 点）之间的一个整数。)
                 var hh = new Date().getHours();
+                var mm = new Date().getMinutes();
                 // console.log(hh);
-                if (Number(hh) < 17 || Number(hh) > 21) {
-                    msg = msg + "Window Update Time is 17:00~20:00" + '<br>';
+                // time is 00:~ - 15:~
+                if (0 <= Number(hh) < 16) {
+                    msg = msg + "Window Update Time is 16:30~23:30" + '<br>';
+                    isNG = true;
+                    isWin = true;
+                    // time is < 16:30
+                } else if (16 === Number(hh) && Number(mm) < 30) {
+                    msg = msg + "Window Update Time is 16:30~23:30" + '<br>';
+                    isNG = true;
+                    isWin = true;
+                    // time is > 23:30
+                } else if (23 === Number(hh) && Number(mm) > 30) {
+                    msg = msg + "Window Update Time is 16:30~23:30" + '<br>';
                     isNG = true;
                     isWin = true;
                 }
