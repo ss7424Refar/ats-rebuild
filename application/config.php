@@ -253,7 +253,7 @@ return [
         // 数据库类型
         'type'        => 'mysql',
         // 服务器地址
-        'hostname'    => '172.30.52.29',
+        'hostname'    => '172.30.184.29',
         // 数据库名
         'database'    => 'pcs',
         // 数据库用户名
@@ -296,7 +296,7 @@ return [
 //    'db_config2' => 'mysql://root:123456@localhost:3306/itd#utf8',
 
     // 配置swiftmailer邮件发送服务器
-    'smtp_host'         => '172.30.52.43',
+    'smtp_host'         => '172.30.184.33',
     'smtp_port'         => '25',
     'mail_cc'           => '["wanliang.xu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com"]',
     'mail_cc_baseline'  => '["wanliang.xu@dbh.dynabook.com", "lin.qiu@dbh.dynabook.com", "bin.yan@dbh.dynabook.com", "erkai.gao@dbh.dynabook.com", "TIH_SWV@dbh.dynabook.com"]',
@@ -339,7 +339,7 @@ return [
     // session是否开启tpms的session
     'session_debug'       => false,
     // port check web socket
-    'workman_web_socket'  => 'ws://172.30.52.44:2346/',
+    'workman_web_socket'  => 'ws://172.30.184.33:2346/',
     // push man
-    'pushman_web_socket'  => 'ws://172.30.52.44:2345/'
+    'pushman_web_socket'  => 'ws://172.30.184.33:2345/'
 ];

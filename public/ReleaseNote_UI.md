@@ -68,3 +68,7 @@
 `2020-05-27`
 + **[Add]** Recovery(Windows Update)
 + **[Add]** Report File HttpServer explorer
+
+## ATS 1.4.0.9
+`2020-07-22`
++ **[Add]** Recovery(SecureBoot)

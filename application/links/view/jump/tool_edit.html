@@ -116,7 +116,7 @@ desired effect
     <!-- iCheck 1.0.1 -->
     <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
     <!--selfJs-->
-    <script src="__PUBLIC_JS__/assets/toolHandler.js"></script>
+    <script src="__PUBLIC_JS__/assets/toolHandler.js?version=1.4.0.9"></script>
     <script>
         $(function() {
             urlLink = "{:url('ToolHandler/getFileName')}";
@@ -313,6 +313,14 @@ desired effect
                         $(this).iCheck('check');
                     }
                 }
+
+                // SecureBoot
+                if (nameV.indexOf('SecureBoot') >= 0) {
+                    if (item.SecureBoot === $(this).val()) {
+                        $(this).iCheck('check');
+                    }
+                }
+
             });
 
             // count

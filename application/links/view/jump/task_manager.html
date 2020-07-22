@@ -832,13 +832,13 @@
                         // var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['shelf_switch'] + "_" + row['task_id'];
                         if (null !== row['result_path']) {
                             if (0 === Number(row['process'])) {
-                                return 'ATS_' + value;
+                                return 'ATS-' + value;
                             } else {
                                 var path = row['result_path'];
-                                return '<a href="' + path + '">' + 'ATS_' + value + '</a> ';
+                                return '<a href="' + path + '">' + 'ATS-' + value + '</a> ';
                             }
                         } else {
-                            return 'ATS_' + value;
+                            return 'ATS-' + value;
                         }
                     }
                 }, {

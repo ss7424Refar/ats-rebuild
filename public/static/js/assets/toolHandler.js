@@ -23,6 +23,7 @@ function formToJson() {
                 Count: _father.find('#count').val(),
                 OOBE: _father.find("input[name^='OOBE']:checked").val(),
                 WinUpdate: _father.find("input[name^='WinUpdate']:checked").val(),
+                SecureBoot: _father.find("input[name^='SecureBoot']:checked").val()
             };
             obj.push(item);
         } else if (C_Test === toolType) {
@@ -159,15 +160,14 @@ function validateFormData() {
         }
         // windowUpdate time 16:30~23:30 check
         winUpVal = _father.find("input[name^='WinUpdate']:checked").val();
-        console.log(winUpVal)
-        if ('NO' !== winUpVal) {
+        if ('NO' !== winUpVal && 'undefined' !== typeof(winUpVal)) {
             if (!isWin) {
                 // 判断时间 (返回值是 0 （午夜） 到 23 （晚上 11 点）之间的一个整数。)
                 var hh = new Date().getHours();
                 var mm = new Date().getMinutes();
                 // console.log(hh);
                 // time is 00:~ - 15:~
-                if (0 <= Number(hh) < 16) {
+                if (0 <= Number(hh) && Number(hh) < 16) {
                     msg = msg + "Window Update Time is 16:30~23:30" + '<br>';
                     isNG = true;
                     isWin = true;
@@ -476,6 +476,15 @@ function getRecovery(i, status) {
         '                </label>' +
         '                <label style="margin-right: 19px">' +
         '                    <input type="radio" name="WinUpdate_' + i + '" class="minimal" value="NO" ' + status + '/> NO' +
+        '                </label>' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">Enable SecureBoot</label>' +
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
+        '                <label style="margin-right: 19px">' +
+        '                    <input type="radio" name="SecureBoot_' + i + '" class="minimal" value="YES" ' + status + '/> YES' +
+        '                </label>' +
+        '                <label style="margin-right: 19px">' +
+        '                    <input type="radio" name="SecureBoot_' + i + '" class="minimal" value="NO"/> NO' +
         '                </label>' +
         '            </div>' +
         '        </div>' +
