@@ -792,7 +792,7 @@ function getBIOSUpdate(i, status) {
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
         '                <div id="Count">' +
         '                    <div class="input-group spinner col-sm-2" data-trigger="spinner">' +
-        '                        <input type="text" class="form-control text-center" value="1" data-max="1000" data-min="1" data-step="1" data-rule="quantity">' +
+        '                        <input type="text" class="form-control text-center" value="50" data-max="1000" data-min="1" data-step="1" data-rule="quantity">' +
         '                        <div class="input-group-addon">' +
         '	                         <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>' +
         '		                     <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>' +
