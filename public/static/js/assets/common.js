@@ -17,6 +17,7 @@ const FastBoot = 'FastBoot';
 const BIOSUpdate = 'BIOSUpdate';
 const MT = 'MT';
 const HCITest = 'HCITest';
+const CommonTool = 'CommonTool';
 
 // toolArray
 var toolArray = [JumpStart, Recovery, C_Test, Treboot, TAndD, FastBoot, BIOSUpdate, MT, HCITest];

@@ -75,15 +75,6 @@ desired effect
                                 <div class="row">
                                     <div class="col-md-6">
                                         <select class="form-control" style="width: 100%;" name="selection">
-                                        <option>JumpStart</option>
-                                        <option>Recovery</option>
-                                        <option>C-Test</option>
-                                        <option>Treboot</option>
-                                        <option>FastBoot</option>
-                                        <option>BIOSUpdate</option>
-                                        <option>TandD</option>
-                                        <option>MT</option>
-                                        <option>HCITest</option>
                                     </select>
                                     </div>
                                     <input type="text" id="forCollapse" hidden>
@@ -132,16 +123,13 @@ desired effect
     <!-- iCheck 1.0.1 -->
     <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
     <!--selfJs-->
-    <script src="__PUBLIC_JS__/assets/toolHandler.js?version=1.4.1.0"></script>
+    <script src="__PUBLIC_JS__/assets/toolHandler.js?version=1.4.1.1"></script>
 
     <script>
         $(function() {
             urlLink = "{:url('ToolHandler/getFileName')}";
 
-            // selection for toolName
-            $('select[name="selection"]').select2({
-                width: "100%"
-            });
+            select2Init($('select[name="selection"]'), urlLink, '', 'toolName');
 
             $('#content').on('click', '.delete', function() {
                 $(this).parent().parent().parent().parent().remove();
@@ -151,12 +139,12 @@ desired effect
                 }
 
             }).on('click', '.addButton', function() {
-                addToolByButton(2, $(this), urlLink);
+                addToolByButton('mid', $(this), urlLink);
 
             });
 
             $('#addTool').click(function() {
-                addToolByButton(1, null, urlLink);
+                addToolByButton('end', null, urlLink);
             });
 
 

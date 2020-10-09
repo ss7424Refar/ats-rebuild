@@ -35,8 +35,36 @@ class ToolHandler extends Common {
             $none = array("id"=>"NONE", "text"=>"NONE");
             array_unshift($res, $none);
             return json_encode($res);
+        } elseif ('toolName' == $type) {
+            return $this->getToolName($query);
+        } elseif ('configList' == $type) {
+            return $this->getSearchFile(config('ats_config_list'), $query);
         }
         return '';
+    }
+
+    private function getToolName($query) {
+
+        $jsonResult = array();
+
+        $toolNameArray = json_decode(ToolName);
+        if (empty(trim($query))) {
+
+            foreach ($toolNameArray as $v) {
+                $tmpArray = array('id' => $v, 'text' => $v);
+                array_push($jsonResult, $tmpArray);
+            }
+
+        } else {
+            foreach ($toolNameArray as $v) {
+                if (stristr($v, $query) !== false) {
+                    $tmpArray = array('id' => $v, 'text' => $v);
+                    array_push($jsonResult, $tmpArray);
+                }
+            }
+        }
+
+        return json_encode($jsonResult);
     }
 
     /**
@@ -178,4 +206,5 @@ class ToolHandler extends Common {
 
         return json_encode($jsonResult);
     }
+
 }

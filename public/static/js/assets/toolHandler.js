@@ -371,6 +371,20 @@ function addThenInit(selection, obj, remoteUrl) {
             select2Init(_this, remoteUrl, '', 'testImage');
 
         });
+    } else if (CommonTool === selection) {
+        obj.find('select[name="ConfigList"]').each(function() {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'configList');
+
+        });
+
+        obj.find('#addConfigButton').each(function() {
+            var _this = $(this);
+            _this.click(function () {
+                alert(1)
+            })
+
+        });
     }
 }
 
@@ -869,7 +883,56 @@ function getHCITest(i, status) {
     return template;
 }
 
-// 1代表在最后添加, 2代表在中间添加
+function getCommonTool(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + CommonTool + '</b></button>' +
+        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
+        '    <div class="panel-body form-horizontal">' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Config List</label>' +
+        '            <div class="col-sm-4">' +
+        '                <select class="form-control select2" name="ConfigList" id="ConfigList"></select>' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">Add NEW</label>' +
+        '            <div class="col-sm-5">' +
+        '                <button type="button" class="btn btn-warning" id="addConfigButton"><i class="fa fa-plus fa-fw"></i> ConfigButton</button>' +
+        '            </div>' +
+        '        </div>' +
+        '        <hr>' +
+        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>' +
+        '</div>';
+
+    return template;
+}
+
+function getCommonToolModal(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + CommonTool + '</b></button>' +
+        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
+        '    <div class="panel-body form-horizontal">' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Config List</label>' +
+        '            <div class="col-sm-4">' +
+        '                <select class="form-control select2" name="ConfigList" id="ConfigList"></select>' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">Add NEW</label>' +
+        '            <div class="col-sm-5">' +
+        '                <button type="button" class="btn btn-warning" id="addConfigButton"><i class="fa fa-plus fa-fw"></i> ConfigButton</button>' +
+        '            </div>' +
+        '        </div>' +
+        '        <hr>' +
+        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>' +
+        '</div>';
+
+    return template;
+}
+// end代表在最后添加, mid代表在中间添加
 function addToolByButton(type, obj, urlLink) {
     var selection, toolId;
     selection = $('select[name="selection"]').select2('val');
@@ -903,18 +966,20 @@ function addToolByButton(type, obj, urlLink) {
         result = getMT(collapseId, null);
     } else if (HCITest === selection) {
         result = getHCITest(collapseId, null);
+    } else if (CommonTool === selection) {
+        result = getCommonTool(collapseId, null);
     }
 
     if ('' !== result) {
         if ('none' === $('#content').css('display')) {
             $('#content').css('display', 'block');
         }
-        if (1 === type) {
+        if ('end' === type) {
             $('#box_body').append('<div>' + result + '</div>');
             lastDiv = $('#box_body').children('div:last');
             addThenInit(selection, lastDiv, urlLink);
 
-        } else if (2 === type) {
+        } else if ('mid' === type) {
             lastDiv = obj.parent().parent().parent().parent();
             lastDiv.after('<div>' + result + '</div>');
             addThenInit(selection, lastDiv.next(), urlLink);
