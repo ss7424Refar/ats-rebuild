@@ -92,7 +92,10 @@ SET SQL_SAFE_UPDATES=0;
   ```
     kill -9 `lsof -t -i:2344`
   ```
-      
+### bootstrap-table@1.15.5
+  1. 需要bootstrap4的支持的css, 否則dark不能显示.
+  
+    
 ---
 ## thinkphp5目录结构
 

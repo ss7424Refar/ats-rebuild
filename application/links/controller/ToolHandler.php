@@ -39,6 +39,8 @@ class ToolHandler extends Common {
             return $this->getToolName($query);
         } elseif ('configList' == $type) {
             return $this->getSearchFile(config('ats_config_list'), $query);
+        }  elseif ('action' == $type) {
+            return $this->getSearchFile(config('ats_action_list'), $query);
         }
         return '';
     }

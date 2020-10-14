@@ -66,13 +66,11 @@ class Jump extends Common {
     }
 
     public function ReleaseNote(){
-        // 导航栏的样式
-        $this->assign('portCheck','');
-        $this->assign('taskManager','');
-        $this->assign('dashBoard','');
-        $this->assign('bios','');
-
         return $this->fetch();
+    }
+
+    public function Setting(){
+        return $this->fetch('setting/common_tool_manager');
     }
 
     /*

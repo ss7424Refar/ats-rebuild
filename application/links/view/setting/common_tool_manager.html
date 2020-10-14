@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/plugins" /}
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_CSS__/bootstrap-table-develop/bootstrap-table.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
+</head>
+
+<body class="hold-transition skin-purple layout-top-nav">
+<div class="wrapper">
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Setting
+            </h1>
+        </section>
+        <section class="content" style="background-color: #FFFFFF">
+            <div class="row">
+                <div class="col-md-1">
+                    <ul class="list-group">
+                        <button type="button" class="list-group-item">Common Tool</button>
+                        <!--<button type="button" class="list-group-item" onclick="getReleaseNotes('pe')">About ATS Starter</button>-->
+                        <!--<button type="button" class="list-group-item" onclick="getDocumentation()">About Manual</button>-->
+                    </ul>
+                </div>
+                <div class="col-md-11">
+                    <div id="toolbar" class="btn-toolbar" role="toolbar">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus fa-fw"></i>&nbsp;Add</button>
+                        </div>
+                    </div>
+                    <table id="table" data-show-jumpto="true"></table>
+                </div>
+                <div class="modal fade" id="addModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog  modal-lg">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Add Configuration</h4>
+                            </div>
+                            <form class="form-horizontal form-group-sm" id="addForm">
+                                <div class="modal-body">
+                                    <div class="form-group" id="init" name="content">
+                                        <label class="col-sm-1 control-label" style="padding-top:1px;">
+                                            <button type="button" class="btn btn-default btn-sm" name="a"><i class="fa fa-plus fa-fw"></i>&nbsp;</button>
+                                        </label>
+                                        <label class="col-sm-1 control-label" style="padding-top:1px;">
+                                            <button type="button" class="btn btn-default btn-sm" name="e"><i class="fa fa-minus fa-fw"></i>&nbsp;</button>
+                                        </label>
+                                        <label class="col-sm-1 control-label">Action</label>
+                                        <div class="col-sm-3">
+                                            <select class="form-control" name="action"></select>
+                                        </div>
+                                        <label class="col-sm-1 control-label">Parameter</label>
+                                        <div class="col-sm-3">
+                                            <input class="form-control" name="parameter"></input>
+                                        </div>
+                                        <div class="col-sm-1"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-1"></div>
+                                        <label class="col-sm-2 control-label">Remark</label>
+                                        <div class="col-sm-8">
+                                            <textarea class="form-control" name="remark" style="width: 497px; height: 140px;resize:none;"></textarea>
+                                        </div>
+                                        <div class="col-sm-1"></div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="sub">Submit</button>
+                                    <!--<button type="reset" class="btn btn-primary btn-sm">reset</button>-->
+                                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                            <div id="template" style="display: none">
+                                <div class="form-group" name="content">
+                                    <label class="col-sm-1 control-label" style="padding-top:1px;">
+                                        <button type="button" class="btn btn-default btn-sm" name="a" ><i class="fa fa-plus fa-fw"></i>&nbsp;</button>
+                                    </label>
+                                    <label class="col-sm-1 control-label" style="padding-top:1px;">
+                                        <button type="button" class="btn btn-default btn-sm" name="e"><i class="fa fa-minus fa-fw"></i>&nbsp;</button>
+                                    </label>
+                                    <label class="col-sm-1 control-label">Action</label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" name="action"></select>
+                                    </div>
+                                    <label class="col-sm-1 control-label">Parameter</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control" name="parameter"></input>
+                                    </div>
+                                    <div class="col-sm-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+            </div>
+        </section>
+    </div>
+    {include file="common/footer" /}
+
+</div>
+
+<script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/locale/bootstrap-table-en-US.min.js"></script>
+<!--    bootstrap dataTables extensions-->
+<script src="__PUBLIC_JS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
+
+<script src="__PUBLIC_JS__/select2/select2.min.js"></script>
+
+<script src="__PUBLIC_JS__/bootbox4.4/bootbox.min.js"></script>
+
+<script>
+
+    $('#table').bootstrapTable({
+        url: "{:url('Setting/configList')}", //请求后台的URL（*）
+        method: 'post', //请求方式（*）
+        classes: 'table table-responsive table-hover table-bordered', // table 样式 table-no-bordered
+        iconSize: 'sm',
+        buttonsClass: '', // table 按钮颜色设置
+        toolbar: '#toolbar', //工具按钮用哪个容器
+        striped: true, //是否显示行间隔色
+        cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true, //是否显示分页（*）
+        queryParamsType: "", //默认是limit，则para为params.limit, params.offset
+        queryParams: function (params) {
+            var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                pageSize: params.pageSize,
+                pageNumber: params.pageNumber
+            };
+            return temp;
+        },
+        sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1, //初始化加载第一页，默认第一页
+        pageSize: 10, //每页的记录行数（*）
+        pageList: [10, 25, 50], //可供选择的每页的行数（*）
+        search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端
+        strictSearch: true,
+        height: 600,
+        // showColumns: true, //是否显示所有的列
+        showRefresh: true, //是否显示刷新按钮
+        minimumCountColumns: 2, //最少允许的列数
+        uniqueId: "name", //每一行的唯一标识，一般为主键列
+        showToggle: false, //是否显示详细视图和列表视图的切换按钮
+        cardView: false, //是否显示详细视图
+        columns: [
+            {
+                field: 'name',
+                title: 'Name'
+            },
+            {
+                field: 'detail',
+                title: 'Detail',
+                formatter: function (value, row) {
+                    return '<pre>'+ JSON.stringify(JSON.parse(value), null, 2) +'</pre>';
+                }
+            },
+            {
+                field: 'add_time',
+                title: 'Add Time'
+            },
+            {
+                field: 'remark',
+                title: 'Remark'
+            },
+            {
+                field: '-',
+                title: 'Action',
+                formatter: function(value, row) {
+                    var name = row['name'];
+                    var result = "";
+                    // result += "<a class='btn btn-xs bg-green' href='#' " + " onclick=\"return checkTool(\'" + name + "\', 'edit')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='edit' style='margin: 3px'><span class='glyphicon glyphicon-pencil'></span></a>";
+                    result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return check(\'" + name + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+
+                    return result;
+                }
+            }
+        ],
+        formatLoadingMessage: function() {
+            return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+        },
+        onLoadError: function() {
+            toastr.error("Table LoadError!");
+        },
+        formatNoMatches: function() { //没有匹配的结果
+            return '<i class="text-danger">No matching records found</i>';
+        }
+    });
+
+    $(function () {
+        selectInit('#init select[name="action"]')
+
+        $('#addForm').on('click', "button[name='a']", function () {
+            $(this).parent().parent().after($('#template').html())
+
+            $(this).parent().parent().next().find('select[name="action"]').each(function () {
+                var _this = $(this);
+                selectInit(_this)
+            })
+
+        }).on('click', "button[name='e']", function () {
+            var buttonCount = $("button[name='e']").length;
+            if ( Number(buttonCount) > 2) {
+                $(this).parent().parent().remove()
+            }
+        })
+
+        $('#sub').click(function() {
+            if (!validateFormData()) {
+                data = formToJson();
+                $.ajax({
+                    type: "post",
+                    url: "{:url('Setting/addConfigList')}",
+                    data: {
+                        remark: $('textarea[name="remark"]').val(),
+                        formObj: data
+                    },
+                    beforeSend: function() {
+                        $('#sub').attr('disabled', 'true');
+                    },
+                    success: function(result) {
+                        if ("done" === result) {
+                            toastr.success("Add Config Success");
+                            setTimeout("window.location.href=\"Setting\";", 500);
+                        }
+
+                    },
+                    error: function() {
+                        toastr.error("Submit Fail, Try Again");
+                        $('#sub').attr('disabled', 'true');
+                        setTimeout("window.location.href=\"Setting\";", 500);
+                    }
+
+                })
+            } else {
+                return false
+            }
+
+        })
+    })
+
+    function selectInit(target) {
+        $(target).select2({
+            width: "100%",
+            ajax: {
+                url: "{:url('ToolHandler/getFileName')}",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return { q: params.term, type: 'action' };
+                },
+                processResults: function(data) {
+                    return { results: data };
+                },
+                cache: false
+            },
+            placeholder: 'Please Select',
+            allowClear: true
+        });
+
+    }
+
+    function validateFormData() {
+        var isNG = false;
+        var msg = '';
+        var addForm = $('#addForm')
+
+        addForm.find('select').each(function(i) {
+            if (null === $(this).val() || undefined === $(this).val()) {
+                var target = $(this).attr('name');
+                msg = msg + target + " Can't Be Empty (" + (i+1) +')'+ '<br>';
+
+                isNG = true;
+            }
+        })
+
+        addForm.find('input').each(function(i) {
+            if (null === $(this).val() || undefined === $(this).val() || "" === $(this).val()) {
+                var target = $(this).attr('name');
+                msg = msg + target + " Can't Be Empty (" + (i+1) +')'+ '<br>';
+
+                isNG = true;
+            }
+        });
+
+        if (isNG) {
+            toastr.error(msg);
+
+        }
+        return isNG;
+    }
+
+    function formToJson() {
+        var addForm = $('#addForm')
+        var obj = [];
+        addForm.find('div[name="content"]').each(function (i) {
+            var item = {
+                'Step': i + 1,
+                'Action': $(this).find("select[name='action']").select2('val'),
+                'Parameter': $(this).find("input[name='parameter']").val()
+            }
+            obj.push(item);
+        })
+        return JSON.stringify(obj);
+    }
+
+    function check(name, op) {
+        bootbox.confirm({
+            message: " Do You Want Delete Config?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function(result) {
+                if (result) {
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('Setting/deleteConfig')}",
+                        data: {
+                            name: name
+                        },
+                        success: function(result) {
+                            if ('fail' !== result) {
+                                toastr.success("Delete Config Success");
+                                setTimeout("window.location.href=\"Setting\";", 500);
+                            }
+                        },
+                        error: function() {
+                            toastr.error("Delete Config Fail");
+                            return false;
+                        }
+
+                    });
+                }
+
+            }
+        });
+    }
+</script>
+
+</body>
+
+</html>

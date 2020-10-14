@@ -333,9 +333,11 @@ return [
     'ats_bios_temp_update' => ROOT_PATH. 'public/resource/sync/',
 
     // +----------------------------------------------------------------------
-    // | config path
+    // | commonTool path
     // +----------------------------------------------------------------------
+    'ats_config_name' => 'common_tool_config_',
     'ats_config_list' => '/tmp/', // 需要有斜杠
+    'ats_action_list' => '/opt/',
 
     'ats_sign_out_url'    =>  'http://localhost/tpms/index.php',
     'links_sign_out_url'    =>  'http://localhost/tpms/index.php',

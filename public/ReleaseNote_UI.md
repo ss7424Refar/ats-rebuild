@@ -72,3 +72,7 @@
 ## ATS 1.4.0.9
 `2020-07-22`
 + **[Add]** Recovery(SecureBoot)
+
+## ATS 1.5.0.0
+`2020-10-14`
++ **[Add]** CommonTool function

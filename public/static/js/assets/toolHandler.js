@@ -113,6 +113,12 @@ function formToJson() {
                 Test_Image: _father.find("#TestImage").select2('val')
             };
             obj.push(item);
+        } else if (CommonTool === toolType) {
+            var item = {
+                Tool_Type: toolType,
+                Config_List: _father.find("#ConfigList").select2('val')
+            };
+            obj.push(item);
         }
 
     });
@@ -375,14 +381,6 @@ function addThenInit(selection, obj, remoteUrl) {
         obj.find('select[name="ConfigList"]').each(function() {
             var _this = $(this);
             select2Init(_this, remoteUrl, '', 'configList');
-
-        });
-
-        obj.find('#addConfigButton').each(function() {
-            var _this = $(this);
-            _this.click(function () {
-                alert(1)
-            })
 
         });
     }
@@ -894,10 +892,6 @@ function getCommonTool(i, status) {
         '            <div class="col-sm-4">' +
         '                <select class="form-control select2" name="ConfigList" id="ConfigList"></select>' +
         '            </div>' +
-        '            <label class="col-sm-1 control-label">Add NEW</label>' +
-        '            <div class="col-sm-5">' +
-        '                <button type="button" class="btn btn-warning" id="addConfigButton"><i class="fa fa-plus fa-fw"></i> ConfigButton</button>' +
-        '            </div>' +
         '        </div>' +
         '        <hr>' +
         '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
@@ -908,30 +902,6 @@ function getCommonTool(i, status) {
     return template;
 }
 
-function getCommonToolModal(i, status) {
-    var template = '';
-
-    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + CommonTool + '</b></button>' +
-        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
-        '    <div class="panel-body form-horizontal">' +
-        '        <div class="form-group">' +
-        '            <label class="col-sm-1 control-label">Config List</label>' +
-        '            <div class="col-sm-4">' +
-        '                <select class="form-control select2" name="ConfigList" id="ConfigList"></select>' +
-        '            </div>' +
-        '            <label class="col-sm-1 control-label">Add NEW</label>' +
-        '            <div class="col-sm-5">' +
-        '                <button type="button" class="btn btn-warning" id="addConfigButton"><i class="fa fa-plus fa-fw"></i> ConfigButton</button>' +
-        '            </div>' +
-        '        </div>' +
-        '        <hr>' +
-        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
-        '        <div class="col-md-6"><button type="button" class="btn delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
-        '    </div>' +
-        '</div>';
-
-    return template;
-}
 // end代表在最后添加, mid代表在中间添加
 function addToolByButton(type, obj, urlLink) {
     var selection, toolId;

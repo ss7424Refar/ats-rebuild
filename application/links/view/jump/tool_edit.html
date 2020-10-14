@@ -107,7 +107,7 @@ desired effect
     <!-- iCheck 1.0.1 -->
     <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
     <!--selfJs-->
-    <script src="__PUBLIC_JS__/assets/toolHandler.js?version=1.4.1.1"></script>
+    <script src="__PUBLIC_JS__/assets/toolHandler.js?version=1.5.0.0"></script>
     <script>
         $(function() {
             urlLink = "{:url('ToolHandler/getFileName')}";
@@ -184,6 +184,11 @@ desired effect
                                 $('#box_body').append('<div>' + getHCITest(i, '') + '</div>');
                                 lastDiv = $('#box_body').children('div:last');
                                 setHCITestData(lastDiv, item);
+                            }
+                            if (CommonTool === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getCommonTool(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setCommonToolData(lastDiv, item);
                             }
                         })
 
@@ -499,6 +504,13 @@ desired effect
             obj.find('select[name="TestImage"]').each(function () {
                 var _this = $(this);
                 select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+
+            });
+        }
+        function setCommonToolData(obj, item) {
+            obj.find('select[name="ConfigList"]').each(function () {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Config_List, 'configList');
 
             });
         }

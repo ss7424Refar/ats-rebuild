@@ -334,9 +334,11 @@ return [
     'ats_bios_temp_update' => ROOT_PATH. 'public/resource/sync/',
 
     // +----------------------------------------------------------------------
-    // | config path
+    // | commonTool path
     // +----------------------------------------------------------------------
-    'ats_config_list' => '/opt/hello/CommonTool/Configs/', // 需要有斜杠
+    'ats_config_name' => 'common_tool_config_',
+    'ats_config_list' => '/opt/hello/CommonTool/Configs/',
+    'ats_action_list' => '/opt/hello/CommonTool/Tools/',
 
     'ats_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/tpms/index.php',
     'links_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/tpms/index.php',
