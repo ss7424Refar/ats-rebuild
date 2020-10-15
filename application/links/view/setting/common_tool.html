@@ -15,18 +15,18 @@
         <section class="content-header">
             <h1>
                 Setting
+                <small>CommonTool</small>
             </h1>
         </section>
         <section class="content" style="background-color: #FFFFFF">
             <div class="row">
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <ul class="list-group">
-                        <button type="button" class="list-group-item">Common Tool</button>
-                        <!--<button type="button" class="list-group-item" onclick="getReleaseNotes('pe')">About ATS Starter</button>-->
-                        <!--<button type="button" class="list-group-item" onclick="getDocumentation()">About Manual</button>-->
+                        <a type="button" class="list-group-item list-group-item-info"  href="Setting">Common Tool</a>
+                        <a type="button" class="list-group-item" href="Bios">Bios Package</a>
                     </ul>
                 </div>
-                <div class="col-md-11">
+                <div class="col-md-10">
                     <div id="toolbar" class="btn-toolbar" role="toolbar">
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus fa-fw"></i>&nbsp;Add</button>
@@ -140,7 +140,7 @@
         pageList: [10, 25, 50], //可供选择的每页的行数（*）
         search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端
         strictSearch: true,
-        height: 600,
+        height: 800,
         // showColumns: true, //是否显示所有的列
         showRefresh: true, //是否显示刷新按钮
         minimumCountColumns: 2, //最少允许的列数

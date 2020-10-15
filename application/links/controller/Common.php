@@ -66,7 +66,7 @@ class Common extends Controller{
             $this->hasRight = true;
         }
 
-//        $this->assign('hasRight', $this->hasRight); // 给模板用
+        $this->assign('hasRight', $this->hasRight); // 给模板用
 
         // 给header.html中的变量赋值, index继承了common, index里面有fetch方法
     }

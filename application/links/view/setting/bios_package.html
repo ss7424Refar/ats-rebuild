@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    {include file="common/plugins" /}
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-table@1.15.5/bootstrap-table.min.css">
+</head>
+<body class="hold-transition skin-purple layout-top-nav">
+<div class="wrapper">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Setting
+                <small>Bios</small>
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-2">
+                    <ul class="list-group">
+                        <a type="button" class="list-group-item"  href="Setting">Common Tool</a>
+                        <a type="button" class="list-group-item list-group-item-info" href="Bios">Bios Package</a>
+                    </ul>
+                </div>
+                <div class="col-md-10">
+                    <div class="box">
+                        <div class="box-header  with-border" style="padding-top: 20px">
+                            <div class="alert alert-info alert-dismissible">
+                                <i class="icon fa fa-info fa-1.5x"></i>
+                                <i style="color: #F6F6E7">
+                                    Be patient! BIOS zip package will sync from PCS server to ATS server in 5s when you upload success.
+                                </i>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="box box-solid">
+                                <div id="toolbar">
+                                    <div class="form-inline" role="form">
+                                        <div class="form-group">
+                                            {if condition="($hasRight)"}
+                                            <a id="ok" class="btn btn-sm btn-primary">
+                                                <form action="" id="formD"
+                                                      style="position:absolute;opacity:0;top:0;left:0;
+                                                            width:59px;height:100%;cursor:pointer;">
+                                                    <input type="file"  accept=".zip"
+                                                           style="position:absolute;opacity:0;top:0;left:0;
+                                                                width:100%;height:100%;cursor:pointer;" id="upload"/>
+                                                </form>
+                                                Upload
+                                            </a>
+                                            {/if}
+                                            <button id="expand" type="submit" class="btn btn-sm btn-primary">ExpandAll</button>
+                                            <button id="collapse" type="submit" class="btn btn-sm btn-primary">CollapseAll</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="progress"
+                                                 style="width: 600px; margin-top:20px;margin-left:10px;display: none;" id="pro0">
+                                                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
+                                                     style="width: 0%"
+                                                     id="pro">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table id="table" data-toolbar="#toolbar"
+                                       data-search="true"
+                                       style="margin-top: 10px">
+                                    <thead>
+                                    <tr>
+                                        <th data-field="file" data-formatter="fileFormatter">File Name</th>
+                                        <th data-field="size">Size (KB)</th>
+                                        <th data-field="time">Modify Time</th>
+                                        {if condition="($hasRight)"}
+                                        <th data-field="-" data-formatter="actionFormatter">Action</th>
+                                        {/if}
+                                    </tr>
+                                    </thead>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    {include file="common/footer" /}
+
+</div>
+<!-- ./wrapper -->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="__PUBLIC_JS__/bootstrap-table@1.15.5/bootstrap-table.min.js"></script>
+<!-- Latest compiled and minified Locales -->
+<script src="__PUBLIC_JS__/bootstrap-table@1.15.5/locale/bootstrap-table-en-US.min.js"></script>
+
+<script>
+    var $table = $('#table')
+
+    function deleteMe(it) {
+        $.ajax({
+            url: "{:url('Bios/delete')}",
+            type: 'post',
+            data: {"file" : it},
+            success: function (res) {
+                if (res.code == 200) {
+                    toastr.success(res.msg);
+                } else {
+                    toastr.error(res.msg);
+                }
+            },
+            error: function (res) {
+                toastr.error('Delete Fail');
+            },
+            complete: function () {
+                setTimeout(function () {
+                    $table.bootstrapTable('selectPage', 1)
+                }, 2000);
+            }
+        });
+
+    }
+
+    function resetPro() {
+        $('#pro0').css('display', 'none');
+        $('#pro').css('width', '0%').html('0%');
+    }
+
+    function fileFormatter(value, row) {
+        if (row.isDir) {
+            return '<i class="fa fa-folder fa-2x" style="color: #FFD659;"></i> ' + value
+        }
+        return '<i class="fa fa-file-text-o fa-1.5x"></i> ' + value
+    }
+
+    function actionFormatter(value, row) {
+        return  "<a class='btn btn-sm btn-danger' href='#' " + " onclick=\"deleteMe(\'" + row.file + "\')\" style='margin: 3px'>Delete</a>";
+    }
+    $(function() {
+        $table.bootstrapTable({
+            url: "{:url('Setting/getNodeFile')}",
+            pagination: true,
+            showRefresh: true,
+            detailView: true,
+            sidePagination: "server",
+            cache: false,
+            pageNumber:1,
+            pageSize: 10,
+            pageList: [10, 25, 50],
+            onExpandRow: function (index, row, $detail) {
+                if (row.isDir) {
+                    initSubTable(index, row, $detail);
+                }
+            },
+            onPostBody: function (index, row, $detail) {
+                // $table.bootstrapTable('expandAllRows')
+            }
+        })
+
+        function initSubTable(index, row, $detail) {
+            var file = row.file;
+            var cur_table = $detail.html('<table></table>').find('table');
+            $(cur_table).bootstrapTable({
+                url: "{:url('Setting/getSubFileInfoByName')}",
+                method: 'get',
+                queryParamsType : "limit",
+                queryParams: function (params) {
+                    var temp = {
+                        file: file,
+                        offset : params.offset,
+                        limit : params.limit
+                    };
+                    return temp;
+                },
+                cache: false,
+                sidePagination: "server",
+                pageNumber:1,                  //初始化加载第一页，默认第一页
+                pageSize: 10,                  //每页的记录行数（*）
+                pageList: [10, 25, 50],        //可供选择的每页的行数（*）
+                columns: [
+                    {
+                        field: "-",
+                        title: '-',
+                        formatter: function (value, row) {
+                            return '-'
+                        }
+                    },
+                    {
+                        field: 'file',
+                        title: 'Sub File Name',
+                        formatter: function (value, row) {
+                            if (row.isDir) {
+                                return '<i class="fa fa-folder fa-2x" style="color: #FFD659;"></i> ' + value
+                            }
+                            return '<i class="fa fa-file-text-o fa-1.5x"></i> ' + value
+                        }
+                    },
+                    {
+                        field: 'size',
+                        title: 'Size (KB)'
+                    },
+                    {
+                        field: 'time',
+                        title: 'Modify Time'
+                    }
+                ],
+                formatLoadingMessage: function () {
+                    return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+                },
+                onLoadError: function () {
+                    toastr.error("Table LoadError!");
+                },
+                formatNoMatches: function () {  //没有匹配的结果
+                    return '<i class="text-danger">No data found</i>';
+                }
+            });
+        }
+
+        $('#expand').click(function () {
+            $table.bootstrapTable('expandAllRows')
+        });
+        $('#collapse').click(function () {
+            $table.bootstrapTable('collapseAllRows')
+        });
+
+        $('#upload').change(function () {
+            var file = $("#upload")[0].files[0];
+
+            var name = file.name;
+            var suffix = name.substr(name.lastIndexOf("."))
+            console.log(suffix);
+            if (suffix != '.zip') {
+                toastr.error('Please Upload Zip File');
+                return false;
+            }
+            if(((file.size).toFixed(2))>=(15*1024*1024)){
+                toastr.error('File Size Over 15MB');
+                return false;
+            }
+            var formData = new FormData();
+            formData.append("file", file);
+
+            $('#pro0').css('display', 'block');
+            $.ajax({
+                url: "{:url('Setting/upload')}",
+                type: 'post',
+                processData: false,  // 将数据转换成对象
+                contentType: false,  // 不设置数据类型
+                xhr: function() {
+                    var xhr = new XMLHttpRequest();
+                    //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+                    xhr.upload.addEventListener('progress', function (e) {
+                        //loaded代表上传了多少
+                        //total代表总数为多少
+                        var progressRate = ((e.loaded / e.total) * 100).toFixed(2) + '%';
+
+                        //通过设置进度条的宽度达到效果
+                        $('#pro').css('width', progressRate).html(progressRate);
+                    })
+
+                    return xhr;
+                },
+                data: formData,
+                success: function (res) {
+                    if (res.code == 200) {
+                        toastr.success(res.msg);
+                    } else {
+                        toastr.error(res.msg);
+                    }
+                },
+                error: function (res) {
+                    toastr.error('Upload Fail');
+                    resetPro();
+                },
+                complete: function () {
+
+                    setTimeout(function () {
+                        $table.bootstrapTable('selectPage', 1)
+                        resetPro()
+                    }, 2000);
+                }
+            });
+        });
+
+
+    })
+
+</script>
+
+</body>
+</html>

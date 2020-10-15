@@ -40,7 +40,8 @@ class ToolHandler extends Common {
         } elseif ('configList' == $type) {
             return $this->getSearchFile(config('ats_config_list'), $query);
         }  elseif ('action' == $type) {
-            return $this->getSearchFile(config('ats_action_list'), $query);
+            // 存在文件夹的情况, 需要移除
+            return $this->getSearchRemoveFolder(config('ats_action_list'), $query);
         }
         return '';
     }
@@ -209,4 +210,29 @@ class ToolHandler extends Common {
         return json_encode($jsonResult);
     }
 
+
+    private function getSearchRemoveFolder($path, $query) {
+        $handler = opendir($path);
+
+        $jsonResult = array();
+
+        while (($filename = readdir($handler)) !== false) {
+            //略过linux目录的名字为'.'和‘..'的文件
+            if ($filename != "." && $filename != "..") {
+                if (!is_dir($path.$filename)) {
+                    if (empty(trim($query))) {
+                        $tmpArray = array('id' => $filename, 'text' => $filename);
+                        array_push($jsonResult, $tmpArray);
+                    } else {
+                        if (stristr($filename, $query) !== false) {
+                            $tmpArray = array('id' => $filename, 'text' => $filename);
+                            array_push($jsonResult, $tmpArray);
+                        }
+                    }
+                }
+            }
+        }
+
+        return json_encode($jsonResult);
+    }
 }

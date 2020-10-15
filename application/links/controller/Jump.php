@@ -70,7 +70,11 @@ class Jump extends Common {
     }
 
     public function Setting(){
-        return $this->fetch('setting/common_tool_manager');
+        return $this->fetch('setting/common_tool');
+    }
+
+    public function Bios(){
+        return $this->fetch('setting/bios_package');
     }
 
     /*
