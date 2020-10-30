@@ -20,7 +20,7 @@ const HCITest = 'HCITest';
 const CommonTool = 'CommonTool';
 
 // toolArray
-var toolArray = [JumpStart, Recovery, C_Test, Treboot, TAndD, FastBoot, BIOSUpdate, MT, HCITest];
+var toolArray = [JumpStart, Recovery, C_Test, Treboot, TAndD, FastBoot, BIOSUpdate, MT, HCITest, CommonTool];
 
 // times
 const Hour = 'hour';

@@ -278,15 +278,6 @@
             }
         })
 
-        addForm.find('input').each(function(i) {
-            if (null === $(this).val() || undefined === $(this).val() || "" === $(this).val()) {
-                var target = $(this).attr('name');
-                msg = msg + target + " Can't Be Empty (" + (i+1) +')'+ '<br>';
-
-                isNG = true;
-            }
-        });
-
         if (isNG) {
             toastr.error(msg);
 

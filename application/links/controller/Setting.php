@@ -96,29 +96,29 @@ class Setting extends Common{
 
             // 改权限
             chmod($filename, 0777);
-            //获取解压后的目录名
-            $extraFolder = config('ats_bios_temp_update'). substr($file['name'], 0, strlen($file['name']) - 4);
 
-            if (!file_exists($extraFolder)) {
-                mkdir($extraFolder, 0777);
-            }
+            // 链接ftp
+            $conn = ftp_connect(config('ftp_address'), config('ftp_port'));
 
-            // 直接调用命令行unzip
-            // -d 解压到bios目录, -o覆盖不询问用户, -q不返回任何信息
-            $cmd = 'unzip -oq ' . $filename. ' -d '. $extraFolder .' 2>&1';
+            // 登录
+            ftp_login($conn, config('ftp_user'), config('ftp_password'));
+
+            $here = ftp_pwd($conn);
+
+            //被动模式（PASV）的开关，打开或关闭PASV（1表示开）
+            ftp_pasv($conn, 1);
+
+            // 你想上传 "abc.txt"这个文件，上传后命名为"xyz.txt
+            ftp_put($conn, $file['name'], $filename, FTP_ASCII);
+
+            ftp_quit($conn);
+
+            $cmd = 'rm -rf ' . $filename .' 2>&1';
             exec($cmd, $out, $return_val);
-            Log::record('[unzip -oq] '. $filename. ' [Info] '. json_encode($out));
 
-            if (0 != $return_val) {
-                return json(array('code'=>500, 'msg'=>'Unzip File Fail'));
-            }
+            Log::record('[rm -rf] '. $cmd. ' [Info] '. json_encode($out));
 
-            // 删除zip包
-            unlink($filename);
             return json(array('code'=>200, 'msg'=>'Upload Success'));
-
-            // 后面其实还有复制到ats服务器的代码, 但是从43到31网络好像会变的很卡
-            // 代码响应会出现等待的情况, 所以选择启用workman从sync同步文件夹到31的方式
         }
     }
 

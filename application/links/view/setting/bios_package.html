@@ -28,14 +28,6 @@
                 </div>
                 <div class="col-md-10">
                     <div class="box">
-                        <div class="box-header  with-border" style="padding-top: 20px">
-                            <div class="alert alert-info alert-dismissible">
-                                <i class="icon fa fa-info fa-1.5x"></i>
-                                <i style="color: #F6F6E7">
-                                    Be patient! BIOS zip package will sync from PCS server to ATS server in 5s when you upload success.
-                                </i>
-                            </div>
-                        </div>
                         <div class="box-body">
                             <div class="box box-solid">
                                 <div id="toolbar">
@@ -288,6 +280,7 @@
                         $table.bootstrapTable('selectPage', 1)
                         resetPro()
                     }, 2000);
+                    $("#upload").attr('type', 'text').attr('type', 'file') // 解决同一个文件不能重复上传.
                 }
             });
         });

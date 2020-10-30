@@ -347,5 +347,11 @@ return [
     // port check web socket
     'workman_web_socket'  => 'ws://localhost:2346/',
     // push web socket
-    'pushman_web_socket'  => 'ws://localhost:2345/'
+    'pushman_web_socket'  => 'ws://localhost:2345/',
+
+    // FTP Setting
+    'ftp_address' => 'localhost',
+    'ftp_port' => '21',
+    'ftp_user' => 'refar',
+    'ftp_password' => '1',
 ];

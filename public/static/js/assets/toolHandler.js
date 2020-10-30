@@ -116,7 +116,8 @@ function formToJson() {
         } else if (CommonTool === toolType) {
             var item = {
                 Tool_Type: toolType,
-                Config_List: _father.find("#ConfigList").select2('val')
+                Config_List: _father.find("#ConfigList").select2('val'),
+                Test_Image: _father.find("#TestImage").select2('val')
             };
             obj.push(item);
         }
@@ -381,6 +382,11 @@ function addThenInit(selection, obj, remoteUrl) {
         obj.find('select[name="ConfigList"]').each(function() {
             var _this = $(this);
             select2Init(_this, remoteUrl, '', 'configList');
+
+        });
+        obj.find('select[name="TestImage"]').each(function() {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
 
         });
     }
@@ -891,6 +897,10 @@ function getCommonTool(i, status) {
         '            <label class="col-sm-1 control-label">Config List</label>' +
         '            <div class="col-sm-4">' +
         '                <select class="form-control select2" name="ConfigList" id="ConfigList"></select>' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">Test Image</label>' +
+        '            <div class="col-sm-4">' +
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>' +
         '            </div>' +
         '        </div>' +
         '        <hr>' +

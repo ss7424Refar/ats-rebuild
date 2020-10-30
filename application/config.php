@@ -255,7 +255,7 @@ return [
         // 服务器地址
         'hostname'    => '172.30.184.29',
         // 数据库名
-        'database'    => 'pcs',
+        'database'    => 'tpms',
         // 数据库用户名
         'username'    => 'root',
         // 数据库密码
@@ -348,5 +348,11 @@ return [
     // port check web socket
     'workman_web_socket'  => 'ws://172.30.184.33:2346/',
     // push man
-    'pushman_web_socket'  => 'ws://172.30.184.33:2345/'
+    'pushman_web_socket'  => 'ws://172.30.184.33:2345/',
+
+    // FTP Setting
+    'ftp_address' => '172.30.184.28',
+    'ftp_port' => '21',
+    'ftp_user' => 'administrator',
+    'ftp_password' => 'DBH@ats2020',
 ];
