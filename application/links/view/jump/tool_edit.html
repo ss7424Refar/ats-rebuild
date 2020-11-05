@@ -107,7 +107,7 @@ desired effect
     <!-- iCheck 1.0.1 -->
     <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
     <!--selfJs-->
-    <script src="__PUBLIC_JS__/assets/toolHandler.js?version=1.5.0.1"></script>
+    <script src="__PUBLIC_JS__/assets/toolHandler.js?version=1.5.0.2"></script>
     <script>
         $(function() {
             urlLink = "{:url('ToolHandler/getFileName')}";
@@ -189,6 +189,11 @@ desired effect
                                 $('#box_body').append('<div>' + getCommonTool(i, '') + '</div>');
                                 lastDiv = $('#box_body').children('div:last');
                                 setCommonToolData(lastDiv, item);
+                            }
+                            if (TrebootMS === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getTrebootMS(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setTrebootMSData(lastDiv, item);
                             }
                         })
 
@@ -518,6 +523,22 @@ desired effect
                 select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
 
             });
+        }
+
+        function setTrebootMSData(obj, item) {
+            // testImage
+            obj.find('select[name="TestImage"]').each(function() {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+
+            });
+
+            // jquery spinner init
+            obj.find('[data-trigger="spinner"]').spinner();
+
+            obj.find("input[id^='standBy_']").val(item.ConnectedStandby);
+            obj.find("input[id^='delay_']").val(item.MinPowerUp);
+            obj.find("input[id^='timeOut_']").val(item.SecDelay);
         }
     </script>
 

@@ -76,3 +76,7 @@
 ## ATS 1.5.0.0
 `2020-10-14`
 + **[Add]** CommonTool function
+
+## ATS 1.5.0.2
+`2020-11-05`
++ **[Add]** Treboot-MS function

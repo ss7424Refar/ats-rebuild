@@ -25,9 +25,10 @@ define('BIOSUpdate', 'BIOSUpdate');
 define('MT', 'MT');
 define('HCITest', 'HCITest');
 define('CommonTool', 'CommonTool');
+define('TREBOOTMS', 'Treboot-MS');
 
 define('ToolName', json_encode([JUMP_START, RECOVERY, C_TEST, TREBOOT,
-    TAndD, FastBoot, BIOSUpdate, MT, HCITest, CommonTool]));
+    TAndD, FastBoot, BIOSUpdate, MT, HCITest, CommonTool, TREBOOTMS]));
 /*
  * ATS file path
  */

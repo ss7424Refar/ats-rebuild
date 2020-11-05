@@ -120,6 +120,15 @@ function formToJson() {
                 Test_Image: _father.find("#TestImage").select2('val')
             };
             obj.push(item);
+        } else if (TrebootMS === toolType) {
+            var item = {
+                Tool_Type: toolType,
+                Test_Image: _father.find("#TestImage").select2('val'),
+                ConnectedStandby: _father.find("input[id^='standBy_']").val(),
+                MinPowerUp: _father.find("input[id^='delay_']").val(),
+                SecDelay: _father.find("input[id^='timeOut_']").val()
+            };
+            obj.push(item);
         }
 
     });
@@ -389,6 +398,17 @@ function addThenInit(selection, obj, remoteUrl) {
             select2Init(_this, remoteUrl, '', 'testImage');
 
         });
+    } else if (TrebootMS === selection) {
+        // testImage
+        obj.find('select[name="TestImage"]').each(function() {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
+
+        });
+
+        // jquery spinner init
+        obj.find('[data-trigger="spinner"]').spinner();
+
     }
 }
 
@@ -912,6 +932,60 @@ function getCommonTool(i, status) {
     return template;
 }
 
+function getTrebootMS(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + TrebootMS + '</b></button>' +
+        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
+        '    <div class="panel-body form-horizontal">' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Test Image</label>' +
+        '            <div class="col-sm-4">' +
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">Connected Standby</label>' +
+        '            <div class="col-sm-5">' +
+        '                <div class="input-group spinner col-sm-4" data-trigger="spinner">' +
+        '                     <input id="standBy_'+ i +'" type="text" class="form-control text-center" value="500" data-max="1000" data-min="0" data-step="1" data-rule="quantity">' +
+        '                     <div class="input-group-addon">' +
+        '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>' +
+        '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>' +
+        '                     </div>' +
+        '                </div>' +
+        '            </div>' +
+        '        </div>' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">delay to start up</label>' +
+        '            <div class="col-sm-4">' +
+        '                <div class="input-group spinner col-sm-4" data-trigger="spinner">' +
+        '                     <input id="delay_'+ i +'" type="text" class="form-control text-center" value="5" data-max="60" data-min="0" data-step="1" data-rule="quantity">' +
+        '                     <div class="input-group-addon">' +
+        '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>' +
+        '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>' +
+        '                     </div>' +
+        '                </div>' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">time out to exit</label>' +
+        '            <div class="col-sm-5">' +
+        '                <div class="input-group spinner col-sm-4" data-trigger="spinner">' +
+        '                     <input id="timeOut_'+ i +'" type="text" class="form-control text-center" value="90" data-max="1000" data-min="1" data-step="1" data-rule="quantity">' +
+        '                     <div class="input-group-addon">' +
+        '	                      <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>' +
+        '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>' +
+        '                     </div>' +
+        '                </div>' +
+        '            </div>' +
+        '        </div>' +
+        '        <hr>' +
+        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn  delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>' +
+        '</div>';
+
+    return template;
+
+}
+
 // end代表在最后添加, mid代表在中间添加
 function addToolByButton(type, obj, urlLink) {
     var selection, toolId;
@@ -948,6 +1022,8 @@ function addToolByButton(type, obj, urlLink) {
         result = getHCITest(collapseId, null);
     } else if (CommonTool === selection) {
         result = getCommonTool(collapseId, null);
+    } else if (TrebootMS === selection) {
+        result = getTrebootMS(collapseId, null);
     }
 
     if ('' !== result) {

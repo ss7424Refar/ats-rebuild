@@ -101,7 +101,7 @@
 
     function deleteMe(it) {
         $.ajax({
-            url: "{:url('Bios/delete')}",
+            url: "{:url('Setting/delete')}",
             type: 'post',
             data: {"file" : it},
             success: function (res) {
