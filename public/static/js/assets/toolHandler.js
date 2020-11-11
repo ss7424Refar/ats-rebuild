@@ -62,6 +62,9 @@ function formToJson() {
         } else if (Treboot === toolType) {
             var cad = _father.find("input[name^='CheckAllDevices']:checked").val();
             cad = cad === undefined ? 'NO' : cad;
+
+            var dump = _father.find("input[name^='ForceDump']:checked").val();
+            dump = dump === undefined ? 'NO' : dump;
             var item = {
                 Tool_Type: toolType,
                 Test_Image: _father.find("#TestImage").select2('val'),
@@ -72,7 +75,8 @@ function formToJson() {
                 HybridShutdown: _father.find('#hybridShutdown').val(),
                 MinPowerUp: _father.find('#delay').val(),
                 SecDelay: _father.find('#timeOut').val(),
-                Verify: cad
+                Verify: cad,
+                Dump: dump
             };
             obj.push(item);
         } else if (TAndD === toolType) {
@@ -121,12 +125,15 @@ function formToJson() {
             };
             obj.push(item);
         } else if (TrebootMS === toolType) {
+            var dump = _father.find("input[name^='ForceDump']:checked").val();
+            dump = dump === undefined ? 'NO' : dump;
             var item = {
                 Tool_Type: toolType,
                 Test_Image: _father.find("#TestImage").select2('val'),
                 ConnectedStandby: _father.find("input[id^='standBy_']").val(),
                 MinPowerUp: _father.find("input[id^='delay_']").val(),
-                SecDelay: _father.find("input[id^='timeOut_']").val()
+                SecDelay: _father.find("input[id^='timeOut_']").val(),
+                Dump: dump
             };
             obj.push(item);
         }
@@ -408,6 +415,10 @@ function addThenInit(selection, obj, remoteUrl) {
 
         // jquery spinner init
         obj.find('[data-trigger="spinner"]').spinner();
+
+        obj.find('input[type="checkbox"].flat').each(function() {
+            $(this).iCheck({ checkboxClass: 'icheckbox_flat-yellow' });
+        });
 
     }
 }
@@ -731,6 +742,12 @@ function getTreboot(i, status) {
         '            <div class="col-sm-1" style="padding-top: 5px">' +
         '                 <input type="checkbox" name="CheckAllDevices_' + i + '" class="flat" value="YES" />' +
         '            </div>' +
+        '            <div class="col-sm-3" style="padding-top: 5px">' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">Force Dump</label>' +
+        '            <div class="col-sm-1" style="padding-top: 5px">' +
+        '                 <input type="checkbox" name="ForceDump_' + i + '" class="flat" value="YES" />' +
+        '            </div>' +
         '        </div>' +
         '        <hr>' +
         '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
@@ -974,6 +991,12 @@ function getTrebootMS(i, status) {
         '		                  <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>' +
         '                     </div>' +
         '                </div>' +
+        '            </div>' +
+        '        </div>' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Force Dump</label>' +
+        '            <div class="col-sm-1" style="padding-top: 5px">' +
+        '                 <input type="checkbox" name="ForceDump_' + i + '" class="flat" value="YES" />' +
         '            </div>' +
         '        </div>' +
         '        <hr>' +
