@@ -136,6 +136,12 @@ function formToJson() {
                 Dump: dump
             };
             obj.push(item);
+        } else if (FastBootMS === toolType) {
+            var item = {
+                Tool_Type: toolType,
+                Test_Image: _father.find("#TestImage").select2('val')
+            };
+            obj.push(item);
         }
 
     });
@@ -419,7 +425,12 @@ function addThenInit(selection, obj, remoteUrl) {
         obj.find('input[type="checkbox"].flat').each(function() {
             $(this).iCheck({ checkboxClass: 'icheckbox_flat-yellow' });
         });
+    } else if (FastBootMS === selection) {
+        obj.find('select[name="TestImage"]').each(function() {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
 
+        });
     }
 }
 
@@ -1009,6 +1020,27 @@ function getTrebootMS(i, status) {
 
 }
 
+function getFastBootMS(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + FastBootMS + '</b></button>' +
+        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
+        '    <div class="panel-body form-horizontal">' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Test Image</label>' +
+        '            <div class="col-sm-4">' +
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>' +
+        '            </div>' +
+        '        </div>' +
+        '        <hr>' +
+        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>' +
+        '</div>';
+
+    return template;
+}
+
 // end代表在最后添加, mid代表在中间添加
 function addToolByButton(type, obj, urlLink) {
     var selection, toolId;
@@ -1047,6 +1079,9 @@ function addToolByButton(type, obj, urlLink) {
         result = getCommonTool(collapseId, null);
     } else if (TrebootMS === selection) {
         result = getTrebootMS(collapseId, null);
+    } else if (FastBootMS === selection) {
+        result = getFastBootMS(collapseId, null);
+
     }
 
     if ('' !== result) {

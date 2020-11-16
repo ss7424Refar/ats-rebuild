@@ -80,3 +80,7 @@
 ## ATS 1.5.0.2
 `2020-11-05`
 + **[Add]** Treboot-MS function
+
+## ATS 1.5.0.4
+`2020-11-16`
++ **[Add]** FastBoot-MS function
