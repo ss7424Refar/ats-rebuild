@@ -338,6 +338,7 @@ return [
     'ats_config_name' => 'common_tool_config_',
     'ats_config_list' => '/tmp/', // 需要有斜杠
     'ats_action_list' => '/opt/',
+    'ats_patch_xml' => '/tmp/',
 
     'ats_sign_out_url'    =>  'http://localhost/tpms/index.php',
     'links_sign_out_url'    =>  'http://localhost/tpms/index.php',

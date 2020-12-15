@@ -200,6 +200,11 @@ desired effect
                                 lastDiv = $('#box_body').children('div:last');
                                 setFastBootMSData(lastDiv, item);
                             }
+                            if (PATCH === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getPatch(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setPatchData(lastDiv, item);
+                            }
                         })
 
                     }
@@ -569,6 +574,14 @@ desired effect
             obj.find('select[name="TestImage"]').each(function() {
                 var _this = $(this);
                 select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+
+            });
+        }
+
+        function setPatchData(obj, item) {
+            obj.find('select[name^="patch_"]').each(function() {
+                var _this = $(this);
+                multiSelect2Init(_this, "{:url('ToolHandler/getFileName')}", item.XML, 'patch');
 
             });
         }

@@ -84,3 +84,7 @@
 ## ATS 1.5.0.4
 `2020-11-16`
 + **[Add]** FastBoot-MS function
+
+## ATS 1.5.0.5
+`2020-12-15`
++ **[Add]** Patch-XML function

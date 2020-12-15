@@ -142,6 +142,12 @@ function formToJson() {
                 Test_Image: _father.find("#TestImage").select2('val')
             };
             obj.push(item);
+        } else if (PATCH === toolType) {
+            var item = {
+                Tool_Type: toolType,
+                XML: _father.find("select[name^='patch_']").val()
+            };
+            obj.push(item);
         }
 
     });
@@ -155,7 +161,7 @@ function validateFormData() {
     var msg = '';
     // select option required
     $('#content').find('select').each(function(i) {
-        if (null == $(this).val() || undefined === $(this).val()) {
+        if (null == $(this).val() || undefined === $(this).val() || $(this).val().length == 0) {
             var target = $(this).attr('name');
             msg = msg + target + " Can't Be Empty" + '<br>';
 
@@ -262,6 +268,56 @@ function select2Init(obj, url, initData, dataType) {
     }
 
 }
+
+function multiSelect2Init(obj, url, initData, dataType) {
+    if ('' === initData) {
+        obj.select2({
+            width: "100%",
+            ajax: {
+                url: url,
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return { q: params.term, type: dataType };
+                },
+                processResults: function(data) {
+                    return { results: data };
+                },
+                cache: false
+            },
+            placeholder: 'Please Select',
+            allowClear: true,
+            multiple: 'multiple',
+            closeOnSelect: false
+        });
+    } else {
+        obj.select2({
+            width: "100%",
+            ajax: {
+                url: url,
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return { q: params.term, type: dataType };
+                },
+                processResults: function(data) {
+                    return { results: data };
+                },
+                cache: false
+            },
+            placeholder: 'Please Select',
+            allowClear: true,
+            multiple: 'multiple',
+            closeOnSelect: false
+        });
+        $.each(initData,function(index, value){
+            obj.append(new Option(value, value, false, true));
+        });
+        obj.trigger("change");
+    }
+
+}
+
 
 function addThenInit(selection, obj, remoteUrl) {
     if (JumpStart === selection) {
@@ -429,6 +485,12 @@ function addThenInit(selection, obj, remoteUrl) {
         obj.find('select[name="TestImage"]').each(function() {
             var _this = $(this);
             select2Init(_this, remoteUrl, '', 'testImage');
+
+        });
+    } else if (PATCH === selection) {
+        obj.find("select[name^='patch_']").each(function() {
+            var _this = $(this);
+            multiSelect2Init(_this, remoteUrl, '', 'patch');
 
         });
     }
@@ -1041,6 +1103,26 @@ function getFastBootMS(i, status) {
     return template;
 }
 
+function getPatch(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + PATCH + '</b></button>' +
+        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
+        '    <div class="panel-body form-horizontal">' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">XML</label>' +
+        '            <div class="col-sm-10">' +
+        '                <select class="form-control select2" name="patch_'+ i +'"></select>' +
+        '            </div>' +
+        '        </div>' +
+        '        <hr>' +
+        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>' +
+        '</div>';
+
+    return template;
+}
 // end代表在最后添加, mid代表在中间添加
 function addToolByButton(type, obj, urlLink) {
     var selection, toolId;
@@ -1081,7 +1163,8 @@ function addToolByButton(type, obj, urlLink) {
         result = getTrebootMS(collapseId, null);
     } else if (FastBootMS === selection) {
         result = getFastBootMS(collapseId, null);
-
+    } else if (PATCH === selection) {
+        result = getPatch(collapseId, null);
     }
 
     if ('' !== result) {

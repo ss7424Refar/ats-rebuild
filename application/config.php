@@ -339,6 +339,7 @@ return [
     'ats_config_name' => 'common_tool_config_',
     'ats_config_list' => '/opt/hello/CommonTool/Configs/',
     'ats_action_list' => '/opt/hello/CommonTool/Tools/',
+    'ats_patch_xml' => '/opt/hello/Patch/XML/',
 
     'ats_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/tpms/index.php',
     'links_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/tpms/index.php',

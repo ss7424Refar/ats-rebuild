@@ -93,12 +93,12 @@ class Jump extends Common {
      */
 
     private function ipCheck($taskId) {
-        $ip = Db::query('select lan_ip from ats_task_basic where task_id = ? ', [$taskId]);
-        // 当在spinner回车时候会有个bug, 页面会刷新
-        if (!empty($ip)) {
-            $tmp = explode('.', $ip[0]['lan_ip']);
-            return 40 == $tmp[3] ? 'up' : 'down';
-        }
+//        $ip = Db::query('select lan_ip from ats_task_basic where task_id = ? ', [$taskId]);
+//        // 当在spinner回车时候会有个bug, 页面会刷新
+//        if (!empty($ip)) {
+//            $tmp = explode('.', $ip[0]['lan_ip']);
+//            return 40 == $tmp[3] ? 'up' : 'down';
+//        }
         return 'down';
     }
 }

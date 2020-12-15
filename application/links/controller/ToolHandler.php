@@ -42,6 +42,8 @@ class ToolHandler extends Common {
         }  elseif ('action' == $type) {
             // 存在文件夹的情况, 需要移除
             return $this->getSearchRemoveFolder(config('ats_action_list'), $query);
+        } elseif ('patch' == $type) {
+            return $this->getSearchFile(config('ats_patch_xml'), $query);
         }
         return '';
     }
