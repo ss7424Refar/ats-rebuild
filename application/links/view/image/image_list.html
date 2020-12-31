@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    {include file="common/plugins" /}
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-table@1.15.5/bootstrap-table.min.css">
+</head>
+<body class="hold-transition skin-purple layout-top-nav">
+<div class="wrapper">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Image
+                <small>Image List</small>
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <!--<div class="col-md-2">-->
+                    <!--<ul class="list-group">-->
+                        <!--<a type="button" class="list-group-item list-group-item-info"  href="Image">Image List</a>-->
+                        <!--<a type="button" class="list-group-item" href="ImageUpdate">Image Update</a>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="box box-solid">
+                                <div id="toolbar">
+                                    {if condition="($hasRight)"}
+                                        <button class="btn btn-primary" type="button" id="bind" data-toggle="modal" data-target="#fileImage">
+                                            Bind <span class="badge" id="updateNo"></span>
+                                        </button>
+                                    {/if}
+                                </div>
+                                <table id="table" data-toolbar="#toolbar"
+                                       data-search="true"
+                                       style="margin-top: 10px">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="file_name">File Name</th>
+                                            <th data-field="bind_name">New Name</th>
+                                            <th data-field="machine">Machine</th>
+                                            <th data-field="os">OS</th>
+                                            <th data-field="region">Region</th>
+                                            <th data-field="phase">Phase</th>
+                                            <th data-field="create_time">Create Time</th>
+                                            {if condition="($hasRight)"}
+                                                <th data-field="-" data-formatter="actionFormatter">Action</th>
+                                            {/if}
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="fileImage" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog"  style="width:800px">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">Bind Image</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <table id="tableFileImage"
+                                           data-search="true">
+                                        <thead>
+                                        <tr>
+                                            <th data-field="file">Name</th>
+                                            <th data-field="time">Modify Time</th>
+                                            <th data-field="-" data-formatter="actionBindFormatter">Action</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="bindInfo" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">Bind Info</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal form-group-sm" id="bindForm" method="post">
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="file_name" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">TINO</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="tino">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Machine</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="machine">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">OS</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="os">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="region">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Phase</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="phase">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary btn-sm" id="sub">Submit</button>
+                                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="editBindInfo" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">Edit Bind Info</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" class="form-control" name="upId" style="display:none;">
+                                    <form class="form-horizontal form-group-sm" id="editBindForm" method="post">
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="file_name" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">TINO</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="tino">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Machine</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="machine">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">OS</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="os">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Region</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="region">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Phase</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="phase">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary btn-sm" id="sub2">Submit</button>
+                                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Main Footer -->
+    {include file="common/footer" /}
+
+</div>
+
+<script src="__PUBLIC_JS__/bootstrap-table@1.15.5/bootstrap-table.min.js"></script>
+<!-- Latest compiled and minified Locales -->
+<script src="__PUBLIC_JS__/bootstrap-table@1.15.5/locale/bootstrap-table-en-US.min.js"></script>
+
+<script src="__PUBLIC_JS__/bootbox4.4/bootbox.min.js"></script>
+
+<script>
+
+    var $table = $('#table')
+    var $tableFileImage = $('#tableFileImage')
+    var $bindInfo = $('#bindInfo')
+    var $editBindInfo = $('#editBindInfo')
+
+    var bindInfoOn = false;
+
+    $(function () {
+        $.ajax({
+            type: "post",
+            url: "{:url('Image/getFileBindList')}",
+            success: function(result) {
+                result = JSON.parse(result);
+                if (0 != result.total) {
+                    $('#updateNo').text(result.total)
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Get Count Fail! Try Again ');
+            }
+        });
+
+    })
+
+    $table.on("mouseenter", "[data-toggle='tooltip']", function() {
+        $(this).tooltip('show');
+    }).on("mouseleave", "[data-toggle='tooltip']", function() {
+        $(this).tooltip('hide');
+    });
+
+    function actionFormatter(value, row) {
+        return  "<a class='btn btn-sm btn-info' href='#' " + " onclick=\"editMe(\'" + row.id + "\')\" style='margin: 3px'>Edit</a>" +
+            "<a class='btn btn-sm btn-danger' href='#' " + " onclick=\"deleteMe(\'" + row.id + "\')\" style='margin: 3px'>Delete</a>";
+    }
+
+    function actionBindFormatter(value, row) {
+        return  "<a class='btn btn-sm btn-primary' href='#' " + " onclick=\"bind(\'" + row.file + "\')\" style='margin: 3px'>Bind</a>";
+    }
+
+    $table.bootstrapTable({
+        url: "{:url('Image/getImageList')}",
+        pagination: true,
+        showRefresh: true,
+        sidePagination: "server",
+        cache: false,
+        pageNumber:1,
+        pageSize: 10,
+        pageList: [10, 25, 50]
+    })
+
+    $('#fileImage').on('show.bs.modal', function () {
+        $tableFileImage.bootstrapTable({
+            url: "{:url('Image/getFileBindList')}",
+            pagination: true,
+            showRefresh: true,
+            sidePagination: "server",
+            cache: false,
+            pageNumber:1,
+            pageSize: 10,
+            pageList: [10, 25, 50]
+        })
+    }).on('hidden.bs.modal', function () {
+        if (!bindInfoOn) {
+            window.location.href='Image';
+        }
+    })
+
+    $bindInfo.on('hidden.bs.modal', function () {
+        window.location.href='Image';
+    })
+
+    $editBindInfo.on('hidden.bs.modal', function () {
+        window.location.href='Image';
+    })
+
+    function bind(name) {
+
+        bindInfoOn = true;
+        $('#fileImage').modal('hide')
+        $bindInfo.modal('show');
+
+        $('input[name="file_name"]').val(name)
+    }
+
+    $('#sub').click(function () {
+        var formSerialize = $('#bindForm').serialize();
+        formSerialize = decodeURIComponent(formSerialize,true)
+        $.ajax({
+            type: "post",
+            url: "{:url('Image/bindImage')}",
+            data: {
+                formSerialize: formSerialize
+            },
+            beforeSend: function() {
+                $('#sub').attr('disabled', 'true');
+            },
+            success: function(result) {
+                if (result === "success") {
+                    toastr.success('Bind Success!');
+
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Bind Fail! Try Again ');
+            },
+            complete: function() {
+                setTimeout("window.location.href=\"Image\"", 1200);
+            }
+        });
+
+    })
+
+    function editMe(id) {
+        $editBindInfo.modal('show')
+        $('input[name="upId"]').text(id)
+
+        $.ajax({
+            type: "post",
+            url: "{:url('Image/getEditBindImageInfo')}",
+            data: {
+                id: id
+            },
+            success: function(result) {
+                res = JSON.parse(result);
+                console.log(res.file_name)
+                $('#editBindForm input[name="file_name"]').val(res.file_name);
+                $('#editBindForm input[name="tino"]').val(res.tino);
+                $('#editBindForm input[name="machine"]').val(res.machine);
+                $('#editBindForm input[name="os"]').val(res.os);
+                $('#editBindForm input[name="region"]').val(res.region);
+                $('#editBindForm input[name="phase"]').val(res.phase);
+
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Get Edit Bind Fail! Try Again ');
+            },
+        })
+    }
+
+    $('#sub2').click(function () {
+        var formSerialize = $('#editBindForm').serialize() + '&id=' + $('input[name="upId"]').text();
+        $.ajax({
+            type: "post",
+            url: "{:url('Image/editImage')}",
+            data: {
+                formSerialize: formSerialize
+            },
+            beforeSend: function() {
+                $('#sub2').attr('disabled', 'true');
+            },
+            success: function(result) {
+                if (result === "success") {
+                    toastr.success('Update Success!');
+
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Update Fail! Try Again ');
+            },
+            complete: function() {
+                setTimeout("window.location.href=\"Image\"", 1200);
+            }
+        });
+
+    })
+
+    function deleteMe(id) {
+        bootbox.confirm({
+            message: " Do You Want Delete This Image?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function(result) {
+                if (result) {
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('Image/deleteImage')}",
+                        data: {
+                            id: id
+                        },
+                        success: function(result) {
+                            if (result === "success") {
+                                toastr.success('Delete Success!');
+
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            toastr.error('Delete Fail! Try Again ');
+                        },
+                        complete: function() {
+                            setTimeout("window.location.href=\"Image\"", 1200);
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+</script>

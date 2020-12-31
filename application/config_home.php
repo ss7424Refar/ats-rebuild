@@ -355,4 +355,7 @@ return [
     'ftp_port' => '21',
     'ftp_user' => 'refar',
     'ftp_password' => '1',
+
+    // 切换image读取
+    'is_read_from_db'=> true
 ];

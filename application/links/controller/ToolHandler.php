@@ -12,6 +12,7 @@ use app\index\model\AtsTaskBasic;
 use app\index\model\AtsTaskToolSteps;
 
 use ext\ToolMaker;
+use think\Db;
 
 class ToolHandler extends Common {
 
@@ -20,6 +21,15 @@ class ToolHandler extends Common {
         $type = $this->request->param('type');
 
         if ('testImage' == $type) {
+            if (config('is_read_from_db')) {
+                $r = Db::table('ats_bind_image_list')->where('bind_name', 'like', '%'. $query.'%')
+                    ->select();
+                $res = array();
+                foreach ($r as $item) {
+                    array_push($res, array('id'=> $item['bind_name'], 'text'=>$item['bind_name']));
+                }
+                return json_encode($res);
+            }
             return $this->getSearchFile(config('ats_pe_image'), $query);
         } elseif ('tdImage' == $type) {
             return $this->getSearchFile(config('ats_td_image'), $query);
@@ -137,7 +147,7 @@ class ToolHandler extends Common {
                 'tool_name' =>  $formObj[$i]->Tool_Type,
                 'status' => PENDING,  // pending
                 'steps' => $i + 1,
-                'element_json' => json_encode($formObj[$i]), // trans to String
+                'element_json' => json_encode($this->editBindImage($formObj[$i])), // trans to String
                 'tool_create_time' => $createTime
             ]);
 
@@ -162,7 +172,7 @@ class ToolHandler extends Common {
                     'tool_name' =>  $formObj[$i]->Tool_Type,
                     'status' => PENDING,  // pending
                     'steps' => $i + 1,
-                    'element_json' => json_encode($formObj[$i]), // trans to String
+                    'element_json' => json_encode($this->editBindImage($formObj[$i])), // trans to String
                     'tool_create_time' => $createTime
                 ]);
 
@@ -236,5 +246,16 @@ class ToolHandler extends Common {
         }
 
         return json_encode($jsonResult);
+    }
+
+    private function editBindImage($obj) {
+        $res = Db::table('ats_bind_image_list')->where('bind_name', $obj->Test_Image)->find();
+
+        // 切换image路径前, 使用Test_Image, 切换后能查询到数据则使用Key_Image.
+        if (!empty($res)) {
+            $obj->Key_Image = $res['file_name'];
+        }
+
+        return $obj;
     }
 }

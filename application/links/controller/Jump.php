@@ -77,6 +77,10 @@ class Jump extends Common {
         return $this->fetch('setting/bios_package');
     }
 
+    public function Image(){
+        return $this->fetch('image/image_list');
+    }
+
     /*
  * 防止浏览器恶意输入
  */

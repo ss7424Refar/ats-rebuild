@@ -356,4 +356,7 @@ return [
     'ftp_port' => '21',
     'ftp_user' => 'administrator',
     'ftp_password' => 'DBH@ats2020',
+
+    // 切换image读取
+    'is_read_from_db'=> false
 ];
