@@ -97,11 +97,40 @@ class Image extends Common{
     public function editImage() {
         $form = stringSerializeToArray($this->request->param('formSerialize'));
 
-        $form['bind_name'] = $form['tino']. config('ats_file_underline'). $form['machine']. config('ats_file_underline').
-            $form['os']. config('ats_file_underline'). $form['region']. config('ats_file_underline').
-            $form['phase'];
+        // 查找原来绑定的名称
+        $r = Db::table('ats_bind_image_list')->where('file_name', $form['file_name'])->find();
+        if (!empty($r)) {
 
-        $res = Db::table('ats_bind_image_list')->where('id', $form['id'])->update($form);
+            $form['bind_name'] = $form['tino']. config('ats_file_underline'). $form['machine']. config('ats_file_underline').
+                $form['os']. config('ats_file_underline'). $form['region']. config('ats_file_underline').
+                $form['phase'];
+
+            Db::table('ats_bind_image_list')->where('id', $form['id'])->update($form);
+
+            // 更新steps中的关联case
+            if (config('is_read_from_db')) {
+                $res = Db::table('ats_task_tool_steps')
+                    ->where('element_json', 'like', '%'. $r['bind_name'] .'%')->select();
+
+                foreach ($res as $item) {
+                    $json = json_decode($item['element_json']);
+
+                    if ($form['file_name'] == $json->Key_Image && $r['bind_name'] == $json->Test_Image) {
+
+                        $json->Test_Image = $form['bind_name'];
+
+                        Db::table('ats_task_tool_steps')->where('task_id', $item['task_id'])
+                            ->where('steps', $item['steps'])->update(['element_json' => json_encode($json)]);
+
+                        Log::record('[Image][editImage][TaskId][Step] '. $item['task_id']. '_' . $item['steps']);
+                        Log::record('[Image][editImage][Update] '. $r['bind_name']. ' ==> '. $form['bind_name']);
+                    }
+
+                }
+
+            }
+
+        }
 
         return "success";
     }

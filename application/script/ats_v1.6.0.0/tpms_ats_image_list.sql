@@ -8,7 +8,7 @@ CREATE TABLE `tpms`.`ats_bind_image_list` (
   `region` VARCHAR(10) NULL,
   `phase` VARCHAR(10) NULL,
   `create_time` DATETIME NULL,
-  PRIMARY KEY (`id`));
+  PRIMARY KEY (`id`, `file_name`));
 
 
 ALTER TABLE `tpms`.`ats_bind_image_list`
