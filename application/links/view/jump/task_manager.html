@@ -81,17 +81,7 @@
                                             </div>
                                             <label class="col-sm-1 control-label">Include Tool</label>
                                             <div class="col-sm-2">
-                                                <select class="form-control selectOption" multiple="multiple" id="search_tool">
-                                                <!--<option value="JumpStart" selected="selected">JumpStart</option>-->
-                                                <option value="JumpStart">JumpStart</option>
-                                                <option value="Recovery">Recovery</option>
-                                                <option value="C-Test">C-Test</option>
-                                                <option value="Treboot">Treboot</option>
-                                                <option value="TandD">TandD</option>
-                                                <option value="FastBoot">FastBoot</option>
-                                                <option value="BIOSUpdate">BIOSUpdate</option>
-                                                <option value="CommonTool">CommonTool</option>
-                                                <option value="Treboot-MS">Treboot-MS</option>
+                                                <select class="form-control"  id="search_tool">
                                             </select>
                                             </div>
                                             <label class="col-sm-1 control-label">Task Status</label>
@@ -457,6 +447,23 @@
             placeholder: ''
         });
 
+        $('#search_tool').select2({
+                width: "100%",
+                ajax: {
+                    url: "{:url('ToolHandler/getFileName')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return { q: params.term, type: 'toolName' };
+                    },
+                    processResults: function(data) {
+                        return { results: data };
+                    },
+                    cache: false
+                },
+                allowClear: true,
+                multiple: 'multiple'
+            });
         search_createDate = $('#search_createDate');
         search_finishDate = $('#search_finishDate');
 
@@ -1091,7 +1098,11 @@
                         multiTask: JSON.stringify(ckArr)
                     },
                     success: function(result) {
-                        if ("done" === result) {
+                        res = JSON.parse(result);
+                        if ("noImage" === res.code) {
+                            toastr.error("No Image Match. Please ReEdit " +"<br>" + JSON.stringify(res.data));
+                            taskTable.bootstrapTable('selectPage', 1);
+                        } else if ("done" === res.code){
                             toastr.success("success assign to ATS");
                             taskTable.bootstrapTable('selectPage', 1);
                         } else {

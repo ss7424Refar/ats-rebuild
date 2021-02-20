@@ -107,25 +107,27 @@ class Image extends Common{
 
             Db::table('ats_bind_image_list')->where('id', $form['id'])->update($form);
 
-            // 更新steps中的关联case
+            // 更新steps中的关联case (qiu lin那边的逻辑应该是只有Test_Image用Test_Image，有Key_Image用Key_Image)
             if (config('is_read_from_db')) {
                 $res = Db::table('ats_task_tool_steps')
                     ->where('element_json', 'like', '%'. $r['bind_name'] .'%')->select();
 
                 foreach ($res as $item) {
                     $json = json_decode($item['element_json']);
+                    // 这里判断的是Key_Image & Test_Image 因为存在以前的Test_Image，即便绑定信息改了也不会影响.
+                    if (array_key_exists('Key_Image', $json) && array_key_exists('Test_Image', $json)) {
 
-                    if ($form['file_name'] == $json->Key_Image && $r['bind_name'] == $json->Test_Image) {
+                        if ($form['file_name'] == $json->Key_Image && $r['bind_name'] == $json->Test_Image) {
 
-                        $json->Test_Image = $form['bind_name'];
+                            $json->Test_Image = $form['bind_name'];
 
-                        Db::table('ats_task_tool_steps')->where('task_id', $item['task_id'])
-                            ->where('steps', $item['steps'])->update(['element_json' => json_encode($json)]);
+                            Db::table('ats_task_tool_steps')->where('task_id', $item['task_id'])
+                                ->where('steps', $item['steps'])->update(['element_json' => json_encode($json)]);
 
-                        Log::record('[Image][editImage][TaskId][Step] '. $item['task_id']. '_' . $item['steps']);
-                        Log::record('[Image][editImage][Update] '. $r['bind_name']. ' ==> '. $form['bind_name']);
+                            Log::record('[Image][editImage][TaskId][Step] '. $item['task_id']. '_' . $item['steps']);
+                            Log::record('[Image][editImage][Update] '. $r['bind_name']. ' ==> '. $form['bind_name']);
+                        }
                     }
-
                 }
 
             }
@@ -136,6 +138,64 @@ class Image extends Common{
     }
 
     public function deleteImage() {
+        $id = $this->request->param('id');
+
+        $res = Db::table('ats_bind_image_list')->where('id', $id)->find();
+
+        $existArr = array();
+        if (!empty($res)) {
+            // 判断是否有case存在
+            if (config('is_read_from_db')) {
+                $r = Db::table('ats_task_tool_steps')->field('task_id, steps, element_json')
+                    ->whereIn('status', [ONGOING, PENDING])->select();
+
+                foreach ($r as $item) {
+                    $json = json_decode($item['element_json']);
+                    if (array_key_exists('Key_Image', $json) || array_key_exists('Test_Image', $json)) {
+                        // 如果是只有Test_Image, 因为镜像会删除. 所以会受影响.
+                        if (!array_key_exists('Key_Image', $json)) {
+                            if ($res['file_name'] == $json->Test_Image) {
+                                $existArr[] = $item['task_id'] .'(' . $item['steps']. ')';
+                            }
+                            // 有Key_Image和Test_Image
+                        } else {
+                            if ($res['file_name'] == $json->Key_Image && $res['bind_name'] == $json->Test_Image) {
+                                $existArr[] = $item['task_id'] .'(' . $item['steps']. ')';
+                            }
+                        }
+
+                    }
+
+                }
+
+            } else {
+                Db::table('ats_bind_image_list')->where('id', $id)->delete();
+
+                return json_encode(array('code'=>'ok', 'data'=>null));
+            }
+
+        }
+
+        if (!empty($existArr)) {
+            return json_encode(array('code'=>'ng', 'data'=>$existArr));
+        } else {
+            Db::table('ats_bind_image_list')->where('id', $id)->delete();
+            // 删除image下的文件夹
+            $filePath = config('ats_pe_image'). $res['file_name'];
+
+            if (file_exists($filePath)) {
+                Log::record('[Image][deleteImage][id][file_name] '. $res['id']. '__'. $res['file_name']);
+                $cmd = 'rm -r '. $filePath;
+                Log::record('[Image][deleteImage] '. $cmd);
+                system($cmd, $argv);
+                return json_encode(array('code'=>'ok2', 'data'=>$argv));
+            }
+
+            return json_encode(array('code'=>'ok2', 'data'=>'no file'));
+        }
+    }
+
+    public function unbindImage() {
         $id = $this->request->param('id');
         Db::table('ats_bind_image_list')->where('id', $id)->delete();
 

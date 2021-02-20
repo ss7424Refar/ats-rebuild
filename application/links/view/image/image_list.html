@@ -248,7 +248,8 @@
     });
 
     function actionFormatter(value, row) {
-        return  "<a class='btn btn-sm btn-info' href='#' " + " onclick=\"editMe(\'" + row.id + "\')\" style='margin: 3px'>Edit</a>" +
+        return  "<a class='btn btn-sm btn-default' href='#' " + " onclick=\"editMe(\'" + row.id + "\')\" style='margin: 3px'>Edit</a>" +
+            "<a class='btn btn-sm btn-info' href='#' " + " onclick=\"unbind(\'" + row.id + "\')\" style='margin: 3px'>Unbind</a>" +
             "<a class='btn btn-sm btn-danger' href='#' " + " onclick=\"deleteMe(\'" + row.id + "\')\" style='margin: 3px'>Delete</a>";
     }
 
@@ -405,13 +406,55 @@
                             id: id
                         },
                         success: function(result) {
-                            if (result === "success") {
+                            res = JSON.parse(result);
+                            if (res.code === "ok" || res.code === "ok2") {
                                 toastr.success('Delete Success!');
-
+                            } else {
+                                toastr.error('Delete Fail! Steps Exist TaskId' + '<br>' + JSON.stringify(res.data));
                             }
                         },
                         error: function(xhr, status, error) {
                             toastr.error('Delete Fail! Try Again ');
+                        },
+                        // complete: function() {
+                        //     setTimeout("window.location.href=\"Image\"", 1200);
+                        // }
+                    });
+                }
+
+            }
+        });
+    }
+
+    function unbind(id) {
+        bootbox.confirm({
+            message: " Do You Want Unbind This Image?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function(result) {
+                if (result) {
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('Image/unbindImage')}",
+                        data: {
+                            id: id
+                        },
+                        success: function(result) {
+                            if (result === "success") {
+                                toastr.success('Unbind Success!');
+
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            toastr.error('Unbind Fail! Try Again ');
                         },
                         complete: function() {
                             setTimeout("window.location.href=\"Image\"", 1200);
@@ -421,5 +464,6 @@
 
             }
         });
+
     }
 </script>

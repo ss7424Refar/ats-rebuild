@@ -267,6 +267,33 @@ class TaskManager extends Common{
     public function assignTask() {
         $multiTask = json_decode($this->request->param('multiTask'));
 
+        // check是否有解绑或者删除的Key_Image
+        if (config('is_read_from_db')) {
+            $c = 0; // 没有Key_Image的个数
+            $noKeyImage = array();
+            for ($i = 0; $i < count($multiTask); $i++) {
+                $taskId = $multiTask[$i]->task_id;
+                $res = AtsTaskToolSteps::where('task_id', $taskId)->select();
+
+                for ($j = 0; $j < count($res); $j++) {
+                    $jsonElement = json_decode($res[$j]['element_json']);
+
+                    if (array_key_exists('Key_Image', $jsonElement)) {
+                        $r1 = Db::table('ats_bind_image_list')->where('file_name', $jsonElement->Key_Image)->find();
+                        // 没有数据代表image删除或者解绑
+                        if (empty($r1)) {
+                            $c++;
+                            $noKeyImage[] = array('task_id'=>$taskId, 'steps'=>$j+1);
+                        }
+                    }
+                }
+            }
+
+            if (!empty($noKeyImage)) {
+                return json_encode(array('code'=>'noImage', 'data'=>$noKeyImage));
+            }
+        }
+
         for ($i = 0; $i < count($multiTask); $i++) {
             $taskId = $multiTask[$i]->task_id;
 
@@ -355,7 +382,7 @@ class TaskManager extends Common{
                 }
             }
         }
-        return "done";
+        return json_encode(array('code'=>'done', 'data'=>null));
     }
 
     /* @throws

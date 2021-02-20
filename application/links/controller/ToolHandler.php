@@ -249,11 +249,14 @@ class ToolHandler extends Common {
     }
 
     private function editBindImage($obj) {
-        $res = Db::table('ats_bind_image_list')->where('bind_name', $obj->Test_Image)->find();
 
-        // 切换image路径前, 使用Test_Image, 切换后能查询到数据则使用Key_Image.
-        if (!empty($res)) {
-            $obj->Key_Image = $res['file_name'];
+        if (array_key_exists('Test_Image', $obj)) {
+            $res = Db::table('ats_bind_image_list')->where('bind_name', $obj->Test_Image)->find();
+
+            // 切换image路径前, 使用Test_Image, 切换后能查询到数据则使用Key_Image.
+            if (!empty($res)) {
+                $obj->Key_Image = $res['file_name'];
+            }
         }
 
         return $obj;

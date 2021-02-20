@@ -308,7 +308,7 @@ return [
     // +----------------------------------------------------------------------
     // ATS PE path
     'ats_pe_test_pc'    =>  ROOT_PATH. 'public/resource/prepare/',
-    'ats_pe_image'      =>  '/home/refar/',
+    'ats_pe_image'      =>  '/home/refar/test_image/',
     'ats_pe_task'      =>  ROOT_PATH. 'public/resource/tasks/',
     // ATS local path
     'ats_temp_task_path'     =>  RUNTIME_PATH. 'output/',
