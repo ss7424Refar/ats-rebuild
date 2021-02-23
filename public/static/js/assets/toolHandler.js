@@ -143,11 +143,23 @@ function formToJson() {
             };
             obj.push(item);
         } else if (PATCH === toolType) {
-            var item = {
-                Tool_Type: toolType,
-                XML: _father.find("select[name^='patch_']").val()
-            };
-            obj.push(item);
+            layui.use(['transfer'], function(){
+                var transfer = layui.transfer
+                var id = _father.find('.panel-collapse:eq(0)').attr('id');
+                newArr = [];
+                var arr = transfer.getData('patchData_' + id);
+
+                for(j in arr) {
+                    newArr.push(arr[j]["value"]);
+                }
+
+                var item = {
+                    Tool_Type: toolType,
+                    XML: newArr
+                };
+                obj.push(item);
+
+            });
         }
 
     });
@@ -219,6 +231,20 @@ function validateFormData() {
                 }
             }
         }
+        // transfer check
+        layui.use(['transfer'], function(){
+            var transfer = layui.transfer
+
+            var id = _father.find('.panel-collapse:eq(0)').attr('id');
+            var getData = transfer.getData('patchData_' + id);
+
+            if (getData.length === 0) {
+
+                msg = msg + "Patch Transfer Is Null" + '<br>';
+                isNG = true;
+            }
+
+        });
     });
     if (isNG) {
         toastr.error(msg);
@@ -488,11 +514,40 @@ function addThenInit(selection, obj, remoteUrl) {
 
         });
     } else if (PATCH === selection) {
-        obj.find("select[name^='patch_']").each(function() {
-            var _this = $(this);
-            multiSelect2Init(_this, remoteUrl, '', 'patch');
+        var id = obj.find('.panel-collapse:eq(0)').attr('id');
+        $.ajax({
+            url: urlLink,
+            data: {
+                type: 'patch'
+            },
+            success: function (result) {
+                obj.find("div[id^='patch_']").each(function() {
+                    var _this = $(this);
 
-        });
+                    layui.use(['transfer'], function(){
+                        var transfer = layui.transfer
+
+                        transfer.render({
+                            elem: _this
+                            ,title: ['Select Column', 'Selected Data']
+                            ,data: JSON.parse(result)
+                            ,id: 'patchData_' + id
+                            ,width:350
+                            ,height:300
+                            ,showSearch: true
+                            ,text: {
+                                none: 'no data' //没有数据时的文案
+                                ,searchNone: 'no match data' //搜索无匹配数据时的文案
+                            }
+                        })
+
+                    });
+
+                });
+            }
+
+        })
+
     }
 }
 
@@ -1110,10 +1165,11 @@ function getPatch(i, status) {
         '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
         '    <div class="panel-body form-horizontal">' +
         '        <div class="form-group">' +
-        '            <label class="col-sm-1 control-label">XML</label>' +
-        '            <div class="col-sm-10">' +
-        '                <select class="form-control select2" name="patch_'+ i +'"></select>' +
+        '            <div class="col-sm-3 control-label"></div>' +
+        '            <div class="col-sm-8">' +
+        '            <div id="patch_"'+ i +' class="patch-transfer"></div>' +
         '            </div>' +
+        '            <div class="col-sm-1 control-label"></div>' +
         '        </div>' +
         '        <hr>' +
         '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +

@@ -53,7 +53,7 @@ class ToolHandler extends Common {
             // 存在文件夹的情况, 需要移除
             return $this->getSearchRemoveFolder(config('ats_action_list'), $query);
         } elseif ('patch' == $type) {
-            return $this->getSearchFile(config('ats_patch_xml'), $query);
+            return $this->getTransferData(config('ats_patch_xml'));
         }
         return '';
     }
@@ -222,6 +222,21 @@ class ToolHandler extends Common {
         return json_encode($jsonResult);
     }
 
+    private function getTransferData($path) {
+        $handler = opendir($path);
+
+        $jsonResult = array();
+
+        while (($filename = readdir($handler)) !== false) {
+            //略过linux目录的名字为'.'和‘..'的文件
+            if ($filename != "." && $filename != "..") {
+                $tmpArray = array('value' => $filename, 'title' => $filename);
+                array_push($jsonResult, $tmpArray);
+            }
+        }
+
+        return json_encode($jsonResult);
+    }
 
     private function getSearchRemoveFolder($path, $query) {
         $handler = opendir($path);

@@ -16,6 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="__PUBLIC_CSS__/jquery.spinner/bootstrap-spinner.min.css">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="__PUBLIC_CSS__/iCheck/all.css">
+    <link rel="stylesheet" href="__PUBLIC_JS__/layui/layui/css/layui.css">
     <style>
         .addButton,
         .delete,
@@ -108,6 +109,7 @@ desired effect
     <script src="__PUBLIC_JS__/iCheck/icheck.min.js"></script>
     <!--selfJs-->
     <script src="__PUBLIC_JS__/assets/toolHandler.js?version={$Think.const.ATS_VERSION}"></script>
+    <script src="__PUBLIC_JS__/layui/layui/layui.js"></script>
     <script>
         $(function() {
             urlLink = "{:url('ToolHandler/getFileName')}";
@@ -579,11 +581,42 @@ desired effect
         }
 
         function setPatchData(obj, item) {
-            obj.find('select[name^="patch_"]').each(function() {
-                var _this = $(this);
-                multiSelect2Init(_this, "{:url('ToolHandler/getFileName')}", item.XML, 'patch');
+            urlLink = "{:url('ToolHandler/getFileName')}";
 
-            });
+            var id = obj.find('.panel-collapse:eq(0)').attr('id');
+            $.ajax({
+                url: urlLink,
+                data: {
+                    type: 'patch'
+                },
+                success: function (result) {
+                    obj.find("div[id^='patch_']").each(function() {
+                        var _this = $(this);
+
+                        layui.use(['transfer'], function(){
+                            var transfer = layui.transfer
+
+                            transfer.render({
+                                elem: _this
+                                ,title: ['Select Column', 'Selected Data']
+                                ,data: JSON.parse(result)
+                                ,value: item.XML
+                                ,id: 'patchData_' + id
+                                ,width:350
+                                ,height:300
+                                ,showSearch: true
+                                ,text: {
+                                    none: 'no data' //没有数据时的文案
+                                    ,searchNone: 'no match data' //搜索无匹配数据时的文案
+                                }
+                            })
+
+                        });
+
+                    });
+                }
+
+            })
         }
     </script>
 
