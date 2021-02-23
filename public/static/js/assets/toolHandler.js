@@ -232,19 +232,22 @@ function validateFormData() {
             }
         }
         // transfer check
-        layui.use(['transfer'], function(){
-            var transfer = layui.transfer
+        if (_father.find('.patch-transfer').length > 0) {
+            layui.use(['transfer'], function(){
+                var transfer = layui.transfer
 
-            var id = _father.find('.panel-collapse:eq(0)').attr('id');
-            var getData = transfer.getData('patchData_' + id);
+                var id = _father.find('.panel-collapse:eq(0)').attr('id');
+                var getData = transfer.getData('patchData_' + id);
 
-            if (getData.length === 0) {
+                if (getData.length === 0) {
 
-                msg = msg + "Patch Transfer Is Null" + '<br>';
-                isNG = true;
-            }
+                    msg = msg + "Patch Transfer Is Null" + '<br>';
+                    isNG = true;
+                }
 
-        });
+            });
+        }
+
     });
     if (isNG) {
         toastr.error(msg);
@@ -1167,7 +1170,7 @@ function getPatch(i, status) {
         '        <div class="form-group">' +
         '            <div class="col-sm-3 control-label"></div>' +
         '            <div class="col-sm-8">' +
-        '            <div id="patch_"'+ i +' class="patch-transfer"></div>' +
+        '            <div id="patch_'+ i +'" class="patch-transfer"></div>' +
         '            </div>' +
         '            <div class="col-sm-1 control-label"></div>' +
         '        </div>' +
