@@ -340,9 +340,10 @@ return [
     'ats_config_list' => '/opt/hello/CommonTool/Configs/',
     'ats_action_list' => '/opt/hello/CommonTool/Tools/',
     'ats_patch_xml' => '/opt/hello/Patch/XML/',
+    'ats_app_list_text' => '/opt/hello/AppList.txt',  // 白名单
 
-    'ats_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/tpms/index.php',
-    'links_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/tpms/index.php',
+    'ats_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/',
+    'links_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/',
 
     // session是否开启tpms的session
     'session_debug'       => false,
@@ -354,9 +355,9 @@ return [
     // FTP Setting
     'ftp_address' => '172.30.184.28',
     'ftp_port' => '21',
-    'ftp_user' => 'administrator',
+    'ftp_user' => 'ATSAdmin',
     'ftp_password' => 'DBH@ats2020',
 
     // 切换image读取
-    'is_read_from_db'=> false
+    'is_read_from_db'=> true
 ];

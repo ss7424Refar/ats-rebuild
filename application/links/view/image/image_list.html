@@ -31,7 +31,7 @@
                         <div class="box-body">
                             <div class="box box-solid">
                                 <div id="toolbar">
-                                    {if condition="($hasRight)"}
+                                    {if condition="($imageRight)"}
                                         <button class="btn btn-primary" type="button" id="bind" data-toggle="modal" data-target="#fileImage">
                                             Bind <span class="badge" id="updateNo"></span>
                                         </button>
@@ -42,14 +42,16 @@
                                        style="margin-top: 10px">
                                     <thead>
                                         <tr>
-                                            <th data-field="file_name">File Name</th>
+                                            {if condition="($imageRight)"}
+                                                <th data-field="file_name">File Name</th>
+                                            {/if}
                                             <th data-field="bind_name">New Name</th>
                                             <th data-field="machine">Machine</th>
                                             <th data-field="os">OS</th>
                                             <th data-field="region">Region</th>
                                             <th data-field="phase">Phase</th>
                                             <th data-field="create_time">Create Time</th>
-                                            {if condition="($hasRight)"}
+                                            {if condition="($imageRight)"}
                                                 <th data-field="-" data-formatter="actionFormatter">Action</th>
                                             {/if}
                                         </tr>

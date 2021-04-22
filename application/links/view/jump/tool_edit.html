@@ -72,6 +72,7 @@ desired effect
                                     <input type="text" id="ip" hidden value="{$ipCheck}">
                                     <div class="col-md-5">
                                         <button type="button" class="btn" id="addTool"> <i class="fa fa-plus fa-fw"></i> Add  </button>
+                                        <a class="btn btn-success" href="Setting"> <i class="fa fa-toggle-right fa-fw"></i> Settings</a>
                                     </div>
                                 </div>
 
@@ -206,6 +207,11 @@ desired effect
                                 $('#box_body').append('<div>' + getPatch(i, '') + '</div>');
                                 lastDiv = $('#box_body').children('div:last');
                                 setPatchData(lastDiv, item);
+                            }
+                            if (Open_Close === item.Tool_Type) {
+                                $('#box_body').append('<div>' + getOpenClose(i, '') + '</div>');
+                                lastDiv = $('#box_body').children('div:last');
+                                setOpenCloseData(lastDiv, item);
                             }
                         })
 
@@ -617,6 +623,19 @@ desired effect
                 }
 
             })
+        }
+
+        function setOpenCloseData(obj, item) {
+            obj.find('select[name="ImageList"]').each(function () {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Image_List, 'imageList');
+
+            });
+            obj.find('select[name="TestImage"]').each(function () {
+                var _this = $(this);
+                select2Init(_this, "{:url('ToolHandler/getFileName')}", item.Test_Image, 'testImage');
+
+            });
         }
     </script>
 

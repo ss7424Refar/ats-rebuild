@@ -88,3 +88,11 @@
 ## ATS 1.5.0.5
 `2020-12-15`
 + **[Add]** Patch-XML function
+
+## ATS 1.6.0.0
+`2021-02-21`
++ **[Add]** Image List function
+
+## ATS 1.6.0.2
+`2021-04-14`
++ **[Add]** Open Close function

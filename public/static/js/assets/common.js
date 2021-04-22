@@ -21,10 +21,11 @@ const CommonTool = 'CommonTool';
 const TrebootMS = 'Treboot-MS';
 const FastBootMS = 'FastBoot-MS';
 const PATCH = 'Patch';
+const Open_Close = 'Open-Close';
 
 // toolArray
 var toolArray = [JumpStart, Recovery, C_Test, Treboot, TAndD, FastBoot, BIOSUpdate, MT, HCITest, CommonTool,
-        TrebootMS, FastBootMS, PATCH];
+        TrebootMS, FastBootMS, PATCH, Open_Close];
 
 // times
 const Hour = 'hour';

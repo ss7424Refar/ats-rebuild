@@ -53,6 +53,11 @@ CREATE TABLE `tpms`.`ats_bind_image_list` (
 ALTER TABLE `tpms`.`ats_bind_image_list`
 CHARACTER SET = utf8 ;
 
-
--- ats1.6.0.1
--- 删除path的数据
+-- ats1.6.0.1 open-close功能
+CREATE TABLE `tpms`.`ats_image_report` (
+  `name` VARCHAR(40) NOT NULL,
+  `support` TEXT NULL,
+  `xml` VARCHAR(60) NULL,
+  `uploader` VARCHAR(15) NULL,
+  `add_time` DATETIME NULL,
+  PRIMARY KEY (`name`));

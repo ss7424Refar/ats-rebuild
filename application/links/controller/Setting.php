@@ -109,7 +109,7 @@ class Setting extends Common{
             ftp_pasv($conn, 1);
 
             // 你想上传 "abc.txt"这个文件，上传后命名为"xyz.txt
-            ftp_put($conn, $file['name'], $filename, FTP_ASCII);
+            ftp_put($conn, $file['name'], $filename, FTP_BINARY);
 
             ftp_quit($conn);
 
@@ -191,6 +191,108 @@ class Setting extends Common{
     function getChmod($path){
         return substr(base_convert(@fileperms($path),10,8),-1);
 //        return base_convert(@fileperms($path),10,8);
+    }
+
+    public function report() {
+
+        $pageSize = $this->request->param('pageSize');
+        $pageNo = $this->request->param('pageNumber');
+        $offset = ($pageNo-1)*$pageSize;
+
+        $jsonResult = array();
+
+        $res = Db::table('ats_image_report')->order('add_time', 'desc')
+            ->limit($offset, $pageSize)->select();
+
+        $jsonResult['total'] = Db::table('ats_image_report')->count();
+        $jsonResult['rows'] = $res;
+
+        return json_encode($jsonResult);
+
+    }
+
+    public function analyse() {
+        $file = request()->file('file');
+
+        $info = $file->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'reports');
+        if ($info) {
+            // 解析xml
+            $saveName = $info->getSaveName();
+
+            $detail = file_get_contents(ROOT_PATH . 'public' . DS . 'reports'. DS. $saveName);
+            // 这里需要替换，否则会xml转换会报错
+            $detail =  str_replace('xmlns:xsi', 'A', $detail);
+            $detail = str_replace('xsi:schemaLocation', 'B', $detail);
+            $detail = str_replace('xmlns', 'C', $detail);
+
+            $xml = simplexml_load_string($detail);
+
+            // TINumber
+            $tNumber = $xml->table2->Detail_Collection->Detail;
+            $tNumber = json_decode(json_encode($tNumber['textbox17']),true); // simplexml对象转换为数组
+            $tNumber = $tNumber[0];
+
+            // cpNames
+            $detailCollection = $xml->table1->Detail_Collection;
+            $cpNames = [];
+            foreach ($detailCollection as $child) {
+                foreach ($child as $c) {
+                    $tmp = json_decode(json_encode($c['cpName']),true);
+                    $cpNames[] = $tmp[0];
+                }
+            }
+
+            // 读取服务器上的白名单
+            $file = fopen(config('ats_app_list_text'), "r");
+            $whiteList = array();
+            while(!feof($file)){
+                $d = fgets($file);
+                if (!empty($d)) {
+                    $whiteList[] = str_replace(PHP_EOL, '', $d);
+                }
+
+            }
+            fclose($file);
+
+            // 判断xml中的cpNames是否在白名单中.
+            $finalSame = array_values(array_intersect($cpNames, $whiteList));
+
+            if (!empty($finalSame)) {
+                // 插入数据
+                Db::table('ats_image_report')
+                    ->insert([
+                        'name'     => $tNumber. '_' .date("YmdHis"),
+                        'support'  => json_encode($finalSame, JSON_UNESCAPED_UNICODE),
+                        'xml'      => $saveName,
+                        'uploader' => $this->loginUser,
+                        'add_time' => Db::raw('now()')
+                    ]);
+
+                return json(array('code'=>200, 'msg'=>'Upload Success'));
+            }
+
+            return json(array('code'=>500, 'msg'=>'Upload Fail'));
+
+        }
+
+    }
+
+    public function deleteXML() {
+        $name = $this->request->param('name');
+
+        // 查询xml-name
+        $res = Db::table('ats_image_report')->where('name', $name)->find();
+
+        // 删除db
+        Db::table('ats_image_report')->where('name', $name)->delete();
+
+        // 删除xml
+        $fp = ROOT_PATH . 'public' . DS . 'reports'. DS. $res['xml'];
+
+        if (file_exists($fp)) {
+            unlink($fp);
+        }
+
     }
 
     private function writeJson2Ini($formObj, $fileName) {

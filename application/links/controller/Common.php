@@ -16,6 +16,7 @@ use think\Log;
 class Common extends Controller{
     // 是否为manager以上的权限
     public $hasRight = false;
+    public $imageRight = false;
     //登录用户
     public $loginUser = '';
 
@@ -66,7 +67,12 @@ class Common extends Controller{
             $this->hasRight = true;
         }
 
+        if ('admin' == $result[0]['description'] || 'Image-Admin' == $result[0]['description']){
+            $this->imageRight = true;
+        }
+
         $this->assign('hasRight', $this->hasRight); // 给模板用
+        $this->assign('imageRight', $this->imageRight);
 
         // 给header.html中的变量赋值, index继承了common, index里面有fetch方法
     }

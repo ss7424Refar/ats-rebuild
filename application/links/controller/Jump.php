@@ -77,8 +77,26 @@ class Jump extends Common {
         return $this->fetch('setting/bios_package');
     }
 
+    public function Report(){
+        return $this->fetch('setting/image_report');
+    }
+
     public function Image(){
         return $this->fetch('image/image_list');
+    }
+
+    public function Download(){
+        $name = $this->request->param('name');
+
+        $path = ROOT_PATH . 'public' . DS . 'reports';
+
+        if (file_exists($path. DS .$name)) {
+            download($name, $path);
+        } else {
+            $this->error('No File Exist!', url('Jump/Setting'));
+            return;
+        }
+
     }
 
     /*

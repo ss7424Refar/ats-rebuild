@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/plugins" /}
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_CSS__/bootstrap-table-develop/bootstrap-table.min.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.css">
+    <link rel="stylesheet" href="__PUBLIC_CSS__/select2/select2.min.css">
+</head>
+
+<body class="hold-transition skin-purple layout-top-nav">
+<div class="wrapper">
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Setting
+                <small>Image Report</small>
+            </h1>
+        </section>
+        <section class="content" style="background-color: #FFFFFF">
+            <div class="row">
+                <div class="col-md-2">
+                    <ul class="list-group">
+                        <a type="button" class="list-group-item"  href="Setting">Common Tool</a>
+                        <a type="button" class="list-group-item" href="Bios">Bios Package</a>
+                        <a type="button" class="list-group-item list-group-item-info" href="Report">Image Report</a>
+                    </ul>
+                </div>
+                <div class="col-md-10">
+                    <div id="toolbar" class="btn-toolbar" role="toolbar">
+                        <div class="form-inline" role="form">
+                            <div class="form-group">
+                                <a id="ok" class="btn btn-sm btn-primary">
+                                    <form style="position:absolute;opacity:0;top:0;left:0;
+                                                            width:59px;height:100%;cursor:pointer;">
+                                        <input type="file"  accept=".xml"
+                                               style="position:absolute;opacity:0;top:0;left:0;
+                                                                width:100%;height:100%;cursor:pointer;" id="upload"/>
+                                    </form>
+                                    Analyse
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <table id="table" data-show-jumpto="true"></table>
+                </div>
+            </div>
+        </section>
+    </div>
+    {include file="common/footer" /}
+
+</div>
+
+<script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="__PUBLIC_JS__/bootstrap-table-develop/locale/bootstrap-table-en-US.min.js"></script>
+<!--    bootstrap dataTables extensions-->
+<script src="__PUBLIC_JS__/bootstrap-table-develop/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
+
+<script src="__PUBLIC_JS__/select2/select2.min.js"></script>
+
+<script src="__PUBLIC_JS__/bootbox4.4/bootbox.min.js"></script>
+
+<script>
+    $('#table').bootstrapTable({
+        url: "{:url('Setting/report')}", //请求后台的URL（*）
+        method: 'post', //请求方式（*）
+        classes: 'table table-responsive table-hover table-bordered', // table 样式 table-no-bordered
+        iconSize: 'sm',
+        buttonsClass: '', // table 按钮颜色设置
+        toolbar: '#toolbar', //工具按钮用哪个容器
+        striped: true, //是否显示行间隔色
+        cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true, //是否显示分页（*）
+        queryParamsType: "", //默认是limit，则para为params.limit, params.offset
+        queryParams: function (params) {
+            var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                pageSize: params.pageSize,
+                pageNumber: params.pageNumber
+            };
+            return temp;
+        },
+        sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1, //初始化加载第一页，默认第一页
+        pageSize: 10, //每页的记录行数（*）
+        pageList: [10, 25, 50], //可供选择的每页的行数（*）
+        search: false, //是否显示表格搜索，此搜索是客户端搜索，不会进服务端
+        strictSearch: true,
+        height: 800,
+        // showColumns: true, //是否显示所有的列
+        showRefresh: true, //是否显示刷新按钮
+        minimumCountColumns: 2, //最少允许的列数
+        uniqueId: "name", //每一行的唯一标识，一般为主键列
+        showToggle: false, //是否显示详细视图和列表视图的切换按钮
+        cardView: false, //是否显示详细视图
+        columns: [
+            {
+                field: 'name',
+                title: 'Name'
+            },
+            {
+                field: 'support',
+                title: 'Support'
+            },
+            {
+                field: 'xml',
+                title: 'XML',
+                formatter: function(value, row) {
+                    var name = row['xml'];
+                    var result = "";
+                    result += "<a href='#' onclick=\"return downloadXML(\'" + name + "\')\">"+ name +"</a>";
+                    return result;
+                }
+            },
+            {
+                field: 'uploader',
+                title: 'Uploader'
+            },
+            {if condition ="($hasRight)"}
+                {
+                    field: '-',
+                    title: 'Action',
+                    formatter: function(value, row) {
+                        var name = row['name'];
+                        var result = "";
+                        result += "<a class='btn btn-xs bg-red' href='#' " + " onclick=\"return check(\'" + name + "\', 'delete')\" data-toggle=\"tooltip\" data-placement=\"bottom\" title='delete' style='margin: 3px'><span class='glyphicon glyphicon-trash'></span></a>";
+
+                        return result;
+                    }
+                }
+            {/if}
+        ],
+        formatLoadingMessage: function() {
+            return '<i class="fa fa-fw fa-spinner fa-pulse fa-2x" style="color:#96B97D"></i>';
+        },
+        onLoadError: function() {
+            toastr.error("Table LoadError!");
+        },
+        formatNoMatches: function() { //没有匹配的结果
+            return '<i class="text-danger">No matching records found</i>';
+        }
+    });
+
+    $(function () {
+        $('#upload').change(function () {
+            var file = $("#upload")[0].files[0];
+
+            var name = file.name;
+            var suffix = name.substr(name.lastIndexOf("."))
+            if (suffix !== '.xml') {
+                toastr.error('Please Upload XML File');
+                return false;
+            }
+            if(((file.size).toFixed(2))>=(2*1024*1024)){
+                toastr.error('File Size Over 2MB');
+                return false;
+            }
+            var formData = new FormData();
+            formData.append("file", file);
+
+            $.ajax({
+                url: "{:url('Setting/analyse')}",
+                type: 'post',
+                processData: false,  // 将数据转换成对象
+                contentType: false,  // 不设置数据类型
+                data: formData,
+                success: function (res) {
+                    if (res.code === 200) {
+                        toastr.success(res.msg);
+                    } else {
+                        toastr.error(res.msg);
+                    }
+                },
+                error: function (res) {
+                    toastr.error('Upload Fail');
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        // table初始化若无数据，则selectPage方法无效
+                        $('#table').bootstrapTable('refreshOptions', {pageNumber: 1});
+                    }, 2000)
+                    $("#upload").attr('type', 'text').attr('type', 'file');
+                }
+
+            });
+        });
+    })
+
+    function downloadXML(name) {
+
+        window.location.href='Download?name=' + name;
+
+    }
+    function check(name, op) {
+        bootbox.confirm({
+            message: " Do You Want Delete XML?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function(result) {
+                if (result) {
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('Setting/deleteXML')}",
+                        data: {
+                            name: name
+                        },
+                        success: function(result) {
+                            if ('fail' !== result) {
+                                toastr.success("Delete XML Success");
+                                setTimeout("window.location.href=\"Report\";", 500);
+                            }
+                        },
+                        error: function() {
+                            toastr.error("Delete XML Fail");
+                            return false;
+                        }
+
+                    });
+                }
+
+            }
+        });
+    }
+</script>
+
+</body>
+
+</html>

@@ -339,6 +339,7 @@ return [
     'ats_config_list' => '/tmp/', // 需要有斜杠
     'ats_action_list' => '/opt/',
     'ats_patch_xml' => '/tmp/',
+    'ats_app_list_text' => '/opt/AppList.txt',  // 白名单
 
     'ats_sign_out_url'    =>  'http://localhost/tpms/index.php',
     'links_sign_out_url'    =>  'http://localhost/tpms/index.php',
@@ -357,5 +358,5 @@ return [
     'ftp_password' => '1',
 
     // 切换image读取
-    'is_read_from_db'=> true
+    'is_read_from_db'=> false
 ];

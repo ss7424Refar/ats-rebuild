@@ -161,7 +161,14 @@ function formToJson() {
 
             });
         }
-
+        else if (Open_Close === toolType) {
+            var item = {
+                Tool_Type: toolType,
+                Test_Image: _father.find("#TestImage").select2('val'),
+                Image_List: _father.find("#ImageList").select2('val')
+            };
+            obj.push(item);
+        }
     });
     return JSON.stringify(obj);
 }
@@ -247,7 +254,19 @@ function validateFormData() {
 
             });
         }
+        // image list和test image的check
+        var imageList = _father.find('#ImageList').select2('val')
 
+        var testImage = _father.find("#TestImage").select2('val')
+
+        if (null != imageList && null != testImage) {
+            var tno = imageList.split('_')[0]
+            if (testImage.indexOf(tno) === -1) {
+                msg = msg + tno + " Not Match " + testImage + '<br>';
+                isNG = true;
+            }
+
+        }
     });
     if (isNG) {
         toastr.error(msg);
@@ -551,6 +570,17 @@ function addThenInit(selection, obj, remoteUrl) {
 
         })
 
+    } else if (Open_Close === selection) {
+        obj.find('select[name="ImageList"]').each(function() {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'imageList');
+
+        });
+        obj.find('select[name="TestImage"]').each(function() {
+            var _this = $(this);
+            select2Init(_this, remoteUrl, '', 'testImage');
+
+        });
     }
 }
 
@@ -1182,6 +1212,32 @@ function getPatch(i, status) {
 
     return template;
 }
+
+function getOpenClose(i, status) {
+    var template = '';
+
+    template = '<button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target="#collapse_' + i + '">' + '<b>' + Open_Close + '</b></button>' +
+        '<div id="collapse_' + i + '" class="panel-collapse collapse in">' +
+        '    <div class="panel-body form-horizontal">' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Image List</label>' +
+        '            <div class="col-sm-4">' +
+        '                <select class="form-control select2" name="ImageList" id="ImageList"></select>' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">Test Image</label>' +
+        '            <div class="col-sm-4">' +
+        '                <select class="form-control select2" name="TestImage" id="TestImage"></select>' +
+        '            </div>' +
+        '        </div>' +
+        '        <hr>' +
+        '        <div class="col-md-6"><button type="button" class="btn addButton col-md-offset-10"><i class="fa fa-plus fa-fw"></i> Copy</button></div>' +
+        '        <div class="col-md-6"><button type="button" class="btn delete"><i class="fa fa-remove fa-fw"></i>  delete</button></div>' +
+        '    </div>' +
+        '</div>';
+
+    return template;
+}
+
 // end代表在最后添加, mid代表在中间添加
 function addToolByButton(type, obj, urlLink) {
     var selection, toolId;
@@ -1224,7 +1280,10 @@ function addToolByButton(type, obj, urlLink) {
         result = getFastBootMS(collapseId, null);
     } else if (PATCH === selection) {
         result = getPatch(collapseId, null);
+    } else if (Open_Close === selection) {
+        result = getOpenClose(collapseId, null);
     }
+
 
     if ('' !== result) {
         if ('none' === $('#content').css('display')) {

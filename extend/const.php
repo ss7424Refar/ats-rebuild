@@ -6,7 +6,7 @@
  * Time: 下午4:59
  */
 
-define('ATS_VERSION', '1.6.0.1');
+define('ATS_VERSION', '1.6.0.2');
 
 /*
  * adminLTE theme
@@ -30,9 +30,10 @@ define('CommonTool', 'CommonTool');
 define('TREBOOTMS', 'Treboot-MS');
 define('FASTBOOTMS', 'FastBoot-MS');
 define('PATCH', 'Patch');
+define('OPEN_CLOSE', 'Open-Close');
 
 define('ToolName', json_encode([JUMP_START, RECOVERY, C_TEST, TREBOOT,
-    TAndD, FastBoot, BIOSUpdate, MT, HCITest, CommonTool, TREBOOTMS, FASTBOOTMS, PATCH]));
+    TAndD, FastBoot, BIOSUpdate, MT, HCITest, CommonTool, TREBOOTMS, FASTBOOTMS, PATCH, OPEN_CLOSE]));
 /*
  * ATS file path
  */

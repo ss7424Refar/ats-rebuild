@@ -54,6 +54,14 @@ class ToolHandler extends Common {
             return $this->getSearchRemoveFolder(config('ats_action_list'), $query);
         } elseif ('patch' == $type) {
             return $this->getTransferData(config('ats_patch_xml'));
+        } elseif ('imageList' == $type) {
+            $r = Db::table('ats_image_report')->where('name', 'like', '%'. $query.'%')
+                ->select();
+            $res = array();
+            foreach ($r as $item) {
+                array_push($res, array('id'=> $item['name'], 'text'=>$item['name']));
+            }
+            return json_encode($res);
         }
         return '';
     }

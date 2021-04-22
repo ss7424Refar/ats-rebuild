@@ -41,3 +41,21 @@ function appendCommaValue($arr) {
 
 }
 
+/*
+ * 下载文件
+ */
+function download($name, $path){
+
+    $fp = $path.DS.$name;
+    $f = fopen($fp, "r");
+
+    Header("Content-type: application/octet-stream");
+    Header("Accept-Ranges: bytes");
+    Header("Accept-Length: " . filesize($fp));
+    Header("Content-Disposition: attachment; filename=" . $name);
+
+    echo fread($f, filesize($fp));
+
+    fclose($f);
+
+}

@@ -320,8 +320,16 @@ class TaskManager extends Common{
                         $jsonElement->Execute_Job = 6;
                     }
 
-                    $outPut['task_steps'][$j]['element_json'] = json_encode($jsonElement);
                 }
+                if (OPEN_CLOSE == $jsonElement->Tool_Type) {
+                    // 查询ImageList对应的AppList
+                    $r = Db::table('ats_image_report')->where('name', $jsonElement->Image_List)->find();
+
+                    $jsonElement->App_List = empty($r) ? null : $this->arrayUnicode($r['support']);
+
+                }
+
+                $outPut['task_steps'][$j]['element_json'] = $jsonElement;
             }
 
             if (null != $outPut['task_steps']) {
@@ -576,5 +584,20 @@ class TaskManager extends Common{
             Log::record( ' fileName = '. $filePath. ' not exist');
             return 'fail';
         }
+    }
+
+    private function arrayUnicode($str) {
+
+        $tmp = str_replace(']', '', str_replace('[', '', json_encode(json_decode($str))));
+
+        $newArr = [];
+
+        $tmp = explode(',', $tmp);
+        foreach ($tmp as $v) {
+
+            $newArr[] = str_replace('"', '', $v);
+        }
+
+        return $newArr;
     }
 }
