@@ -11,7 +11,8 @@ function formToJson() {
                 Test_Image: _father.find("#TestImage").select2('val'),
                 Execute_Job: _father.find("#ExecuteJob").select2('val'),
                 OS_Activation: _father.find("input[name^='OS Activation']:checked").val(), // OS Activation
-                BaseLine_Image: _father.find("input[name^='BaseLine Image']:checked").val() // BaseLine Image
+                BaseLine_Image: _father.find("input[name^='BaseLine Image']:checked").val(), // BaseLine Image
+                Win11: _father.find("input[name^='Win']:checked").val()
             };
 
             obj.push(item);
@@ -260,10 +261,12 @@ function validateFormData() {
         var testImage = _father.find("#TestImage").select2('val')
 
         if (null != imageList && null != testImage) {
-            var tno = imageList.split('_')[0]
-            if (testImage.indexOf(tno) === -1) {
-                msg = msg + tno + " Not Match " + testImage + '<br>';
-                isNG = true;
+            if ('Keep Current Image' !== testImage) {
+                var tno = imageList.split('_')[0]
+                if (testImage.indexOf(tno) === -1) {
+                    msg = msg + tno + " Not Match " + testImage + '<br>';
+                    isNG = true;
+                }
             }
 
         }
@@ -625,6 +628,17 @@ function getJumpStart(i, status) {
         '                </label>' +
         '                <label style="margin-right: 19px">' +
         '                    <input type="radio" name="BaseLine Image_' + i + '" class="minimal" value="NO"/> NO' +
+        '                </label>' +
+        '            </div>' +
+        '        </div>' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">For Win11</label>' +
+        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
+        '                <label style="margin-right: 19px">' +
+        '                    <input type="radio" name="Win_' + i + '" class="minimal" value="YES" ' + status + '/> YES' +
+        '                </label>' +
+        '                <label style="margin-right: 19px">' +
+        '                    <input type="radio" name="Win_' + i + '" class="minimal" value="NO"/> NO' +
         '                </label>' +
         '            </div>' +
         '        </div>' +

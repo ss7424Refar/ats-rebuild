@@ -6,7 +6,7 @@
  * Time: 下午4:59
  */
 
-define('ATS_VERSION', '1.6.0.2');
+define('ATS_VERSION', '1.6.0.3');
 
 /*
  * adminLTE theme

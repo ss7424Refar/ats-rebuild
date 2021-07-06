@@ -96,3 +96,7 @@
 ## ATS 1.6.0.2
 `2021-04-14`
 + **[Add]** Open Close function
+
+## ATS 1.6.0.3
+`2021-07-05`
++ **[Update]** For win11 to Jumpstart Tool

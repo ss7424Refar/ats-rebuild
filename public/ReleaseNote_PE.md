@@ -49,3 +49,6 @@
 
 ## `2021-04-14`
 + **[Add]** Open-Close 功能
+
+## `2021-07-05`
++ **[Update]** For win11 to Jumpstart Tool

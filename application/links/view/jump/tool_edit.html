@@ -293,6 +293,12 @@ desired effect
                         $(this).iCheck('check');
                     }
                 }
+
+                if (nameV.indexOf('Win') >= 0) {
+                    if (item.Win11 === $(this).val()) {
+                        $(this).iCheck('check');
+                    }
+                }
             });
 
         }

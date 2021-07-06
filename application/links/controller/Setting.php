@@ -248,7 +248,7 @@ class Setting extends Common{
             while(!feof($file)){
                 $d = fgets($file);
                 if (!empty($d)) {
-                    $whiteList[] = str_replace(PHP_EOL, '', $d);
+                    $whiteList = explode(',', $d);
                 }
 
             }
