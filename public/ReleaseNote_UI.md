@@ -100,3 +100,7 @@
 ## ATS 1.6.0.3
 `2021-07-05`
 + **[Update]** For win11 to Jumpstart Tool
+
+## ATS 1.6.0.4
+`2022-03-24`
++ **[Add]** Patch Check to TrebootMS Tool

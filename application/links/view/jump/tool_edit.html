@@ -576,6 +576,11 @@ desired effect
                     $(this).iCheck('check');
                 }
             });
+            obj.find('input[name^="TrebootPatch"]').each(function() {
+                if ('YES' === item.Patch) {
+                    $(this).iCheck('check');
+                }
+            });
             // configure 重置
             obj.find('input[type="checkbox"].flat').each(function() {
                 $(this).iCheck({

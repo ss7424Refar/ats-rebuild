@@ -128,13 +128,18 @@ function formToJson() {
         } else if (TrebootMS === toolType) {
             var dump = _father.find("input[name^='ForceDump']:checked").val();
             dump = dump === undefined ? 'NO' : dump;
+
+            var trebootPatch = _father.find("input[name^='TrebootPatch']:checked").val();
+            console.log(trebootPatch)
+            trebootPatch = trebootPatch === undefined ? 'NO' : trebootPatch;
             var item = {
                 Tool_Type: toolType,
                 Test_Image: _father.find("#TestImage").select2('val'),
                 ConnectedStandby: _father.find("input[id^='standBy_']").val(),
                 MinPowerUp: _father.find("input[id^='delay_']").val(),
                 SecDelay: _father.find("input[id^='timeOut_']").val(),
-                Dump: dump
+                Dump: dump,
+                Patch: trebootPatch
             };
             obj.push(item);
         } else if (FastBootMS === toolType) {
@@ -635,10 +640,10 @@ function getJumpStart(i, status) {
         '            <label class="col-sm-1 control-label">For Win11</label>' +
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
         '                <label style="margin-right: 19px">' +
-        '                    <input type="radio" name="Win_' + i + '" class="minimal" value="YES" ' + status + '/> YES' +
+        '                    <input type="radio" name="Win_' + i + '" class="minimal" value="YES"/> YES' +
         '                </label>' +
         '                <label style="margin-right: 19px">' +
-        '                    <input type="radio" name="Win_' + i + '" class="minimal" value="NO"/> NO' +
+        '                    <input type="radio" name="Win_' + i + '" class="minimal" value="NO" ' + status + '/> NO' +
         '                </label>' +
         '            </div>' +
         '        </div>' +
@@ -1170,8 +1175,12 @@ function getTrebootMS(i, status) {
         '        </div>' +
         '        <div class="form-group">' +
         '            <label class="col-sm-1 control-label">Force Dump</label>' +
-        '            <div class="col-sm-1" style="padding-top: 5px">' +
+        '            <div class="col-sm-4" style="padding-top: 5px">' +
         '                 <input type="checkbox" name="ForceDump_' + i + '" class="flat" value="YES" />' +
+        '            </div>' +
+        '            <label class="col-sm-1 control-label">Patch</label>' +
+        '            <div class="col-sm-4" style="padding-top: 5px">' +
+        '                 <input type="checkbox" name="TrebootPatch_' + i + '" class="flat" value="YES" />' +
         '            </div>' +
         '        </div>' +
         '        <hr>' +
