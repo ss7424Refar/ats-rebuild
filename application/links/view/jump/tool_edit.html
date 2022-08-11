@@ -350,6 +350,18 @@ desired effect
             obj.find('[data-trigger="spinner"]').spinner();
             obj.find('#count').val(item.Count);
 
+            obj.find('input[type="checkbox"].flat').each(function() {
+                $(this).iCheck({
+                    checkboxClass: 'icheckbox_flat-yellow'
+                });
+            });
+
+            obj.find('input[name^="Win_"]').each(function() {
+                if ('YES' === item.Win11) {
+                    $(this).iCheck('check');
+                }
+            });
+
         }
 
         function setCTestData(obj, item) {

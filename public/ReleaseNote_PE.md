@@ -52,3 +52,6 @@
 
 ## `2021-07-05`
 + **[Update]** For win11 to Jumpstart Tool
+
+## `2022-08-11`
++ **[Update]** For win11 to Recovery Tool

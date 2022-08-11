@@ -17,6 +17,8 @@ function formToJson() {
 
             obj.push(item);
         } else if (Recovery === toolType) {
+            var win = _father.find("input[name^='Win_']:checked").val();
+            win = win === undefined ? 'NO' : win;
             var item = {
                 Tool_Type: toolType,
                 Test_Image: _father.find("#TestImage").select2('val'),
@@ -24,6 +26,7 @@ function formToJson() {
                 Count: _father.find('#count').val(),
                 OOBE: _father.find("input[name^='OOBE']:checked").val(),
                 WinUpdate: _father.find("input[name^='WinUpdate']:checked").val(),
+                Win11: win,
                 SecureBoot: _father.find("input[name^='SecureBoot']:checked").val()
             };
             obj.push(item);
@@ -407,6 +410,9 @@ function addThenInit(selection, obj, remoteUrl) {
         // count
         obj.find('[data-trigger="spinner"]').spinner();
 
+        obj.find('input[type="checkbox"].flat').each(function() {
+            $(this).iCheck({ checkboxClass: 'icheckbox_flat-yellow' });
+        });
 
     } else if (C_Test === selection) {
         // week
@@ -699,7 +705,7 @@ function getRecovery(i, status) {
         '        </div>' +
         '        <div class="form-group">' +
         '            <label class="col-sm-1 control-label">Windows Update</label>' +
-        '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
+        '            <div class="col-sm-1" style="padding-top: 7px;padding-left: 14px">' +
         '                <label style="margin-right: 19px">' +
         '                    <input type="radio" name="WinUpdate_' + i + '" class="minimal" value="YES"/> YES' +
         '                </label>' +
@@ -707,7 +713,11 @@ function getRecovery(i, status) {
         '                    <input type="radio" name="WinUpdate_' + i + '" class="minimal" value="NO" ' + status + '/> NO' +
         '                </label>' +
         '            </div>' +
-        '            <label class="col-sm-1 control-label">Enable SecureBoot</label>' +
+        '            <label class="col-sm-1 control-label">For Win11</label>' +
+        '            <div class="col-sm-1" style="padding-top: 5px">' +
+        '               <input type="checkbox" name="Win_' + i + '" class="flat" value="YES" />' +
+        '            </div>' +
+        '            <label class="col-sm-2 control-label">Enable SecureBoot</label>' +
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
         '                <label style="margin-right: 19px">' +
         '                    <input type="radio" name="SecureBoot_' + i + '" class="minimal" value="YES" ' + status + '/> YES' +

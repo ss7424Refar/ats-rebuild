@@ -104,3 +104,7 @@
 ## ATS 1.6.0.4
 `2022-03-24`
 + **[Add]** Patch Check to TrebootMS Tool
+
+## ATS 1.6.0.5
+`2022-08-11`
++ **[Add]** Win11 to Recovery Tool
