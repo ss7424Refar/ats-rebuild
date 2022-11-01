@@ -340,6 +340,7 @@ return [
     'ats_config_list' => '/opt/hello/CommonTool/Configs/',
     'ats_action_list' => '/opt/hello/CommonTool/Tools/',
     'ats_patch_xml' => '/opt/hello/Patch/XML/',
+    'ats_drivers_data' => '/opt/hello/Drivers/',
     'ats_app_list_text' => '/opt/hello/AppList.txt',  // 白名单
 
     'ats_sign_out_url'    =>  'http://pcs.dbh.dynabook.com/',

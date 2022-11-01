@@ -108,3 +108,7 @@
 ## ATS 1.6.0.5
 `2022-08-11`
 + **[Add]** Win11 to Recovery Tool
+
+## ATS 1.6.0.6
+`2022-11-2`
++ **[Add]** Drivers to Recovery Tool

@@ -55,3 +55,6 @@
 
 ## `2022-08-11`
 + **[Update]** For win11 to Recovery Tool
+
+## `2022-11-01`
++ **[Update]** Drivers to Recovery Tool

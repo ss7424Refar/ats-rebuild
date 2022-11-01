@@ -259,7 +259,7 @@ return [
         // 数据库用户名
         'username'    => 'root',
         // 数据库密码
-        'password'    => '123456',
+        'password'    => 'root',
         // 端口
         'hostport'        => '',
         // 连接dsn
@@ -339,6 +339,7 @@ return [
     'ats_config_list' => '/tmp/', // 需要有斜杠
     'ats_action_list' => '/opt/',
     'ats_patch_xml' => '/tmp/',
+    'ats_drivers_data' => '/opt/',
     'ats_app_list_text' => '/opt/AppList.txt',  // 白名单
 
     'ats_sign_out_url'    =>  'http://localhost/tpms/index.php',

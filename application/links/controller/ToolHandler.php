@@ -62,6 +62,8 @@ class ToolHandler extends Common {
                 array_push($res, array('id'=> $item['name'], 'text'=>$item['name']));
             }
             return json_encode($res);
+        } elseif ('drivers' == $type) {
+            return $this->getTransferData(config('ats_drivers_data'));
         }
         return '';
     }

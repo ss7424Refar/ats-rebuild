@@ -362,6 +362,43 @@ desired effect
                 }
             });
 
+            urlLink = "{:url('ToolHandler/getFileName')}";
+
+            var id = obj.find('.panel-collapse:eq(0)').attr('id');
+            $.ajax({
+                url: urlLink,
+                data: {
+                    type: 'drivers'
+                },
+                success: function (result) {
+                    obj.find("div[id^='drivers_']").each(function() {
+                        var _this = $(this);
+
+                        layui.use(['transfer'], function(){
+                            var transfer = layui.transfer
+
+                            transfer.render({
+                                elem: _this
+                                ,title: ['Select Column', 'Selected Data']
+                                ,data: JSON.parse(result)
+                                ,value: item.Drivers
+                                ,id: 'driversData_' + id
+                                ,width:350
+                                ,height:300
+                                ,showSearch: true
+                                ,text: {
+                                    none: 'no data' //没有数据时的文案
+                                    ,searchNone: 'no match data' //搜索无匹配数据时的文案
+                                }
+                            })
+
+                        });
+
+                    });
+                }
+
+            })
+
         }
 
         function setCTestData(obj, item) {

@@ -17,6 +17,18 @@ function formToJson() {
 
             obj.push(item);
         } else if (Recovery === toolType) {
+            newArr = [];
+            layui.use(['transfer'], function(){
+                var transfer = layui.transfer
+                var id = _father.find('.panel-collapse:eq(0)').attr('id');
+                var arr = transfer.getData('driversData_' + id);
+
+                for(j in arr) {
+                    newArr.push(arr[j]["value"]);
+                }
+
+            });
+
             var win = _father.find("input[name^='Win_']:checked").val();
             win = win === undefined ? 'NO' : win;
             var item = {
@@ -27,7 +39,8 @@ function formToJson() {
                 OOBE: _father.find("input[name^='OOBE']:checked").val(),
                 WinUpdate: _father.find("input[name^='WinUpdate']:checked").val(),
                 Win11: win,
-                SecureBoot: _father.find("input[name^='SecureBoot']:checked").val()
+                SecureBoot: _father.find("input[name^='SecureBoot']:checked").val(),
+                Drivers: newArr
             };
             obj.push(item);
         } else if (C_Test === toolType) {
@@ -263,6 +276,7 @@ function validateFormData() {
 
             });
         }
+
         // image list和test image的check
         var imageList = _father.find('#ImageList').select2('val')
 
@@ -413,6 +427,40 @@ function addThenInit(selection, obj, remoteUrl) {
         obj.find('input[type="checkbox"].flat').each(function() {
             $(this).iCheck({ checkboxClass: 'icheckbox_flat-yellow' });
         });
+
+        var id = obj.find('.panel-collapse:eq(0)').attr('id');
+        $.ajax({
+            url: urlLink,
+            data: {
+                type: 'drivers'
+            },
+            success: function (result) {
+                obj.find("div[id^='drivers_']").each(function() {
+                    var _this = $(this);
+
+                    layui.use(['transfer'], function(){
+                        var transfer = layui.transfer
+
+                        transfer.render({
+                            elem: _this
+                            ,title: ['Select Column', 'Selected Data']
+                            ,data: JSON.parse(result)
+                            ,id: 'driversData_' + id
+                            ,width:350
+                            ,height:300
+                            ,showSearch: true
+                            ,text: {
+                                none: 'no data' //没有数据时的文案
+                                ,searchNone: 'no match data' //搜索无匹配数据时的文案
+                            }
+                        })
+
+                    });
+
+                });
+            }
+
+        })
 
     } else if (C_Test === selection) {
         // week
@@ -705,7 +753,7 @@ function getRecovery(i, status) {
         '        </div>' +
         '        <div class="form-group">' +
         '            <label class="col-sm-1 control-label">Windows Update</label>' +
-        '            <div class="col-sm-1" style="padding-top: 7px;padding-left: 14px">' +
+        '            <div class="col-sm-2" style="padding-top: 7px;padding-left: 14px">' +
         '                <label style="margin-right: 19px">' +
         '                    <input type="radio" name="WinUpdate_' + i + '" class="minimal" value="YES"/> YES' +
         '                </label>' +
@@ -717,7 +765,7 @@ function getRecovery(i, status) {
         '            <div class="col-sm-1" style="padding-top: 5px">' +
         '               <input type="checkbox" name="Win_' + i + '" class="flat" value="YES" />' +
         '            </div>' +
-        '            <label class="col-sm-2 control-label">Enable SecureBoot</label>' +
+        '            <label class="col-sm-1 control-label">Enable SecureBoot</label>' +
         '            <div class="col-sm-4" style="padding-top: 7px;padding-left: 14px">' +
         '                <label style="margin-right: 19px">' +
         '                    <input type="radio" name="SecureBoot_' + i + '" class="minimal" value="YES" ' + status + '/> YES' +
@@ -725,6 +773,12 @@ function getRecovery(i, status) {
         '                <label style="margin-right: 19px">' +
         '                    <input type="radio" name="SecureBoot_' + i + '" class="minimal" value="NO"/> NO' +
         '                </label>' +
+        '            </div>' +
+        '        </div>' +
+        '        <div class="form-group">' +
+        '            <label class="col-sm-1 control-label">Drivers</label>' +
+        '            <div class="col-sm-4">' +
+        '               <div id="drivers_'+ i +'" class="drivers-transfer"></div>' +
         '            </div>' +
         '        </div>' +
         '        <hr>' +
