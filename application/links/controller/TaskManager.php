@@ -463,7 +463,7 @@ class TaskManager extends Common{
 
         $jsonResult = array();
 
-        $result = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->order('steps')->field('tool_name, status, element_json')->limit($offset,$pageSize)->select();
+        $result = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->order('steps')->field('tool_name, status, element_json, mini_steps')->limit($offset,$pageSize)->select();
         $total = Db::table('ats_task_tool_steps')->where('task_id', $taskId)->count();
 
         if (!empty($result)){

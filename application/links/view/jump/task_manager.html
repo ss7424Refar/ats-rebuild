@@ -814,16 +814,17 @@
                     // sortable: true,
                     formatter: function(value, row) {
                         // var path = "\\\\172.30.52.28\\JSDataBK\\#Temp\\\@ATS_Results\\Task_"+ row['shelf_switch'] + "_" + row['task_id'];
-                        if (null !== row['result_path']) {
-                            if (0 === Number(row['process'])) {
-                                return 'ATS-' + value;
-                            } else {
+                        // if (null !== row['result_path']) {
+                        //     if (0 === Number(row['process'])) {
+                        //         return 'ATS-' + value;
+                        //     } else {
                                 var path = row['result_path'];
-                                return '<a href="' + path + '">' + 'ATS-' + value + '</a> ';
-                            }
-                        } else {
-                            return 'ATS-' + value;
-                        }
+                        //         return '<a href="' + path + '">' + 'ATS-' + value + '</a> ';
+                        //     }
+                        // } else {
+                        //     return 'ATS-' + value;
+                        // }
+                        return '<a href="' + path + '">' + 'ATS-' + value + '</a> ';
                     }
                 }, {
                     field: 'machine_name',
@@ -1474,6 +1475,17 @@
                 }, {
                     field: 'status',
                     title: 'status'
+                }, {
+                    field: 'mini_steps',
+                    title: 'mini_steps',
+                    formatter: function(value, row) {
+                        tool_name = row['tool_name'];
+                        if (Recovery == tool_name) {
+                            return row['mini_steps'];
+                        } else {
+                            return '-';
+                        }
+                    }
                 }, {
                     field: 'element_json',
                     title: 'desc'

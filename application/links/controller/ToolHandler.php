@@ -157,6 +157,7 @@ class ToolHandler extends Common {
                 'tool_name' =>  $formObj[$i]->Tool_Type,
                 'status' => PENDING,  // pending
                 'steps' => $i + 1,
+                'mini_steps' => $formObj[$i]->Tool_Type == RECOVERY ? 0 : 1,
                 'element_json' => json_encode($this->editBindImage($formObj[$i])), // trans to String
                 'tool_create_time' => $createTime
             ]);
@@ -182,6 +183,7 @@ class ToolHandler extends Common {
                     'tool_name' =>  $formObj[$i]->Tool_Type,
                     'status' => PENDING,  // pending
                     'steps' => $i + 1,
+                    'mini_steps' => $formObj[$i]->Tool_Type == RECOVERY ? 0 : 1,
                     'element_json' => json_encode($this->editBindImage($formObj[$i])), // trans to String
                     'tool_create_time' => $createTime
                 ]);
@@ -240,8 +242,10 @@ class ToolHandler extends Common {
         while (($filename = readdir($handler)) !== false) {
             //略过linux目录的名字为'.'和‘..'的文件
             if ($filename != "." && $filename != "..") {
-                $tmpArray = array('value' => $filename, 'title' => $filename);
-                array_push($jsonResult, $tmpArray);
+                if (!is_dir($path.$filename)) {
+                    $tmpArray = array('value' => $filename, 'title' => $filename);
+                    array_push($jsonResult, $tmpArray);
+                }
             }
         }
 

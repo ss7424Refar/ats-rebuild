@@ -777,7 +777,7 @@ function getRecovery(i, status) {
         '        </div>' +
         '        <div class="form-group">' +
         '            <label class="col-sm-1 control-label">Drivers</label>' +
-        '            <div class="col-sm-4">' +
+        '            <div class="col-sm-11">' +
         '               <div id="drivers_'+ i +'" class="drivers-transfer"></div>' +
         '            </div>' +
         '        </div>' +

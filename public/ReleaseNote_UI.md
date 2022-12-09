@@ -112,3 +112,7 @@
 ## ATS 1.6.0.6
 `2022-11-2`
 + **[Add]** Drivers to Recovery Tool
+
+## ATS 1.6.0.7
+`2022-12-9`
++ **[Update]** process for Recovery Count

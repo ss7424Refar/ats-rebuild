@@ -61,3 +61,8 @@ CREATE TABLE `tpms`.`ats_image_report` (
   `uploader` VARCHAR(15) NULL,
   `add_time` DATETIME NULL,
   PRIMARY KEY (`name`));
+
+
+-- ats1.6.0.7
+ALTER TABLE tpms.ats_task_tool_steps ADD mini_steps varchar(6) NULL;
+ALTER TABLE tpms.ats_task_tool_steps CHANGE mini_steps mini_steps varchar(6) NULL AFTER element_json;
